@@ -1,0 +1,34 @@
+{
+	"name" : "gossi/trixionary",
+	"description" : "Trixionary API",
+	"type" : "keeko-module",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "gossi"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"gossi\\trixionary\\" : "src"
+		}
+	},
+	"require" : {
+		"php" : ">=5.4",
+		"keeko/composer-installer" : "*"
+	},
+	"require-dev" : {
+		"composer/composer" : "@dev",
+		"keeko/core" : "dev-master",
+		"propel/propel" : "@dev"
+	},
+	"extra" : {
+		"keeko" : {
+			"module" : {
+				"title" : "Trixionary API",
+				"class" : "gossi\\trixionary\\TrixionaryModule",
+				"slug" : "gossi.trixionary",
+				"default-action" : "sports-list"
+			}
+		}
+	}
+}
