@@ -30,6 +30,7 @@ class Skill extends BaseSkill {
 	const FLAG_OPPOSITE = 32;
 	
 	private $authors = [];
+	private $ancestors = null;
 
 	public function toActivityObject() {
 		$ao = $this->getActivityObject();
@@ -56,24 +57,72 @@ class Skill extends BaseSkill {
 			->filterByVersion($this->getVersion())
 			->findOne();
 	}
+
+	public function setVariationOf(Skill $v = null) {
+		parent::setVariationOf($v);
+		if ($v !== null) {
+			$this->addParent($v);
+		}
+	}
+	
+	public function setVariationOfId($v = null) {
+		parent::setVariationOfId($v);
+		if ($v !== null) {
+			$this->addParent($this->getVariationOf());
+		}
+	}
+	
+	public function isTransition() {
+		return $this->getStartPositionId() != $this->getEndPositionId();
+	}
 	
 	public function hasGroup(Group $group) {
 		return $this->getGroups()->contains($group);
 	}
 	
-	public function getAncients() {
+	public function deleteGroups() {
+		SkillGroupQuery::create()->filterBySkillId($this->getId())->delete();
+	}
+	
+	public function getParents() {
 		return $this->getSkillsRelatedByDependsId();
 	}
 	
-	public function addAncient(Skill $skill) {
+	public function addParent(Skill $skill) {
 		$this->addSkillRelatedByDependsId($skill);
 	}
 	
-	public function hasAncient(Skill $skill) {
-		return $this->getAncients()->contains($skill);
+	public function hasParent(Skill $skill) {
+		return $this->getParents()->contains($skill);
 	}
 	
-	public function getDescendents() {
+	public function deleteParents() {
+		SkillDependencyQuery::create()->filterBySkillId($this->getId())->delete();
+	}
+	
+	public function getAncestors() {
+		if ($this->ancestors === null) {
+			$this->ancestors = [];
+			foreach ($this->getParents() as $parent) {
+				$this->ancestors[$parent->getId()] = $parent;
+				$this->ancestors = array_merge($this->ancestors, $parent->getAncestors());
+			}
+			
+			$variationOf = $this->getVariationOf();
+			if ($variationOf !== null) {
+				$this->ancestors[$variationOf->getId()] = $variationOf;
+				$this->ancestors = array_merge($this->ancestors, $variationOf->getAncestors());
+			}
+		}
+
+		return $this->ancestors;
+	}
+	
+	public function clearAncestors() {
+		$this->ancestors = null;
+	}
+	
+	public function getChildren() {
 		return $this->getSkillsRelatedBySkillId();
 	}
 	
@@ -92,6 +141,10 @@ class Skill extends BaseSkill {
 	public function hasPart(Skill $skill) {
 		return $this->getParts()->contains($skill);
 	}
+	
+	public function deleteParts() {
+		SkillPartQuery::create()->filterByCompositeId($this->getId())->delete();
+	} 
 	
 	public function getAuthors($version = null) {
 		if ($version === null) {
@@ -135,6 +188,7 @@ class Skill extends BaseSkill {
 		
 		$calculator = Calculator::getInstance();
 		$calculator->updateImportance($this);
+		$calculator->updateGeneration($this);
 
 		return true;
 	}
@@ -144,7 +198,7 @@ class Skill extends BaseSkill {
 		
 		SkillQuery::disableVersioning();
 		$calculator = Calculator::getInstance();
-		$calculator->updateImportanceOnAncients($this);
+		$calculator->updateImportanceOnAncestors($this);
 		SkillQuery::enableVersioning();
 	}
 	

@@ -9,9 +9,11 @@ class Calculator {
 	
 	private static $instance;
 	private $processedImportanceSkills;
+	private $processedGenerationSkills;
 	private $queuedImportanceSkills;
 	
 	private function __construct() {
+		$this->processedGenerationSkills = new ArrayList();
 		$this->processedImportanceSkills = new ArrayList();
 		$this->queuedImportanceSkills = new Queue();
 	}
@@ -57,27 +59,26 @@ class Calculator {
 			$skills = array_merge($skills, $this->getAllDescendents($variation));
 		}
 		
-		foreach ($skill->getDescendents() as $descendent) {
-			$skills[] = $descendent->getId();
-			$skills = array_merge($skills, $this->getAllDescendents($descendent));
+		foreach ($skill->getChildren() as $child) {
+			if (!$child->isTransition()) {
+				$skills[] = $child->getId();
+				$skills = array_merge($skills, $this->getAllDescendents($child));
+			}
 		}
 		
 		return $skills;
 	}
 	
-	public function updateImportanceOnAncients(Skill $skill) {
-		$ancients = $skill->getAncients();
-		$variationOf = $skill->getVariationOf();
-		if ($variationOf !== null) {
-			$ancients->append($variationOf);
-		}
+	public function updateImportanceOnAncestors(Skill $skill) {
+		$ancestors = $skill->getParents();
 		
-		foreach ($ancients as $ancient) {
-			if ($this->updateImportance($ancient)) {
-				$this->processedImportanceSkills->add($ancient);
-				$ancient->save();
+		foreach ($ancestors as $ancestor) {
+			if ($this->updateImportance($ancestor)) {
+				$this->updateGeneration($ancestor);
+				$this->processedImportanceSkills->add($ancestor);
+				$ancestor->save();
 				
-				$this->queuedImportanceSkills->enqueueAll($ancient->getAncients());
+				$this->queuedImportanceSkills->enqueueAll($ancestor->getParents());
 			}
 		}
 		
@@ -85,7 +86,78 @@ class Calculator {
 		$this->queuedImportanceSkills->clear();
 		
 		foreach ($todos as $todo) {
-			$this->updateImportanceOnAncients($todo);
+			$this->updateImportanceOnAncestors($todo);
 		}
+	}
+	
+	public function updateGeneration(Skill $skill) {
+		if ($this->processedGenerationSkills->contains($skill)) {
+			return;
+		}
+		$generation = 1;
+		$ancestors = $skill->getAncestors();
+		if (count($ancestors)) {
+			$root = $this->findRoot($ancestors);
+			
+			if ($root !== null) {
+				$generation = $this->nextStep($root, $skill, $ancestors);
+			}
+		}
+		
+		$skill->setGeneration($generation);
+		$this->processedGenerationSkills->add($skill);
+	}
+	
+	/**
+	 * 
+	 * @param Skill $skill
+	 * @param Skill $target
+	 * @param Skill[] $pool
+	 * @param number $steps
+	 */
+	public function nextStep(Skill $skill, Skill $target, array $pool, $steps = 1) {
+		if ($skill == $target) {
+			return $steps;
+		}
+		$children = $skill->getChildren();
+		$max = 0;
+		$next = null;
+		$steps++;
+		
+		// filter children to get only available skills from the pool
+		// find the one with the highest importance ...
+		foreach ($children as $child) {
+			if ($child == $target) {
+				return $steps;
+			}
+			if (in_array($child, $pool)) {
+				$importance = $child->getImportance();
+				if ($importance > $max) {
+					$max = $importance;
+					$next = $child;
+				}
+			}
+		}
+		
+		// ... and continue
+		if ($next !== null) {
+			return $this->nextStep($next, $target, $pool, $steps);
+		}
+		
+		return $steps;
+	}
+	
+	/**
+	 * @param Skill[] $ancestors
+	 * @return Skill|null
+	 */
+	private function findRoot(array $ancestors) {
+		$root = null;
+		foreach ($ancestors as $ancestor) {
+			if (count($ancestor->getAncestors()) == 0) {
+				$root = $ancestor;
+			}
+		}
+		return $root;
 	}
 }
