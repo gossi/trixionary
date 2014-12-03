@@ -1,34 +1,1476 @@
 {
-	"name" : "gossi/trixionary",
-	"description" : "Trixionary API",
-	"type" : "keeko-module",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "gossi"
-		}
-	],
-	"autoload" : {
-		"psr-4" : {
-			"gossi\\trixionary\\" : "src"
-		}
-	},
-	"require" : {
-		"php" : ">=5.4",
-		"keeko/composer-installer" : "*"
-	},
-	"require-dev" : {
-		"composer/composer" : "@dev",
-		"keeko/core" : "dev-master",
-		"propel/propel" : "@dev"
-	},
-	"extra" : {
-		"keeko" : {
-			"module" : {
-				"title" : "Trixionary API",
-				"class" : "gossi\\trixionary\\TrixionaryModule",
-				"slug" : "gossi.trixionary",
-				"default-action" : "sports-list"
-			}
-		}
-	}
+    "name": "gossi/trixionary",
+    "description": "Trixionary",
+    "type": "keeko-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gossi"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "gossi\\trixionary\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=5.4",
+        "keeko/composer-installer": "*"
+    },
+    "require-dev": {
+        "composer/composer": "@dev",
+        "keeko/core": "dev-master",
+        "propel/propel": "@dev"
+    },
+    "extra": {
+        "keeko": {
+            "module": {
+                "title": "Trixionary",
+                "class": "gossi\\trixionary\\TrixionaryModule",
+                "slug": "gossi.trixionary",
+                "default-action": "sport-list",
+                "actions": {
+                    "sport-create": {
+                        "title": "Creates a sport",
+                        "class": "gossi\\trixionary\\action\\SportCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SportCreateJsonResponse"
+                        }
+                    },
+                    "sport-read": {
+                        "title": "Reads a sport",
+                        "class": "gossi\\trixionary\\action\\SportReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SportReadJsonResponse"
+                        }
+                    },
+                    "sport-list": {
+                        "title": "List all sports",
+                        "class": "gossi\\trixionary\\action\\SportListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SportListJsonResponse"
+                        }
+                    },
+                    "sport-update": {
+                        "title": "Updates a sport",
+                        "class": "gossi\\trixionary\\action\\SportUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SportUpdateJsonResponse"
+                        }
+                    },
+                    "sport-delete": {
+                        "title": "Deletes a sport",
+                        "class": "gossi\\trixionary\\action\\SportDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SportDeleteJsonResponse"
+                        }
+                    },
+                    "position-create": {
+                        "title": "Creates a position",
+                        "class": "gossi\\trixionary\\action\\PositionCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\PositionCreateJsonResponse"
+                        }
+                    },
+                    "position-read": {
+                        "title": "Reads a position",
+                        "class": "gossi\\trixionary\\action\\PositionReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\PositionReadJsonResponse"
+                        }
+                    },
+                    "position-list": {
+                        "title": "List all positions",
+                        "class": "gossi\\trixionary\\action\\PositionListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\PositionListJsonResponse"
+                        }
+                    },
+                    "position-update": {
+                        "title": "Updates a position",
+                        "class": "gossi\\trixionary\\action\\PositionUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\PositionUpdateJsonResponse"
+                        }
+                    },
+                    "position-delete": {
+                        "title": "Deletes a position",
+                        "class": "gossi\\trixionary\\action\\PositionDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\PositionDeleteJsonResponse"
+                        }
+                    },
+                    "movement-create": {
+                        "title": "Creates a movement",
+                        "class": "gossi\\trixionary\\action\\MovementCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\MovementCreateJsonResponse"
+                        }
+                    },
+                    "movement-read": {
+                        "title": "Reads a movement",
+                        "class": "gossi\\trixionary\\action\\MovementReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\MovementReadJsonResponse"
+                        }
+                    },
+                    "movement-list": {
+                        "title": "List all movements",
+                        "class": "gossi\\trixionary\\action\\MovementListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\MovementListJsonResponse"
+                        }
+                    },
+                    "movement-update": {
+                        "title": "Updates a movement",
+                        "class": "gossi\\trixionary\\action\\MovementUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\MovementUpdateJsonResponse"
+                        }
+                    },
+                    "movement-delete": {
+                        "title": "Deletes a movement",
+                        "class": "gossi\\trixionary\\action\\MovementDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\MovementDeleteJsonResponse"
+                        }
+                    },
+                    "skill-create": {
+                        "title": "Creates a skill",
+                        "class": "gossi\\trixionary\\action\\SkillCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SkillCreateJsonResponse"
+                        }
+                    },
+                    "skill-read": {
+                        "title": "Reads a skill",
+                        "class": "gossi\\trixionary\\action\\SkillReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SkillReadJsonResponse"
+                        }
+                    },
+                    "skill-list": {
+                        "title": "List all skills",
+                        "class": "gossi\\trixionary\\action\\SkillListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SkillListJsonResponse"
+                        }
+                    },
+                    "skill-update": {
+                        "title": "Updates a skill",
+                        "class": "gossi\\trixionary\\action\\SkillUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SkillUpdateJsonResponse"
+                        }
+                    },
+                    "skill-delete": {
+                        "title": "Deletes a skill",
+                        "class": "gossi\\trixionary\\action\\SkillDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\SkillDeleteJsonResponse"
+                        }
+                    },
+                    "concept-create": {
+                        "title": "Creates a concept",
+                        "class": "gossi\\trixionary\\action\\ConceptCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\ConceptCreateJsonResponse"
+                        }
+                    },
+                    "concept-read": {
+                        "title": "Reads a concept",
+                        "class": "gossi\\trixionary\\action\\ConceptReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\ConceptReadJsonResponse"
+                        }
+                    },
+                    "concept-list": {
+                        "title": "List all concepts",
+                        "class": "gossi\\trixionary\\action\\ConceptListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\ConceptListJsonResponse"
+                        }
+                    },
+                    "concept-update": {
+                        "title": "Updates a concept",
+                        "class": "gossi\\trixionary\\action\\ConceptUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\ConceptUpdateJsonResponse"
+                        }
+                    },
+                    "concept-delete": {
+                        "title": "Deletes a concept",
+                        "class": "gossi\\trixionary\\action\\ConceptDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\ConceptDeleteJsonResponse"
+                        }
+                    },
+                    "group-create": {
+                        "title": "Creates a group",
+                        "class": "gossi\\trixionary\\action\\GroupCreateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\GroupCreateJsonResponse"
+                        }
+                    },
+                    "group-read": {
+                        "title": "Reads a group",
+                        "class": "gossi\\trixionary\\action\\GroupReadAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\GroupReadJsonResponse"
+                        }
+                    },
+                    "group-list": {
+                        "title": "List all groups",
+                        "class": "gossi\\trixionary\\action\\GroupListAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\GroupListJsonResponse"
+                        }
+                    },
+                    "group-update": {
+                        "title": "Updates a group",
+                        "class": "gossi\\trixionary\\action\\GroupUpdateAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\GroupUpdateJsonResponse"
+                        }
+                    },
+                    "group-delete": {
+                        "title": "Deletes a group",
+                        "class": "gossi\\trixionary\\action\\GroupDeleteAction",
+                        "acl": [
+                            "admin"
+                        ],
+                        "response": {
+                            "json": "gossi\\trixionary\\response\\GroupDeleteJsonResponse"
+                        }
+                    }
+                },
+                "api": {
+                    "swaggerVersion": "1.2",
+                    "resourcePath": "/gossi.trixionary",
+                    "apis": [
+                        {
+                            "path": "/sports",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a sport",
+                                    "nickname": "sport-create",
+                                    "type": "Sport",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new sport",
+                                            "required": true,
+                                            "type": "WritableSport",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all sports",
+                                    "nickname": "sport-list",
+                                    "type": "PagedSports"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/sports/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a sport",
+                                    "nickname": "sport-read",
+                                    "type": "Sport",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The sport id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No sport found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a sport",
+                                    "nickname": "sport-update",
+                                    "type": "Sport",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The sport id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No sport found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a sport",
+                                    "nickname": "sport-delete",
+                                    "type": "Sport",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The sport id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No sport found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/positions",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a position",
+                                    "nickname": "position-create",
+                                    "type": "Position",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new position",
+                                            "required": true,
+                                            "type": "WritablePosition",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all positions",
+                                    "nickname": "position-list",
+                                    "type": "PagedPositions"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/positions/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a position",
+                                    "nickname": "position-read",
+                                    "type": "Position",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The position id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No position found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a position",
+                                    "nickname": "position-update",
+                                    "type": "Position",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The position id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No position found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a position",
+                                    "nickname": "position-delete",
+                                    "type": "Position",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The position id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No position found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/movements",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a movement",
+                                    "nickname": "movement-create",
+                                    "type": "Movement",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new movement",
+                                            "required": true,
+                                            "type": "WritableMovement",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all movements",
+                                    "nickname": "movement-list",
+                                    "type": "PagedMovements"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/movements/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a movement",
+                                    "nickname": "movement-read",
+                                    "type": "Movement",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The movement id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No movement found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a movement",
+                                    "nickname": "movement-update",
+                                    "type": "Movement",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The movement id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No movement found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a movement",
+                                    "nickname": "movement-delete",
+                                    "type": "Movement",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The movement id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No movement found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/skills",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a skill",
+                                    "nickname": "skill-create",
+                                    "type": "Skill",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new skill",
+                                            "required": true,
+                                            "type": "WritableSkill",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all skills",
+                                    "nickname": "skill-list",
+                                    "type": "PagedSkills"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/skills/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a skill",
+                                    "nickname": "skill-read",
+                                    "type": "Skill",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The skill id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No skill found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a skill",
+                                    "nickname": "skill-update",
+                                    "type": "Skill",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The skill id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No skill found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a skill",
+                                    "nickname": "skill-delete",
+                                    "type": "Skill",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The skill id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No skill found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/concepts",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a concept",
+                                    "nickname": "concept-create",
+                                    "type": "Concept",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new concept",
+                                            "required": true,
+                                            "type": "WritableConcept",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all concepts",
+                                    "nickname": "concept-list",
+                                    "type": "PagedConcepts"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/concepts/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a concept",
+                                    "nickname": "concept-read",
+                                    "type": "Concept",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The concept id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No concept found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a concept",
+                                    "nickname": "concept-update",
+                                    "type": "Concept",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The concept id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No concept found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a concept",
+                                    "nickname": "concept-delete",
+                                    "type": "Concept",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The concept id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No concept found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/groups",
+                            "operations": [
+                                {
+                                    "method": "POST",
+                                    "summary": "Creates a group",
+                                    "nickname": "group-create",
+                                    "type": "Group",
+                                    "parameters": [
+                                        {
+                                            "name": "body",
+                                            "description": "The new group",
+                                            "required": true,
+                                            "type": "WritableGroup",
+                                            "paramType": "body"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "GET",
+                                    "summary": "List all groups",
+                                    "nickname": "group-list",
+                                    "type": "PagedGroups"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "/groups/{id}",
+                            "operations": [
+                                {
+                                    "method": "GET",
+                                    "summary": "Reads a group",
+                                    "nickname": "group-read",
+                                    "type": "Group",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The group id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No group found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "PUT",
+                                    "summary": "Updates a group",
+                                    "nickname": "group-update",
+                                    "type": "Group",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The group id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No group found"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "method": "DELETE",
+                                    "summary": "Deletes a group",
+                                    "nickname": "group-delete",
+                                    "type": "Group",
+                                    "parameters": [
+                                        {
+                                            "name": "id",
+                                            "description": "The group id",
+                                            "required": true,
+                                            "type": "id",
+                                            "paramType": "path"
+                                        }
+                                    ],
+                                    "responseMessages": [
+                                        {
+                                            "code": "400",
+                                            "message": "Invalid ID supplied"
+                                        },
+                                        {
+                                            "code": "404",
+                                            "message": "No group found"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "models": {
+                        "Meta": {
+                            "id": "Meta",
+                            "properties": {
+                                "total": {
+                                    "type": "integer"
+                                },
+                                "first": {
+                                    "type": "string"
+                                },
+                                "next": {
+                                    "type": "string"
+                                },
+                                "previous": {
+                                    "type": "string"
+                                },
+                                "last": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "PagedSports": {
+                            "id": "PagedSports",
+                            "properties": {
+                                "sports": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Sport"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritableSport": {
+                            "id": "WritableSport",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "slug": {
+                                    "type": "string"
+                                },
+                                "skill_title": {
+                                    "type": "string"
+                                },
+                                "skill_slug": {
+                                    "type": "string"
+                                },
+                                "group_title": {
+                                    "type": "string"
+                                },
+                                "group_slug": {
+                                    "type": "string"
+                                },
+                                "compositional": {
+                                    "type": "boolean"
+                                },
+                                "is_default": {
+                                    "type": "boolean"
+                                },
+                                "movender": {
+                                    "type": "string"
+                                },
+                                "has_movendum": {
+                                    "type": "boolean"
+                                },
+                                "movendum": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "Sport": {
+                            "id": "Sport",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "slug": {
+                                    "type": "string"
+                                },
+                                "skill_title": {
+                                    "type": "string"
+                                },
+                                "skill_slug": {
+                                    "type": "string"
+                                },
+                                "group_title": {
+                                    "type": "string"
+                                },
+                                "group_slug": {
+                                    "type": "string"
+                                },
+                                "compositional": {
+                                    "type": "boolean"
+                                },
+                                "is_default": {
+                                    "type": "boolean"
+                                },
+                                "movender": {
+                                    "type": "string"
+                                },
+                                "has_movendum": {
+                                    "type": "boolean"
+                                },
+                                "movendum": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "PagedPositions": {
+                            "id": "PagedPositions",
+                            "properties": {
+                                "positions": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Position"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritablePosition": {
+                            "id": "WritablePosition",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "Position": {
+                            "id": "Position",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "PagedMovements": {
+                            "id": "PagedMovements",
+                            "properties": {
+                                "movements": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Movement"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritableMovement": {
+                            "id": "WritableMovement",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                },
+                                "descendant_class": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "Movement": {
+                            "id": "Movement",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                },
+                                "descendant_class": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "PagedSkills": {
+                            "id": "PagedSkills",
+                            "properties": {
+                                "skills": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Skill"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritableSkill": {
+                            "id": "WritableSkill",
+                            "properties": {
+                                "alternative_name": {
+                                    "type": "string"
+                                },
+                                "skill_id": {
+                                    "type": "int"
+                                },
+                                "start_position_id": {
+                                    "type": "int"
+                                },
+                                "end_position_id": {
+                                    "type": "int"
+                                },
+                                "is_composite": {
+                                    "type": "boolean"
+                                },
+                                "is_multiple": {
+                                    "type": "boolean"
+                                },
+                                "multiplier": {
+                                    "type": "int"
+                                },
+                                "concept_id": {
+                                    "type": "int"
+                                },
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "Skill": {
+                            "id": "Skill",
+                            "properties": {
+                                "alternative_name": {
+                                    "type": "string"
+                                },
+                                "skill_id": {
+                                    "type": "int"
+                                },
+                                "start_position_id": {
+                                    "type": "int"
+                                },
+                                "end_position_id": {
+                                    "type": "int"
+                                },
+                                "is_composite": {
+                                    "type": "boolean"
+                                },
+                                "is_multiple": {
+                                    "type": "boolean"
+                                },
+                                "multiplier": {
+                                    "type": "int"
+                                },
+                                "concept_id": {
+                                    "type": "int"
+                                },
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "PagedConcepts": {
+                            "id": "PagedConcepts",
+                            "properties": {
+                                "concepts": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Concept"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritableConcept": {
+                            "id": "WritableConcept",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "Concept": {
+                            "id": "Concept",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "sport_id": {
+                                    "type": "int"
+                                },
+                                "is_translation": {
+                                    "type": "boolean"
+                                },
+                                "is_rotation": {
+                                    "type": "boolean"
+                                },
+                                "rotation_movender": {
+                                    "type": "int"
+                                },
+                                "rotation_movendum": {
+                                    "type": "int"
+                                },
+                                "rotation_synchronization": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "PagedGroups": {
+                            "id": "PagedGroups",
+                            "properties": {
+                                "groups": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "Group"
+                                    }
+                                },
+                                "meta": {
+                                    "type": "Meta"
+                                }
+                            }
+                        },
+                        "WritableGroup": {
+                            "id": "WritableGroup",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "slug": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "Group": {
+                            "id": "Group",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "slug": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "local": "../../"
+    }
 }

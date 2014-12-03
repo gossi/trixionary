@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="keeko"	namespace="gossi\trixionary\model" identifierQuoting="true"
+	defaultPhpNamingMethod="phpname" xmlns:xsi="http://www.w3.org/2001/XMLSchema-inposition"
+	xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+	tablePrefix="kk_trixionary_">
+	
+	<!-- <external-schema filename="core/database/schema.xml"/>-->
+	
+	<table name="sport">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="skill_slug" type="VARCHAR" size="255"/>
+		<column name="skill_label" type="VARCHAR" size="255"/>
+		<column name="skill_plural_label" type="VARCHAR" size="255"/>
+		<column name="group_slug" type="VARCHAR" size="255"/>
+		<column name="group_label" type="VARCHAR" size="255"/>
+		<column name="group_plural_label" type="VARCHAR" size="255"/>
+		<column name="transitions_slug" type="VARCHAR" size="255"/>
+		<column name="transition_label" type="VARCHAR" size="255"/>
+		<column name="transition_plural_label" type="VARCHAR" size="255"/>
+		<column name="position_slug" type="VARCHAR" size="255"/>
+		<column name="position_label" type="VARCHAR" size="255"/>
+		<column name="compositional" type="BOOLEAN" 
+			description="Whether this is a technical compositional type of sport"/>
+		<column name="is_default" type="BOOLEAN"/>
+		<column name="movender" type="VARCHAR" size="255"/>
+		<column name="has_movendum" type="BOOLEAN"/>
+		<column name="movendum" type="VARCHAR" size="255"/>
+	</table>
+	
+	<table name="position">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="sport_id" type="INTEGER" required="true" />
+		<foreign-key foreignTable="sport" onDelete="restrict">
+			<reference local="sport_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="skill">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="sport_id" type="INTEGER" required="true" />
+		<column name="name" type="VARCHAR" size="255"/>
+		<column name="alternative_name" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="history" type="LONGVARCHAR"/>
+		<column name="is_translation" type="BOOLEAN"/>
+		<column name="is_rotation" type="BOOLEAN"/>
+		<column name="is_cyclic" type="BOOLEAN"/>
+		<column name="longitudinal_flags" type="INTEGER"/>
+		<column name="latitudinal_flags" type="INTEGER"/>
+		<column name="transversal_flags" type="INTEGER"/>
+		<column name="movement_description" type="LONGVARCHAR"/>
+		<column name="variation_of_id" type="INTEGER" required="false" description="Indicates a variation"/>
+		<column name="start_position_id"  type="INTEGER" required="false" />
+		<column name="end_position_id"  type="INTEGER" required="false" />
+		<column name="is_composite" type="BOOLEAN" />
+		<column name="is_multiple" type="BOOLEAN" />
+		<column name="multiple_of_id" type="INTEGER" required="false"/>
+		<column name="multiplier" type="INTEGER" />
+		<column name="generation" type="INTEGER" />
+		<column name="importance" type="INTEGER" />
+
+		<foreign-key foreignTable="sport" onDelete="restrict">
+			<reference local="sport_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" refPhpName="Variation" phpName="VariationOf">
+			<reference local="variation_of_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="skill" refPhpName="Multiple" phpName="MultipleOf">
+			<reference local="multiple_of_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="position" phpName="StartPosition">
+			<reference local="start_position_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="position" phpName="EndPosition">
+			<reference local="end_position_id" foreign="id"/>
+		</foreign-key>
+		<!-- <foreign-key foreignTable="user">
+			<reference local="author_id" foreign="id"/>
+		</foreign-key>-->
+
+		<behavior name="versionable">
+			<parameter name="log_created_at" value="true"/>
+			<parameter name="log_comment" value="true"/>
+		</behavior>
+	</table>
+	
+	<table name="skill_dependency" isCrossRef="true">
+		<column name="skill_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<column name="depends_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<foreign-key foreignTable="skill" onDelete="restrict">
+			<reference local="depends_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="restrict">
+			<reference local="skill_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<table name="skill_part" isCrossRef="true">
+		<column name="composite_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<column name="part_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<foreign-key foreignTable="skill" onDelete="restrict">
+			<reference local="part_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="restrict">
+			<reference local="composite_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="group">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="sport_id" type="INTEGER" required="true" />
+		
+		<foreign-key foreignTable="sport" onDelete="restrict">
+			<reference local="sport_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="skill_group" isCrossRef="true">
+		<column name="skill_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<column name="group_id" type="INTEGER" primaryKey="true"
+			required="true" />
+		<foreign-key foreignTable="group" onDelete="restrict">
+			<reference local="group_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="restrict">
+			<reference local="skill_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+</database>

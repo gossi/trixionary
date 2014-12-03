@@ -2,6 +2,7 @@
 namespace gossi\trixionary;
 
 use keeko\core\module\AbstractModule;
+use Propel\Runtime\Propel;
 
 /**
  * Trixionary API
@@ -14,6 +15,18 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 */
 	public function install() {
+		$con = Propel::getConnection();
+		
+		try {
+			$stmt = $con->prepare(file_get_contents(__DIR__ . '/../database/sql/keeko.sql'));
+			$stmt->execute();
+			
+			// @TODO dev only:
+			$stmt = $con->prepare(file_get_contents(__DIR__ . '/../database/sql/data.sql'));
+			$stmt->execute();
+		} catch (\Exception $e) {
+			
+		}
 	}
 
 	/**
