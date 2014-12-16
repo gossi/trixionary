@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Updates a concept
+ * Creates a picture
  * 
  * @author gossi
  */
-class ConceptUpdateAction extends AbstractAction {
+class PictureCreateAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

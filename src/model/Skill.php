@@ -1,5 +1,4 @@
 <?php
-
 namespace gossi\trixionary\model;
 
 use gossi\trixionary\model\Base\Skill as BaseSkill;
@@ -9,6 +8,8 @@ use keeko\core\model\ActivityObjectQuery;
 use keeko\core\model\ActivityQuery;
 use Propel\Runtime\Connection\ConnectionInterface;
 use gossi\trixionary\calculation\Calculator;
+use gossi\collection\Map;
+use keeko\core\utils\ActivityObjectInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'kk_trixionary_skill' table.
@@ -20,7 +21,7 @@ use gossi\trixionary\calculation\Calculator;
  * long as it does not already exist in the output directory.
  *
  */
-class Skill extends BaseSkill {
+class Skill extends BaseSkill implements ActivityObjectInterface {
 	
 	const FLAG_MOVENDER = 1;
 	const FLAG_MOVENDUM = 2;
@@ -31,14 +32,11 @@ class Skill extends BaseSkill {
 	
 	private $authors = [];
 	private $ancestors = null;
+	private $descendents = null;
+	
+	private static $isSaving = false;
 
 	public function toActivityObject() {
-		$ao = $this->getActivityObject();
-		
-		if ($ao) {
-			return $ao;
-		}
-		
 		$obj = new ActivityObject();
 		$obj->setType(SkillTableMap::CLASS_DEFAULT);
 		$obj->setClassName(SkillTableMap::OM_CLASS);
@@ -56,6 +54,43 @@ class Skill extends BaseSkill {
 			->filterByReferenceId($this->getId())
 			->filterByVersion($this->getVersion())
 			->findOne();
+	}
+	
+	public function getAuthors($version = null) {
+		if ($version === null) {
+			$version = $this->getVersion();
+		}
+	
+		if (isset($this->authors[$version])) {
+			return $this->authors[$version];
+		}
+
+		$authors = [];
+		$ao = $this->getActivityObject();
+	
+		if ($ao) {
+			$activities = ActivityQuery::create()
+				->filterByObject($ao)
+				->joinActor()
+				->find();
+				
+			foreach ($activities as $activity) {
+				$authors[] = $activity->getActor();
+			}
+		}
+	
+		$this->authors[$version] = array_unique($authors);
+	
+		return $this->authors[$version];
+	}
+	
+	public function getAllAuthors() {
+		$authors = [];
+		foreach ($this->getAllVersions() as $version) {
+			$authors = array_merge($authors, $this->getAuthors($version->getVersion()));
+		}
+	
+		return array_unique($authors);
 	}
 
 	public function setVariationOf(Skill $v = null) {
@@ -102,20 +137,26 @@ class Skill extends BaseSkill {
 	
 	public function getAncestors() {
 		if ($this->ancestors === null) {
-			$this->ancestors = [];
+			$this->ancestors = new Map();
+			
+			$add = function (Skill $skill) {
+				if (!$skill->isTransition()) {
+					$this->ancestors->set($skill->getId(), $skill);
+					$this->ancestors->setAll($skill->getAncestors());
+				}
+			};
+			
 			foreach ($this->getParents() as $parent) {
-				$this->ancestors[$parent->getId()] = $parent;
-				$this->ancestors = array_merge($this->ancestors, $parent->getAncestors());
+				$add($parent);
 			}
 			
 			$variationOf = $this->getVariationOf();
 			if ($variationOf !== null) {
-				$this->ancestors[$variationOf->getId()] = $variationOf;
-				$this->ancestors = array_merge($this->ancestors, $variationOf->getAncestors());
+				$add($variationOf);
 			}
 		}
 
-		return $this->ancestors;
+		return $this->ancestors->toArray();
 	}
 	
 	public function clearAncestors() {
@@ -124,6 +165,33 @@ class Skill extends BaseSkill {
 	
 	public function getChildren() {
 		return $this->getSkillsRelatedBySkillId();
+	}
+	
+	public function getDescendents() {
+		if ($this->descendents === null) {
+			$this->descendents = new Map();
+			
+			$add = function (Skill $skill) {
+				if (!$skill->isTransition()) {
+					$this->descendents->set($skill->getId(), $skill);
+					$this->descendents->setAll($skill->getDescendents());
+				}
+			};
+			
+			foreach ($this->getVariations() as $variation) {
+				$add($variation);
+			}
+
+			foreach ($this->getChildren() as $child) {
+				$add($child);
+			}
+		}
+		
+		return $this->descendents->toArray();
+	}
+	
+	public function clearDescendents() {
+		$this->descendents = null;
 	}
 	
 	public function getComposites() {
@@ -146,60 +214,24 @@ class Skill extends BaseSkill {
 		SkillPartQuery::create()->filterByCompositeId($this->getId())->delete();
 	} 
 	
-	public function getAuthors($version = null) {
-		if ($version === null) {
-			$version = $this->getVersion();
-		}
-		
-		if (isset($this->authors[$version])) {
-			return $this->authors[$version];
-		}
-		
-		$authors = [];
-		$ao = $this->getActivityObject();
-
-		if ($ao) {
-			$activities = ActivityQuery::create()
-				->filterByObject($ao)
-				->joinActor()
-				->find();
-			
-			foreach ($activities as $activity) {
-				$authors[] = $activity->getActor();
-			}
-		}
-		
-		$this->authors[$version] = array_unique($authors);
-		
-		return $this->authors[$version];
-	}
-	
-	public function getAllAuthors() {
-		$authors = [];
-		foreach ($this->getAllVersions() as $version) {
-			$authors = array_merge($authors, $this->getAuthors($version->getVersion()));
-		}
-		
-		return array_unique($authors);
-	}
-	
-	public function preSave(ConnectionInterface $con = null) {
-		parent::preSave($con);
-		
-		$calculator = Calculator::getInstance();
-		$calculator->updateImportance($this);
-		$calculator->updateGeneration($this);
-
-		return true;
-	}
-	
 	public function postSave(ConnectionInterface $con = null) {
 		parent::postSave($con);
 		
+		if (static::$isSaving) {
+			return;
+		}
+		
+		static::$isSaving = true;
+
 		SkillQuery::disableVersioning();
 		$calculator = Calculator::getInstance();
-		$calculator->updateImportanceOnAncestors($this);
+		$calculator->updateImportance($this);
+		$calculator->updateOutstandingImportance();
+		$calculator->updateGeneration($this);
+		$calculator->updateOutstandingGeneration();
 		SkillQuery::enableVersioning();
+		
+		static::$isSaving = false;
 	}
 	
 }

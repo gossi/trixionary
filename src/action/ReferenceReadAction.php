@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Reads a movement
+ * Reads a reference
  * 
  * @author gossi
  */
-class MovementReadAction extends AbstractAction {
+class ReferenceReadAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

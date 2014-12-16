@@ -66,6 +66,8 @@
 		<column name="multiplier" type="INTEGER" />
 		<column name="generation" type="INTEGER" />
 		<column name="importance" type="INTEGER" />
+		<column name="generation_ids" type="LONGVARCHAR"/>
+		<column name="picture_id" type="INTEGER" required="false"/>
 
 		<foreign-key foreignTable="sport" onDelete="restrict">
 			<reference local="sport_id" foreign="id" />
@@ -81,6 +83,9 @@
 		</foreign-key>
 		<foreign-key foreignTable="position" phpName="EndPosition">
 			<reference local="end_position_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="picture" phpName="FeaturedPicture" refPhpName="FeaturedSkill">
+			<reference local="picture_id" foreign="id"/>
 		</foreign-key>
 		<!-- <foreign-key foreignTable="user">
 			<reference local="author_id" foreign="id"/>
@@ -117,7 +122,7 @@
 			<reference local="composite_id" foreign="id" />
 		</foreign-key>
 	</table>
-	
+
 	<table name="group">
 		<column name="id" type="INTEGER" primaryKey="true" required="true"
 			autoIncrement="true" />
@@ -144,4 +149,70 @@
 		</foreign-key>
 	</table>
 	
+	<table name="picture">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="photographer" type="VARCHAR" required="false"/>
+		<column name="photographer_id" type="INTEGER" required="false"/>
+		<column name="movender" type="VARCHAR" required="false"/>
+		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="uploader_id" type="INTEGER"/>
+
+		<foreign-key foreignTable="skill" refPhpName="Picture" phpName="Skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="video">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="is_tutorial" type="BOOLEAN"/>
+		<column name="movender" type="VARCHAR" required="false"/>
+		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="uploader_id" type="INTEGER"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="reference_id" type="INTEGER" required="false"/>
+
+		<foreign-key foreignTable="skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+		
+		<foreign-key foreignTable="reference">
+			<reference local="reference_id" foreign="id"/>
+		</foreign-key>
+	</table>
+
+	<table name="reference">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="type" type="VARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="title" type="VARCHAR"/>
+		<column name="year" type="INTEGER"/>
+		<column name="publisher" type="VARCHAR"/>
+		<column name="journal" type="VARCHAR"/>
+		<column name="number" type="VARCHAR"/>
+		<column name="school" type="VARCHAR"/>
+		<column name="author" type="VARCHAR"/>
+		<column name="edition" type="VARCHAR"/>
+		<column name="volume" type="VARCHAR"/>
+		<column name="address" type="VARCHAR"/>
+		<column name="editor" type="VARCHAR"/>
+		<column name="howpublished" type="VARCHAR"/>
+		<column name="note" type="VARCHAR"/>
+		<column name="booktitle" type="VARCHAR"/>
+		<column name="pages" type="VARCHAR"/>
+		<column name="url" type="VARCHAR"/>
+		<column name="lastchecked" type="DATE"/>
+		
+		<foreign-key foreignTable="skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+
 </database>

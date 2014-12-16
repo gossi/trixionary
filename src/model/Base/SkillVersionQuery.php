@@ -43,6 +43,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery orderByMultiplier($order = Criteria::ASC) Order by the multiplier column
  * @method     ChildSkillVersionQuery orderByGeneration($order = Criteria::ASC) Order by the generation column
  * @method     ChildSkillVersionQuery orderByImportance($order = Criteria::ASC) Order by the importance column
+ * @method     ChildSkillVersionQuery orderByGenerationIds($order = Criteria::ASC) Order by the generation_ids column
+ * @method     ChildSkillVersionQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
  * @method     ChildSkillVersionQuery orderByVersion($order = Criteria::ASC) Order by the version column
  * @method     ChildSkillVersionQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
  * @method     ChildSkillVersionQuery orderByVersionComment($order = Criteria::ASC) Order by the version_comment column
@@ -74,6 +76,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery groupByMultiplier() Group by the multiplier column
  * @method     ChildSkillVersionQuery groupByGeneration() Group by the generation column
  * @method     ChildSkillVersionQuery groupByImportance() Group by the importance column
+ * @method     ChildSkillVersionQuery groupByGenerationIds() Group by the generation_ids column
+ * @method     ChildSkillVersionQuery groupByPictureId() Group by the picture_id column
  * @method     ChildSkillVersionQuery groupByVersion() Group by the version column
  * @method     ChildSkillVersionQuery groupByVersionCreatedAt() Group by the version_created_at column
  * @method     ChildSkillVersionQuery groupByVersionComment() Group by the version_comment column
@@ -118,6 +122,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion findOneByMultiplier(int $multiplier) Return the first ChildSkillVersion filtered by the multiplier column
  * @method     ChildSkillVersion findOneByGeneration(int $generation) Return the first ChildSkillVersion filtered by the generation column
  * @method     ChildSkillVersion findOneByImportance(int $importance) Return the first ChildSkillVersion filtered by the importance column
+ * @method     ChildSkillVersion findOneByGenerationIds(string $generation_ids) Return the first ChildSkillVersion filtered by the generation_ids column
+ * @method     ChildSkillVersion findOneByPictureId(int $picture_id) Return the first ChildSkillVersion filtered by the picture_id column
  * @method     ChildSkillVersion findOneByVersion(int $version) Return the first ChildSkillVersion filtered by the version column
  * @method     ChildSkillVersion findOneByVersionCreatedAt(string $version_created_at) Return the first ChildSkillVersion filtered by the version_created_at column
  * @method     ChildSkillVersion findOneByVersionComment(string $version_comment) Return the first ChildSkillVersion filtered by the version_comment column
@@ -150,6 +156,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion[]|ObjectCollection findByMultiplier(int $multiplier) Return ChildSkillVersion objects filtered by the multiplier column
  * @method     ChildSkillVersion[]|ObjectCollection findByGeneration(int $generation) Return ChildSkillVersion objects filtered by the generation column
  * @method     ChildSkillVersion[]|ObjectCollection findByImportance(int $importance) Return ChildSkillVersion objects filtered by the importance column
+ * @method     ChildSkillVersion[]|ObjectCollection findByGenerationIds(string $generation_ids) Return ChildSkillVersion objects filtered by the generation_ids column
+ * @method     ChildSkillVersion[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkillVersion objects filtered by the picture_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersion(int $version) Return ChildSkillVersion objects filtered by the version column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersionCreatedAt(string $version_created_at) Return ChildSkillVersion objects filtered by the version_created_at column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersionComment(string $version_comment) Return ChildSkillVersion objects filtered by the version_comment column
@@ -248,7 +256,7 @@ abstract class SkillVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `generation_ids`, `picture_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -1151,6 +1159,76 @@ abstract class SkillVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SkillVersionTableMap::COL_IMPORTANCE, $importance, $comparison);
+    }
+
+    /**
+     * Filter the query on the generation_ids column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByGenerationIds('fooValue');   // WHERE generation_ids = 'fooValue'
+     * $query->filterByGenerationIds('%fooValue%'); // WHERE generation_ids LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $generationIds The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByGenerationIds($generationIds = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($generationIds)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $generationIds)) {
+                $generationIds = str_replace('*', '%', $generationIds);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_GENERATION_IDS, $generationIds, $comparison);
+    }
+
+    /**
+     * Filter the query on the picture_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPictureId(1234); // WHERE picture_id = 1234
+     * $query->filterByPictureId(array(12, 34)); // WHERE picture_id IN (12, 34)
+     * $query->filterByPictureId(array('min' => 12)); // WHERE picture_id > 12
+     * </code>
+     *
+     * @param     mixed $pictureId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByPictureId($pictureId = null, $comparison = null)
+    {
+        if (is_array($pictureId)) {
+            $useMinMax = false;
+            if (isset($pictureId['min'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_PICTURE_ID, $pictureId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pictureId['max'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_PICTURE_ID, $pictureId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_PICTURE_ID, $pictureId, $comparison);
     }
 
     /**

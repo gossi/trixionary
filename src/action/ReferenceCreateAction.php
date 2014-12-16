@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Deletes a movement
+ * Creates a reference
  * 
  * @author gossi
  */
-class MovementDeleteAction extends AbstractAction {
+class ReferenceCreateAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

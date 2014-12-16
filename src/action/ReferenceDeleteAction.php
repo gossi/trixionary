@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Deletes a concept
+ * Deletes a reference
  * 
  * @author gossi
  */
-class ConceptDeleteAction extends AbstractAction {
+class ReferenceDeleteAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

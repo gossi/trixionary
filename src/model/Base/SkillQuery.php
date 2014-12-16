@@ -43,6 +43,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery orderByMultiplier($order = Criteria::ASC) Order by the multiplier column
  * @method     ChildSkillQuery orderByGeneration($order = Criteria::ASC) Order by the generation column
  * @method     ChildSkillQuery orderByImportance($order = Criteria::ASC) Order by the importance column
+ * @method     ChildSkillQuery orderByGenerationIds($order = Criteria::ASC) Order by the generation_ids column
+ * @method     ChildSkillQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
  * @method     ChildSkillQuery orderByVersion($order = Criteria::ASC) Order by the version column
  * @method     ChildSkillQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
  * @method     ChildSkillQuery orderByVersionComment($order = Criteria::ASC) Order by the version_comment column
@@ -70,6 +72,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery groupByMultiplier() Group by the multiplier column
  * @method     ChildSkillQuery groupByGeneration() Group by the generation column
  * @method     ChildSkillQuery groupByImportance() Group by the importance column
+ * @method     ChildSkillQuery groupByGenerationIds() Group by the generation_ids column
+ * @method     ChildSkillQuery groupByPictureId() Group by the picture_id column
  * @method     ChildSkillQuery groupByVersion() Group by the version column
  * @method     ChildSkillQuery groupByVersionCreatedAt() Group by the version_created_at column
  * @method     ChildSkillQuery groupByVersionComment() Group by the version_comment column
@@ -97,6 +101,10 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery leftJoinEndPosition($relationAlias = null) Adds a LEFT JOIN clause to the query using the EndPosition relation
  * @method     ChildSkillQuery rightJoinEndPosition($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EndPosition relation
  * @method     ChildSkillQuery innerJoinEndPosition($relationAlias = null) Adds a INNER JOIN clause to the query using the EndPosition relation
+ *
+ * @method     ChildSkillQuery leftJoinFeaturedPicture($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedPicture relation
+ * @method     ChildSkillQuery rightJoinFeaturedPicture($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedPicture relation
+ * @method     ChildSkillQuery innerJoinFeaturedPicture($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedPicture relation
  *
  * @method     ChildSkillQuery leftJoinVariation($relationAlias = null) Adds a LEFT JOIN clause to the query using the Variation relation
  * @method     ChildSkillQuery rightJoinVariation($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Variation relation
@@ -126,11 +134,23 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinSkillGroup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillGroup relation
  * @method     ChildSkillQuery innerJoinSkillGroup($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillGroup relation
  *
+ * @method     ChildSkillQuery leftJoinPicture($relationAlias = null) Adds a LEFT JOIN clause to the query using the Picture relation
+ * @method     ChildSkillQuery rightJoinPicture($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Picture relation
+ * @method     ChildSkillQuery innerJoinPicture($relationAlias = null) Adds a INNER JOIN clause to the query using the Picture relation
+ *
+ * @method     ChildSkillQuery leftJoinVideo($relationAlias = null) Adds a LEFT JOIN clause to the query using the Video relation
+ * @method     ChildSkillQuery rightJoinVideo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Video relation
+ * @method     ChildSkillQuery innerJoinVideo($relationAlias = null) Adds a INNER JOIN clause to the query using the Video relation
+ *
+ * @method     ChildSkillQuery leftJoinReference($relationAlias = null) Adds a LEFT JOIN clause to the query using the Reference relation
+ * @method     ChildSkillQuery rightJoinReference($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Reference relation
+ * @method     ChildSkillQuery innerJoinReference($relationAlias = null) Adds a INNER JOIN clause to the query using the Reference relation
+ *
  * @method     ChildSkillQuery leftJoinSkillVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillVersion relation
  * @method     ChildSkillQuery rightJoinSkillVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillVersion relation
  * @method     ChildSkillQuery innerJoinSkillVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillVersion relation
  *
- * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\ReferenceQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSkill findOne(ConnectionInterface $con = null) Return the first ChildSkill matching the query
  * @method     ChildSkill findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkill matching the query, or a new ChildSkill object populated from the query conditions when no match is found
@@ -158,6 +178,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill findOneByMultiplier(int $multiplier) Return the first ChildSkill filtered by the multiplier column
  * @method     ChildSkill findOneByGeneration(int $generation) Return the first ChildSkill filtered by the generation column
  * @method     ChildSkill findOneByImportance(int $importance) Return the first ChildSkill filtered by the importance column
+ * @method     ChildSkill findOneByGenerationIds(string $generation_ids) Return the first ChildSkill filtered by the generation_ids column
+ * @method     ChildSkill findOneByPictureId(int $picture_id) Return the first ChildSkill filtered by the picture_id column
  * @method     ChildSkill findOneByVersion(int $version) Return the first ChildSkill filtered by the version column
  * @method     ChildSkill findOneByVersionCreatedAt(string $version_created_at) Return the first ChildSkill filtered by the version_created_at column
  * @method     ChildSkill findOneByVersionComment(string $version_comment) Return the first ChildSkill filtered by the version_comment column
@@ -186,6 +208,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill[]|ObjectCollection findByMultiplier(int $multiplier) Return ChildSkill objects filtered by the multiplier column
  * @method     ChildSkill[]|ObjectCollection findByGeneration(int $generation) Return ChildSkill objects filtered by the generation column
  * @method     ChildSkill[]|ObjectCollection findByImportance(int $importance) Return ChildSkill objects filtered by the importance column
+ * @method     ChildSkill[]|ObjectCollection findByGenerationIds(string $generation_ids) Return ChildSkill objects filtered by the generation_ids column
+ * @method     ChildSkill[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkill objects filtered by the picture_id column
  * @method     ChildSkill[]|ObjectCollection findByVersion(int $version) Return ChildSkill objects filtered by the version column
  * @method     ChildSkill[]|ObjectCollection findByVersionCreatedAt(string $version_created_at) Return ChildSkill objects filtered by the version_created_at column
  * @method     ChildSkill[]|ObjectCollection findByVersionComment(string $version_comment) Return ChildSkill objects filtered by the version_comment column
@@ -287,7 +311,7 @@ abstract class SkillQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `generation_ids`, `picture_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1189,6 +1213,78 @@ abstract class SkillQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the generation_ids column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByGenerationIds('fooValue');   // WHERE generation_ids = 'fooValue'
+     * $query->filterByGenerationIds('%fooValue%'); // WHERE generation_ids LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $generationIds The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByGenerationIds($generationIds = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($generationIds)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $generationIds)) {
+                $generationIds = str_replace('*', '%', $generationIds);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SkillTableMap::COL_GENERATION_IDS, $generationIds, $comparison);
+    }
+
+    /**
+     * Filter the query on the picture_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPictureId(1234); // WHERE picture_id = 1234
+     * $query->filterByPictureId(array(12, 34)); // WHERE picture_id IN (12, 34)
+     * $query->filterByPictureId(array('min' => 12)); // WHERE picture_id > 12
+     * </code>
+     *
+     * @see       filterByFeaturedPicture()
+     *
+     * @param     mixed $pictureId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByPictureId($pictureId = null, $comparison = null)
+    {
+        if (is_array($pictureId)) {
+            $useMinMax = false;
+            if (isset($pictureId['min'])) {
+                $this->addUsingAlias(SkillTableMap::COL_PICTURE_ID, $pictureId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pictureId['max'])) {
+                $this->addUsingAlias(SkillTableMap::COL_PICTURE_ID, $pictureId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillTableMap::COL_PICTURE_ID, $pictureId, $comparison);
+    }
+
+    /**
      * Filter the query on the version column
      *
      * Example usage:
@@ -1684,6 +1780,83 @@ abstract class SkillQuery extends ModelCriteria
         return $this
             ->joinEndPosition($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EndPosition', '\gossi\trixionary\model\PositionQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Picture object
+     *
+     * @param \gossi\trixionary\model\Picture|ObjectCollection $picture The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByFeaturedPicture($picture, $comparison = null)
+    {
+        if ($picture instanceof \gossi\trixionary\model\Picture) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_PICTURE_ID, $picture->getId(), $comparison);
+        } elseif ($picture instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_PICTURE_ID, $picture->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByFeaturedPicture() only accepts arguments of type \gossi\trixionary\model\Picture or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FeaturedPicture relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinFeaturedPicture($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FeaturedPicture');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FeaturedPicture');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FeaturedPicture relation Picture object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\PictureQuery A secondary query class using the current class as primary query
+     */
+    public function useFeaturedPictureQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFeaturedPicture($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FeaturedPicture', '\gossi\trixionary\model\PictureQuery');
     }
 
     /**
@@ -2195,6 +2368,225 @@ abstract class SkillQuery extends ModelCriteria
         return $this
             ->joinSkillGroup($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'SkillGroup', '\gossi\trixionary\model\SkillGroupQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Picture object
+     *
+     * @param \gossi\trixionary\model\Picture|ObjectCollection $picture  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByPicture($picture, $comparison = null)
+    {
+        if ($picture instanceof \gossi\trixionary\model\Picture) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_ID, $picture->getSkillId(), $comparison);
+        } elseif ($picture instanceof ObjectCollection) {
+            return $this
+                ->usePictureQuery()
+                ->filterByPrimaryKeys($picture->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPicture() only accepts arguments of type \gossi\trixionary\model\Picture or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Picture relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinPicture($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Picture');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Picture');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Picture relation Picture object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\PictureQuery A secondary query class using the current class as primary query
+     */
+    public function usePictureQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPicture($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Picture', '\gossi\trixionary\model\PictureQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Video object
+     *
+     * @param \gossi\trixionary\model\Video|ObjectCollection $video  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByVideo($video, $comparison = null)
+    {
+        if ($video instanceof \gossi\trixionary\model\Video) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_ID, $video->getSkillId(), $comparison);
+        } elseif ($video instanceof ObjectCollection) {
+            return $this
+                ->useVideoQuery()
+                ->filterByPrimaryKeys($video->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVideo() only accepts arguments of type \gossi\trixionary\model\Video or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Video relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinVideo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Video');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Video');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Video relation Video object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\VideoQuery A secondary query class using the current class as primary query
+     */
+    public function useVideoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinVideo($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Video', '\gossi\trixionary\model\VideoQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Reference object
+     *
+     * @param \gossi\trixionary\model\Reference|ObjectCollection $reference  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByReference($reference, $comparison = null)
+    {
+        if ($reference instanceof \gossi\trixionary\model\Reference) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_ID, $reference->getSkillId(), $comparison);
+        } elseif ($reference instanceof ObjectCollection) {
+            return $this
+                ->useReferenceQuery()
+                ->filterByPrimaryKeys($reference->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByReference() only accepts arguments of type \gossi\trixionary\model\Reference or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Reference relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinReference($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Reference');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Reference');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Reference relation Reference object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\ReferenceQuery A secondary query class using the current class as primary query
+     */
+    public function useReferenceQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinReference($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Reference', '\gossi\trixionary\model\ReferenceQuery');
     }
 
     /**

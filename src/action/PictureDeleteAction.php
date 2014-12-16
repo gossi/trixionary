@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * List all movements
+ * Deletes a picture
  * 
  * @author gossi
  */
-class MovementListAction extends AbstractAction {
+class PictureDeleteAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

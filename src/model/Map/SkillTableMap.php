@@ -59,7 +59,7 @@ class SkillTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 26;
+    const NUM_COLUMNS = 28;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class SkillTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 26;
+    const NUM_HYDRATE_COLUMNS = 28;
 
     /**
      * the column name for the id field
@@ -187,6 +187,16 @@ class SkillTableMap extends TableMap
     const COL_IMPORTANCE = 'kk_trixionary_skill.importance';
 
     /**
+     * the column name for the generation_ids field
+     */
+    const COL_GENERATION_IDS = 'kk_trixionary_skill.generation_ids';
+
+    /**
+     * the column name for the picture_id field
+     */
+    const COL_PICTURE_ID = 'kk_trixionary_skill.picture_id';
+
+    /**
      * the column name for the version field
      */
     const COL_VERSION = 'kk_trixionary_skill.version';
@@ -213,11 +223,11 @@ class SkillTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'SportId', 'Name', 'AlternativeName', 'Slug', 'Description', 'History', 'IsTranslation', 'IsRotation', 'IsCyclic', 'LongitudinalFlags', 'LatitudinalFlags', 'TransversalFlags', 'MovementDescription', 'VariationOfId', 'StartPositionId', 'EndPositionId', 'IsComposite', 'IsMultiple', 'MultipleOfId', 'Multiplier', 'Generation', 'Importance', 'Version', 'VersionCreatedAt', 'VersionComment', ),
-        self::TYPE_CAMELNAME     => array('id', 'sportId', 'name', 'alternativeName', 'slug', 'description', 'history', 'isTranslation', 'isRotation', 'isCyclic', 'longitudinalFlags', 'latitudinalFlags', 'transversalFlags', 'movementDescription', 'variationOfId', 'startPositionId', 'endPositionId', 'isComposite', 'isMultiple', 'multipleOfId', 'multiplier', 'generation', 'importance', 'version', 'versionCreatedAt', 'versionComment', ),
-        self::TYPE_COLNAME       => array(SkillTableMap::COL_ID, SkillTableMap::COL_SPORT_ID, SkillTableMap::COL_NAME, SkillTableMap::COL_ALTERNATIVE_NAME, SkillTableMap::COL_SLUG, SkillTableMap::COL_DESCRIPTION, SkillTableMap::COL_HISTORY, SkillTableMap::COL_IS_TRANSLATION, SkillTableMap::COL_IS_ROTATION, SkillTableMap::COL_IS_CYCLIC, SkillTableMap::COL_LONGITUDINAL_FLAGS, SkillTableMap::COL_LATITUDINAL_FLAGS, SkillTableMap::COL_TRANSVERSAL_FLAGS, SkillTableMap::COL_MOVEMENT_DESCRIPTION, SkillTableMap::COL_VARIATION_OF_ID, SkillTableMap::COL_START_POSITION_ID, SkillTableMap::COL_END_POSITION_ID, SkillTableMap::COL_IS_COMPOSITE, SkillTableMap::COL_IS_MULTIPLE, SkillTableMap::COL_MULTIPLE_OF_ID, SkillTableMap::COL_MULTIPLIER, SkillTableMap::COL_GENERATION, SkillTableMap::COL_IMPORTANCE, SkillTableMap::COL_VERSION, SkillTableMap::COL_VERSION_CREATED_AT, SkillTableMap::COL_VERSION_COMMENT, ),
-        self::TYPE_FIELDNAME     => array('id', 'sport_id', 'name', 'alternative_name', 'slug', 'description', 'history', 'is_translation', 'is_rotation', 'is_cyclic', 'longitudinal_flags', 'latitudinal_flags', 'transversal_flags', 'movement_description', 'variation_of_id', 'start_position_id', 'end_position_id', 'is_composite', 'is_multiple', 'multiple_of_id', 'multiplier', 'generation', 'importance', 'version', 'version_created_at', 'version_comment', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        self::TYPE_PHPNAME       => array('Id', 'SportId', 'Name', 'AlternativeName', 'Slug', 'Description', 'History', 'IsTranslation', 'IsRotation', 'IsCyclic', 'LongitudinalFlags', 'LatitudinalFlags', 'TransversalFlags', 'MovementDescription', 'VariationOfId', 'StartPositionId', 'EndPositionId', 'IsComposite', 'IsMultiple', 'MultipleOfId', 'Multiplier', 'Generation', 'Importance', 'GenerationIds', 'PictureId', 'Version', 'VersionCreatedAt', 'VersionComment', ),
+        self::TYPE_CAMELNAME     => array('id', 'sportId', 'name', 'alternativeName', 'slug', 'description', 'history', 'isTranslation', 'isRotation', 'isCyclic', 'longitudinalFlags', 'latitudinalFlags', 'transversalFlags', 'movementDescription', 'variationOfId', 'startPositionId', 'endPositionId', 'isComposite', 'isMultiple', 'multipleOfId', 'multiplier', 'generation', 'importance', 'generationIds', 'pictureId', 'version', 'versionCreatedAt', 'versionComment', ),
+        self::TYPE_COLNAME       => array(SkillTableMap::COL_ID, SkillTableMap::COL_SPORT_ID, SkillTableMap::COL_NAME, SkillTableMap::COL_ALTERNATIVE_NAME, SkillTableMap::COL_SLUG, SkillTableMap::COL_DESCRIPTION, SkillTableMap::COL_HISTORY, SkillTableMap::COL_IS_TRANSLATION, SkillTableMap::COL_IS_ROTATION, SkillTableMap::COL_IS_CYCLIC, SkillTableMap::COL_LONGITUDINAL_FLAGS, SkillTableMap::COL_LATITUDINAL_FLAGS, SkillTableMap::COL_TRANSVERSAL_FLAGS, SkillTableMap::COL_MOVEMENT_DESCRIPTION, SkillTableMap::COL_VARIATION_OF_ID, SkillTableMap::COL_START_POSITION_ID, SkillTableMap::COL_END_POSITION_ID, SkillTableMap::COL_IS_COMPOSITE, SkillTableMap::COL_IS_MULTIPLE, SkillTableMap::COL_MULTIPLE_OF_ID, SkillTableMap::COL_MULTIPLIER, SkillTableMap::COL_GENERATION, SkillTableMap::COL_IMPORTANCE, SkillTableMap::COL_GENERATION_IDS, SkillTableMap::COL_PICTURE_ID, SkillTableMap::COL_VERSION, SkillTableMap::COL_VERSION_CREATED_AT, SkillTableMap::COL_VERSION_COMMENT, ),
+        self::TYPE_FIELDNAME     => array('id', 'sport_id', 'name', 'alternative_name', 'slug', 'description', 'history', 'is_translation', 'is_rotation', 'is_cyclic', 'longitudinal_flags', 'latitudinal_flags', 'transversal_flags', 'movement_description', 'variation_of_id', 'start_position_id', 'end_position_id', 'is_composite', 'is_multiple', 'multiple_of_id', 'multiplier', 'generation', 'importance', 'generation_ids', 'picture_id', 'version', 'version_created_at', 'version_comment', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, )
     );
 
     /**
@@ -227,11 +237,11 @@ class SkillTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'SportId' => 1, 'Name' => 2, 'AlternativeName' => 3, 'Slug' => 4, 'Description' => 5, 'History' => 6, 'IsTranslation' => 7, 'IsRotation' => 8, 'IsCyclic' => 9, 'LongitudinalFlags' => 10, 'LatitudinalFlags' => 11, 'TransversalFlags' => 12, 'MovementDescription' => 13, 'VariationOfId' => 14, 'StartPositionId' => 15, 'EndPositionId' => 16, 'IsComposite' => 17, 'IsMultiple' => 18, 'MultipleOfId' => 19, 'Multiplier' => 20, 'Generation' => 21, 'Importance' => 22, 'Version' => 23, 'VersionCreatedAt' => 24, 'VersionComment' => 25, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'sportId' => 1, 'name' => 2, 'alternativeName' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'isTranslation' => 7, 'isRotation' => 8, 'isCyclic' => 9, 'longitudinalFlags' => 10, 'latitudinalFlags' => 11, 'transversalFlags' => 12, 'movementDescription' => 13, 'variationOfId' => 14, 'startPositionId' => 15, 'endPositionId' => 16, 'isComposite' => 17, 'isMultiple' => 18, 'multipleOfId' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'version' => 23, 'versionCreatedAt' => 24, 'versionComment' => 25, ),
-        self::TYPE_COLNAME       => array(SkillTableMap::COL_ID => 0, SkillTableMap::COL_SPORT_ID => 1, SkillTableMap::COL_NAME => 2, SkillTableMap::COL_ALTERNATIVE_NAME => 3, SkillTableMap::COL_SLUG => 4, SkillTableMap::COL_DESCRIPTION => 5, SkillTableMap::COL_HISTORY => 6, SkillTableMap::COL_IS_TRANSLATION => 7, SkillTableMap::COL_IS_ROTATION => 8, SkillTableMap::COL_IS_CYCLIC => 9, SkillTableMap::COL_LONGITUDINAL_FLAGS => 10, SkillTableMap::COL_LATITUDINAL_FLAGS => 11, SkillTableMap::COL_TRANSVERSAL_FLAGS => 12, SkillTableMap::COL_MOVEMENT_DESCRIPTION => 13, SkillTableMap::COL_VARIATION_OF_ID => 14, SkillTableMap::COL_START_POSITION_ID => 15, SkillTableMap::COL_END_POSITION_ID => 16, SkillTableMap::COL_IS_COMPOSITE => 17, SkillTableMap::COL_IS_MULTIPLE => 18, SkillTableMap::COL_MULTIPLE_OF_ID => 19, SkillTableMap::COL_MULTIPLIER => 20, SkillTableMap::COL_GENERATION => 21, SkillTableMap::COL_IMPORTANCE => 22, SkillTableMap::COL_VERSION => 23, SkillTableMap::COL_VERSION_CREATED_AT => 24, SkillTableMap::COL_VERSION_COMMENT => 25, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'sport_id' => 1, 'name' => 2, 'alternative_name' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'is_translation' => 7, 'is_rotation' => 8, 'is_cyclic' => 9, 'longitudinal_flags' => 10, 'latitudinal_flags' => 11, 'transversal_flags' => 12, 'movement_description' => 13, 'variation_of_id' => 14, 'start_position_id' => 15, 'end_position_id' => 16, 'is_composite' => 17, 'is_multiple' => 18, 'multiple_of_id' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'version' => 23, 'version_created_at' => 24, 'version_comment' => 25, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'SportId' => 1, 'Name' => 2, 'AlternativeName' => 3, 'Slug' => 4, 'Description' => 5, 'History' => 6, 'IsTranslation' => 7, 'IsRotation' => 8, 'IsCyclic' => 9, 'LongitudinalFlags' => 10, 'LatitudinalFlags' => 11, 'TransversalFlags' => 12, 'MovementDescription' => 13, 'VariationOfId' => 14, 'StartPositionId' => 15, 'EndPositionId' => 16, 'IsComposite' => 17, 'IsMultiple' => 18, 'MultipleOfId' => 19, 'Multiplier' => 20, 'Generation' => 21, 'Importance' => 22, 'GenerationIds' => 23, 'PictureId' => 24, 'Version' => 25, 'VersionCreatedAt' => 26, 'VersionComment' => 27, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'sportId' => 1, 'name' => 2, 'alternativeName' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'isTranslation' => 7, 'isRotation' => 8, 'isCyclic' => 9, 'longitudinalFlags' => 10, 'latitudinalFlags' => 11, 'transversalFlags' => 12, 'movementDescription' => 13, 'variationOfId' => 14, 'startPositionId' => 15, 'endPositionId' => 16, 'isComposite' => 17, 'isMultiple' => 18, 'multipleOfId' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'generationIds' => 23, 'pictureId' => 24, 'version' => 25, 'versionCreatedAt' => 26, 'versionComment' => 27, ),
+        self::TYPE_COLNAME       => array(SkillTableMap::COL_ID => 0, SkillTableMap::COL_SPORT_ID => 1, SkillTableMap::COL_NAME => 2, SkillTableMap::COL_ALTERNATIVE_NAME => 3, SkillTableMap::COL_SLUG => 4, SkillTableMap::COL_DESCRIPTION => 5, SkillTableMap::COL_HISTORY => 6, SkillTableMap::COL_IS_TRANSLATION => 7, SkillTableMap::COL_IS_ROTATION => 8, SkillTableMap::COL_IS_CYCLIC => 9, SkillTableMap::COL_LONGITUDINAL_FLAGS => 10, SkillTableMap::COL_LATITUDINAL_FLAGS => 11, SkillTableMap::COL_TRANSVERSAL_FLAGS => 12, SkillTableMap::COL_MOVEMENT_DESCRIPTION => 13, SkillTableMap::COL_VARIATION_OF_ID => 14, SkillTableMap::COL_START_POSITION_ID => 15, SkillTableMap::COL_END_POSITION_ID => 16, SkillTableMap::COL_IS_COMPOSITE => 17, SkillTableMap::COL_IS_MULTIPLE => 18, SkillTableMap::COL_MULTIPLE_OF_ID => 19, SkillTableMap::COL_MULTIPLIER => 20, SkillTableMap::COL_GENERATION => 21, SkillTableMap::COL_IMPORTANCE => 22, SkillTableMap::COL_GENERATION_IDS => 23, SkillTableMap::COL_PICTURE_ID => 24, SkillTableMap::COL_VERSION => 25, SkillTableMap::COL_VERSION_CREATED_AT => 26, SkillTableMap::COL_VERSION_COMMENT => 27, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'sport_id' => 1, 'name' => 2, 'alternative_name' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'is_translation' => 7, 'is_rotation' => 8, 'is_cyclic' => 9, 'longitudinal_flags' => 10, 'latitudinal_flags' => 11, 'transversal_flags' => 12, 'movement_description' => 13, 'variation_of_id' => 14, 'start_position_id' => 15, 'end_position_id' => 16, 'is_composite' => 17, 'is_multiple' => 18, 'multiple_of_id' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'generation_ids' => 23, 'picture_id' => 24, 'version' => 25, 'version_created_at' => 26, 'version_comment' => 27, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, )
     );
 
     /**
@@ -274,6 +284,8 @@ class SkillTableMap extends TableMap
         $this->addColumn('multiplier', 'Multiplier', 'INTEGER', false, null, null);
         $this->addColumn('generation', 'Generation', 'INTEGER', false, null, null);
         $this->addColumn('importance', 'Importance', 'INTEGER', false, null, null);
+        $this->addColumn('generation_ids', 'GenerationIds', 'LONGVARCHAR', false, null, null);
+        $this->addForeignKey('picture_id', 'PictureId', 'INTEGER', 'kk_trixionary_picture', 'id', false, null, null);
         $this->addColumn('version', 'Version', 'INTEGER', false, null, 0);
         $this->addColumn('version_created_at', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('version_comment', 'VersionComment', 'VARCHAR', false, 255, null);
@@ -289,6 +301,7 @@ class SkillTableMap extends TableMap
         $this->addRelation('MultipleOf', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('multiple_of_id' => 'id', ), null, null);
         $this->addRelation('StartPosition', '\\gossi\\trixionary\\model\\Position', RelationMap::MANY_TO_ONE, array('start_position_id' => 'id', ), null, null);
         $this->addRelation('EndPosition', '\\gossi\\trixionary\\model\\Position', RelationMap::MANY_TO_ONE, array('end_position_id' => 'id', ), null, null);
+        $this->addRelation('FeaturedPicture', '\\gossi\\trixionary\\model\\Picture', RelationMap::MANY_TO_ONE, array('picture_id' => 'id', ), null, null);
         $this->addRelation('Variation', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'variation_of_id', ), null, null, 'Variations');
         $this->addRelation('Multiple', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'multiple_of_id', ), null, null, 'Multiples');
         $this->addRelation('SkillDependencyRelatedByDependsId', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array('id' => 'depends_id', ), 'RESTRICT', null, 'SkillDependenciesRelatedByDependsId');
@@ -296,6 +309,9 @@ class SkillTableMap extends TableMap
         $this->addRelation('SkillPartRelatedByPartId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'part_id', ), 'RESTRICT', null, 'SkillPartsRelatedByPartId');
         $this->addRelation('SkillPartRelatedByCompositeId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'composite_id', ), 'RESTRICT', null, 'SkillPartsRelatedByCompositeId');
         $this->addRelation('SkillGroup', '\\gossi\\trixionary\\model\\SkillGroup', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'RESTRICT', null, 'SkillGroups');
+        $this->addRelation('Picture', '\\gossi\\trixionary\\model\\Picture', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'Pictures');
+        $this->addRelation('Video', '\\gossi\\trixionary\\model\\Video', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'Videos');
+        $this->addRelation('Reference', '\\gossi\\trixionary\\model\\Reference', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'References');
         $this->addRelation('SkillVersion', '\\gossi\\trixionary\\model\\SkillVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'SkillVersions');
         $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedBySkillId');
         $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedByDependsId');
@@ -490,6 +506,8 @@ class SkillTableMap extends TableMap
             $criteria->addSelectColumn(SkillTableMap::COL_MULTIPLIER);
             $criteria->addSelectColumn(SkillTableMap::COL_GENERATION);
             $criteria->addSelectColumn(SkillTableMap::COL_IMPORTANCE);
+            $criteria->addSelectColumn(SkillTableMap::COL_GENERATION_IDS);
+            $criteria->addSelectColumn(SkillTableMap::COL_PICTURE_ID);
             $criteria->addSelectColumn(SkillTableMap::COL_VERSION);
             $criteria->addSelectColumn(SkillTableMap::COL_VERSION_CREATED_AT);
             $criteria->addSelectColumn(SkillTableMap::COL_VERSION_COMMENT);
@@ -517,6 +535,8 @@ class SkillTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.multiplier');
             $criteria->addSelectColumn($alias . '.generation');
             $criteria->addSelectColumn($alias . '.importance');
+            $criteria->addSelectColumn($alias . '.generation_ids');
+            $criteria->addSelectColumn($alias . '.picture_id');
             $criteria->addSelectColumn($alias . '.version');
             $criteria->addSelectColumn($alias . '.version_created_at');
             $criteria->addSelectColumn($alias . '.version_comment');

@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Creates a position
+ * List all pictures
  * 
  * @author gossi
  */
-class PositionCreateAction extends AbstractAction {
+class PictureListAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

@@ -84,6 +84,8 @@ CREATE TABLE `kk_trixionary_skill`
     `multiplier` INTEGER,
     `generation` INTEGER,
     `importance` INTEGER,
+    `generation_ids` TEXT,
+    `picture_id` INTEGER,
     `version` INTEGER DEFAULT 0,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),
@@ -93,6 +95,7 @@ CREATE TABLE `kk_trixionary_skill`
     INDEX `kk_trixionary_skill_fi_e1e91e` (`multiple_of_id`),
     INDEX `kk_trixionary_skill_fi_ed8398` (`start_position_id`),
     INDEX `kk_trixionary_skill_fi_964073` (`end_position_id`),
+    INDEX `kk_trixionary_skill_fi_86690d` (`picture_id`),
     CONSTRAINT `kk_trixionary_skill_fk_ff4efb`
         FOREIGN KEY (`sport_id`)
         REFERENCES `kk_trixionary_sport` (`id`)
@@ -108,7 +111,10 @@ CREATE TABLE `kk_trixionary_skill`
         REFERENCES `kk_trixionary_position` (`id`),
     CONSTRAINT `kk_trixionary_skill_fk_964073`
         FOREIGN KEY (`end_position_id`)
-        REFERENCES `kk_trixionary_position` (`id`)
+        REFERENCES `kk_trixionary_position` (`id`),
+    CONSTRAINT `kk_trixionary_skill_fk_86690d`
+        FOREIGN KEY (`picture_id`)
+        REFERENCES `kk_trixionary_picture` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -199,6 +205,93 @@ CREATE TABLE `kk_trixionary_skill_group`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- kk_trixionary_picture
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_picture`;
+
+CREATE TABLE `kk_trixionary_picture`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255),
+    `description` TEXT,
+    `skill_id` INTEGER NOT NULL,
+    `photographer` VARCHAR(255),
+    `photographer_id` INTEGER,
+    `movender` VARCHAR(255),
+    `movender_id` INTEGER,
+    `uploader_id` INTEGER,
+    PRIMARY KEY (`id`),
+    INDEX `kk_trixionary_picture_fi_3713ea` (`skill_id`),
+    CONSTRAINT `kk_trixionary_picture_fk_3713ea`
+        FOREIGN KEY (`skill_id`)
+        REFERENCES `kk_trixionary_skill` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- kk_trixionary_video
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_video`;
+
+CREATE TABLE `kk_trixionary_video`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255),
+    `description` TEXT,
+    `is_tutorial` TINYINT(1),
+    `movender` VARCHAR(255),
+    `movender_id` INTEGER,
+    `uploader_id` INTEGER,
+    `skill_id` INTEGER NOT NULL,
+    `reference_id` INTEGER,
+    PRIMARY KEY (`id`),
+    INDEX `kk_trixionary_video_fi_3713ea` (`skill_id`),
+    INDEX `kk_trixionary_video_fi_231192` (`reference_id`),
+    CONSTRAINT `kk_trixionary_video_fk_3713ea`
+        FOREIGN KEY (`skill_id`)
+        REFERENCES `kk_trixionary_skill` (`id`),
+    CONSTRAINT `kk_trixionary_video_fk_231192`
+        FOREIGN KEY (`reference_id`)
+        REFERENCES `kk_trixionary_reference` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- kk_trixionary_reference
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_reference`;
+
+CREATE TABLE `kk_trixionary_reference`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` VARCHAR(255),
+    `skill_id` INTEGER NOT NULL,
+    `title` VARCHAR(255),
+    `year` INTEGER,
+    `publisher` VARCHAR(255),
+    `journal` VARCHAR(255),
+    `number` VARCHAR(255),
+    `school` VARCHAR(255),
+    `author` VARCHAR(255),
+    `edition` VARCHAR(255),
+    `volume` VARCHAR(255),
+    `address` VARCHAR(255),
+    `editor` VARCHAR(255),
+    `howpublished` VARCHAR(255),
+    `note` VARCHAR(255),
+    `booktitle` VARCHAR(255),
+    `pages` VARCHAR(255),
+    `url` VARCHAR(255),
+    `lastchecked` DATE,
+    PRIMARY KEY (`id`),
+    INDEX `kk_trixionary_reference_fi_3713ea` (`skill_id`),
+    CONSTRAINT `kk_trixionary_reference_fk_3713ea`
+        FOREIGN KEY (`skill_id`)
+        REFERENCES `kk_trixionary_skill` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- kk_trixionary_kk_trixionary_skill_version
 -- ---------------------------------------------------------------------
 
@@ -229,6 +322,8 @@ CREATE TABLE `kk_trixionary_kk_trixionary_skill_version`
     `multiplier` INTEGER,
     `generation` INTEGER,
     `importance` INTEGER,
+    `generation_ids` TEXT,
+    `picture_id` INTEGER,
     `version` INTEGER DEFAULT 0 NOT NULL,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),

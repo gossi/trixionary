@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Deletes a position
+ * Updates a reference
  * 
  * @author gossi
  */
-class PositionDeleteAction extends AbstractAction {
+class ReferenceUpdateAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

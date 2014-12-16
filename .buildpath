@@ -6,6 +6,8 @@
 	<buildpathentry kind="src" path="vendor/justinrainbow/json-schema/src"/>
 	<buildpathentry kind="src" path="vendor/symfony/options-resolver"/>
 	<buildpathentry kind="src" path="vendor/symfony/process"/>
+	<buildpathentry kind="src" path="core/database"/>
+	<buildpathentry kind="src" path="core/vendor"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
 	<buildpathentry kind="src" path="vendor/kriswallsmith/assetic/src"/>
 	<buildpathentry kind="src" path="vendor/symfony/finder"/>
@@ -28,4 +30,5 @@
 	<buildpathentry kind="src" path="vendor/psr/log"/>
 	<buildpathentry kind="src" path="core/src"/>
 	<buildpathentry kind="src" path="vendor/twig/twig/lib"/>
+	<buildpathentry kind="src" path="vendor/cocur/slugify/src"/>
 </buildpath>

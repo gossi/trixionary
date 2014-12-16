@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Updates a position
+ * List all references
  * 
  * @author gossi
  */
-class PositionUpdateAction extends AbstractAction {
+class ReferenceListAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method

@@ -20,8 +20,12 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 use gossi\trixionary\model\Group as ChildGroup;
 use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
+use gossi\trixionary\model\Picture as ChildPicture;
+use gossi\trixionary\model\PictureQuery as ChildPictureQuery;
 use gossi\trixionary\model\Position as ChildPosition;
 use gossi\trixionary\model\PositionQuery as ChildPositionQuery;
+use gossi\trixionary\model\Reference as ChildReference;
+use gossi\trixionary\model\ReferenceQuery as ChildReferenceQuery;
 use gossi\trixionary\model\Skill as ChildSkill;
 use gossi\trixionary\model\SkillDependency as ChildSkillDependency;
 use gossi\trixionary\model\SkillDependencyQuery as ChildSkillDependencyQuery;
@@ -34,6 +38,8 @@ use gossi\trixionary\model\SkillVersion as ChildSkillVersion;
 use gossi\trixionary\model\SkillVersionQuery as ChildSkillVersionQuery;
 use gossi\trixionary\model\Sport as ChildSport;
 use gossi\trixionary\model\SportQuery as ChildSportQuery;
+use gossi\trixionary\model\Video as ChildVideo;
+use gossi\trixionary\model\VideoQuery as ChildVideoQuery;
 use gossi\trixionary\model\Map\SkillTableMap;
 use gossi\trixionary\model\Map\SkillVersionTableMap;
 
@@ -217,6 +223,18 @@ abstract class Skill implements ActiveRecordInterface
     protected $importance;
 
     /**
+     * The value for the generation_ids field.
+     * @var        string
+     */
+    protected $generation_ids;
+
+    /**
+     * The value for the picture_id field.
+     * @var        int
+     */
+    protected $picture_id;
+
+    /**
      * The value for the version field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -261,6 +279,11 @@ abstract class Skill implements ActiveRecordInterface
     protected $aEndPosition;
 
     /**
+     * @var        ChildPicture
+     */
+    protected $aFeaturedPicture;
+
+    /**
      * @var        ObjectCollection|ChildSkill[] Collection to store aggregation of ChildSkill objects.
      */
     protected $collVariations;
@@ -301,6 +324,24 @@ abstract class Skill implements ActiveRecordInterface
      */
     protected $collSkillGroups;
     protected $collSkillGroupsPartial;
+
+    /**
+     * @var        ObjectCollection|ChildPicture[] Collection to store aggregation of ChildPicture objects.
+     */
+    protected $collPictures;
+    protected $collPicturesPartial;
+
+    /**
+     * @var        ObjectCollection|ChildVideo[] Collection to store aggregation of ChildVideo objects.
+     */
+    protected $collVideos;
+    protected $collVideosPartial;
+
+    /**
+     * @var        ObjectCollection|ChildReference[] Collection to store aggregation of ChildReference objects.
+     */
+    protected $collReferences;
+    protected $collReferencesPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillVersion[] Collection to store aggregation of ChildSkillVersion objects.
@@ -445,6 +486,24 @@ abstract class Skill implements ActiveRecordInterface
      * @var ObjectCollection|ChildSkillGroup[]
      */
     protected $skillGroupsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildPicture[]
+     */
+    protected $picturesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildVideo[]
+     */
+    protected $videosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildReference[]
+     */
+    protected $referencesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -960,6 +1019,26 @@ abstract class Skill implements ActiveRecordInterface
     public function getImportance()
     {
         return $this->importance;
+    }
+
+    /**
+     * Get the [generation_ids] column value.
+     *
+     * @return string
+     */
+    public function getGenerationIds()
+    {
+        return $this->generation_ids;
+    }
+
+    /**
+     * Get the [picture_id] column value.
+     *
+     * @return int
+     */
+    public function getPictureId()
+    {
+        return $this->picture_id;
     }
 
     /**
@@ -1523,6 +1602,50 @@ abstract class Skill implements ActiveRecordInterface
     } // setImportance()
 
     /**
+     * Set the value of [generation_ids] column.
+     *
+     * @param  string $v new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setGenerationIds($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->generation_ids !== $v) {
+            $this->generation_ids = $v;
+            $this->modifiedColumns[SkillTableMap::COL_GENERATION_IDS] = true;
+        }
+
+        return $this;
+    } // setGenerationIds()
+
+    /**
+     * Set the value of [picture_id] column.
+     *
+     * @param  int $v new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setPictureId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->picture_id !== $v) {
+            $this->picture_id = $v;
+            $this->modifiedColumns[SkillTableMap::COL_PICTURE_ID] = true;
+        }
+
+        if ($this->aFeaturedPicture !== null && $this->aFeaturedPicture->getId() !== $v) {
+            $this->aFeaturedPicture = null;
+        }
+
+        return $this;
+    } // setPictureId()
+
+    /**
      * Set the value of [version] column.
      *
      * @param  int $v new value
@@ -1691,16 +1814,22 @@ abstract class Skill implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : SkillTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
             $this->importance = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->generation_ids = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->picture_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -1710,7 +1839,7 @@ abstract class Skill implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 26; // 26 = SkillTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 28; // 28 = SkillTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Skill'), 0, $e);
@@ -1746,6 +1875,9 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->aMultipleOf !== null && $this->multiple_of_id !== $this->aMultipleOf->getId()) {
             $this->aMultipleOf = null;
+        }
+        if ($this->aFeaturedPicture !== null && $this->picture_id !== $this->aFeaturedPicture->getId()) {
+            $this->aFeaturedPicture = null;
         }
     } // ensureConsistency
 
@@ -1791,6 +1923,7 @@ abstract class Skill implements ActiveRecordInterface
             $this->aMultipleOf = null;
             $this->aStartPosition = null;
             $this->aEndPosition = null;
+            $this->aFeaturedPicture = null;
             $this->collVariations = null;
 
             $this->collMultiples = null;
@@ -1804,6 +1937,12 @@ abstract class Skill implements ActiveRecordInterface
             $this->collSkillPartsRelatedByCompositeId = null;
 
             $this->collSkillGroups = null;
+
+            $this->collPictures = null;
+
+            $this->collVideos = null;
+
+            $this->collReferences = null;
 
             $this->collSkillVersions = null;
 
@@ -1963,14 +2102,21 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setEndPosition($this->aEndPosition);
             }
 
+            if ($this->aFeaturedPicture !== null) {
+                if ($this->aFeaturedPicture->isModified() || $this->aFeaturedPicture->isNew()) {
+                    $affectedRows += $this->aFeaturedPicture->save($con);
+                }
+                $this->setFeaturedPicture($this->aFeaturedPicture);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
                     $this->doInsert($con);
+                    $affectedRows += 1;
                 } else {
-                    $this->doUpdate($con);
+                    $affectedRows += $this->doUpdate($con);
                 }
-                $affectedRows += 1;
                 $this->resetModified();
             }
 
@@ -2240,6 +2386,57 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
+            if ($this->picturesScheduledForDeletion !== null) {
+                if (!$this->picturesScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\PictureQuery::create()
+                        ->filterByPrimaryKeys($this->picturesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->picturesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPictures !== null) {
+                foreach ($this->collPictures as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->videosScheduledForDeletion !== null) {
+                if (!$this->videosScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\VideoQuery::create()
+                        ->filterByPrimaryKeys($this->videosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->videosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVideos !== null) {
+                foreach ($this->collVideos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->referencesScheduledForDeletion !== null) {
+                if (!$this->referencesScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\ReferenceQuery::create()
+                        ->filterByPrimaryKeys($this->referencesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->referencesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collReferences !== null) {
+                foreach ($this->collReferences as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->skillVersionsScheduledForDeletion !== null) {
                 if (!$this->skillVersionsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillVersionQuery::create()
@@ -2352,6 +2549,12 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_IMPORTANCE)) {
             $modifiedColumns[':p' . $index++]  = '`importance`';
         }
+        if ($this->isColumnModified(SkillTableMap::COL_GENERATION_IDS)) {
+            $modifiedColumns[':p' . $index++]  = '`generation_ids`';
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`picture_id`';
+        }
         if ($this->isColumnModified(SkillTableMap::COL_VERSION)) {
             $modifiedColumns[':p' . $index++]  = '`version`';
         }
@@ -2440,6 +2643,12 @@ abstract class Skill implements ActiveRecordInterface
                         break;
                     case '`importance`':
                         $stmt->bindValue($identifier, $this->importance, PDO::PARAM_INT);
+                        break;
+                    case '`generation_ids`':
+                        $stmt->bindValue($identifier, $this->generation_ids, PDO::PARAM_STR);
+                        break;
+                    case '`picture_id`':
+                        $stmt->bindValue($identifier, $this->picture_id, PDO::PARAM_INT);
                         break;
                     case '`version`':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
@@ -2582,12 +2791,18 @@ abstract class Skill implements ActiveRecordInterface
                 return $this->getImportance();
                 break;
             case 23:
-                return $this->getVersion();
+                return $this->getGenerationIds();
                 break;
             case 24:
-                return $this->getVersionCreatedAt();
+                return $this->getPictureId();
                 break;
             case 25:
+                return $this->getVersion();
+                break;
+            case 26:
+                return $this->getVersionCreatedAt();
+                break;
+            case 27:
                 return $this->getVersionComment();
                 break;
             default:
@@ -2643,9 +2858,11 @@ abstract class Skill implements ActiveRecordInterface
             $keys[20] => $this->getMultiplier(),
             $keys[21] => $this->getGeneration(),
             $keys[22] => $this->getImportance(),
-            $keys[23] => $this->getVersion(),
-            $keys[24] => $this->getVersionCreatedAt(),
-            $keys[25] => $this->getVersionComment(),
+            $keys[23] => $this->getGenerationIds(),
+            $keys[24] => $this->getPictureId(),
+            $keys[25] => $this->getVersion(),
+            $keys[26] => $this->getVersionCreatedAt(),
+            $keys[27] => $this->getVersionComment(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2727,6 +2944,21 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aEndPosition->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aFeaturedPicture) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'picture';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_picture';
+                        break;
+                    default:
+                        $key = 'Picture';
+                }
+
+                $result[$key] = $this->aFeaturedPicture->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collVariations) {
 
@@ -2832,6 +3064,51 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collSkillGroups->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPictures) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'pictures';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_pictures';
+                        break;
+                    default:
+                        $key = 'Pictures';
+                }
+
+                $result[$key] = $this->collPictures->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVideos) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'videos';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_videos';
+                        break;
+                    default:
+                        $key = 'Videos';
+                }
+
+                $result[$key] = $this->collVideos->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collReferences) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'references';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_references';
+                        break;
+                    default:
+                        $key = 'References';
+                }
+
+                $result[$key] = $this->collReferences->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collSkillVersions) {
 
@@ -2952,12 +3229,18 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setImportance($value);
                 break;
             case 23:
-                $this->setVersion($value);
+                $this->setGenerationIds($value);
                 break;
             case 24:
-                $this->setVersionCreatedAt($value);
+                $this->setPictureId($value);
                 break;
             case 25:
+                $this->setVersion($value);
+                break;
+            case 26:
+                $this->setVersionCreatedAt($value);
+                break;
+            case 27:
                 $this->setVersionComment($value);
                 break;
         } // switch()
@@ -3056,13 +3339,19 @@ abstract class Skill implements ActiveRecordInterface
             $this->setImportance($arr[$keys[22]]);
         }
         if (array_key_exists($keys[23], $arr)) {
-            $this->setVersion($arr[$keys[23]]);
+            $this->setGenerationIds($arr[$keys[23]]);
         }
         if (array_key_exists($keys[24], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[24]]);
+            $this->setPictureId($arr[$keys[24]]);
         }
         if (array_key_exists($keys[25], $arr)) {
-            $this->setVersionComment($arr[$keys[25]]);
+            $this->setVersion($arr[$keys[25]]);
+        }
+        if (array_key_exists($keys[26], $arr)) {
+            $this->setVersionCreatedAt($arr[$keys[26]]);
+        }
+        if (array_key_exists($keys[27], $arr)) {
+            $this->setVersionComment($arr[$keys[27]]);
         }
     }
 
@@ -3173,6 +3462,12 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillTableMap::COL_IMPORTANCE)) {
             $criteria->add(SkillTableMap::COL_IMPORTANCE, $this->importance);
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_GENERATION_IDS)) {
+            $criteria->add(SkillTableMap::COL_GENERATION_IDS, $this->generation_ids);
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
+            $criteria->add(SkillTableMap::COL_PICTURE_ID, $this->picture_id);
         }
         if ($this->isColumnModified(SkillTableMap::COL_VERSION)) {
             $criteria->add(SkillTableMap::COL_VERSION, $this->version);
@@ -3291,6 +3586,8 @@ abstract class Skill implements ActiveRecordInterface
         $copyObj->setMultiplier($this->getMultiplier());
         $copyObj->setGeneration($this->getGeneration());
         $copyObj->setImportance($this->getImportance());
+        $copyObj->setGenerationIds($this->getGenerationIds());
+        $copyObj->setPictureId($this->getPictureId());
         $copyObj->setVersion($this->getVersion());
         $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
         $copyObj->setVersionComment($this->getVersionComment());
@@ -3339,6 +3636,24 @@ abstract class Skill implements ActiveRecordInterface
             foreach ($this->getSkillGroups() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSkillGroup($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPictures() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPicture($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVideos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVideo($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getReferences() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addReference($relObj->copy($deepCopy));
                 }
             }
 
@@ -3633,6 +3948,57 @@ abstract class Skill implements ActiveRecordInterface
         return $this->aEndPosition;
     }
 
+    /**
+     * Declares an association between this object and a ChildPicture object.
+     *
+     * @param  ChildPicture $v
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setFeaturedPicture(ChildPicture $v = null)
+    {
+        if ($v === null) {
+            $this->setPictureId(NULL);
+        } else {
+            $this->setPictureId($v->getId());
+        }
+
+        $this->aFeaturedPicture = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildPicture object, it will not be re-added.
+        if ($v !== null) {
+            $v->addFeaturedSkill($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildPicture object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildPicture The associated ChildPicture object.
+     * @throws PropelException
+     */
+    public function getFeaturedPicture(ConnectionInterface $con = null)
+    {
+        if ($this->aFeaturedPicture === null && ($this->picture_id !== null)) {
+            $this->aFeaturedPicture = ChildPictureQuery::create()->findPk($this->picture_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aFeaturedPicture->addFeaturedSkills($this);
+             */
+        }
+
+        return $this->aFeaturedPicture;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -3664,6 +4030,15 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ('SkillGroup' == $relationName) {
             return $this->initSkillGroups();
+        }
+        if ('Picture' == $relationName) {
+            return $this->initPictures();
+        }
+        if ('Video' == $relationName) {
+            return $this->initVideos();
+        }
+        if ('Reference' == $relationName) {
+            return $this->initReferences();
         }
         if ('SkillVersion' == $relationName) {
             return $this->initSkillVersions();
@@ -3963,6 +4338,31 @@ abstract class Skill implements ActiveRecordInterface
         return $this->getVariations($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Variations from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getVariationsJoinFeaturedPicture(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedPicture', $joinBehavior);
+
+        return $this->getVariations($query, $con);
+    }
+
     /**
      * Clears out the collMultiples collection
      *
@@ -4252,6 +4652,31 @@ abstract class Skill implements ActiveRecordInterface
     {
         $query = ChildSkillQuery::create(null, $criteria);
         $query->joinWith('EndPosition', $joinBehavior);
+
+        return $this->getMultiples($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Multiples from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getMultiplesJoinFeaturedPicture(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedPicture', $joinBehavior);
 
         return $this->getMultiples($query, $con);
     }
@@ -5384,6 +5809,685 @@ abstract class Skill implements ActiveRecordInterface
         $query->joinWith('Group', $joinBehavior);
 
         return $this->getSkillGroups($query, $con);
+    }
+
+    /**
+     * Clears out the collPictures collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addPictures()
+     */
+    public function clearPictures()
+    {
+        $this->collPictures = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collPictures collection loaded partially.
+     */
+    public function resetPartialPictures($v = true)
+    {
+        $this->collPicturesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPictures collection.
+     *
+     * By default this just sets the collPictures collection to an empty array (like clearcollPictures());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPictures($overrideExisting = true)
+    {
+        if (null !== $this->collPictures && !$overrideExisting) {
+            return;
+        }
+        $this->collPictures = new ObjectCollection();
+        $this->collPictures->setModel('\gossi\trixionary\model\Picture');
+    }
+
+    /**
+     * Gets an array of ChildPicture objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildPicture[] List of ChildPicture objects
+     * @throws PropelException
+     */
+    public function getPictures(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturesPartial && !$this->isNew();
+        if (null === $this->collPictures || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPictures) {
+                // return empty collection
+                $this->initPictures();
+            } else {
+                $collPictures = ChildPictureQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collPicturesPartial && count($collPictures)) {
+                        $this->initPictures(false);
+
+                        foreach ($collPictures as $obj) {
+                            if (false == $this->collPictures->contains($obj)) {
+                                $this->collPictures->append($obj);
+                            }
+                        }
+
+                        $this->collPicturesPartial = true;
+                    }
+
+                    return $collPictures;
+                }
+
+                if ($partial && $this->collPictures) {
+                    foreach ($this->collPictures as $obj) {
+                        if ($obj->isNew()) {
+                            $collPictures[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPictures = $collPictures;
+                $this->collPicturesPartial = false;
+            }
+        }
+
+        return $this->collPictures;
+    }
+
+    /**
+     * Sets a collection of ChildPicture objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $pictures A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setPictures(Collection $pictures, ConnectionInterface $con = null)
+    {
+        /** @var ChildPicture[] $picturesToDelete */
+        $picturesToDelete = $this->getPictures(new Criteria(), $con)->diff($pictures);
+
+
+        $this->picturesScheduledForDeletion = $picturesToDelete;
+
+        foreach ($picturesToDelete as $pictureRemoved) {
+            $pictureRemoved->setSkill(null);
+        }
+
+        $this->collPictures = null;
+        foreach ($pictures as $picture) {
+            $this->addPicture($picture);
+        }
+
+        $this->collPictures = $pictures;
+        $this->collPicturesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Picture objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Picture objects.
+     * @throws PropelException
+     */
+    public function countPictures(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturesPartial && !$this->isNew();
+        if (null === $this->collPictures || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPictures) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPictures());
+            }
+
+            $query = ChildPictureQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collPictures);
+    }
+
+    /**
+     * Method called to associate a ChildPicture object to this object
+     * through the ChildPicture foreign key attribute.
+     *
+     * @param  ChildPicture $l ChildPicture
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addPicture(ChildPicture $l)
+    {
+        if ($this->collPictures === null) {
+            $this->initPictures();
+            $this->collPicturesPartial = true;
+        }
+
+        if (!$this->collPictures->contains($l)) {
+            $this->doAddPicture($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildPicture $picture The ChildPicture object to add.
+     */
+    protected function doAddPicture(ChildPicture $picture)
+    {
+        $this->collPictures[]= $picture;
+        $picture->setSkill($this);
+    }
+
+    /**
+     * @param  ChildPicture $picture The ChildPicture object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removePicture(ChildPicture $picture)
+    {
+        if ($this->getPictures()->contains($picture)) {
+            $pos = $this->collPictures->search($picture);
+            $this->collPictures->remove($pos);
+            if (null === $this->picturesScheduledForDeletion) {
+                $this->picturesScheduledForDeletion = clone $this->collPictures;
+                $this->picturesScheduledForDeletion->clear();
+            }
+            $this->picturesScheduledForDeletion[]= clone $picture;
+            $picture->setSkill(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collVideos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addVideos()
+     */
+    public function clearVideos()
+    {
+        $this->collVideos = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collVideos collection loaded partially.
+     */
+    public function resetPartialVideos($v = true)
+    {
+        $this->collVideosPartial = $v;
+    }
+
+    /**
+     * Initializes the collVideos collection.
+     *
+     * By default this just sets the collVideos collection to an empty array (like clearcollVideos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVideos($overrideExisting = true)
+    {
+        if (null !== $this->collVideos && !$overrideExisting) {
+            return;
+        }
+        $this->collVideos = new ObjectCollection();
+        $this->collVideos->setModel('\gossi\trixionary\model\Video');
+    }
+
+    /**
+     * Gets an array of ChildVideo objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildVideo[] List of ChildVideo objects
+     * @throws PropelException
+     */
+    public function getVideos(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collVideosPartial && !$this->isNew();
+        if (null === $this->collVideos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVideos) {
+                // return empty collection
+                $this->initVideos();
+            } else {
+                $collVideos = ChildVideoQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collVideosPartial && count($collVideos)) {
+                        $this->initVideos(false);
+
+                        foreach ($collVideos as $obj) {
+                            if (false == $this->collVideos->contains($obj)) {
+                                $this->collVideos->append($obj);
+                            }
+                        }
+
+                        $this->collVideosPartial = true;
+                    }
+
+                    return $collVideos;
+                }
+
+                if ($partial && $this->collVideos) {
+                    foreach ($this->collVideos as $obj) {
+                        if ($obj->isNew()) {
+                            $collVideos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVideos = $collVideos;
+                $this->collVideosPartial = false;
+            }
+        }
+
+        return $this->collVideos;
+    }
+
+    /**
+     * Sets a collection of ChildVideo objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $videos A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setVideos(Collection $videos, ConnectionInterface $con = null)
+    {
+        /** @var ChildVideo[] $videosToDelete */
+        $videosToDelete = $this->getVideos(new Criteria(), $con)->diff($videos);
+
+
+        $this->videosScheduledForDeletion = $videosToDelete;
+
+        foreach ($videosToDelete as $videoRemoved) {
+            $videoRemoved->setSkill(null);
+        }
+
+        $this->collVideos = null;
+        foreach ($videos as $video) {
+            $this->addVideo($video);
+        }
+
+        $this->collVideos = $videos;
+        $this->collVideosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Video objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Video objects.
+     * @throws PropelException
+     */
+    public function countVideos(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collVideosPartial && !$this->isNew();
+        if (null === $this->collVideos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVideos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVideos());
+            }
+
+            $query = ChildVideoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collVideos);
+    }
+
+    /**
+     * Method called to associate a ChildVideo object to this object
+     * through the ChildVideo foreign key attribute.
+     *
+     * @param  ChildVideo $l ChildVideo
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addVideo(ChildVideo $l)
+    {
+        if ($this->collVideos === null) {
+            $this->initVideos();
+            $this->collVideosPartial = true;
+        }
+
+        if (!$this->collVideos->contains($l)) {
+            $this->doAddVideo($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildVideo $video The ChildVideo object to add.
+     */
+    protected function doAddVideo(ChildVideo $video)
+    {
+        $this->collVideos[]= $video;
+        $video->setSkill($this);
+    }
+
+    /**
+     * @param  ChildVideo $video The ChildVideo object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeVideo(ChildVideo $video)
+    {
+        if ($this->getVideos()->contains($video)) {
+            $pos = $this->collVideos->search($video);
+            $this->collVideos->remove($pos);
+            if (null === $this->videosScheduledForDeletion) {
+                $this->videosScheduledForDeletion = clone $this->collVideos;
+                $this->videosScheduledForDeletion->clear();
+            }
+            $this->videosScheduledForDeletion[]= clone $video;
+            $video->setSkill(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Videos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildVideo[] List of ChildVideo objects
+     */
+    public function getVideosJoinReference(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildVideoQuery::create(null, $criteria);
+        $query->joinWith('Reference', $joinBehavior);
+
+        return $this->getVideos($query, $con);
+    }
+
+    /**
+     * Clears out the collReferences collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addReferences()
+     */
+    public function clearReferences()
+    {
+        $this->collReferences = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collReferences collection loaded partially.
+     */
+    public function resetPartialReferences($v = true)
+    {
+        $this->collReferencesPartial = $v;
+    }
+
+    /**
+     * Initializes the collReferences collection.
+     *
+     * By default this just sets the collReferences collection to an empty array (like clearcollReferences());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initReferences($overrideExisting = true)
+    {
+        if (null !== $this->collReferences && !$overrideExisting) {
+            return;
+        }
+        $this->collReferences = new ObjectCollection();
+        $this->collReferences->setModel('\gossi\trixionary\model\Reference');
+    }
+
+    /**
+     * Gets an array of ChildReference objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildReference[] List of ChildReference objects
+     * @throws PropelException
+     */
+    public function getReferences(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collReferencesPartial && !$this->isNew();
+        if (null === $this->collReferences || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collReferences) {
+                // return empty collection
+                $this->initReferences();
+            } else {
+                $collReferences = ChildReferenceQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collReferencesPartial && count($collReferences)) {
+                        $this->initReferences(false);
+
+                        foreach ($collReferences as $obj) {
+                            if (false == $this->collReferences->contains($obj)) {
+                                $this->collReferences->append($obj);
+                            }
+                        }
+
+                        $this->collReferencesPartial = true;
+                    }
+
+                    return $collReferences;
+                }
+
+                if ($partial && $this->collReferences) {
+                    foreach ($this->collReferences as $obj) {
+                        if ($obj->isNew()) {
+                            $collReferences[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collReferences = $collReferences;
+                $this->collReferencesPartial = false;
+            }
+        }
+
+        return $this->collReferences;
+    }
+
+    /**
+     * Sets a collection of ChildReference objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $references A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setReferences(Collection $references, ConnectionInterface $con = null)
+    {
+        /** @var ChildReference[] $referencesToDelete */
+        $referencesToDelete = $this->getReferences(new Criteria(), $con)->diff($references);
+
+
+        $this->referencesScheduledForDeletion = $referencesToDelete;
+
+        foreach ($referencesToDelete as $referenceRemoved) {
+            $referenceRemoved->setSkill(null);
+        }
+
+        $this->collReferences = null;
+        foreach ($references as $reference) {
+            $this->addReference($reference);
+        }
+
+        $this->collReferences = $references;
+        $this->collReferencesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Reference objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Reference objects.
+     * @throws PropelException
+     */
+    public function countReferences(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collReferencesPartial && !$this->isNew();
+        if (null === $this->collReferences || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collReferences) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getReferences());
+            }
+
+            $query = ChildReferenceQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collReferences);
+    }
+
+    /**
+     * Method called to associate a ChildReference object to this object
+     * through the ChildReference foreign key attribute.
+     *
+     * @param  ChildReference $l ChildReference
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addReference(ChildReference $l)
+    {
+        if ($this->collReferences === null) {
+            $this->initReferences();
+            $this->collReferencesPartial = true;
+        }
+
+        if (!$this->collReferences->contains($l)) {
+            $this->doAddReference($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildReference $reference The ChildReference object to add.
+     */
+    protected function doAddReference(ChildReference $reference)
+    {
+        $this->collReferences[]= $reference;
+        $reference->setSkill($this);
+    }
+
+    /**
+     * @param  ChildReference $reference The ChildReference object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeReference(ChildReference $reference)
+    {
+        if ($this->getReferences()->contains($reference)) {
+            $pos = $this->collReferences->search($reference);
+            $this->collReferences->remove($pos);
+            if (null === $this->referencesScheduledForDeletion) {
+                $this->referencesScheduledForDeletion = clone $this->collReferences;
+                $this->referencesScheduledForDeletion->clear();
+            }
+            $this->referencesScheduledForDeletion[]= clone $reference;
+            $reference->setSkill(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -6839,6 +7943,9 @@ abstract class Skill implements ActiveRecordInterface
         if (null !== $this->aEndPosition) {
             $this->aEndPosition->removeSkillRelatedByEndPositionId($this);
         }
+        if (null !== $this->aFeaturedPicture) {
+            $this->aFeaturedPicture->removeFeaturedSkill($this);
+        }
         $this->id = null;
         $this->sport_id = null;
         $this->name = null;
@@ -6862,6 +7969,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->multiplier = null;
         $this->generation = null;
         $this->importance = null;
+        $this->generation_ids = null;
+        $this->picture_id = null;
         $this->version = null;
         $this->version_created_at = null;
         $this->version_comment = null;
@@ -6919,6 +8028,21 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPictures) {
+                foreach ($this->collPictures as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collVideos) {
+                foreach ($this->collVideos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collReferences) {
+                foreach ($this->collReferences as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSkillVersions) {
                 foreach ($this->collSkillVersions as $o) {
                     $o->clearAllReferences($deep);
@@ -6958,6 +8082,9 @@ abstract class Skill implements ActiveRecordInterface
         $this->collSkillPartsRelatedByPartId = null;
         $this->collSkillPartsRelatedByCompositeId = null;
         $this->collSkillGroups = null;
+        $this->collPictures = null;
+        $this->collVideos = null;
+        $this->collReferences = null;
         $this->collSkillVersions = null;
         $this->collSkillsRelatedBySkillId = null;
         $this->collSkillsRelatedByDependsId = null;
@@ -6969,6 +8096,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->aMultipleOf = null;
         $this->aStartPosition = null;
         $this->aEndPosition = null;
+        $this->aFeaturedPicture = null;
     }
 
     /**
@@ -7082,6 +8210,8 @@ abstract class Skill implements ActiveRecordInterface
         $version->setMultiplier($this->getMultiplier());
         $version->setGeneration($this->getGeneration());
         $version->setImportance($this->getImportance());
+        $version->setGenerationIds($this->getGenerationIds());
+        $version->setPictureId($this->getPictureId());
         $version->setVersion($this->getVersion());
         $version->setVersionCreatedAt($this->getVersionCreatedAt());
         $version->setVersionComment($this->getVersionComment());
@@ -7159,6 +8289,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->setMultiplier($version->getMultiplier());
         $this->setGeneration($version->getGeneration());
         $this->setImportance($version->getImportance());
+        $this->setGenerationIds($version->getGenerationIds());
+        $this->setPictureId($version->getPictureId());
         $this->setVersion($version->getVersion());
         $this->setVersionCreatedAt($version->getVersionCreatedAt());
         $this->setVersionComment($version->getVersionComment());
