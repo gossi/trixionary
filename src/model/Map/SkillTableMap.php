@@ -296,7 +296,7 @@ class SkillTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Sport', '\\gossi\\trixionary\\model\\Sport', RelationMap::MANY_TO_ONE, array('sport_id' => 'id', ), 'RESTRICT', null);
+        $this->addRelation('Sport', '\\gossi\\trixionary\\model\\Sport', RelationMap::MANY_TO_ONE, array('sport_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('VariationOf', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('variation_of_id' => 'id', ), null, null);
         $this->addRelation('MultipleOf', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('multiple_of_id' => 'id', ), null, null);
         $this->addRelation('StartPosition', '\\gossi\\trixionary\\model\\Position', RelationMap::MANY_TO_ONE, array('start_position_id' => 'id', ), null, null);
@@ -304,20 +304,22 @@ class SkillTableMap extends TableMap
         $this->addRelation('FeaturedPicture', '\\gossi\\trixionary\\model\\Picture', RelationMap::MANY_TO_ONE, array('picture_id' => 'id', ), null, null);
         $this->addRelation('Variation', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'variation_of_id', ), null, null, 'Variations');
         $this->addRelation('Multiple', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'multiple_of_id', ), null, null, 'Multiples');
-        $this->addRelation('SkillDependencyRelatedByDependsId', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array('id' => 'depends_id', ), 'RESTRICT', null, 'SkillDependenciesRelatedByDependsId');
-        $this->addRelation('SkillDependencyRelatedBySkillId', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'RESTRICT', null, 'SkillDependenciesRelatedBySkillId');
-        $this->addRelation('SkillPartRelatedByPartId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'part_id', ), 'RESTRICT', null, 'SkillPartsRelatedByPartId');
-        $this->addRelation('SkillPartRelatedByCompositeId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'composite_id', ), 'RESTRICT', null, 'SkillPartsRelatedByCompositeId');
-        $this->addRelation('SkillGroup', '\\gossi\\trixionary\\model\\SkillGroup', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'RESTRICT', null, 'SkillGroups');
-        $this->addRelation('Picture', '\\gossi\\trixionary\\model\\Picture', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'Pictures');
-        $this->addRelation('Video', '\\gossi\\trixionary\\model\\Video', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'Videos');
+        $this->addRelation('SkillDependencyRelatedByDependsId', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array('id' => 'depends_id', ), 'CASCADE', null, 'SkillDependenciesRelatedByDependsId');
+        $this->addRelation('SkillDependencyRelatedBySkillId', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'SkillDependenciesRelatedBySkillId');
+        $this->addRelation('SkillPartRelatedByPartId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'part_id', ), 'CASCADE', null, 'SkillPartsRelatedByPartId');
+        $this->addRelation('SkillPartRelatedByCompositeId', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array('id' => 'composite_id', ), 'CASCADE', null, 'SkillPartsRelatedByCompositeId');
+        $this->addRelation('SkillGroup', '\\gossi\\trixionary\\model\\SkillGroup', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'SkillGroups');
+        $this->addRelation('Picture', '\\gossi\\trixionary\\model\\Picture', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'Pictures');
+        $this->addRelation('Video', '\\gossi\\trixionary\\model\\Video', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'Videos');
         $this->addRelation('Reference', '\\gossi\\trixionary\\model\\Reference', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), null, null, 'References');
+        $this->addRelation('Kstruktur', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'Kstrukturs');
+        $this->addRelation('FunctionPhase', '\\gossi\\trixionary\\model\\FunctionPhase', RelationMap::ONE_TO_MANY, array('id' => 'skill_id', ), 'CASCADE', null, 'FunctionPhases');
         $this->addRelation('SkillVersion', '\\gossi\\trixionary\\model\\SkillVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'SkillVersions');
-        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedBySkillId');
-        $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedByDependsId');
-        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedByCompositeId');
-        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'SkillsRelatedByPartId');
-        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::MANY_TO_MANY, array(), 'RESTRICT', null, 'Groups');
+        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedBySkillId');
+        $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedByDependsId');
+        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedByCompositeId');
+        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedByPartId');
+        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Groups');
     } // buildRelations()
 
     /**
@@ -339,6 +341,13 @@ class SkillTableMap extends TableMap
     {
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        SkillDependencyTableMap::clearInstancePool();
+        SkillPartTableMap::clearInstancePool();
+        SkillGroupTableMap::clearInstancePool();
+        PictureTableMap::clearInstancePool();
+        VideoTableMap::clearInstancePool();
+        KstrukturTableMap::clearInstancePool();
+        FunctionPhaseTableMap::clearInstancePool();
         SkillVersionTableMap::clearInstancePool();
     }
 

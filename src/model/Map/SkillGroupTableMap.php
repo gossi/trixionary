@@ -141,8 +141,8 @@ class SkillGroupTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::MANY_TO_ONE, array('group_id' => 'id', ), 'RESTRICT', null);
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'RESTRICT', null);
+        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::MANY_TO_ONE, array('group_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**

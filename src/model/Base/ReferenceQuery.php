@@ -40,6 +40,7 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  * @method     ChildReferenceQuery orderByPages($order = Criteria::ASC) Order by the pages column
  * @method     ChildReferenceQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method     ChildReferenceQuery orderByLastchecked($order = Criteria::ASC) Order by the lastchecked column
+ * @method     ChildReferenceQuery orderByManaged($order = Criteria::ASC) Order by the managed column
  *
  * @method     ChildReferenceQuery groupById() Group by the id column
  * @method     ChildReferenceQuery groupByType() Group by the type column
@@ -61,6 +62,7 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  * @method     ChildReferenceQuery groupByPages() Group by the pages column
  * @method     ChildReferenceQuery groupByUrl() Group by the url column
  * @method     ChildReferenceQuery groupByLastchecked() Group by the lastchecked column
+ * @method     ChildReferenceQuery groupByManaged() Group by the managed column
  *
  * @method     ChildReferenceQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildReferenceQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -99,6 +101,7 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  * @method     ChildReference findOneByPages(string $pages) Return the first ChildReference filtered by the pages column
  * @method     ChildReference findOneByUrl(string $url) Return the first ChildReference filtered by the url column
  * @method     ChildReference findOneByLastchecked(string $lastchecked) Return the first ChildReference filtered by the lastchecked column
+ * @method     ChildReference findOneByManaged(boolean $managed) Return the first ChildReference filtered by the managed column
  *
  * @method     ChildReference[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildReference objects based on current ModelCriteria
  * @method     ChildReference[]|ObjectCollection findById(int $id) Return ChildReference objects filtered by the id column
@@ -121,6 +124,7 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  * @method     ChildReference[]|ObjectCollection findByPages(string $pages) Return ChildReference objects filtered by the pages column
  * @method     ChildReference[]|ObjectCollection findByUrl(string $url) Return ChildReference objects filtered by the url column
  * @method     ChildReference[]|ObjectCollection findByLastchecked(string $lastchecked) Return ChildReference objects filtered by the lastchecked column
+ * @method     ChildReference[]|ObjectCollection findByManaged(boolean $managed) Return ChildReference objects filtered by the managed column
  * @method     ChildReference[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -212,7 +216,7 @@ abstract class ReferenceQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `type`, `skill_id`, `title`, `year`, `publisher`, `journal`, `number`, `school`, `author`, `edition`, `volume`, `address`, `editor`, `howpublished`, `note`, `booktitle`, `pages`, `url`, `lastchecked` FROM `kk_trixionary_reference` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `type`, `skill_id`, `title`, `year`, `publisher`, `journal`, `number`, `school`, `author`, `edition`, `volume`, `address`, `editor`, `howpublished`, `note`, `booktitle`, `pages`, `url`, `lastchecked`, `managed` FROM `kk_trixionary_reference` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -932,6 +936,33 @@ abstract class ReferenceQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ReferenceTableMap::COL_LASTCHECKED, $lastchecked, $comparison);
+    }
+
+    /**
+     * Filter the query on the managed column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByManaged(true); // WHERE managed = true
+     * $query->filterByManaged('yes'); // WHERE managed = true
+     * </code>
+     *
+     * @param     boolean|string $managed The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildReferenceQuery The current query, for fluid interface
+     */
+    public function filterByManaged($managed = null, $comparison = null)
+    {
+        if (is_string($managed)) {
+            $managed = in_array(strtolower($managed), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ReferenceTableMap::COL_MANAGED, $managed, $comparison);
     }
 
     /**

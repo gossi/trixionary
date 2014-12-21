@@ -399,6 +399,156 @@
 						"response" : {
 							"json" : "gossi\\trixionary\\response\\UploadDeleteJsonResponse"
 						}
+					},
+					"kstruktur-create" : {
+						"title" : "Creates a kstruktur",
+						"class" : "gossi\\trixionary\\action\\KstrukturCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KstrukturCreateJsonResponse"
+						}
+					},
+					"kstruktur-read" : {
+						"title" : "Reads a kstruktur",
+						"class" : "gossi\\trixionary\\action\\KstrukturReadAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KstrukturReadJsonResponse"
+						}
+					},
+					"kstruktur-list" : {
+						"title" : "List all kstrukturs",
+						"class" : "gossi\\trixionary\\action\\KstrukturListAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KstrukturListJsonResponse"
+						}
+					},
+					"kstruktur-update" : {
+						"title" : "Updates a kstruktur",
+						"class" : "gossi\\trixionary\\action\\KstrukturUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KstrukturUpdateJsonResponse"
+						}
+					},
+					"kstruktur-delete" : {
+						"title" : "Deletes a kstruktur",
+						"class" : "gossi\\trixionary\\action\\KstrukturDeleteAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KstrukturDeleteJsonResponse"
+						}
+					},
+					"function_phase-create" : {
+						"title" : "Creates a function_phase",
+						"class" : "gossi\\trixionary\\action\\FunctionPhaseCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\FunctionPhaseCreateJsonResponse"
+						}
+					},
+					"function_phase-read" : {
+						"title" : "Reads a function_phase",
+						"class" : "gossi\\trixionary\\action\\FunctionPhaseReadAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\FunctionPhaseReadJsonResponse"
+						}
+					},
+					"function_phase-list" : {
+						"title" : "List all function_phases",
+						"class" : "gossi\\trixionary\\action\\FunctionPhaseListAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\FunctionPhaseListJsonResponse"
+						}
+					},
+					"function_phase-update" : {
+						"title" : "Updates a function_phase",
+						"class" : "gossi\\trixionary\\action\\FunctionPhaseUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\FunctionPhaseUpdateJsonResponse"
+						}
+					},
+					"function_phase-delete" : {
+						"title" : "Deletes a function_phase",
+						"class" : "gossi\\trixionary\\action\\FunctionPhaseDeleteAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\FunctionPhaseDeleteJsonResponse"
+						}
+					},
+					"kk_trixionary_skill_version-create" : {
+						"title" : "Creates a kk_trixionary_skill_version",
+						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionCreateJsonResponse"
+						}
+					},
+					"kk_trixionary_skill_version-read" : {
+						"title" : "Reads a kk_trixionary_skill_version",
+						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionReadJsonResponse"
+						}
+					},
+					"kk_trixionary_skill_version-list" : {
+						"title" : "List all kk_trixionary_skill_versions",
+						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionListAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionListJsonResponse"
+						}
+					},
+					"kk_trixionary_skill_version-update" : {
+						"title" : "Updates a kk_trixionary_skill_version",
+						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionUpdateJsonResponse"
+						}
+					},
+					"kk_trixionary_skill_version-delete" : {
+						"title" : "Deletes a kk_trixionary_skill_version",
+						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionDeleteAction",
+						"acl" : [
+							"admin"
+						],
+						"response" : {
+							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionDeleteJsonResponse"
+						}
 					}
 				},
 				"api" : {
@@ -1028,19 +1178,298 @@
 								}
 							]
 						}, {
+							"path" : "/kstrukturs",
+							"operations" : [{
+									"method" : "POST",
+									"summary" : "Creates a kstruktur",
+									"nickname" : "kstruktur-create",
+									"type" : "Kstruktur",
+									"parameters" : [{
+											"name" : "body",
+											"description" : "The new kstruktur",
+											"required" : true,
+											"type" : "WritableKstruktur",
+											"paramType" : "body"
+										}
+									]
+								}, {
+									"method" : "GET",
+									"summary" : "List all kstrukturs",
+									"nickname" : "kstruktur-list",
+									"type" : "PagedKstrukturs"
+								}
+							]
+						}, {
+							"path" : "/kstrukturs/{id}",
+							"operations" : [{
+									"method" : "GET",
+									"summary" : "Reads a kstruktur",
+									"nickname" : "kstruktur-read",
+									"type" : "Kstruktur",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kstruktur id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kstruktur found"
+										}
+									]
+								}, {
+									"method" : "PUT",
+									"summary" : "Updates a kstruktur",
+									"nickname" : "kstruktur-update",
+									"type" : "Kstruktur",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kstruktur id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kstruktur found"
+										}
+									]
+								}, {
+									"method" : "DELETE",
+									"summary" : "Deletes a kstruktur",
+									"nickname" : "kstruktur-delete",
+									"type" : "Kstruktur",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kstruktur id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kstruktur found"
+										}
+									]
+								}
+							]
+						}, {
+							"path" : "/function_phases",
+							"operations" : [{
+									"method" : "POST",
+									"summary" : "Creates a function_phase",
+									"nickname" : "function_phase-create",
+									"type" : "FunctionPhase",
+									"parameters" : [{
+											"name" : "body",
+											"description" : "The new function_phase",
+											"required" : true,
+											"type" : "WritableFunctionPhase",
+											"paramType" : "body"
+										}
+									]
+								}, {
+									"method" : "GET",
+									"summary" : "List all function_phases",
+									"nickname" : "function_phase-list",
+									"type" : "PagedFunctionPhases"
+								}
+							]
+						}, {
+							"path" : "/function_phases/{id}",
+							"operations" : [{
+									"method" : "GET",
+									"summary" : "Reads a function_phase",
+									"nickname" : "function_phase-read",
+									"type" : "FunctionPhase",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The function_phase id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No function_phase found"
+										}
+									]
+								}, {
+									"method" : "PUT",
+									"summary" : "Updates a function_phase",
+									"nickname" : "function_phase-update",
+									"type" : "FunctionPhase",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The function_phase id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No function_phase found"
+										}
+									]
+								}, {
+									"method" : "DELETE",
+									"summary" : "Deletes a function_phase",
+									"nickname" : "function_phase-delete",
+									"type" : "FunctionPhase",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The function_phase id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No function_phase found"
+										}
+									]
+								}
+							]
+						}, {
+							"path" : "/kk_trixionary_skill_versions",
+							"operations" : [{
+									"method" : "POST",
+									"summary" : "Creates a kk_trixionary_skill_version",
+									"nickname" : "kk_trixionary_skill_version-create",
+									"type" : "SkillVersion",
+									"parameters" : [{
+											"name" : "body",
+											"description" : "The new kk_trixionary_skill_version",
+											"required" : true,
+											"type" : "WritableSkillVersion",
+											"paramType" : "body"
+										}
+									]
+								}, {
+									"method" : "GET",
+									"summary" : "List all kk_trixionary_skill_versions",
+									"nickname" : "kk_trixionary_skill_version-list",
+									"type" : "PagedSkillVersions"
+								}
+							]
+						}, {
+							"path" : "/kk_trixionary_skill_versions/{id}",
+							"operations" : [{
+									"method" : "GET",
+									"summary" : "Reads a kk_trixionary_skill_version",
+									"nickname" : "kk_trixionary_skill_version-read",
+									"type" : "SkillVersion",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kk_trixionary_skill_version id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kk_trixionary_skill_version found"
+										}
+									]
+								}, {
+									"method" : "PUT",
+									"summary" : "Updates a kk_trixionary_skill_version",
+									"nickname" : "kk_trixionary_skill_version-update",
+									"type" : "SkillVersion",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kk_trixionary_skill_version id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kk_trixionary_skill_version found"
+										}
+									]
+								}, {
+									"method" : "DELETE",
+									"summary" : "Deletes a kk_trixionary_skill_version",
+									"nickname" : "kk_trixionary_skill_version-delete",
+									"type" : "SkillVersion",
+									"parameters" : [{
+											"name" : "id",
+											"description" : "The kk_trixionary_skill_version id",
+											"required" : true,
+											"type" : "id",
+											"paramType" : "path"
+										}
+									],
+									"responseMessages" : [{
+											"code" : "400",
+											"message" : "Invalid ID supplied"
+										}, {
+											"code" : "404",
+											"message" : "No kk_trixionary_skill_version found"
+										}
+									]
+								}
+							]
+						}, {
 							"path" : "/upload",
 							"operations" : [{
 									"method" : "POST",
-									"summary" : "Uploads a media file",
+									"summary" : "Uploads a file",
 									"nickname" : "upload",
-									"type" : "Upload",
-									"responseMessages" : []
+									"parameters" : [{
+											"name" : "file",
+											"description" : "The file",
+											"required" : true,
+											"type" : "File",
+											"paramType" : "form"
+										}
+									]
 								}, {
 									"method" : "PUT",
-									"summary" : "Uploads a media file",
+									"summary" : "Uploads a file",
 									"nickname" : "upload",
-									"type" : "Upload",
-									"responseMessages" : []
+									"parameters" : [{
+											"name" : "file",
+											"description" : "The file",
+											"required" : true,
+											"type" : "File",
+											"paramType" : "form"
+										}
+									]
 								}
 							]
 						}, {
@@ -1049,18 +1478,12 @@
 									"method" : "DELETE",
 									"summary" : "Deletes an uploaded file",
 									"nickname" : "upload-delete",
-									"type" : "UploadDelete",
 									"parameters" : [{
 											"name" : "file",
-											"description" : "The uploaded filename",
+											"description" : "The file",
 											"required" : true,
-											"type" : "file",
+											"type" : "string",
 											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "404",
-											"message" : "No file found"
 										}
 									]
 								}
@@ -1254,6 +1677,9 @@
 								},
 								"sport_id" : {
 									"type" : "int"
+								},
+								"description" : {
+									"type" : "string"
 								}
 							}
 						},
@@ -1271,6 +1697,9 @@
 								},
 								"sport_id" : {
 									"type" : "int"
+								},
+								"description" : {
+									"type" : "string"
 								}
 							}
 						},
@@ -1624,8 +2053,8 @@
 								"description" : {
 									"type" : "string"
 								},
-								"skill_id" : {
-									"type" : "int"
+								"is_tutorial" : {
+									"type" : "boolean"
 								},
 								"movender" : {
 									"type" : "string"
@@ -1636,8 +2065,29 @@
 								"uploader_id" : {
 									"type" : "int"
 								},
-								"is_tutorial" : {
-									"type" : "boolean"
+								"skill_id" : {
+									"type" : "int"
+								},
+								"reference_id" : {
+									"type" : "int"
+								},
+								"poster_url" : {
+									"type" : "string"
+								},
+								"provider" : {
+									"type" : "string"
+								},
+								"provider_id" : {
+									"type" : "string"
+								},
+								"player_url" : {
+									"type" : "string"
+								},
+								"width" : {
+									"type" : "int"
+								},
+								"height" : {
+									"type" : "int"
 								}
 							}
 						},
@@ -1653,8 +2103,8 @@
 								"description" : {
 									"type" : "string"
 								},
-								"skill_id" : {
-									"type" : "int"
+								"is_tutorial" : {
+									"type" : "boolean"
 								},
 								"movender" : {
 									"type" : "string"
@@ -1665,8 +2115,29 @@
 								"uploader_id" : {
 									"type" : "int"
 								},
-								"is_tutorial" : {
-									"type" : "boolean"
+								"skill_id" : {
+									"type" : "int"
+								},
+								"reference_id" : {
+									"type" : "int"
+								},
+								"poster_url" : {
+									"type" : "string"
+								},
+								"provider" : {
+									"type" : "string"
+								},
+								"provider_id" : {
+									"type" : "string"
+								},
+								"player_url" : {
+									"type" : "string"
+								},
+								"width" : {
+									"type" : "int"
+								},
+								"height" : {
+									"type" : "int"
 								}
 							}
 						},
@@ -1691,7 +2162,7 @@
 									"type" : "int"
 								},
 								"type" : {
-									"type" : "int"
+									"type" : "string"
 								},
 								"skill_id" : {
 									"type" : "int"
@@ -1705,16 +2176,34 @@
 								"publisher" : {
 									"type" : "string"
 								},
+								"journal" : {
+									"type" : "string"
+								},
+								"number" : {
+									"type" : "string"
+								},
+								"school" : {
+									"type" : "string"
+								},
 								"author" : {
 									"type" : "string"
 								},
 								"edition" : {
 									"type" : "string"
 								},
+								"volume" : {
+									"type" : "string"
+								},
 								"address" : {
 									"type" : "string"
 								},
 								"editor" : {
+									"type" : "string"
+								},
+								"howpublished" : {
+									"type" : "string"
+								},
+								"note" : {
 									"type" : "string"
 								},
 								"booktitle" : {
@@ -1728,6 +2217,9 @@
 								},
 								"lastchecked" : {
 									"type" : "string"
+								},
+								"managed" : {
+									"type" : "boolean"
 								}
 							}
 						},
@@ -1738,7 +2230,7 @@
 									"type" : "int"
 								},
 								"type" : {
-									"type" : "int"
+									"type" : "string"
 								},
 								"skill_id" : {
 									"type" : "int"
@@ -1752,16 +2244,34 @@
 								"publisher" : {
 									"type" : "string"
 								},
+								"journal" : {
+									"type" : "string"
+								},
+								"number" : {
+									"type" : "string"
+								},
+								"school" : {
+									"type" : "string"
+								},
 								"author" : {
 									"type" : "string"
 								},
 								"edition" : {
 									"type" : "string"
 								},
+								"volume" : {
+									"type" : "string"
+								},
 								"address" : {
 									"type" : "string"
 								},
 								"editor" : {
+									"type" : "string"
+								},
+								"howpublished" : {
+									"type" : "string"
+								},
+								"note" : {
 									"type" : "string"
 								},
 								"booktitle" : {
@@ -1775,6 +2285,117 @@
 								},
 								"lastchecked" : {
 									"type" : "string"
+								},
+								"managed" : {
+									"type" : "boolean"
+								}
+							}
+						},
+						"PagedKstrukturs" : {
+							"id" : "PagedKstrukturs",
+							"properties" : {
+								"kstrukturs" : {
+									"type" : "array",
+									"items" : {
+										"$ref" : "Kstruktur"
+									}
+								},
+								"meta" : {
+									"type" : "Meta"
+								}
+							}
+						},
+						"WritableKstruktur" : {
+							"id" : "WritableKstruktur",
+							"properties" : {
+								"id" : {
+									"type" : "int"
+								},
+								"type" : {
+									"type" : "string"
+								},
+								"skill_id" : {
+									"type" : "int"
+								},
+								"title" : {
+									"type" : "string"
+								},
+								"parent_id" : {
+									"type" : "int"
+								}
+							}
+						},
+						"Kstruktur" : {
+							"id" : "Kstruktur",
+							"properties" : {
+								"id" : {
+									"type" : "int"
+								},
+								"type" : {
+									"type" : "string"
+								},
+								"skill_id" : {
+									"type" : "int"
+								},
+								"title" : {
+									"type" : "string"
+								},
+								"parent_id" : {
+									"type" : "int"
+								}
+							}
+						},
+						"PagedFunctionPhases" : {
+							"id" : "PagedFunctionPhases",
+							"properties" : {
+								"function_phases" : {
+									"type" : "array",
+									"items" : {
+										"$ref" : "FunctionPhase"
+									}
+								},
+								"meta" : {
+									"type" : "Meta"
+								}
+							}
+						},
+						"WritableFunctionPhase" : {
+							"id" : "WritableFunctionPhase",
+							"properties" : {
+								"id" : {
+									"type" : "int"
+								},
+								"type" : {
+									"type" : "string"
+								},
+								"skill_id" : {
+									"type" : "int"
+								},
+								"title" : {
+									"type" : "string"
+								},
+								"parent_id" : {
+									"type" : "int"
+								}
+							}
+						},
+						"FunctionPhase" : {
+							"id" : "FunctionPhase",
+							"properties" : {
+								"id" : {
+									"type" : "int"
+								},
+								"type" : {
+									"type" : "string"
+								},
+								"skill_id" : {
+									"type" : "int"
+								},
+								"title" : {
+									"type" : "string"
+								},
+								"parent_id" : {
+									"type" : "int"
 								}
 							}
 						},

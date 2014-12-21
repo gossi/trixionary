@@ -141,8 +141,8 @@ class SkillPartTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('part_id' => 'id', ), 'RESTRICT', null);
-        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('composite_id' => 'id', ), 'RESTRICT', null);
+        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('part_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('composite_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**

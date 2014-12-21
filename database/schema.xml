@@ -36,8 +36,9 @@
 		<column name="title" type="VARCHAR" size="255"/>
 		<column name="slug" type="VARCHAR" size="255"/>
 		<column name="sport_id" type="INTEGER" required="true" />
-		<foreign-key foreignTable="sport" onDelete="restrict">
-			<reference local="sport_id" foreign="id" />
+		<column name="description" type="LONGVARCHAR"/>
+		<foreign-key foreignTable="sport" onDelete="cascade">
+			<reference local="sport_id" foreign="id"/>
 		</foreign-key>
 	</table>
 	
@@ -69,7 +70,7 @@
 		<column name="generation_ids" type="LONGVARCHAR"/>
 		<column name="picture_id" type="INTEGER" required="false"/>
 
-		<foreign-key foreignTable="sport" onDelete="restrict">
+		<foreign-key foreignTable="sport" onDelete="cascade">
 			<reference local="sport_id" foreign="id" />
 		</foreign-key>
 		<foreign-key foreignTable="skill" refPhpName="Variation" phpName="VariationOf">
@@ -102,10 +103,10 @@
 			required="true" />
 		<column name="depends_id" type="INTEGER" primaryKey="true"
 			required="true" />
-		<foreign-key foreignTable="skill" onDelete="restrict">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="depends_id" foreign="id" />
 		</foreign-key>
-		<foreign-key foreignTable="skill" onDelete="restrict">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="skill_id" foreign="id" />
 		</foreign-key>
 	</table>
@@ -115,10 +116,10 @@
 			required="true" />
 		<column name="part_id" type="INTEGER" primaryKey="true"
 			required="true" />
-		<foreign-key foreignTable="skill" onDelete="restrict">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="part_id" foreign="id" />
 		</foreign-key>
-		<foreign-key foreignTable="skill" onDelete="restrict">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="composite_id" foreign="id" />
 		</foreign-key>
 	</table>
@@ -131,7 +132,7 @@
 		<column name="slug" type="VARCHAR" size="255"/>
 		<column name="sport_id" type="INTEGER" required="true" />
 		
-		<foreign-key foreignTable="sport" onDelete="restrict">
+		<foreign-key foreignTable="sport" onDelete="cascade">
 			<reference local="sport_id" foreign="id" />
 		</foreign-key>
 	</table>
@@ -141,10 +142,10 @@
 			required="true" />
 		<column name="group_id" type="INTEGER" primaryKey="true"
 			required="true" />
-		<foreign-key foreignTable="group" onDelete="restrict">
+		<foreign-key foreignTable="group" onDelete="cascade">
 			<reference local="group_id" foreign="id" />
 		</foreign-key>
-		<foreign-key foreignTable="skill" onDelete="restrict">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="skill_id" foreign="id" />
 		</foreign-key>
 	</table>
@@ -161,7 +162,7 @@
 		<column name="movender_id" type="INTEGER" required="false"/>
 		<column name="uploader_id" type="INTEGER"/>
 
-		<foreign-key foreignTable="skill" refPhpName="Picture" phpName="Skill">
+		<foreign-key foreignTable="skill" refPhpName="Picture" phpName="Skill" onDelete="CASCADE">
 			<reference local="skill_id" foreign="id"/>
 		</foreign-key>
 	</table>
@@ -177,11 +178,17 @@
 		<column name="uploader_id" type="INTEGER"/>
 		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="reference_id" type="INTEGER" required="false"/>
+		<column name="poster_url" type="VARCHAR"/>
+		<column name="provider" type="VARCHAR"/>
+		<column name="provider_id" type="VARCHAR"/>
+		<column name="player_url" type="VARCHAR"/>
+		<column name="width" type="INTEGER"/>
+		<column name="height" type="INTEGER"/>
 
-		<foreign-key foreignTable="skill">
+		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="skill_id" foreign="id"/>
 		</foreign-key>
-		
+
 		<foreign-key foreignTable="reference">
 			<reference local="reference_id" foreign="id"/>
 		</foreign-key>
@@ -209,9 +216,44 @@
 		<column name="pages" type="VARCHAR"/>
 		<column name="url" type="VARCHAR"/>
 		<column name="lastchecked" type="DATE"/>
-		
+		<column name="managed" type="BOOLEAN" default="false"/>
+
 		<foreign-key foreignTable="skill">
 			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="kstruktur">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="type" type="VARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="title" type="VARCHAR"/>
+		<column name="parent_id" type="INTEGER" required="false"/>
+		
+		<foreign-key foreignTable="skill" onDelete="cascade">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+		
+		<foreign-key foreignTable="kstruktur" phpName="Parent" refPhpName="Children" onDelete="cascade">
+			<reference local="parent_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="function_phase">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="type" type="VARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="title" type="VARCHAR"/>
+		<column name="parent_id" type="INTEGER" required="false"/>
+		
+		<foreign-key foreignTable="skill" onDelete="cascade">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+		
+		<foreign-key foreignTable="function_phase" phpName="Parent" refPhpName="Children" onDelete="cascade">
+			<reference local="parent_id" foreign="id"/>
 		</foreign-key>
 	</table>
 

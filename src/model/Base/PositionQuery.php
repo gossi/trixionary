@@ -24,11 +24,13 @@ use gossi\trixionary\model\Map\PositionTableMap;
  * @method     ChildPositionQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildPositionQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method     ChildPositionQuery orderBySportId($order = Criteria::ASC) Order by the sport_id column
+ * @method     ChildPositionQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
  * @method     ChildPositionQuery groupById() Group by the id column
  * @method     ChildPositionQuery groupByTitle() Group by the title column
  * @method     ChildPositionQuery groupBySlug() Group by the slug column
  * @method     ChildPositionQuery groupBySportId() Group by the sport_id column
+ * @method     ChildPositionQuery groupByDescription() Group by the description column
  *
  * @method     ChildPositionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPositionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,12 +57,14 @@ use gossi\trixionary\model\Map\PositionTableMap;
  * @method     ChildPosition findOneByTitle(string $title) Return the first ChildPosition filtered by the title column
  * @method     ChildPosition findOneBySlug(string $slug) Return the first ChildPosition filtered by the slug column
  * @method     ChildPosition findOneBySportId(int $sport_id) Return the first ChildPosition filtered by the sport_id column
+ * @method     ChildPosition findOneByDescription(string $description) Return the first ChildPosition filtered by the description column
  *
  * @method     ChildPosition[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPosition objects based on current ModelCriteria
  * @method     ChildPosition[]|ObjectCollection findById(int $id) Return ChildPosition objects filtered by the id column
  * @method     ChildPosition[]|ObjectCollection findByTitle(string $title) Return ChildPosition objects filtered by the title column
  * @method     ChildPosition[]|ObjectCollection findBySlug(string $slug) Return ChildPosition objects filtered by the slug column
  * @method     ChildPosition[]|ObjectCollection findBySportId(int $sport_id) Return ChildPosition objects filtered by the sport_id column
+ * @method     ChildPosition[]|ObjectCollection findByDescription(string $description) Return ChildPosition objects filtered by the description column
  * @method     ChildPosition[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -152,7 +156,7 @@ abstract class PositionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `slug`, `sport_id` FROM `kk_trixionary_position` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `slug`, `sport_id`, `description` FROM `kk_trixionary_position` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -382,6 +386,35 @@ abstract class PositionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PositionTableMap::COL_SPORT_ID, $sportId, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $description The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPositionQuery The current query, for fluid interface
+     */
+    public function filterByDescription($description = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($description)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $description)) {
+                $description = str_replace('*', '%', $description);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PositionTableMap::COL_DESCRIPTION, $description, $comparison);
     }
 
     /**

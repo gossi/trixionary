@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use gossi\trixionary\model\Position;
-use gossi\trixionary\model\PositionQuery;
+use gossi\trixionary\model\Function;
+use gossi\trixionary\model\FunctionQuery;
 
 
 /**
- * This class defines the structure of the 'kk_trixionary_position' table.
+ * This class defines the structure of the 'kk_trixionary_function' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use gossi\trixionary\model\PositionQuery;
  * (i.e. if it's a text column type).
  *
  */
-class PositionTableMap extends TableMap
+class FunctionTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class PositionTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.PositionTableMap';
+    const CLASS_NAME = '.Map.FunctionTableMap';
 
     /**
      * The default database name for this class
@@ -44,17 +44,17 @@ class PositionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'kk_trixionary_position';
+    const TABLE_NAME = 'kk_trixionary_function';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\gossi\\trixionary\\model\\Position';
+    const OM_CLASS = '\\gossi\\trixionary\\model\\Function';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Position';
+    const CLASS_DEFAULT = 'Function';
 
     /**
      * The total number of columns
@@ -74,27 +74,27 @@ class PositionTableMap extends TableMap
     /**
      * the column name for the id field
      */
-    const COL_ID = 'kk_trixionary_position.id';
+    const COL_ID = 'kk_trixionary_function.id';
+
+    /**
+     * the column name for the type field
+     */
+    const COL_TYPE = 'kk_trixionary_function.type';
+
+    /**
+     * the column name for the skill_id field
+     */
+    const COL_SKILL_ID = 'kk_trixionary_function.skill_id';
 
     /**
      * the column name for the title field
      */
-    const COL_TITLE = 'kk_trixionary_position.title';
+    const COL_TITLE = 'kk_trixionary_function.title';
 
     /**
-     * the column name for the slug field
+     * the column name for the parent_id field
      */
-    const COL_SLUG = 'kk_trixionary_position.slug';
-
-    /**
-     * the column name for the sport_id field
-     */
-    const COL_SPORT_ID = 'kk_trixionary_position.sport_id';
-
-    /**
-     * the column name for the description field
-     */
-    const COL_DESCRIPTION = 'kk_trixionary_position.description';
+    const COL_PARENT_ID = 'kk_trixionary_function.parent_id';
 
     /**
      * The default string format for model objects of the related table
@@ -108,10 +108,10 @@ class PositionTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Slug', 'SportId', 'Description', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'slug', 'sportId', 'description', ),
-        self::TYPE_COLNAME       => array(PositionTableMap::COL_ID, PositionTableMap::COL_TITLE, PositionTableMap::COL_SLUG, PositionTableMap::COL_SPORT_ID, PositionTableMap::COL_DESCRIPTION, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'slug', 'sport_id', 'description', ),
+        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', 'ParentId', ),
+        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', 'parentId', ),
+        self::TYPE_COLNAME       => array(FunctionTableMap::COL_ID, FunctionTableMap::COL_TYPE, FunctionTableMap::COL_SKILL_ID, FunctionTableMap::COL_TITLE, FunctionTableMap::COL_PARENT_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', 'parent_id', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -122,10 +122,10 @@ class PositionTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Slug' => 2, 'SportId' => 3, 'Description' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'sportId' => 3, 'description' => 4, ),
-        self::TYPE_COLNAME       => array(PositionTableMap::COL_ID => 0, PositionTableMap::COL_TITLE => 1, PositionTableMap::COL_SLUG => 2, PositionTableMap::COL_SPORT_ID => 3, PositionTableMap::COL_DESCRIPTION => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'sport_id' => 3, 'description' => 4, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, 'ParentId' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, 'parentId' => 4, ),
+        self::TYPE_COLNAME       => array(FunctionTableMap::COL_ID => 0, FunctionTableMap::COL_TYPE => 1, FunctionTableMap::COL_SKILL_ID => 2, FunctionTableMap::COL_TITLE => 3, FunctionTableMap::COL_PARENT_ID => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, 'parent_id' => 4, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -139,18 +139,18 @@ class PositionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('kk_trixionary_position');
-        $this->setPhpName('Position');
+        $this->setName('kk_trixionary_function');
+        $this->setPhpName('Function');
         $this->setIdentifierQuoting(true);
-        $this->setClassName('\\gossi\\trixionary\\model\\Position');
+        $this->setClassName('\\gossi\\trixionary\\model\\Function');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('type', 'Type', 'INTEGER', false, null, null);
+        $this->addForeignKey('skill_id', 'SkillId', 'INTEGER', 'kk_trixionary_skill', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
-        $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addForeignKey('sport_id', 'SportId', 'INTEGER', 'kk_trixionary_sport', 'id', true, null, null);
-        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addForeignKey('parent_id', 'ParentId', 'INTEGER', 'kk_trixionary_function', 'id', false, null, null);
     } // initialize()
 
     /**
@@ -158,9 +158,9 @@ class PositionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Sport', '\\gossi\\trixionary\\model\\Sport', RelationMap::MANY_TO_ONE, array('sport_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedByStartPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'start_position_id', ), null, null, 'SkillsRelatedByStartPositionId');
-        $this->addRelation('SkillRelatedByEndPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'end_position_id', ), null, null, 'SkillsRelatedByEndPositionId');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), null, null);
+        $this->addRelation('Parent', '\\gossi\\trixionary\\model\\Function', RelationMap::MANY_TO_ONE, array('parent_id' => 'id', ), null, null);
+        $this->addRelation('Children', '\\gossi\\trixionary\\model\\Function', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), null, null, 'Childrens');
     } // buildRelations()
 
     /**
@@ -220,7 +220,7 @@ class PositionTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? PositionTableMap::CLASS_DEFAULT : PositionTableMap::OM_CLASS;
+        return $withPrefix ? FunctionTableMap::CLASS_DEFAULT : FunctionTableMap::OM_CLASS;
     }
 
     /**
@@ -234,22 +234,22 @@ class PositionTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Position object, last column rank)
+     * @return array           (Function object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = PositionTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = PositionTableMap::getInstanceFromPool($key))) {
+        $key = FunctionTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FunctionTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + PositionTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FunctionTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PositionTableMap::OM_CLASS;
-            /** @var Position $obj */
+            $cls = FunctionTableMap::OM_CLASS;
+            /** @var Function $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            PositionTableMap::addInstanceToPool($obj, $key);
+            FunctionTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -272,18 +272,18 @@ class PositionTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = PositionTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = PositionTableMap::getInstanceFromPool($key))) {
+            $key = FunctionTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FunctionTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Position $obj */
+                /** @var Function $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PositionTableMap::addInstanceToPool($obj, $key);
+                FunctionTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -304,17 +304,17 @@ class PositionTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PositionTableMap::COL_ID);
-            $criteria->addSelectColumn(PositionTableMap::COL_TITLE);
-            $criteria->addSelectColumn(PositionTableMap::COL_SLUG);
-            $criteria->addSelectColumn(PositionTableMap::COL_SPORT_ID);
-            $criteria->addSelectColumn(PositionTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(FunctionTableMap::COL_ID);
+            $criteria->addSelectColumn(FunctionTableMap::COL_TYPE);
+            $criteria->addSelectColumn(FunctionTableMap::COL_SKILL_ID);
+            $criteria->addSelectColumn(FunctionTableMap::COL_TITLE);
+            $criteria->addSelectColumn(FunctionTableMap::COL_PARENT_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.type');
+            $criteria->addSelectColumn($alias . '.skill_id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.slug');
-            $criteria->addSelectColumn($alias . '.sport_id');
-            $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.parent_id');
         }
     }
 
@@ -327,7 +327,7 @@ class PositionTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(PositionTableMap::DATABASE_NAME)->getTable(PositionTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FunctionTableMap::DATABASE_NAME)->getTable(FunctionTableMap::TABLE_NAME);
     }
 
     /**
@@ -335,16 +335,16 @@ class PositionTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(PositionTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(PositionTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new PositionTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(FunctionTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(FunctionTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new FunctionTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Position or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Function or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Position object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Function object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -355,27 +355,27 @@ class PositionTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PositionTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FunctionTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \gossi\trixionary\model\Position) { // it's a model object
+        } elseif ($values instanceof \gossi\trixionary\model\Function) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PositionTableMap::DATABASE_NAME);
-            $criteria->add(PositionTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(FunctionTableMap::DATABASE_NAME);
+            $criteria->add(FunctionTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = PositionQuery::create()->mergeWith($criteria);
+        $query = FunctionQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            PositionTableMap::clearInstancePool();
+            FunctionTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                PositionTableMap::removeInstanceFromPool($singleval);
+                FunctionTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -383,20 +383,20 @@ class PositionTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the kk_trixionary_position table.
+     * Deletes all rows from the kk_trixionary_function table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return PositionQuery::create()->doDeleteAll($con);
+        return FunctionQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Position or Criteria object.
+     * Performs an INSERT on the database, given a Function or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Position object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Function object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -405,22 +405,22 @@ class PositionTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PositionTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FunctionTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Position object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Function object
         }
 
-        if ($criteria->containsKey(PositionTableMap::COL_ID) && $criteria->keyContainsValue(PositionTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PositionTableMap::COL_ID.')');
+        if ($criteria->containsKey(FunctionTableMap::COL_ID) && $criteria->keyContainsValue(FunctionTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FunctionTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = PositionQuery::create()->mergeWith($criteria);
+        $query = FunctionQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -429,7 +429,7 @@ class PositionTableMap extends TableMap
         });
     }
 
-} // PositionTableMap
+} // FunctionTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-PositionTableMap::buildTableMap();
+FunctionTableMap::buildTableMap();

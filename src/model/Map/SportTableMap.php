@@ -242,10 +242,21 @@ class SportTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Position', '\\gossi\\trixionary\\model\\Position', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'RESTRICT', null, 'Positions');
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'RESTRICT', null, 'Skills');
-        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'RESTRICT', null, 'Groups');
+        $this->addRelation('Position', '\\gossi\\trixionary\\model\\Position', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'CASCADE', null, 'Positions');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'CASCADE', null, 'Skills');
+        $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::ONE_TO_MANY, array('id' => 'sport_id', ), 'CASCADE', null, 'Groups');
     } // buildRelations()
+    /**
+     * Method to invalidate the instance pool of all tables related to kk_trixionary_sport     * by a foreign key with ON DELETE CASCADE
+     */
+    public static function clearRelatedInstancePool()
+    {
+        // Invalidate objects in related instance pools,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PositionTableMap::clearInstancePool();
+        SkillTableMap::clearInstancePool();
+        GroupTableMap::clearInstancePool();
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.

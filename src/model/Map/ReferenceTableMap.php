@@ -59,7 +59,7 @@ class ReferenceTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 20;
+    const NUM_COLUMNS = 21;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class ReferenceTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 20;
+    const NUM_HYDRATE_COLUMNS = 21;
 
     /**
      * the column name for the id field
@@ -172,6 +172,11 @@ class ReferenceTableMap extends TableMap
     const COL_LASTCHECKED = 'kk_trixionary_reference.lastchecked';
 
     /**
+     * the column name for the managed field
+     */
+    const COL_MANAGED = 'kk_trixionary_reference.managed';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -183,11 +188,11 @@ class ReferenceTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', 'Year', 'Publisher', 'Journal', 'Number', 'School', 'Author', 'Edition', 'Volume', 'Address', 'Editor', 'Howpublished', 'Note', 'Booktitle', 'Pages', 'Url', 'Lastchecked', ),
-        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', 'year', 'publisher', 'journal', 'number', 'school', 'author', 'edition', 'volume', 'address', 'editor', 'howpublished', 'note', 'booktitle', 'pages', 'url', 'lastchecked', ),
-        self::TYPE_COLNAME       => array(ReferenceTableMap::COL_ID, ReferenceTableMap::COL_TYPE, ReferenceTableMap::COL_SKILL_ID, ReferenceTableMap::COL_TITLE, ReferenceTableMap::COL_YEAR, ReferenceTableMap::COL_PUBLISHER, ReferenceTableMap::COL_JOURNAL, ReferenceTableMap::COL_NUMBER, ReferenceTableMap::COL_SCHOOL, ReferenceTableMap::COL_AUTHOR, ReferenceTableMap::COL_EDITION, ReferenceTableMap::COL_VOLUME, ReferenceTableMap::COL_ADDRESS, ReferenceTableMap::COL_EDITOR, ReferenceTableMap::COL_HOWPUBLISHED, ReferenceTableMap::COL_NOTE, ReferenceTableMap::COL_BOOKTITLE, ReferenceTableMap::COL_PAGES, ReferenceTableMap::COL_URL, ReferenceTableMap::COL_LASTCHECKED, ),
-        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', 'year', 'publisher', 'journal', 'number', 'school', 'author', 'edition', 'volume', 'address', 'editor', 'howpublished', 'note', 'booktitle', 'pages', 'url', 'lastchecked', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
+        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', 'Year', 'Publisher', 'Journal', 'Number', 'School', 'Author', 'Edition', 'Volume', 'Address', 'Editor', 'Howpublished', 'Note', 'Booktitle', 'Pages', 'Url', 'Lastchecked', 'Managed', ),
+        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', 'year', 'publisher', 'journal', 'number', 'school', 'author', 'edition', 'volume', 'address', 'editor', 'howpublished', 'note', 'booktitle', 'pages', 'url', 'lastchecked', 'managed', ),
+        self::TYPE_COLNAME       => array(ReferenceTableMap::COL_ID, ReferenceTableMap::COL_TYPE, ReferenceTableMap::COL_SKILL_ID, ReferenceTableMap::COL_TITLE, ReferenceTableMap::COL_YEAR, ReferenceTableMap::COL_PUBLISHER, ReferenceTableMap::COL_JOURNAL, ReferenceTableMap::COL_NUMBER, ReferenceTableMap::COL_SCHOOL, ReferenceTableMap::COL_AUTHOR, ReferenceTableMap::COL_EDITION, ReferenceTableMap::COL_VOLUME, ReferenceTableMap::COL_ADDRESS, ReferenceTableMap::COL_EDITOR, ReferenceTableMap::COL_HOWPUBLISHED, ReferenceTableMap::COL_NOTE, ReferenceTableMap::COL_BOOKTITLE, ReferenceTableMap::COL_PAGES, ReferenceTableMap::COL_URL, ReferenceTableMap::COL_LASTCHECKED, ReferenceTableMap::COL_MANAGED, ),
+        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', 'year', 'publisher', 'journal', 'number', 'school', 'author', 'edition', 'volume', 'address', 'editor', 'howpublished', 'note', 'booktitle', 'pages', 'url', 'lastchecked', 'managed', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
     );
 
     /**
@@ -197,11 +202,11 @@ class ReferenceTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, 'Year' => 4, 'Publisher' => 5, 'Journal' => 6, 'Number' => 7, 'School' => 8, 'Author' => 9, 'Edition' => 10, 'Volume' => 11, 'Address' => 12, 'Editor' => 13, 'Howpublished' => 14, 'Note' => 15, 'Booktitle' => 16, 'Pages' => 17, 'Url' => 18, 'Lastchecked' => 19, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, 'year' => 4, 'publisher' => 5, 'journal' => 6, 'number' => 7, 'school' => 8, 'author' => 9, 'edition' => 10, 'volume' => 11, 'address' => 12, 'editor' => 13, 'howpublished' => 14, 'note' => 15, 'booktitle' => 16, 'pages' => 17, 'url' => 18, 'lastchecked' => 19, ),
-        self::TYPE_COLNAME       => array(ReferenceTableMap::COL_ID => 0, ReferenceTableMap::COL_TYPE => 1, ReferenceTableMap::COL_SKILL_ID => 2, ReferenceTableMap::COL_TITLE => 3, ReferenceTableMap::COL_YEAR => 4, ReferenceTableMap::COL_PUBLISHER => 5, ReferenceTableMap::COL_JOURNAL => 6, ReferenceTableMap::COL_NUMBER => 7, ReferenceTableMap::COL_SCHOOL => 8, ReferenceTableMap::COL_AUTHOR => 9, ReferenceTableMap::COL_EDITION => 10, ReferenceTableMap::COL_VOLUME => 11, ReferenceTableMap::COL_ADDRESS => 12, ReferenceTableMap::COL_EDITOR => 13, ReferenceTableMap::COL_HOWPUBLISHED => 14, ReferenceTableMap::COL_NOTE => 15, ReferenceTableMap::COL_BOOKTITLE => 16, ReferenceTableMap::COL_PAGES => 17, ReferenceTableMap::COL_URL => 18, ReferenceTableMap::COL_LASTCHECKED => 19, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, 'year' => 4, 'publisher' => 5, 'journal' => 6, 'number' => 7, 'school' => 8, 'author' => 9, 'edition' => 10, 'volume' => 11, 'address' => 12, 'editor' => 13, 'howpublished' => 14, 'note' => 15, 'booktitle' => 16, 'pages' => 17, 'url' => 18, 'lastchecked' => 19, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, 'Year' => 4, 'Publisher' => 5, 'Journal' => 6, 'Number' => 7, 'School' => 8, 'Author' => 9, 'Edition' => 10, 'Volume' => 11, 'Address' => 12, 'Editor' => 13, 'Howpublished' => 14, 'Note' => 15, 'Booktitle' => 16, 'Pages' => 17, 'Url' => 18, 'Lastchecked' => 19, 'Managed' => 20, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, 'year' => 4, 'publisher' => 5, 'journal' => 6, 'number' => 7, 'school' => 8, 'author' => 9, 'edition' => 10, 'volume' => 11, 'address' => 12, 'editor' => 13, 'howpublished' => 14, 'note' => 15, 'booktitle' => 16, 'pages' => 17, 'url' => 18, 'lastchecked' => 19, 'managed' => 20, ),
+        self::TYPE_COLNAME       => array(ReferenceTableMap::COL_ID => 0, ReferenceTableMap::COL_TYPE => 1, ReferenceTableMap::COL_SKILL_ID => 2, ReferenceTableMap::COL_TITLE => 3, ReferenceTableMap::COL_YEAR => 4, ReferenceTableMap::COL_PUBLISHER => 5, ReferenceTableMap::COL_JOURNAL => 6, ReferenceTableMap::COL_NUMBER => 7, ReferenceTableMap::COL_SCHOOL => 8, ReferenceTableMap::COL_AUTHOR => 9, ReferenceTableMap::COL_EDITION => 10, ReferenceTableMap::COL_VOLUME => 11, ReferenceTableMap::COL_ADDRESS => 12, ReferenceTableMap::COL_EDITOR => 13, ReferenceTableMap::COL_HOWPUBLISHED => 14, ReferenceTableMap::COL_NOTE => 15, ReferenceTableMap::COL_BOOKTITLE => 16, ReferenceTableMap::COL_PAGES => 17, ReferenceTableMap::COL_URL => 18, ReferenceTableMap::COL_LASTCHECKED => 19, ReferenceTableMap::COL_MANAGED => 20, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, 'year' => 4, 'publisher' => 5, 'journal' => 6, 'number' => 7, 'school' => 8, 'author' => 9, 'edition' => 10, 'volume' => 11, 'address' => 12, 'editor' => 13, 'howpublished' => 14, 'note' => 15, 'booktitle' => 16, 'pages' => 17, 'url' => 18, 'lastchecked' => 19, 'managed' => 20, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
     );
 
     /**
@@ -241,6 +246,7 @@ class ReferenceTableMap extends TableMap
         $this->addColumn('pages', 'Pages', 'VARCHAR', false, 255, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 255, null);
         $this->addColumn('lastchecked', 'Lastchecked', 'DATE', false, null, null);
+        $this->addColumn('managed', 'Managed', 'BOOLEAN', false, 1, false);
     } // initialize()
 
     /**
@@ -413,6 +419,7 @@ class ReferenceTableMap extends TableMap
             $criteria->addSelectColumn(ReferenceTableMap::COL_PAGES);
             $criteria->addSelectColumn(ReferenceTableMap::COL_URL);
             $criteria->addSelectColumn(ReferenceTableMap::COL_LASTCHECKED);
+            $criteria->addSelectColumn(ReferenceTableMap::COL_MANAGED);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.type');
@@ -434,6 +441,7 @@ class ReferenceTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.pages');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.lastchecked');
+            $criteria->addSelectColumn($alias . '.managed');
         }
     }
 

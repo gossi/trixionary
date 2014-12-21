@@ -3,15 +3,15 @@ namespace gossi\trixionary\response;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use gossi\trixionary\model\Concept;
+use gossi\trixionary\model\FunctionPhase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * JsonResponse for List all concepts
+ * JsonResponse for List all function_phases
  * 
  * @author gossi
  */
-class ConceptListJsonResponse extends AbstractConceptResponse {
+class FunctionPhaseListJsonResponse extends AbstractFunctionPhaseResponse {
 
 	/**
 	 * Automatically generated method, will be overridden
@@ -23,9 +23,9 @@ class ConceptListJsonResponse extends AbstractConceptResponse {
 		$out = [];
 
 		// build model
-		$out['concepts'] = [];
-		foreach ($this->data as $concept) {
-			$out['concepts'][] = $this->conceptToArray($concept);
+		$out['function_phases'] = [];
+		foreach ($this->data as $function_phase) {
+			$out['function_phases'][] = $this->function_phaseToArray($function_phase);
 		}
 
 		// meta

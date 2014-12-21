@@ -29,6 +29,12 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery orderByUploaderId($order = Criteria::ASC) Order by the uploader_id column
  * @method     ChildVideoQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildVideoQuery orderByReferenceId($order = Criteria::ASC) Order by the reference_id column
+ * @method     ChildVideoQuery orderByPosterUrl($order = Criteria::ASC) Order by the poster_url column
+ * @method     ChildVideoQuery orderByProvider($order = Criteria::ASC) Order by the provider column
+ * @method     ChildVideoQuery orderByProviderId($order = Criteria::ASC) Order by the provider_id column
+ * @method     ChildVideoQuery orderByPlayerUrl($order = Criteria::ASC) Order by the player_url column
+ * @method     ChildVideoQuery orderByWidth($order = Criteria::ASC) Order by the width column
+ * @method     ChildVideoQuery orderByHeight($order = Criteria::ASC) Order by the height column
  *
  * @method     ChildVideoQuery groupById() Group by the id column
  * @method     ChildVideoQuery groupByTitle() Group by the title column
@@ -39,6 +45,12 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery groupByUploaderId() Group by the uploader_id column
  * @method     ChildVideoQuery groupBySkillId() Group by the skill_id column
  * @method     ChildVideoQuery groupByReferenceId() Group by the reference_id column
+ * @method     ChildVideoQuery groupByPosterUrl() Group by the poster_url column
+ * @method     ChildVideoQuery groupByProvider() Group by the provider column
+ * @method     ChildVideoQuery groupByProviderId() Group by the provider_id column
+ * @method     ChildVideoQuery groupByPlayerUrl() Group by the player_url column
+ * @method     ChildVideoQuery groupByWidth() Group by the width column
+ * @method     ChildVideoQuery groupByHeight() Group by the height column
  *
  * @method     ChildVideoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildVideoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -66,6 +78,12 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo findOneByUploaderId(int $uploader_id) Return the first ChildVideo filtered by the uploader_id column
  * @method     ChildVideo findOneBySkillId(int $skill_id) Return the first ChildVideo filtered by the skill_id column
  * @method     ChildVideo findOneByReferenceId(int $reference_id) Return the first ChildVideo filtered by the reference_id column
+ * @method     ChildVideo findOneByPosterUrl(string $poster_url) Return the first ChildVideo filtered by the poster_url column
+ * @method     ChildVideo findOneByProvider(string $provider) Return the first ChildVideo filtered by the provider column
+ * @method     ChildVideo findOneByProviderId(string $provider_id) Return the first ChildVideo filtered by the provider_id column
+ * @method     ChildVideo findOneByPlayerUrl(string $player_url) Return the first ChildVideo filtered by the player_url column
+ * @method     ChildVideo findOneByWidth(int $width) Return the first ChildVideo filtered by the width column
+ * @method     ChildVideo findOneByHeight(int $height) Return the first ChildVideo filtered by the height column
  *
  * @method     ChildVideo[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildVideo objects based on current ModelCriteria
  * @method     ChildVideo[]|ObjectCollection findById(int $id) Return ChildVideo objects filtered by the id column
@@ -77,6 +95,12 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo[]|ObjectCollection findByUploaderId(int $uploader_id) Return ChildVideo objects filtered by the uploader_id column
  * @method     ChildVideo[]|ObjectCollection findBySkillId(int $skill_id) Return ChildVideo objects filtered by the skill_id column
  * @method     ChildVideo[]|ObjectCollection findByReferenceId(int $reference_id) Return ChildVideo objects filtered by the reference_id column
+ * @method     ChildVideo[]|ObjectCollection findByPosterUrl(string $poster_url) Return ChildVideo objects filtered by the poster_url column
+ * @method     ChildVideo[]|ObjectCollection findByProvider(string $provider) Return ChildVideo objects filtered by the provider column
+ * @method     ChildVideo[]|ObjectCollection findByProviderId(string $provider_id) Return ChildVideo objects filtered by the provider_id column
+ * @method     ChildVideo[]|ObjectCollection findByPlayerUrl(string $player_url) Return ChildVideo objects filtered by the player_url column
+ * @method     ChildVideo[]|ObjectCollection findByWidth(int $width) Return ChildVideo objects filtered by the width column
+ * @method     ChildVideo[]|ObjectCollection findByHeight(int $height) Return ChildVideo objects filtered by the height column
  * @method     ChildVideo[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -168,7 +192,7 @@ abstract class VideoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `is_tutorial`, `movender`, `movender_id`, `uploader_id`, `skill_id`, `reference_id` FROM `kk_trixionary_video` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `is_tutorial`, `movender`, `movender_id`, `uploader_id`, `skill_id`, `reference_id`, `poster_url`, `provider`, `provider_id`, `player_url`, `width`, `height` FROM `kk_trixionary_video` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -579,6 +603,204 @@ abstract class VideoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VideoTableMap::COL_REFERENCE_ID, $referenceId, $comparison);
+    }
+
+    /**
+     * Filter the query on the poster_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPosterUrl('fooValue');   // WHERE poster_url = 'fooValue'
+     * $query->filterByPosterUrl('%fooValue%'); // WHERE poster_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $posterUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByPosterUrl($posterUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($posterUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $posterUrl)) {
+                $posterUrl = str_replace('*', '%', $posterUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_POSTER_URL, $posterUrl, $comparison);
+    }
+
+    /**
+     * Filter the query on the provider column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProvider('fooValue');   // WHERE provider = 'fooValue'
+     * $query->filterByProvider('%fooValue%'); // WHERE provider LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $provider The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByProvider($provider = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($provider)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $provider)) {
+                $provider = str_replace('*', '%', $provider);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_PROVIDER, $provider, $comparison);
+    }
+
+    /**
+     * Filter the query on the provider_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProviderId('fooValue');   // WHERE provider_id = 'fooValue'
+     * $query->filterByProviderId('%fooValue%'); // WHERE provider_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $providerId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByProviderId($providerId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($providerId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $providerId)) {
+                $providerId = str_replace('*', '%', $providerId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_PROVIDER_ID, $providerId, $comparison);
+    }
+
+    /**
+     * Filter the query on the player_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPlayerUrl('fooValue');   // WHERE player_url = 'fooValue'
+     * $query->filterByPlayerUrl('%fooValue%'); // WHERE player_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $playerUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByPlayerUrl($playerUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($playerUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $playerUrl)) {
+                $playerUrl = str_replace('*', '%', $playerUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_PLAYER_URL, $playerUrl, $comparison);
+    }
+
+    /**
+     * Filter the query on the width column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByWidth(1234); // WHERE width = 1234
+     * $query->filterByWidth(array(12, 34)); // WHERE width IN (12, 34)
+     * $query->filterByWidth(array('min' => 12)); // WHERE width > 12
+     * </code>
+     *
+     * @param     mixed $width The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByWidth($width = null, $comparison = null)
+    {
+        if (is_array($width)) {
+            $useMinMax = false;
+            if (isset($width['min'])) {
+                $this->addUsingAlias(VideoTableMap::COL_WIDTH, $width['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($width['max'])) {
+                $this->addUsingAlias(VideoTableMap::COL_WIDTH, $width['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_WIDTH, $width, $comparison);
+    }
+
+    /**
+     * Filter the query on the height column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHeight(1234); // WHERE height = 1234
+     * $query->filterByHeight(array(12, 34)); // WHERE height IN (12, 34)
+     * $query->filterByHeight(array('min' => 12)); // WHERE height > 12
+     * </code>
+     *
+     * @param     mixed $height The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByHeight($height = null, $comparison = null)
+    {
+        if (is_array($height)) {
+            $useMinMax = false;
+            if (isset($height['min'])) {
+                $this->addUsingAlias(VideoTableMap::COL_HEIGHT, $height['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($height['max'])) {
+                $this->addUsingAlias(VideoTableMap::COL_HEIGHT, $height['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_HEIGHT, $height, $comparison);
     }
 
     /**

@@ -29,7 +29,7 @@ class UploadAction extends AbstractAction {
 		if ($file->isValid()) {
 			try {
 				// user validations
-				$mimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'video/mpeg', 'video/quicktime'];
+				$mimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/quicktime'];
 				$mimeTypesMatch = false;
 				foreach ($mimeTypes as $mimeType) {
 					if ($file->getClientMimeType() == $mimeType) {
@@ -41,10 +41,10 @@ class UploadAction extends AbstractAction {
 					throw new FileException('No matching mime type');
 				}
 				
-				$exts = ['png', 'jpg', 'mov', 'mp4'];
+				$exts = ['png', 'jpg', 'jpeg', 'mov', 'mp4'];
 				$extMatch = false;
 				foreach ($exts as $ext) {
-					if ($file->getClientOriginalExtension() == $ext) {
+					if (strtolower($file->getClientOriginalExtension()) == $ext) {
 						$extMatch = true;
 					}
 				}

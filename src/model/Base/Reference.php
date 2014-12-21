@@ -188,6 +188,13 @@ abstract class Reference implements ActiveRecordInterface
     protected $lastchecked;
 
     /**
+     * The value for the managed field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $managed;
+
+    /**
      * @var        ChildSkill
      */
     protected $aSkill;
@@ -213,10 +220,23 @@ abstract class Reference implements ActiveRecordInterface
     protected $videosScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->managed = false;
+    }
+
+    /**
      * Initializes internal state of gossi\trixionary\model\Base\Reference object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -640,6 +660,26 @@ abstract class Reference implements ActiveRecordInterface
     }
 
     /**
+     * Get the [managed] column value.
+     *
+     * @return boolean
+     */
+    public function getManaged()
+    {
+        return $this->managed;
+    }
+
+    /**
+     * Get the [managed] column value.
+     *
+     * @return boolean
+     */
+    public function isManaged()
+    {
+        return $this->getManaged();
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -1044,6 +1084,34 @@ abstract class Reference implements ActiveRecordInterface
     } // setLastchecked()
 
     /**
+     * Sets the value of the [managed] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
+     */
+    public function setManaged($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->managed !== $v) {
+            $this->managed = $v;
+            $this->modifiedColumns[ReferenceTableMap::COL_MANAGED] = true;
+        }
+
+        return $this;
+    } // setManaged()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1053,6 +1121,10 @@ abstract class Reference implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->managed !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -1141,6 +1213,9 @@ abstract class Reference implements ActiveRecordInterface
                 $col = null;
             }
             $this->lastchecked = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ReferenceTableMap::translateFieldName('Managed', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->managed = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1149,7 +1224,7 @@ abstract class Reference implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 20; // 20 = ReferenceTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = ReferenceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Reference'), 0, $e);
@@ -1442,6 +1517,9 @@ abstract class Reference implements ActiveRecordInterface
         if ($this->isColumnModified(ReferenceTableMap::COL_LASTCHECKED)) {
             $modifiedColumns[':p' . $index++]  = '`lastchecked`';
         }
+        if ($this->isColumnModified(ReferenceTableMap::COL_MANAGED)) {
+            $modifiedColumns[':p' . $index++]  = '`managed`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `kk_trixionary_reference` (%s) VALUES (%s)',
@@ -1512,6 +1590,9 @@ abstract class Reference implements ActiveRecordInterface
                         break;
                     case '`lastchecked`':
                         $stmt->bindValue($identifier, $this->lastchecked ? $this->lastchecked->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case '`managed`':
+                        $stmt->bindValue($identifier, (int) $this->managed, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1635,6 +1716,9 @@ abstract class Reference implements ActiveRecordInterface
             case 19:
                 return $this->getLastchecked();
                 break;
+            case 20:
+                return $this->getManaged();
+                break;
             default:
                 return null;
                 break;
@@ -1685,6 +1769,7 @@ abstract class Reference implements ActiveRecordInterface
             $keys[17] => $this->getPages(),
             $keys[18] => $this->getUrl(),
             $keys[19] => $this->getLastchecked(),
+            $keys[20] => $this->getManaged(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1816,6 +1901,9 @@ abstract class Reference implements ActiveRecordInterface
             case 19:
                 $this->setLastchecked($value);
                 break;
+            case 20:
+                $this->setManaged($value);
+                break;
         } // switch()
 
         return $this;
@@ -1901,6 +1989,9 @@ abstract class Reference implements ActiveRecordInterface
         }
         if (array_key_exists($keys[19], $arr)) {
             $this->setLastchecked($arr[$keys[19]]);
+        }
+        if (array_key_exists($keys[20], $arr)) {
+            $this->setManaged($arr[$keys[20]]);
         }
     }
 
@@ -2002,6 +2093,9 @@ abstract class Reference implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ReferenceTableMap::COL_LASTCHECKED)) {
             $criteria->add(ReferenceTableMap::COL_LASTCHECKED, $this->lastchecked);
+        }
+        if ($this->isColumnModified(ReferenceTableMap::COL_MANAGED)) {
+            $criteria->add(ReferenceTableMap::COL_MANAGED, $this->managed);
         }
 
         return $criteria;
@@ -2108,6 +2202,7 @@ abstract class Reference implements ActiveRecordInterface
         $copyObj->setPages($this->getPages());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setLastchecked($this->getLastchecked());
+        $copyObj->setManaged($this->getManaged());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2490,8 +2585,10 @@ abstract class Reference implements ActiveRecordInterface
         $this->pages = null;
         $this->url = null;
         $this->lastchecked = null;
+        $this->managed = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

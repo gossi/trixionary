@@ -18,8 +18,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
+use gossi\trixionary\model\FunctionPhase as ChildFunctionPhase;
+use gossi\trixionary\model\FunctionPhaseQuery as ChildFunctionPhaseQuery;
 use gossi\trixionary\model\Group as ChildGroup;
 use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
+use gossi\trixionary\model\Kstruktur as ChildKstruktur;
+use gossi\trixionary\model\KstrukturQuery as ChildKstrukturQuery;
 use gossi\trixionary\model\Picture as ChildPicture;
 use gossi\trixionary\model\PictureQuery as ChildPictureQuery;
 use gossi\trixionary\model\Position as ChildPosition;
@@ -344,6 +348,18 @@ abstract class Skill implements ActiveRecordInterface
     protected $collReferencesPartial;
 
     /**
+     * @var        ObjectCollection|ChildKstruktur[] Collection to store aggregation of ChildKstruktur objects.
+     */
+    protected $collKstrukturs;
+    protected $collKstruktursPartial;
+
+    /**
+     * @var        ObjectCollection|ChildFunctionPhase[] Collection to store aggregation of ChildFunctionPhase objects.
+     */
+    protected $collFunctionPhases;
+    protected $collFunctionPhasesPartial;
+
+    /**
      * @var        ObjectCollection|ChildSkillVersion[] Collection to store aggregation of ChildSkillVersion objects.
      */
     protected $collSkillVersions;
@@ -504,6 +520,18 @@ abstract class Skill implements ActiveRecordInterface
      * @var ObjectCollection|ChildReference[]
      */
     protected $referencesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildKstruktur[]
+     */
+    protected $kstruktursScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildFunctionPhase[]
+     */
+    protected $functionPhasesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1944,6 +1972,10 @@ abstract class Skill implements ActiveRecordInterface
 
             $this->collReferences = null;
 
+            $this->collKstrukturs = null;
+
+            $this->collFunctionPhases = null;
+
             $this->collSkillVersions = null;
 
             $this->collSkillsRelatedBySkillId = null;
@@ -2431,6 +2463,40 @@ abstract class Skill implements ActiveRecordInterface
 
             if ($this->collReferences !== null) {
                 foreach ($this->collReferences as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->kstruktursScheduledForDeletion !== null) {
+                if (!$this->kstruktursScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\KstrukturQuery::create()
+                        ->filterByPrimaryKeys($this->kstruktursScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->kstruktursScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collKstrukturs !== null) {
+                foreach ($this->collKstrukturs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->functionPhasesScheduledForDeletion !== null) {
+                if (!$this->functionPhasesScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\FunctionPhaseQuery::create()
+                        ->filterByPrimaryKeys($this->functionPhasesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->functionPhasesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collFunctionPhases !== null) {
+                foreach ($this->collFunctionPhases as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3110,6 +3176,36 @@ abstract class Skill implements ActiveRecordInterface
 
                 $result[$key] = $this->collReferences->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collKstrukturs) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'kstrukturs';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_kstrukturs';
+                        break;
+                    default:
+                        $key = 'Kstrukturs';
+                }
+
+                $result[$key] = $this->collKstrukturs->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collFunctionPhases) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'functionPhases';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_function_phases';
+                        break;
+                    default:
+                        $key = 'FunctionPhases';
+                }
+
+                $result[$key] = $this->collFunctionPhases->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collSkillVersions) {
 
                 switch ($keyType) {
@@ -3657,6 +3753,18 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getKstrukturs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addKstruktur($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getFunctionPhases() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFunctionPhase($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getSkillVersions() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSkillVersion($relObj->copy($deepCopy));
@@ -4039,6 +4147,12 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ('Reference' == $relationName) {
             return $this->initReferences();
+        }
+        if ('Kstruktur' == $relationName) {
+            return $this->initKstrukturs();
+        }
+        if ('FunctionPhase' == $relationName) {
+            return $this->initFunctionPhases();
         }
         if ('SkillVersion' == $relationName) {
             return $this->initSkillVersions();
@@ -6491,6 +6605,492 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collKstrukturs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addKstrukturs()
+     */
+    public function clearKstrukturs()
+    {
+        $this->collKstrukturs = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collKstrukturs collection loaded partially.
+     */
+    public function resetPartialKstrukturs($v = true)
+    {
+        $this->collKstruktursPartial = $v;
+    }
+
+    /**
+     * Initializes the collKstrukturs collection.
+     *
+     * By default this just sets the collKstrukturs collection to an empty array (like clearcollKstrukturs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initKstrukturs($overrideExisting = true)
+    {
+        if (null !== $this->collKstrukturs && !$overrideExisting) {
+            return;
+        }
+        $this->collKstrukturs = new ObjectCollection();
+        $this->collKstrukturs->setModel('\gossi\trixionary\model\Kstruktur');
+    }
+
+    /**
+     * Gets an array of ChildKstruktur objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildKstruktur[] List of ChildKstruktur objects
+     * @throws PropelException
+     */
+    public function getKstrukturs(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collKstruktursPartial && !$this->isNew();
+        if (null === $this->collKstrukturs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collKstrukturs) {
+                // return empty collection
+                $this->initKstrukturs();
+            } else {
+                $collKstrukturs = ChildKstrukturQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collKstruktursPartial && count($collKstrukturs)) {
+                        $this->initKstrukturs(false);
+
+                        foreach ($collKstrukturs as $obj) {
+                            if (false == $this->collKstrukturs->contains($obj)) {
+                                $this->collKstrukturs->append($obj);
+                            }
+                        }
+
+                        $this->collKstruktursPartial = true;
+                    }
+
+                    return $collKstrukturs;
+                }
+
+                if ($partial && $this->collKstrukturs) {
+                    foreach ($this->collKstrukturs as $obj) {
+                        if ($obj->isNew()) {
+                            $collKstrukturs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collKstrukturs = $collKstrukturs;
+                $this->collKstruktursPartial = false;
+            }
+        }
+
+        return $this->collKstrukturs;
+    }
+
+    /**
+     * Sets a collection of ChildKstruktur objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $kstrukturs A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setKstrukturs(Collection $kstrukturs, ConnectionInterface $con = null)
+    {
+        /** @var ChildKstruktur[] $kstruktursToDelete */
+        $kstruktursToDelete = $this->getKstrukturs(new Criteria(), $con)->diff($kstrukturs);
+
+
+        $this->kstruktursScheduledForDeletion = $kstruktursToDelete;
+
+        foreach ($kstruktursToDelete as $kstrukturRemoved) {
+            $kstrukturRemoved->setSkill(null);
+        }
+
+        $this->collKstrukturs = null;
+        foreach ($kstrukturs as $kstruktur) {
+            $this->addKstruktur($kstruktur);
+        }
+
+        $this->collKstrukturs = $kstrukturs;
+        $this->collKstruktursPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Kstruktur objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Kstruktur objects.
+     * @throws PropelException
+     */
+    public function countKstrukturs(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collKstruktursPartial && !$this->isNew();
+        if (null === $this->collKstrukturs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collKstrukturs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getKstrukturs());
+            }
+
+            $query = ChildKstrukturQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collKstrukturs);
+    }
+
+    /**
+     * Method called to associate a ChildKstruktur object to this object
+     * through the ChildKstruktur foreign key attribute.
+     *
+     * @param  ChildKstruktur $l ChildKstruktur
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addKstruktur(ChildKstruktur $l)
+    {
+        if ($this->collKstrukturs === null) {
+            $this->initKstrukturs();
+            $this->collKstruktursPartial = true;
+        }
+
+        if (!$this->collKstrukturs->contains($l)) {
+            $this->doAddKstruktur($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildKstruktur $kstruktur The ChildKstruktur object to add.
+     */
+    protected function doAddKstruktur(ChildKstruktur $kstruktur)
+    {
+        $this->collKstrukturs[]= $kstruktur;
+        $kstruktur->setSkill($this);
+    }
+
+    /**
+     * @param  ChildKstruktur $kstruktur The ChildKstruktur object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeKstruktur(ChildKstruktur $kstruktur)
+    {
+        if ($this->getKstrukturs()->contains($kstruktur)) {
+            $pos = $this->collKstrukturs->search($kstruktur);
+            $this->collKstrukturs->remove($pos);
+            if (null === $this->kstruktursScheduledForDeletion) {
+                $this->kstruktursScheduledForDeletion = clone $this->collKstrukturs;
+                $this->kstruktursScheduledForDeletion->clear();
+            }
+            $this->kstruktursScheduledForDeletion[]= clone $kstruktur;
+            $kstruktur->setSkill(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Kstrukturs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildKstruktur[] List of ChildKstruktur objects
+     */
+    public function getKstruktursJoinParent(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildKstrukturQuery::create(null, $criteria);
+        $query->joinWith('Parent', $joinBehavior);
+
+        return $this->getKstrukturs($query, $con);
+    }
+
+    /**
+     * Clears out the collFunctionPhases collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFunctionPhases()
+     */
+    public function clearFunctionPhases()
+    {
+        $this->collFunctionPhases = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFunctionPhases collection loaded partially.
+     */
+    public function resetPartialFunctionPhases($v = true)
+    {
+        $this->collFunctionPhasesPartial = $v;
+    }
+
+    /**
+     * Initializes the collFunctionPhases collection.
+     *
+     * By default this just sets the collFunctionPhases collection to an empty array (like clearcollFunctionPhases());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFunctionPhases($overrideExisting = true)
+    {
+        if (null !== $this->collFunctionPhases && !$overrideExisting) {
+            return;
+        }
+        $this->collFunctionPhases = new ObjectCollection();
+        $this->collFunctionPhases->setModel('\gossi\trixionary\model\FunctionPhase');
+    }
+
+    /**
+     * Gets an array of ChildFunctionPhase objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildFunctionPhase[] List of ChildFunctionPhase objects
+     * @throws PropelException
+     */
+    public function getFunctionPhases(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFunctionPhasesPartial && !$this->isNew();
+        if (null === $this->collFunctionPhases || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFunctionPhases) {
+                // return empty collection
+                $this->initFunctionPhases();
+            } else {
+                $collFunctionPhases = ChildFunctionPhaseQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFunctionPhasesPartial && count($collFunctionPhases)) {
+                        $this->initFunctionPhases(false);
+
+                        foreach ($collFunctionPhases as $obj) {
+                            if (false == $this->collFunctionPhases->contains($obj)) {
+                                $this->collFunctionPhases->append($obj);
+                            }
+                        }
+
+                        $this->collFunctionPhasesPartial = true;
+                    }
+
+                    return $collFunctionPhases;
+                }
+
+                if ($partial && $this->collFunctionPhases) {
+                    foreach ($this->collFunctionPhases as $obj) {
+                        if ($obj->isNew()) {
+                            $collFunctionPhases[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFunctionPhases = $collFunctionPhases;
+                $this->collFunctionPhasesPartial = false;
+            }
+        }
+
+        return $this->collFunctionPhases;
+    }
+
+    /**
+     * Sets a collection of ChildFunctionPhase objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $functionPhases A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setFunctionPhases(Collection $functionPhases, ConnectionInterface $con = null)
+    {
+        /** @var ChildFunctionPhase[] $functionPhasesToDelete */
+        $functionPhasesToDelete = $this->getFunctionPhases(new Criteria(), $con)->diff($functionPhases);
+
+
+        $this->functionPhasesScheduledForDeletion = $functionPhasesToDelete;
+
+        foreach ($functionPhasesToDelete as $functionPhaseRemoved) {
+            $functionPhaseRemoved->setSkill(null);
+        }
+
+        $this->collFunctionPhases = null;
+        foreach ($functionPhases as $functionPhase) {
+            $this->addFunctionPhase($functionPhase);
+        }
+
+        $this->collFunctionPhases = $functionPhases;
+        $this->collFunctionPhasesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related FunctionPhase objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related FunctionPhase objects.
+     * @throws PropelException
+     */
+    public function countFunctionPhases(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFunctionPhasesPartial && !$this->isNew();
+        if (null === $this->collFunctionPhases || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFunctionPhases) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFunctionPhases());
+            }
+
+            $query = ChildFunctionPhaseQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collFunctionPhases);
+    }
+
+    /**
+     * Method called to associate a ChildFunctionPhase object to this object
+     * through the ChildFunctionPhase foreign key attribute.
+     *
+     * @param  ChildFunctionPhase $l ChildFunctionPhase
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addFunctionPhase(ChildFunctionPhase $l)
+    {
+        if ($this->collFunctionPhases === null) {
+            $this->initFunctionPhases();
+            $this->collFunctionPhasesPartial = true;
+        }
+
+        if (!$this->collFunctionPhases->contains($l)) {
+            $this->doAddFunctionPhase($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildFunctionPhase $functionPhase The ChildFunctionPhase object to add.
+     */
+    protected function doAddFunctionPhase(ChildFunctionPhase $functionPhase)
+    {
+        $this->collFunctionPhases[]= $functionPhase;
+        $functionPhase->setSkill($this);
+    }
+
+    /**
+     * @param  ChildFunctionPhase $functionPhase The ChildFunctionPhase object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeFunctionPhase(ChildFunctionPhase $functionPhase)
+    {
+        if ($this->getFunctionPhases()->contains($functionPhase)) {
+            $pos = $this->collFunctionPhases->search($functionPhase);
+            $this->collFunctionPhases->remove($pos);
+            if (null === $this->functionPhasesScheduledForDeletion) {
+                $this->functionPhasesScheduledForDeletion = clone $this->collFunctionPhases;
+                $this->functionPhasesScheduledForDeletion->clear();
+            }
+            $this->functionPhasesScheduledForDeletion[]= clone $functionPhase;
+            $functionPhase->setSkill(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related FunctionPhases from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildFunctionPhase[] List of ChildFunctionPhase objects
+     */
+    public function getFunctionPhasesJoinParent(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildFunctionPhaseQuery::create(null, $criteria);
+        $query->joinWith('Parent', $joinBehavior);
+
+        return $this->getFunctionPhases($query, $con);
+    }
+
+    /**
      * Clears out the collSkillVersions collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -8043,6 +8643,16 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collKstrukturs) {
+                foreach ($this->collKstrukturs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collFunctionPhases) {
+                foreach ($this->collFunctionPhases as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSkillVersions) {
                 foreach ($this->collSkillVersions as $o) {
                     $o->clearAllReferences($deep);
@@ -8085,6 +8695,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->collPictures = null;
         $this->collVideos = null;
         $this->collReferences = null;
+        $this->collKstrukturs = null;
+        $this->collFunctionPhases = null;
         $this->collSkillVersions = null;
         $this->collSkillsRelatedBySkillId = null;
         $this->collSkillsRelatedByDependsId = null;

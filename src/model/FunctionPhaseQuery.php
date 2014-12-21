@@ -2,10 +2,10 @@
 
 namespace gossi\trixionary\model;
 
-use gossi\trixionary\model\Base\Video as BaseVideo;
+use gossi\trixionary\model\Base\FunctionPhaseQuery as BaseFunctionPhaseQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'kk_trixionary_video' table.
+ * Skeleton subclass for performing query and update operations on the 'kk_trixionary_function_phase' table.
  *
  *
  *
@@ -14,7 +14,7 @@ use gossi\trixionary\model\Base\Video as BaseVideo;
  * long as it does not already exist in the output directory.
  *
  */
-class Video extends BaseVideo
+class FunctionPhaseQuery extends BaseFunctionPhaseQuery
 {
 
 }

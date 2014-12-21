@@ -90,6 +90,12 @@ abstract class Position implements ActiveRecordInterface
     protected $sport_id;
 
     /**
+     * The value for the description field.
+     * @var        string
+     */
+    protected $description;
+
+    /**
      * @var        ChildSport
      */
     protected $aSport;
@@ -384,6 +390,16 @@ abstract class Position implements ActiveRecordInterface
     }
 
     /**
+     * Get the [description] column value.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -468,6 +484,26 @@ abstract class Position implements ActiveRecordInterface
     } // setSportId()
 
     /**
+     * Set the value of [description] column.
+     *
+     * @param  string $v new value
+     * @return $this|\gossi\trixionary\model\Position The current object (for fluent API support)
+     */
+    public function setDescription($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[PositionTableMap::COL_DESCRIPTION] = true;
+        }
+
+        return $this;
+    } // setDescription()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -514,6 +550,9 @@ abstract class Position implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PositionTableMap::translateFieldName('SportId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sport_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PositionTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->description = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -522,7 +561,7 @@ abstract class Position implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = PositionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PositionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Position'), 0, $e);
@@ -787,6 +826,9 @@ abstract class Position implements ActiveRecordInterface
         if ($this->isColumnModified(PositionTableMap::COL_SPORT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`sport_id`';
         }
+        if ($this->isColumnModified(PositionTableMap::COL_DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`description`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `kk_trixionary_position` (%s) VALUES (%s)',
@@ -809,6 +851,9 @@ abstract class Position implements ActiveRecordInterface
                         break;
                     case '`sport_id`':
                         $stmt->bindValue($identifier, $this->sport_id, PDO::PARAM_INT);
+                        break;
+                    case '`description`':
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -884,6 +929,9 @@ abstract class Position implements ActiveRecordInterface
             case 3:
                 return $this->getSportId();
                 break;
+            case 4:
+                return $this->getDescription();
+                break;
             default:
                 return null;
                 break;
@@ -918,6 +966,7 @@ abstract class Position implements ActiveRecordInterface
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getSlug(),
             $keys[3] => $this->getSportId(),
+            $keys[4] => $this->getDescription(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1016,6 +1065,9 @@ abstract class Position implements ActiveRecordInterface
             case 3:
                 $this->setSportId($value);
                 break;
+            case 4:
+                $this->setDescription($value);
+                break;
         } // switch()
 
         return $this;
@@ -1053,6 +1105,9 @@ abstract class Position implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setSportId($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setDescription($arr[$keys[4]]);
         }
     }
 
@@ -1106,6 +1161,9 @@ abstract class Position implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PositionTableMap::COL_SPORT_ID)) {
             $criteria->add(PositionTableMap::COL_SPORT_ID, $this->sport_id);
+        }
+        if ($this->isColumnModified(PositionTableMap::COL_DESCRIPTION)) {
+            $criteria->add(PositionTableMap::COL_DESCRIPTION, $this->description);
         }
 
         return $criteria;
@@ -1196,6 +1254,7 @@ abstract class Position implements ActiveRecordInterface
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSlug($this->getSlug());
         $copyObj->setSportId($this->getSportId());
+        $copyObj->setDescription($this->getDescription());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1964,6 +2023,7 @@ abstract class Position implements ActiveRecordInterface
         $this->title = null;
         $this->slug = null;
         $this->sport_id = null;
+        $this->description = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

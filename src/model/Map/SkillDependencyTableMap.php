@@ -141,8 +141,8 @@ class SkillDependencyTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('depends_id' => 'id', ), 'RESTRICT', null);
-        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'RESTRICT', null);
+        $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('depends_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**

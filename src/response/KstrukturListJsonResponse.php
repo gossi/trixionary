@@ -3,15 +3,15 @@ namespace gossi\trixionary\response;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use gossi\trixionary\model\Movement;
+use gossi\trixionary\model\Kstruktur;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * JsonResponse for List all movements
+ * JsonResponse for List all kstrukturs
  * 
  * @author gossi
  */
-class MovementListJsonResponse extends AbstractMovementResponse {
+class KstrukturListJsonResponse extends AbstractKstrukturResponse {
 
 	/**
 	 * Automatically generated method, will be overridden
@@ -23,9 +23,9 @@ class MovementListJsonResponse extends AbstractMovementResponse {
 		$out = [];
 
 		// build model
-		$out['movements'] = [];
-		foreach ($this->data as $movement) {
-			$out['movements'][] = $this->movementToArray($movement);
+		$out['kstrukturs'] = [];
+		foreach ($this->data as $kstruktur) {
+			$out['kstrukturs'][] = $this->kstrukturToArray($kstruktur);
 		}
 
 		// meta

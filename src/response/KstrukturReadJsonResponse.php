@@ -1,16 +1,17 @@
 <?php
 namespace gossi\trixionary\response;
 
-use keeko\core\action\AbstractResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use gossi\trixionary\model\Kstruktur;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * JsonResponse for Reads a stance
+ * JsonResponse for Reads a kstruktur
  * 
  * @author gossi
  */
-class StanceReadJsonResponse extends AbstractResponse {
+class KstrukturReadJsonResponse extends AbstractKstrukturResponse {
 
 	/**
 	 * Automatically generated method, will be overridden
@@ -19,6 +20,7 @@ class StanceReadJsonResponse extends AbstractResponse {
 	 * @return Response
 	 */
 	public function run(Request $request) {
-		return new JsonResponse();
+		// return response
+		return new JsonResponse($this->kstrukturToArray($this->data));
 	}
 }
