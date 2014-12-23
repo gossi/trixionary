@@ -1,4 +1,4 @@
-INSERT INTO `keeko`.`kk_trixionary_sport` 
+INSERT INTO `kk_trixionary_sport` 
 	(`title`, `slug`, 
 	`skill_slug`, `skill_label`, `skill_plural_label`, 
 	`group_slug`, `group_label`, `group_plural_label`,
