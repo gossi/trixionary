@@ -13,6 +13,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use gossi\trixionary\model\FunctionPhase as ChildFunctionPhase;
 use gossi\trixionary\model\FunctionPhaseQuery as ChildFunctionPhaseQuery;
+use gossi\trixionary\model\StructureNodeQuery as ChildStructureNodeQuery;
 use gossi\trixionary\model\Map\FunctionPhaseTableMap;
 
 /**
@@ -24,31 +25,29 @@ use gossi\trixionary\model\Map\FunctionPhaseTableMap;
  * @method     ChildFunctionPhaseQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method     ChildFunctionPhaseQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildFunctionPhaseQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildFunctionPhaseQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
  *
  * @method     ChildFunctionPhaseQuery groupById() Group by the id column
  * @method     ChildFunctionPhaseQuery groupByType() Group by the type column
  * @method     ChildFunctionPhaseQuery groupBySkillId() Group by the skill_id column
  * @method     ChildFunctionPhaseQuery groupByTitle() Group by the title column
- * @method     ChildFunctionPhaseQuery groupByParentId() Group by the parent_id column
  *
  * @method     ChildFunctionPhaseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildFunctionPhaseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildFunctionPhaseQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildFunctionPhaseQuery leftJoinSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the Skill relation
- * @method     ChildFunctionPhaseQuery rightJoinSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Skill relation
- * @method     ChildFunctionPhaseQuery innerJoinSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the Skill relation
+ * @method     ChildFunctionPhaseQuery leftJoinStructureNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNode relation
+ * @method     ChildFunctionPhaseQuery rightJoinStructureNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNode relation
+ * @method     ChildFunctionPhaseQuery innerJoinStructureNode($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNode relation
  *
- * @method     ChildFunctionPhaseQuery leftJoinParent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Parent relation
- * @method     ChildFunctionPhaseQuery rightJoinParent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Parent relation
- * @method     ChildFunctionPhaseQuery innerJoinParent($relationAlias = null) Adds a INNER JOIN clause to the query using the Parent relation
+ * @method     ChildFunctionPhaseQuery leftJoinSkillRelatedBySkillId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedBySkillId relation
+ * @method     ChildFunctionPhaseQuery rightJoinSkillRelatedBySkillId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedBySkillId relation
+ * @method     ChildFunctionPhaseQuery innerJoinSkillRelatedBySkillId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedBySkillId relation
  *
- * @method     ChildFunctionPhaseQuery leftJoinChildren($relationAlias = null) Adds a LEFT JOIN clause to the query using the Children relation
- * @method     ChildFunctionPhaseQuery rightJoinChildren($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Children relation
- * @method     ChildFunctionPhaseQuery innerJoinChildren($relationAlias = null) Adds a INNER JOIN clause to the query using the Children relation
+ * @method     ChildFunctionPhaseQuery leftJoinRootSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the RootSkill relation
+ * @method     ChildFunctionPhaseQuery rightJoinRootSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the RootSkill relation
+ * @method     ChildFunctionPhaseQuery innerJoinRootSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the RootSkill relation
  *
- * @method     \gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\FunctionPhaseQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildFunctionPhase findOne(ConnectionInterface $con = null) Return the first ChildFunctionPhase matching the query
  * @method     ChildFunctionPhase findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFunctionPhase matching the query, or a new ChildFunctionPhase object populated from the query conditions when no match is found
@@ -57,18 +56,16 @@ use gossi\trixionary\model\Map\FunctionPhaseTableMap;
  * @method     ChildFunctionPhase findOneByType(string $type) Return the first ChildFunctionPhase filtered by the type column
  * @method     ChildFunctionPhase findOneBySkillId(int $skill_id) Return the first ChildFunctionPhase filtered by the skill_id column
  * @method     ChildFunctionPhase findOneByTitle(string $title) Return the first ChildFunctionPhase filtered by the title column
- * @method     ChildFunctionPhase findOneByParentId(int $parent_id) Return the first ChildFunctionPhase filtered by the parent_id column
  *
  * @method     ChildFunctionPhase[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildFunctionPhase objects based on current ModelCriteria
  * @method     ChildFunctionPhase[]|ObjectCollection findById(int $id) Return ChildFunctionPhase objects filtered by the id column
  * @method     ChildFunctionPhase[]|ObjectCollection findByType(string $type) Return ChildFunctionPhase objects filtered by the type column
  * @method     ChildFunctionPhase[]|ObjectCollection findBySkillId(int $skill_id) Return ChildFunctionPhase objects filtered by the skill_id column
  * @method     ChildFunctionPhase[]|ObjectCollection findByTitle(string $title) Return ChildFunctionPhase objects filtered by the title column
- * @method     ChildFunctionPhase[]|ObjectCollection findByParentId(int $parent_id) Return ChildFunctionPhase objects filtered by the parent_id column
  * @method     ChildFunctionPhase[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class FunctionPhaseQuery extends ModelCriteria
+abstract class FunctionPhaseQuery extends ChildStructureNodeQuery
 {
 
     /**
@@ -156,7 +153,7 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `type`, `skill_id`, `title`, `parent_id` FROM `kk_trixionary_function_phase` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `type`, `skill_id`, `title` FROM `kk_trixionary_function_phase` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -256,6 +253,8 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
+     * @see       filterByStructureNode()
+     *
      * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -326,7 +325,7 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      * $query->filterBySkillId(array('min' => 12)); // WHERE skill_id > 12
      * </code>
      *
-     * @see       filterBySkill()
+     * @see       filterBySkillRelatedBySkillId()
      *
      * @param     mixed $skillId The value to use as filter.
      *              Use scalar values for equality.
@@ -389,46 +388,80 @@ abstract class FunctionPhaseQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the parent_id column
+     * Filter the query by a related \gossi\trixionary\model\StructureNode object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByParentId(1234); // WHERE parent_id = 1234
-     * $query->filterByParentId(array(12, 34)); // WHERE parent_id IN (12, 34)
-     * $query->filterByParentId(array('min' => 12)); // WHERE parent_id > 12
-     * </code>
+     * @param \gossi\trixionary\model\StructureNode|ObjectCollection $structureNode The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @see       filterByParent()
+     * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @param     mixed $parentId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildFunctionPhaseQuery The current query, for fluid interface
+     * @return ChildFunctionPhaseQuery The current query, for fluid interface
      */
-    public function filterByParentId($parentId = null, $comparison = null)
+    public function filterByStructureNode($structureNode, $comparison = null)
     {
-        if (is_array($parentId)) {
-            $useMinMax = false;
-            if (isset($parentId['min'])) {
-                $this->addUsingAlias(FunctionPhaseTableMap::COL_PARENT_ID, $parentId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($parentId['max'])) {
-                $this->addUsingAlias(FunctionPhaseTableMap::COL_PARENT_ID, $parentId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
+        if ($structureNode instanceof \gossi\trixionary\model\StructureNode) {
+            return $this
+                ->addUsingAlias(FunctionPhaseTableMap::COL_ID, $structureNode->getId(), $comparison);
+        } elseif ($structureNode instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
+
+            return $this
+                ->addUsingAlias(FunctionPhaseTableMap::COL_ID, $structureNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByStructureNode() only accepts arguments of type \gossi\trixionary\model\StructureNode or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the StructureNode relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildFunctionPhaseQuery The current query, for fluid interface
+     */
+    public function joinStructureNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('StructureNode');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
         }
 
-        return $this->addUsingAlias(FunctionPhaseTableMap::COL_PARENT_ID, $parentId, $comparison);
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'StructureNode');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the StructureNode relation StructureNode object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\StructureNodeQuery A secondary query class using the current class as primary query
+     */
+    public function useStructureNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinStructureNode($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'StructureNode', '\gossi\trixionary\model\StructureNodeQuery');
     }
 
     /**
@@ -441,7 +474,7 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      *
      * @return ChildFunctionPhaseQuery The current query, for fluid interface
      */
-    public function filterBySkill($skill, $comparison = null)
+    public function filterBySkillRelatedBySkillId($skill, $comparison = null)
     {
         if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
@@ -454,22 +487,22 @@ abstract class FunctionPhaseQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(FunctionPhaseTableMap::COL_SKILL_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterBySkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+            throw new PropelException('filterBySkillRelatedBySkillId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Skill relation
+     * Adds a JOIN clause to the query using the SkillRelatedBySkillId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildFunctionPhaseQuery The current query, for fluid interface
      */
-    public function joinSkill($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSkillRelatedBySkillId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Skill');
+        $relationMap = $tableMap->getRelation('SkillRelatedBySkillId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -484,14 +517,14 @@ abstract class FunctionPhaseQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Skill');
+            $this->addJoinObject($join, 'SkillRelatedBySkillId');
         }
 
         return $this;
     }
 
     /**
-     * Use the Skill relation Skill object
+     * Use the SkillRelatedBySkillId relation Skill object
      *
      * @see useQuery()
      *
@@ -501,125 +534,48 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useSkillQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSkillRelatedBySkillIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinSkill($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Skill', '\gossi\trixionary\model\SkillQuery');
+            ->joinSkillRelatedBySkillId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedBySkillId', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**
-     * Filter the query by a related \gossi\trixionary\model\FunctionPhase object
+     * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\FunctionPhase|ObjectCollection $functionPhase The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildFunctionPhaseQuery The current query, for fluid interface
-     */
-    public function filterByParent($functionPhase, $comparison = null)
-    {
-        if ($functionPhase instanceof \gossi\trixionary\model\FunctionPhase) {
-            return $this
-                ->addUsingAlias(FunctionPhaseTableMap::COL_PARENT_ID, $functionPhase->getId(), $comparison);
-        } elseif ($functionPhase instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(FunctionPhaseTableMap::COL_PARENT_ID, $functionPhase->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByParent() only accepts arguments of type \gossi\trixionary\model\FunctionPhase or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Parent relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildFunctionPhaseQuery The current query, for fluid interface
-     */
-    public function joinParent($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Parent');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Parent');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Parent relation FunctionPhase object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \gossi\trixionary\model\FunctionPhaseQuery A secondary query class using the current class as primary query
-     */
-    public function useParentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinParent($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Parent', '\gossi\trixionary\model\FunctionPhaseQuery');
-    }
-
-    /**
-     * Filter the query by a related \gossi\trixionary\model\FunctionPhase object
-     *
-     * @param \gossi\trixionary\model\FunctionPhase|ObjectCollection $functionPhase  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildFunctionPhaseQuery The current query, for fluid interface
      */
-    public function filterByChildren($functionPhase, $comparison = null)
+    public function filterByRootSkill($skill, $comparison = null)
     {
-        if ($functionPhase instanceof \gossi\trixionary\model\FunctionPhase) {
+        if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
-                ->addUsingAlias(FunctionPhaseTableMap::COL_ID, $functionPhase->getParentId(), $comparison);
-        } elseif ($functionPhase instanceof ObjectCollection) {
+                ->addUsingAlias(FunctionPhaseTableMap::COL_ID, $skill->getFunctionPhaseId(), $comparison);
+        } elseif ($skill instanceof ObjectCollection) {
             return $this
-                ->useChildrenQuery()
-                ->filterByPrimaryKeys($functionPhase->getPrimaryKeys())
+                ->useRootSkillQuery()
+                ->filterByPrimaryKeys($skill->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByChildren() only accepts arguments of type \gossi\trixionary\model\FunctionPhase or Collection');
+            throw new PropelException('filterByRootSkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Children relation
+     * Adds a JOIN clause to the query using the RootSkill relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildFunctionPhaseQuery The current query, for fluid interface
      */
-    public function joinChildren($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinRootSkill($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Children');
+        $relationMap = $tableMap->getRelation('RootSkill');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -634,14 +590,14 @@ abstract class FunctionPhaseQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Children');
+            $this->addJoinObject($join, 'RootSkill');
         }
 
         return $this;
     }
 
     /**
-     * Use the Children relation FunctionPhase object
+     * Use the RootSkill relation Skill object
      *
      * @see useQuery()
      *
@@ -649,13 +605,13 @@ abstract class FunctionPhaseQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \gossi\trixionary\model\FunctionPhaseQuery A secondary query class using the current class as primary query
+     * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useChildrenQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useRootSkillQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinChildren($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Children', '\gossi\trixionary\model\FunctionPhaseQuery');
+            ->joinRootSkill($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'RootSkill', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**

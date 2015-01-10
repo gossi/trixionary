@@ -59,7 +59,7 @@ class KstrukturTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class KstrukturTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the id field
@@ -92,11 +92,6 @@ class KstrukturTableMap extends TableMap
     const COL_TITLE = 'kk_trixionary_kstruktur.title';
 
     /**
-     * the column name for the parent_id field
-     */
-    const COL_PARENT_ID = 'kk_trixionary_kstruktur.parent_id';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -108,11 +103,11 @@ class KstrukturTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', 'ParentId', ),
-        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', 'parentId', ),
-        self::TYPE_COLNAME       => array(KstrukturTableMap::COL_ID, KstrukturTableMap::COL_TYPE, KstrukturTableMap::COL_SKILL_ID, KstrukturTableMap::COL_TITLE, KstrukturTableMap::COL_PARENT_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', 'parent_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', ),
+        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', ),
+        self::TYPE_COLNAME       => array(KstrukturTableMap::COL_ID, KstrukturTableMap::COL_TYPE, KstrukturTableMap::COL_SKILL_ID, KstrukturTableMap::COL_TITLE, ),
+        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -122,11 +117,11 @@ class KstrukturTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, 'ParentId' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, 'parentId' => 4, ),
-        self::TYPE_COLNAME       => array(KstrukturTableMap::COL_ID => 0, KstrukturTableMap::COL_TYPE => 1, KstrukturTableMap::COL_SKILL_ID => 2, KstrukturTableMap::COL_TITLE => 3, KstrukturTableMap::COL_PARENT_ID => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, 'parent_id' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, ),
+        self::TYPE_COLNAME       => array(KstrukturTableMap::COL_ID => 0, KstrukturTableMap::COL_TYPE => 1, KstrukturTableMap::COL_SKILL_ID => 2, KstrukturTableMap::COL_TITLE => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -144,13 +139,12 @@ class KstrukturTableMap extends TableMap
         $this->setIdentifierQuoting(true);
         $this->setClassName('\\gossi\\trixionary\\model\\Kstruktur');
         $this->setPackage('');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignPrimaryKey('id', 'Id', 'INTEGER' , 'kk_trixionary_structure_node', 'id', true, null, null);
         $this->addColumn('type', 'Type', 'VARCHAR', false, 255, null);
         $this->addForeignKey('skill_id', 'SkillId', 'INTEGER', 'kk_trixionary_skill', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
-        $this->addForeignKey('parent_id', 'ParentId', 'INTEGER', 'kk_trixionary_kstruktur', 'id', false, null, null);
     } // initialize()
 
     /**
@@ -158,19 +152,23 @@ class KstrukturTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Parent', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::MANY_TO_ONE, array('parent_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Children', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), 'CASCADE', null, 'Childrens');
+        $this->addRelation('StructureNode', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('RootSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'kstruktur_id', ), null, null, 'RootSkills');
     } // buildRelations()
+
     /**
-     * Method to invalidate the instance pool of all tables related to kk_trixionary_kstruktur     * by a foreign key with ON DELETE CASCADE
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
      */
-    public static function clearRelatedInstancePool()
+    public function getBehaviors()
     {
-        // Invalidate objects in related instance pools,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        KstrukturTableMap::clearInstancePool();
-    }
+        return array(
+            'concrete_inheritance' => array('extends' => 'structure_node', 'descendant_column' => 'descendant_class', 'copy_data_to_parent' => 'true', 'copy_data_to_child' => 'false', 'schema' => '', 'exclude_behaviors' => '', ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -317,13 +315,11 @@ class KstrukturTableMap extends TableMap
             $criteria->addSelectColumn(KstrukturTableMap::COL_TYPE);
             $criteria->addSelectColumn(KstrukturTableMap::COL_SKILL_ID);
             $criteria->addSelectColumn(KstrukturTableMap::COL_TITLE);
-            $criteria->addSelectColumn(KstrukturTableMap::COL_PARENT_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.type');
             $criteria->addSelectColumn($alias . '.skill_id');
             $criteria->addSelectColumn($alias . '.title');
-            $criteria->addSelectColumn($alias . '.parent_id');
         }
     }
 
@@ -421,10 +417,6 @@ class KstrukturTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Kstruktur object
-        }
-
-        if ($criteria->containsKey(KstrukturTableMap::COL_ID) && $criteria->keyContainsValue(KstrukturTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.KstrukturTableMap::COL_ID.')');
         }
 
 

@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use gossi\trixionary\model\FunctionPhase;
-use gossi\trixionary\model\FunctionPhaseQuery;
+use gossi\trixionary\model\StructureNode;
+use gossi\trixionary\model\StructureNodeQuery;
 
 
 /**
- * This class defines the structure of the 'kk_trixionary_function_phase' table.
+ * This class defines the structure of the 'kk_trixionary_structure_node' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use gossi\trixionary\model\FunctionPhaseQuery;
  * (i.e. if it's a text column type).
  *
  */
-class FunctionPhaseTableMap extends TableMap
+class StructureNodeTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class FunctionPhaseTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.FunctionPhaseTableMap';
+    const CLASS_NAME = '.Map.StructureNodeTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class FunctionPhaseTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'kk_trixionary_function_phase';
+    const TABLE_NAME = 'kk_trixionary_structure_node';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\gossi\\trixionary\\model\\FunctionPhase';
+    const OM_CLASS = '\\gossi\\trixionary\\model\\StructureNode';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'FunctionPhase';
+    const CLASS_DEFAULT = 'StructureNode';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,27 +69,32 @@ class FunctionPhaseTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'kk_trixionary_function_phase.id';
+    const COL_ID = 'kk_trixionary_structure_node.id';
 
     /**
      * the column name for the type field
      */
-    const COL_TYPE = 'kk_trixionary_function_phase.type';
+    const COL_TYPE = 'kk_trixionary_structure_node.type';
 
     /**
      * the column name for the skill_id field
      */
-    const COL_SKILL_ID = 'kk_trixionary_function_phase.skill_id';
+    const COL_SKILL_ID = 'kk_trixionary_structure_node.skill_id';
 
     /**
      * the column name for the title field
      */
-    const COL_TITLE = 'kk_trixionary_function_phase.title';
+    const COL_TITLE = 'kk_trixionary_structure_node.title';
+
+    /**
+     * the column name for the descendant_class field
+     */
+    const COL_DESCENDANT_CLASS = 'kk_trixionary_structure_node.descendant_class';
 
     /**
      * The default string format for model objects of the related table
@@ -103,11 +108,11 @@ class FunctionPhaseTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', ),
-        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', ),
-        self::TYPE_COLNAME       => array(FunctionPhaseTableMap::COL_ID, FunctionPhaseTableMap::COL_TYPE, FunctionPhaseTableMap::COL_SKILL_ID, FunctionPhaseTableMap::COL_TITLE, ),
-        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'Type', 'SkillId', 'Title', 'DescendantClass', ),
+        self::TYPE_CAMELNAME     => array('id', 'type', 'skillId', 'title', 'descendantClass', ),
+        self::TYPE_COLNAME       => array(StructureNodeTableMap::COL_ID, StructureNodeTableMap::COL_TYPE, StructureNodeTableMap::COL_SKILL_ID, StructureNodeTableMap::COL_TITLE, StructureNodeTableMap::COL_DESCENDANT_CLASS, ),
+        self::TYPE_FIELDNAME     => array('id', 'type', 'skill_id', 'title', 'descendant_class', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -117,11 +122,11 @@ class FunctionPhaseTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, ),
-        self::TYPE_COLNAME       => array(FunctionPhaseTableMap::COL_ID => 0, FunctionPhaseTableMap::COL_TYPE => 1, FunctionPhaseTableMap::COL_SKILL_ID => 2, FunctionPhaseTableMap::COL_TITLE => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Type' => 1, 'SkillId' => 2, 'Title' => 3, 'DescendantClass' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'type' => 1, 'skillId' => 2, 'title' => 3, 'descendantClass' => 4, ),
+        self::TYPE_COLNAME       => array(StructureNodeTableMap::COL_ID => 0, StructureNodeTableMap::COL_TYPE => 1, StructureNodeTableMap::COL_SKILL_ID => 2, StructureNodeTableMap::COL_TITLE => 3, StructureNodeTableMap::COL_DESCENDANT_CLASS => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'type' => 1, 'skill_id' => 2, 'title' => 3, 'descendant_class' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -134,17 +139,18 @@ class FunctionPhaseTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('kk_trixionary_function_phase');
-        $this->setPhpName('FunctionPhase');
+        $this->setName('kk_trixionary_structure_node');
+        $this->setPhpName('StructureNode');
         $this->setIdentifierQuoting(true);
-        $this->setClassName('\\gossi\\trixionary\\model\\FunctionPhase');
+        $this->setClassName('\\gossi\\trixionary\\model\\StructureNode');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addForeignPrimaryKey('id', 'Id', 'INTEGER' , 'kk_trixionary_structure_node', 'id', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('type', 'Type', 'VARCHAR', false, 255, null);
         $this->addForeignKey('skill_id', 'SkillId', 'INTEGER', 'kk_trixionary_skill', 'id', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
+        $this->addColumn('descendant_class', 'DescendantClass', 'VARCHAR', false, 100, null);
     } // initialize()
 
     /**
@@ -152,9 +158,13 @@ class FunctionPhaseTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('StructureNode', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('RootSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'function_phase_id', ), null, null, 'RootSkills');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('StructureNodeParentRelatedById', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array('id' => 'id', ), null, null, 'StructureNodeParentsRelatedById');
+        $this->addRelation('StructureNodeParentRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), null, null, 'StructureNodeParentsRelatedByParentId');
+        $this->addRelation('Kstruktur', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('FunctionPhase', '\\gossi\\trixionary\\model\\FunctionPhase', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('StructureNodeRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), null, null, 'StructureNodesRelatedByParentId');
+        $this->addRelation('StructureNodeRelatedById', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), null, null, 'StructureNodesRelatedById');
     } // buildRelations()
 
     /**
@@ -166,9 +176,19 @@ class FunctionPhaseTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'concrete_inheritance' => array('extends' => 'structure_node', 'descendant_column' => 'descendant_class', 'copy_data_to_parent' => 'true', 'copy_data_to_child' => 'false', 'schema' => '', 'exclude_behaviors' => '', ),
+            'concrete_inheritance_parent' => array('descendant_column' => 'descendant_class', ),
         );
     } // getBehaviors()
+    /**
+     * Method to invalidate the instance pool of all tables related to kk_trixionary_structure_node     * by a foreign key with ON DELETE CASCADE
+     */
+    public static function clearRelatedInstancePool()
+    {
+        // Invalidate objects in related instance pools,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        KstrukturTableMap::clearInstancePool();
+        FunctionPhaseTableMap::clearInstancePool();
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -227,7 +247,7 @@ class FunctionPhaseTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? FunctionPhaseTableMap::CLASS_DEFAULT : FunctionPhaseTableMap::OM_CLASS;
+        return $withPrefix ? StructureNodeTableMap::CLASS_DEFAULT : StructureNodeTableMap::OM_CLASS;
     }
 
     /**
@@ -241,22 +261,22 @@ class FunctionPhaseTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (FunctionPhase object, last column rank)
+     * @return array           (StructureNode object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = FunctionPhaseTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = FunctionPhaseTableMap::getInstanceFromPool($key))) {
+        $key = StructureNodeTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = StructureNodeTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + FunctionPhaseTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + StructureNodeTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = FunctionPhaseTableMap::OM_CLASS;
-            /** @var FunctionPhase $obj */
+            $cls = StructureNodeTableMap::OM_CLASS;
+            /** @var StructureNode $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            FunctionPhaseTableMap::addInstanceToPool($obj, $key);
+            StructureNodeTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -279,18 +299,18 @@ class FunctionPhaseTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = FunctionPhaseTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = FunctionPhaseTableMap::getInstanceFromPool($key))) {
+            $key = StructureNodeTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = StructureNodeTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var FunctionPhase $obj */
+                /** @var StructureNode $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                FunctionPhaseTableMap::addInstanceToPool($obj, $key);
+                StructureNodeTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -311,15 +331,17 @@ class FunctionPhaseTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(FunctionPhaseTableMap::COL_ID);
-            $criteria->addSelectColumn(FunctionPhaseTableMap::COL_TYPE);
-            $criteria->addSelectColumn(FunctionPhaseTableMap::COL_SKILL_ID);
-            $criteria->addSelectColumn(FunctionPhaseTableMap::COL_TITLE);
+            $criteria->addSelectColumn(StructureNodeTableMap::COL_ID);
+            $criteria->addSelectColumn(StructureNodeTableMap::COL_TYPE);
+            $criteria->addSelectColumn(StructureNodeTableMap::COL_SKILL_ID);
+            $criteria->addSelectColumn(StructureNodeTableMap::COL_TITLE);
+            $criteria->addSelectColumn(StructureNodeTableMap::COL_DESCENDANT_CLASS);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.type');
             $criteria->addSelectColumn($alias . '.skill_id');
             $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.descendant_class');
         }
     }
 
@@ -332,7 +354,7 @@ class FunctionPhaseTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(FunctionPhaseTableMap::DATABASE_NAME)->getTable(FunctionPhaseTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(StructureNodeTableMap::DATABASE_NAME)->getTable(StructureNodeTableMap::TABLE_NAME);
     }
 
     /**
@@ -340,16 +362,16 @@ class FunctionPhaseTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(FunctionPhaseTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(FunctionPhaseTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new FunctionPhaseTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(StructureNodeTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(StructureNodeTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new StructureNodeTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a FunctionPhase or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a StructureNode or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or FunctionPhase object or primary key or array of primary keys
+     * @param mixed               $values Criteria or StructureNode object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -360,27 +382,27 @@ class FunctionPhaseTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(FunctionPhaseTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StructureNodeTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \gossi\trixionary\model\FunctionPhase) { // it's a model object
+        } elseif ($values instanceof \gossi\trixionary\model\StructureNode) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(FunctionPhaseTableMap::DATABASE_NAME);
-            $criteria->add(FunctionPhaseTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(StructureNodeTableMap::DATABASE_NAME);
+            $criteria->add(StructureNodeTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = FunctionPhaseQuery::create()->mergeWith($criteria);
+        $query = StructureNodeQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            FunctionPhaseTableMap::clearInstancePool();
+            StructureNodeTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                FunctionPhaseTableMap::removeInstanceFromPool($singleval);
+                StructureNodeTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -388,20 +410,20 @@ class FunctionPhaseTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the kk_trixionary_function_phase table.
+     * Deletes all rows from the kk_trixionary_structure_node table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return FunctionPhaseQuery::create()->doDeleteAll($con);
+        return StructureNodeQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a FunctionPhase or Criteria object.
+     * Performs an INSERT on the database, given a StructureNode or Criteria object.
      *
-     * @param mixed               $criteria Criteria or FunctionPhase object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or StructureNode object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -410,18 +432,22 @@ class FunctionPhaseTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(FunctionPhaseTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(StructureNodeTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from FunctionPhase object
+            $criteria = $criteria->buildCriteria(); // build Criteria from StructureNode object
+        }
+
+        if ($criteria->containsKey(StructureNodeTableMap::COL_ID) && $criteria->keyContainsValue(StructureNodeTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.StructureNodeTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = FunctionPhaseQuery::create()->mergeWith($criteria);
+        $query = StructureNodeQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -430,7 +456,7 @@ class FunctionPhaseTableMap extends TableMap
         });
     }
 
-} // FunctionPhaseTableMap
+} // StructureNodeTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-FunctionPhaseTableMap::buildTableMap();
+StructureNodeTableMap::buildTableMap();

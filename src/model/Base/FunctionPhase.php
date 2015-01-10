@@ -20,6 +20,8 @@ use gossi\trixionary\model\FunctionPhase as ChildFunctionPhase;
 use gossi\trixionary\model\FunctionPhaseQuery as ChildFunctionPhaseQuery;
 use gossi\trixionary\model\Skill as ChildSkill;
 use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
+use gossi\trixionary\model\StructureNode as ChildStructureNode;
+use gossi\trixionary\model\StructureNodeQuery as ChildStructureNodeQuery;
 use gossi\trixionary\model\Map\FunctionPhaseTableMap;
 
 /**
@@ -29,7 +31,7 @@ use gossi\trixionary\model\Map\FunctionPhaseTableMap;
  *
 * @package    propel.generator..Base
 */
-abstract class FunctionPhase implements ActiveRecordInterface
+abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -88,26 +90,20 @@ abstract class FunctionPhase implements ActiveRecordInterface
     protected $title;
 
     /**
-     * The value for the parent_id field.
-     * @var        int
+     * @var        ChildStructureNode
      */
-    protected $parent_id;
+    protected $aStructureNode;
 
     /**
      * @var        ChildSkill
      */
-    protected $aSkill;
+    protected $aSkillRelatedBySkillId;
 
     /**
-     * @var        ChildFunctionPhase
+     * @var        ObjectCollection|ChildSkill[] Collection to store aggregation of ChildSkill objects.
      */
-    protected $aParent;
-
-    /**
-     * @var        ObjectCollection|ChildFunctionPhase[] Collection to store aggregation of ChildFunctionPhase objects.
-     */
-    protected $collChildrens;
-    protected $collChildrensPartial;
+    protected $collRootSkills;
+    protected $collRootSkillsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -119,9 +115,9 @@ abstract class FunctionPhase implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildFunctionPhase[]
+     * @var ObjectCollection|ChildSkill[]
      */
-    protected $childrensScheduledForDeletion = null;
+    protected $rootSkillsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of gossi\trixionary\model\Base\FunctionPhase object.
@@ -381,16 +377,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
     }
 
     /**
-     * Get the [parent_id] column value.
-     *
-     * @return int
-     */
-    public function getParentId()
-    {
-        return $this->parent_id;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -405,6 +391,10 @@ abstract class FunctionPhase implements ActiveRecordInterface
         if ($this->id !== $v) {
             $this->id = $v;
             $this->modifiedColumns[FunctionPhaseTableMap::COL_ID] = true;
+        }
+
+        if ($this->aStructureNode !== null && $this->aStructureNode->getId() !== $v) {
+            $this->aStructureNode = null;
         }
 
         return $this;
@@ -447,8 +437,8 @@ abstract class FunctionPhase implements ActiveRecordInterface
             $this->modifiedColumns[FunctionPhaseTableMap::COL_SKILL_ID] = true;
         }
 
-        if ($this->aSkill !== null && $this->aSkill->getId() !== $v) {
-            $this->aSkill = null;
+        if ($this->aSkillRelatedBySkillId !== null && $this->aSkillRelatedBySkillId->getId() !== $v) {
+            $this->aSkillRelatedBySkillId = null;
         }
 
         return $this;
@@ -473,30 +463,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
 
         return $this;
     } // setTitle()
-
-    /**
-     * Set the value of [parent_id] column.
-     *
-     * @param  int $v new value
-     * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
-     */
-    public function setParentId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->parent_id !== $v) {
-            $this->parent_id = $v;
-            $this->modifiedColumns[FunctionPhaseTableMap::COL_PARENT_ID] = true;
-        }
-
-        if ($this->aParent !== null && $this->aParent->getId() !== $v) {
-            $this->aParent = null;
-        }
-
-        return $this;
-    } // setParentId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -545,9 +511,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FunctionPhaseTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FunctionPhaseTableMap::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->parent_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -556,7 +519,7 @@ abstract class FunctionPhase implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = FunctionPhaseTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = FunctionPhaseTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\FunctionPhase'), 0, $e);
@@ -578,11 +541,11 @@ abstract class FunctionPhase implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aSkill !== null && $this->skill_id !== $this->aSkill->getId()) {
-            $this->aSkill = null;
+        if ($this->aStructureNode !== null && $this->id !== $this->aStructureNode->getId()) {
+            $this->aStructureNode = null;
         }
-        if ($this->aParent !== null && $this->parent_id !== $this->aParent->getId()) {
-            $this->aParent = null;
+        if ($this->aSkillRelatedBySkillId !== null && $this->skill_id !== $this->aSkillRelatedBySkillId->getId()) {
+            $this->aSkillRelatedBySkillId = null;
         }
     } // ensureConsistency
 
@@ -623,9 +586,9 @@ abstract class FunctionPhase implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aSkill = null;
-            $this->aParent = null;
-            $this->collChildrens = null;
+            $this->aStructureNode = null;
+            $this->aSkillRelatedBySkillId = null;
+            $this->collRootSkills = null;
 
         } // if (deep)
     }
@@ -656,6 +619,9 @@ abstract class FunctionPhase implements ActiveRecordInterface
             if ($ret) {
                 $deleteQuery->delete($con);
                 $this->postDelete($con);
+                // concrete_inheritance behavior
+                $this->getParentOrCreate($con)->delete($con);
+
                 $this->setDeleted(true);
             }
         });
@@ -687,6 +653,11 @@ abstract class FunctionPhase implements ActiveRecordInterface
         return $con->transaction(function () use ($con) {
             $isInsert = $this->isNew();
             $ret = $this->preSave($con);
+            // concrete_inheritance behavior
+            $parent = $this->getSyncParent($con);
+            $parent->save($con);
+            $this->setPrimaryKey($parent->getPrimaryKey());
+
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
             } else {
@@ -731,18 +702,18 @@ abstract class FunctionPhase implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aSkill !== null) {
-                if ($this->aSkill->isModified() || $this->aSkill->isNew()) {
-                    $affectedRows += $this->aSkill->save($con);
+            if ($this->aStructureNode !== null) {
+                if ($this->aStructureNode->isModified() || $this->aStructureNode->isNew()) {
+                    $affectedRows += $this->aStructureNode->save($con);
                 }
-                $this->setSkill($this->aSkill);
+                $this->setStructureNode($this->aStructureNode);
             }
 
-            if ($this->aParent !== null) {
-                if ($this->aParent->isModified() || $this->aParent->isNew()) {
-                    $affectedRows += $this->aParent->save($con);
+            if ($this->aSkillRelatedBySkillId !== null) {
+                if ($this->aSkillRelatedBySkillId->isModified() || $this->aSkillRelatedBySkillId->isNew()) {
+                    $affectedRows += $this->aSkillRelatedBySkillId->save($con);
                 }
-                $this->setParent($this->aParent);
+                $this->setSkillRelatedBySkillId($this->aSkillRelatedBySkillId);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -756,17 +727,18 @@ abstract class FunctionPhase implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->childrensScheduledForDeletion !== null) {
-                if (!$this->childrensScheduledForDeletion->isEmpty()) {
-                    \gossi\trixionary\model\FunctionPhaseQuery::create()
-                        ->filterByPrimaryKeys($this->childrensScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->childrensScheduledForDeletion = null;
+            if ($this->rootSkillsScheduledForDeletion !== null) {
+                if (!$this->rootSkillsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->rootSkillsScheduledForDeletion as $rootSkill) {
+                        // need to save related object because we set the relation to null
+                        $rootSkill->save($con);
+                    }
+                    $this->rootSkillsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collChildrens !== null) {
-                foreach ($this->collChildrens as $referrerFK) {
+            if ($this->collRootSkills !== null) {
+                foreach ($this->collRootSkills as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -793,10 +765,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[FunctionPhaseTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FunctionPhaseTableMap::COL_ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FunctionPhaseTableMap::COL_ID)) {
@@ -810,9 +778,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
         }
         if ($this->isColumnModified(FunctionPhaseTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
-        }
-        if ($this->isColumnModified(FunctionPhaseTableMap::COL_PARENT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`parent_id`';
         }
 
         $sql = sprintf(
@@ -837,9 +802,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case '`parent_id`':
-                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
-                        break;
                 }
             }
             $stmt->execute();
@@ -847,13 +809,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', 0, $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -914,9 +869,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
             case 3:
                 return $this->getTitle();
                 break;
-            case 4:
-                return $this->getParentId();
-                break;
             default:
                 return null;
                 break;
@@ -951,7 +903,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
             $keys[1] => $this->getType(),
             $keys[2] => $this->getSkillId(),
             $keys[3] => $this->getTitle(),
-            $keys[4] => $this->getParentId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -959,7 +910,22 @@ abstract class FunctionPhase implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aSkill) {
+            if (null !== $this->aStructureNode) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'structureNode';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_structure_node';
+                        break;
+                    default:
+                        $key = 'StructureNode';
+                }
+
+                $result[$key] = $this->aStructureNode->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aSkillRelatedBySkillId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -972,37 +938,22 @@ abstract class FunctionPhase implements ActiveRecordInterface
                         $key = 'Skill';
                 }
 
-                $result[$key] = $this->aSkill->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aSkillRelatedBySkillId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aParent) {
+            if (null !== $this->collRootSkills) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'functionPhase';
+                        $key = 'skills';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'kk_trixionary_function_phase';
+                        $key = 'kk_trixionary_skills';
                         break;
                     default:
-                        $key = 'FunctionPhase';
+                        $key = 'Skills';
                 }
 
-                $result[$key] = $this->aParent->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collChildrens) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'functionPhases';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'kk_trixionary_function_phases';
-                        break;
-                    default:
-                        $key = 'FunctionPhases';
-                }
-
-                $result[$key] = $this->collChildrens->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collRootSkills->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1050,9 +1001,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
             case 3:
                 $this->setTitle($value);
                 break;
-            case 4:
-                $this->setParentId($value);
-                break;
         } // switch()
 
         return $this;
@@ -1090,9 +1038,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setTitle($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setParentId($arr[$keys[4]]);
         }
     }
 
@@ -1147,9 +1092,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
         if ($this->isColumnModified(FunctionPhaseTableMap::COL_TITLE)) {
             $criteria->add(FunctionPhaseTableMap::COL_TITLE, $this->title);
         }
-        if ($this->isColumnModified(FunctionPhaseTableMap::COL_PARENT_ID)) {
-            $criteria->add(FunctionPhaseTableMap::COL_PARENT_ID, $this->parent_id);
-        }
 
         return $criteria;
     }
@@ -1182,8 +1124,15 @@ abstract class FunctionPhase implements ActiveRecordInterface
     {
         $validPk = null !== $this->getId();
 
-        $validPrimaryKeyFKs = 0;
+        $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
+
+        //relation kk_trixionary_function_phase_fk_d85fca to table kk_trixionary_structure_node
+        if ($this->aStructureNode && $hash = spl_object_hash($this->aStructureNode)) {
+            $primaryKeyFKs[] = $hash;
+        } else {
+            $validPrimaryKeyFKs = false;
+        }
 
         if ($validPk) {
             return crc32(json_encode($this->getPrimaryKey(), JSON_UNESCAPED_UNICODE));
@@ -1236,19 +1185,19 @@ abstract class FunctionPhase implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setId($this->getId());
         $copyObj->setType($this->getType());
         $copyObj->setSkillId($this->getSkillId());
         $copyObj->setTitle($this->getTitle());
-        $copyObj->setParentId($this->getParentId());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getChildrens() as $relObj) {
+            foreach ($this->getRootSkills() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addChildren($relObj->copy($deepCopy));
+                    $copyObj->addRootSkill($relObj->copy($deepCopy));
                 }
             }
 
@@ -1256,7 +1205,6 @@ abstract class FunctionPhase implements ActiveRecordInterface
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1283,13 +1231,58 @@ abstract class FunctionPhase implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildStructureNode object.
+     *
+     * @param  ChildStructureNode $v
+     * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setStructureNode(ChildStructureNode $v = null)
+    {
+        if ($v === null) {
+            $this->setId(NULL);
+        } else {
+            $this->setId($v->getId());
+        }
+
+        $this->aStructureNode = $v;
+
+        // Add binding for other direction of this 1:1 relationship.
+        if ($v !== null) {
+            $v->setFunctionPhase($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildStructureNode object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildStructureNode The associated ChildStructureNode object.
+     * @throws PropelException
+     */
+    public function getStructureNode(ConnectionInterface $con = null)
+    {
+        if ($this->aStructureNode === null && ($this->id !== null)) {
+            $this->aStructureNode = ChildStructureNodeQuery::create()->findPk($this->id, $con);
+            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+            $this->aStructureNode->setFunctionPhase($this);
+        }
+
+        return $this->aStructureNode;
+    }
+
+    /**
      * Declares an association between this object and a ChildSkill object.
      *
      * @param  ChildSkill $v
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setSkill(ChildSkill $v = null)
+    public function setSkillRelatedBySkillId(ChildSkill $v = null)
     {
         if ($v === null) {
             $this->setSkillId(NULL);
@@ -1297,12 +1290,12 @@ abstract class FunctionPhase implements ActiveRecordInterface
             $this->setSkillId($v->getId());
         }
 
-        $this->aSkill = $v;
+        $this->aSkillRelatedBySkillId = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addFunctionPhase($this);
+            $v->addFunctionPhaseRelatedBySkillId($this);
         }
 
 
@@ -1317,71 +1310,20 @@ abstract class FunctionPhase implements ActiveRecordInterface
      * @return ChildSkill The associated ChildSkill object.
      * @throws PropelException
      */
-    public function getSkill(ConnectionInterface $con = null)
+    public function getSkillRelatedBySkillId(ConnectionInterface $con = null)
     {
-        if ($this->aSkill === null && ($this->skill_id !== null)) {
-            $this->aSkill = ChildSkillQuery::create()->findPk($this->skill_id, $con);
+        if ($this->aSkillRelatedBySkillId === null && ($this->skill_id !== null)) {
+            $this->aSkillRelatedBySkillId = ChildSkillQuery::create()->findPk($this->skill_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkill->addFunctionPhases($this);
+                $this->aSkillRelatedBySkillId->addFunctionPhasesRelatedBySkillId($this);
              */
         }
 
-        return $this->aSkill;
-    }
-
-    /**
-     * Declares an association between this object and a ChildFunctionPhase object.
-     *
-     * @param  ChildFunctionPhase $v
-     * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setParent(ChildFunctionPhase $v = null)
-    {
-        if ($v === null) {
-            $this->setParentId(NULL);
-        } else {
-            $this->setParentId($v->getId());
-        }
-
-        $this->aParent = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildFunctionPhase object, it will not be re-added.
-        if ($v !== null) {
-            $v->addChildren($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildFunctionPhase object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildFunctionPhase The associated ChildFunctionPhase object.
-     * @throws PropelException
-     */
-    public function getParent(ConnectionInterface $con = null)
-    {
-        if ($this->aParent === null && ($this->parent_id !== null)) {
-            $this->aParent = ChildFunctionPhaseQuery::create()->findPk($this->parent_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aParent->addChildrens($this);
-             */
-        }
-
-        return $this->aParent;
+        return $this->aSkillRelatedBySkillId;
     }
 
 
@@ -1395,37 +1337,37 @@ abstract class FunctionPhase implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('Children' == $relationName) {
-            return $this->initChildrens();
+        if ('RootSkill' == $relationName) {
+            return $this->initRootSkills();
         }
     }
 
     /**
-     * Clears out the collChildrens collection
+     * Clears out the collRootSkills collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addChildrens()
+     * @see        addRootSkills()
      */
-    public function clearChildrens()
+    public function clearRootSkills()
     {
-        $this->collChildrens = null; // important to set this to NULL since that means it is uninitialized
+        $this->collRootSkills = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collChildrens collection loaded partially.
+     * Reset is the collRootSkills collection loaded partially.
      */
-    public function resetPartialChildrens($v = true)
+    public function resetPartialRootSkills($v = true)
     {
-        $this->collChildrensPartial = $v;
+        $this->collRootSkillsPartial = $v;
     }
 
     /**
-     * Initializes the collChildrens collection.
+     * Initializes the collRootSkills collection.
      *
-     * By default this just sets the collChildrens collection to an empty array (like clearcollChildrens());
+     * By default this just sets the collRootSkills collection to an empty array (like clearcollRootSkills());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1434,17 +1376,17 @@ abstract class FunctionPhase implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initChildrens($overrideExisting = true)
+    public function initRootSkills($overrideExisting = true)
     {
-        if (null !== $this->collChildrens && !$overrideExisting) {
+        if (null !== $this->collRootSkills && !$overrideExisting) {
             return;
         }
-        $this->collChildrens = new ObjectCollection();
-        $this->collChildrens->setModel('\gossi\trixionary\model\FunctionPhase');
+        $this->collRootSkills = new ObjectCollection();
+        $this->collRootSkills->setModel('\gossi\trixionary\model\Skill');
     }
 
     /**
-     * Gets an array of ChildFunctionPhase objects which contain a foreign key that references this object.
+     * Gets an array of ChildSkill objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1454,165 +1396,165 @@ abstract class FunctionPhase implements ActiveRecordInterface
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildFunctionPhase[] List of ChildFunctionPhase objects
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      * @throws PropelException
      */
-    public function getChildrens(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getRootSkills(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collChildrensPartial && !$this->isNew();
-        if (null === $this->collChildrens || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collChildrens) {
+        $partial = $this->collRootSkillsPartial && !$this->isNew();
+        if (null === $this->collRootSkills || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collRootSkills) {
                 // return empty collection
-                $this->initChildrens();
+                $this->initRootSkills();
             } else {
-                $collChildrens = ChildFunctionPhaseQuery::create(null, $criteria)
-                    ->filterByParent($this)
+                $collRootSkills = ChildSkillQuery::create(null, $criteria)
+                    ->filterByFunctionPhaseRoot($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collChildrensPartial && count($collChildrens)) {
-                        $this->initChildrens(false);
+                    if (false !== $this->collRootSkillsPartial && count($collRootSkills)) {
+                        $this->initRootSkills(false);
 
-                        foreach ($collChildrens as $obj) {
-                            if (false == $this->collChildrens->contains($obj)) {
-                                $this->collChildrens->append($obj);
+                        foreach ($collRootSkills as $obj) {
+                            if (false == $this->collRootSkills->contains($obj)) {
+                                $this->collRootSkills->append($obj);
                             }
                         }
 
-                        $this->collChildrensPartial = true;
+                        $this->collRootSkillsPartial = true;
                     }
 
-                    return $collChildrens;
+                    return $collRootSkills;
                 }
 
-                if ($partial && $this->collChildrens) {
-                    foreach ($this->collChildrens as $obj) {
+                if ($partial && $this->collRootSkills) {
+                    foreach ($this->collRootSkills as $obj) {
                         if ($obj->isNew()) {
-                            $collChildrens[] = $obj;
+                            $collRootSkills[] = $obj;
                         }
                     }
                 }
 
-                $this->collChildrens = $collChildrens;
-                $this->collChildrensPartial = false;
+                $this->collRootSkills = $collRootSkills;
+                $this->collRootSkillsPartial = false;
             }
         }
 
-        return $this->collChildrens;
+        return $this->collRootSkills;
     }
 
     /**
-     * Sets a collection of ChildFunctionPhase objects related by a one-to-many relationship
+     * Sets a collection of ChildSkill objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $childrens A Propel collection.
+     * @param      Collection $rootSkills A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildFunctionPhase The current object (for fluent API support)
      */
-    public function setChildrens(Collection $childrens, ConnectionInterface $con = null)
+    public function setRootSkills(Collection $rootSkills, ConnectionInterface $con = null)
     {
-        /** @var ChildFunctionPhase[] $childrensToDelete */
-        $childrensToDelete = $this->getChildrens(new Criteria(), $con)->diff($childrens);
+        /** @var ChildSkill[] $rootSkillsToDelete */
+        $rootSkillsToDelete = $this->getRootSkills(new Criteria(), $con)->diff($rootSkills);
 
 
-        $this->childrensScheduledForDeletion = $childrensToDelete;
+        $this->rootSkillsScheduledForDeletion = $rootSkillsToDelete;
 
-        foreach ($childrensToDelete as $childrenRemoved) {
-            $childrenRemoved->setParent(null);
+        foreach ($rootSkillsToDelete as $rootSkillRemoved) {
+            $rootSkillRemoved->setFunctionPhaseRoot(null);
         }
 
-        $this->collChildrens = null;
-        foreach ($childrens as $children) {
-            $this->addChildren($children);
+        $this->collRootSkills = null;
+        foreach ($rootSkills as $rootSkill) {
+            $this->addRootSkill($rootSkill);
         }
 
-        $this->collChildrens = $childrens;
-        $this->collChildrensPartial = false;
+        $this->collRootSkills = $rootSkills;
+        $this->collRootSkillsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related FunctionPhase objects.
+     * Returns the number of related Skill objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related FunctionPhase objects.
+     * @return int             Count of related Skill objects.
      * @throws PropelException
      */
-    public function countChildrens(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countRootSkills(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collChildrensPartial && !$this->isNew();
-        if (null === $this->collChildrens || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collChildrens) {
+        $partial = $this->collRootSkillsPartial && !$this->isNew();
+        if (null === $this->collRootSkills || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collRootSkills) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getChildrens());
+                return count($this->getRootSkills());
             }
 
-            $query = ChildFunctionPhaseQuery::create(null, $criteria);
+            $query = ChildSkillQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByParent($this)
+                ->filterByFunctionPhaseRoot($this)
                 ->count($con);
         }
 
-        return count($this->collChildrens);
+        return count($this->collRootSkills);
     }
 
     /**
-     * Method called to associate a ChildFunctionPhase object to this object
-     * through the ChildFunctionPhase foreign key attribute.
+     * Method called to associate a ChildSkill object to this object
+     * through the ChildSkill foreign key attribute.
      *
-     * @param  ChildFunctionPhase $l ChildFunctionPhase
+     * @param  ChildSkill $l ChildSkill
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      */
-    public function addChildren(ChildFunctionPhase $l)
+    public function addRootSkill(ChildSkill $l)
     {
-        if ($this->collChildrens === null) {
-            $this->initChildrens();
-            $this->collChildrensPartial = true;
+        if ($this->collRootSkills === null) {
+            $this->initRootSkills();
+            $this->collRootSkillsPartial = true;
         }
 
-        if (!$this->collChildrens->contains($l)) {
-            $this->doAddChildren($l);
+        if (!$this->collRootSkills->contains($l)) {
+            $this->doAddRootSkill($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildFunctionPhase $children The ChildFunctionPhase object to add.
+     * @param ChildSkill $rootSkill The ChildSkill object to add.
      */
-    protected function doAddChildren(ChildFunctionPhase $children)
+    protected function doAddRootSkill(ChildSkill $rootSkill)
     {
-        $this->collChildrens[]= $children;
-        $children->setParent($this);
+        $this->collRootSkills[]= $rootSkill;
+        $rootSkill->setFunctionPhaseRoot($this);
     }
 
     /**
-     * @param  ChildFunctionPhase $children The ChildFunctionPhase object to remove.
+     * @param  ChildSkill $rootSkill The ChildSkill object to remove.
      * @return $this|ChildFunctionPhase The current object (for fluent API support)
      */
-    public function removeChildren(ChildFunctionPhase $children)
+    public function removeRootSkill(ChildSkill $rootSkill)
     {
-        if ($this->getChildrens()->contains($children)) {
-            $pos = $this->collChildrens->search($children);
-            $this->collChildrens->remove($pos);
-            if (null === $this->childrensScheduledForDeletion) {
-                $this->childrensScheduledForDeletion = clone $this->collChildrens;
-                $this->childrensScheduledForDeletion->clear();
+        if ($this->getRootSkills()->contains($rootSkill)) {
+            $pos = $this->collRootSkills->search($rootSkill);
+            $this->collRootSkills->remove($pos);
+            if (null === $this->rootSkillsScheduledForDeletion) {
+                $this->rootSkillsScheduledForDeletion = clone $this->collRootSkills;
+                $this->rootSkillsScheduledForDeletion->clear();
             }
-            $this->childrensScheduledForDeletion[]= $children;
-            $children->setParent(null);
+            $this->rootSkillsScheduledForDeletion[]= $rootSkill;
+            $rootSkill->setFunctionPhaseRoot(null);
         }
 
         return $this;
@@ -1624,7 +1566,7 @@ abstract class FunctionPhase implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this FunctionPhase is new, it will return
      * an empty collection; or if this FunctionPhase has previously
-     * been saved, it will retrieve related Childrens from storage.
+     * been saved, it will retrieve related RootSkills from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1633,14 +1575,164 @@ abstract class FunctionPhase implements ActiveRecordInterface
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildFunctionPhase[] List of ChildFunctionPhase objects
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
-    public function getChildrensJoinSkill(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getRootSkillsJoinSport(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
-        $query = ChildFunctionPhaseQuery::create(null, $criteria);
-        $query->joinWith('Skill', $joinBehavior);
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Sport', $joinBehavior);
 
-        return $this->getChildrens($query, $con);
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinVariationOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('VariationOf', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinMultipleOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('MultipleOf', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinStartPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('StartPosition', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinEndPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('EndPosition', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinFeaturedPicture(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedPicture', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinKstrukturRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('KstrukturRoot', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
     }
 
     /**
@@ -1650,17 +1742,16 @@ abstract class FunctionPhase implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aSkill) {
-            $this->aSkill->removeFunctionPhase($this);
+        if (null !== $this->aStructureNode) {
+            $this->aStructureNode->removeFunctionPhase($this);
         }
-        if (null !== $this->aParent) {
-            $this->aParent->removeChildren($this);
+        if (null !== $this->aSkillRelatedBySkillId) {
+            $this->aSkillRelatedBySkillId->removeFunctionPhaseRelatedBySkillId($this);
         }
         $this->id = null;
         $this->type = null;
         $this->skill_id = null;
         $this->title = null;
-        $this->parent_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1679,16 +1770,16 @@ abstract class FunctionPhase implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collChildrens) {
-                foreach ($this->collChildrens as $o) {
+            if ($this->collRootSkills) {
+                foreach ($this->collRootSkills as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collChildrens = null;
-        $this->aSkill = null;
-        $this->aParent = null;
+        $this->collRootSkills = null;
+        $this->aStructureNode = null;
+        $this->aSkillRelatedBySkillId = null;
     }
 
     /**
@@ -1699,6 +1790,55 @@ abstract class FunctionPhase implements ActiveRecordInterface
     public function __toString()
     {
         return (string) $this->exportTo(FunctionPhaseTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // concrete_inheritance behavior
+
+    /**
+     * Get or Create the parent ChildStructureNode object of the current object
+     *
+     * @return    ChildStructureNode The parent object
+     */
+    public function getParentOrCreate($con = null)
+    {
+        if ($this->isNew()) {
+            if ($this->isPrimaryKeyNull()) {
+                $parent = new ChildStructureNode();
+                $parent->setDescendantClass('gossi\trixionary\model\FunctionPhase');
+
+                return $parent;
+            } else {
+                $parent = \gossi\trixionary\model\StructureNodeQuery::create()->findPk($this->getPrimaryKey(), $con);
+                if (null === $parent || null !== $parent->getDescendantClass()) {
+                    $parent = new ChildStructureNode();
+                    $parent->setPrimaryKey($this->getPrimaryKey());
+                    $parent->setDescendantClass('gossi\trixionary\model\FunctionPhase');
+                }
+
+                return $parent;
+            }
+        } else {
+            return ChildStructureNodeQuery::create()->findPk($this->getPrimaryKey(), $con);
+        }
+    }
+
+    /**
+     * Create or Update the parent StructureNode object
+     * And return its primary key
+     *
+     * @return    int The primary key of the parent object
+     */
+    public function getSyncParent($con = null)
+    {
+        $parent = $this->getParentOrCreate($con);
+        $parent->setType($this->getType());
+        $parent->setSkillId($this->getSkillId());
+        $parent->setTitle($this->getTitle());
+        if ($this->getSkill() && $this->getSkill()->isNew()) {
+            $parent->setSkill($this->getSkill());
+        }
+
+        return $parent;
     }
 
     /**

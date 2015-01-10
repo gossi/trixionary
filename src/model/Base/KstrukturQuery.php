@@ -13,6 +13,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use gossi\trixionary\model\Kstruktur as ChildKstruktur;
 use gossi\trixionary\model\KstrukturQuery as ChildKstrukturQuery;
+use gossi\trixionary\model\StructureNodeQuery as ChildStructureNodeQuery;
 use gossi\trixionary\model\Map\KstrukturTableMap;
 
 /**
@@ -24,31 +25,29 @@ use gossi\trixionary\model\Map\KstrukturTableMap;
  * @method     ChildKstrukturQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method     ChildKstrukturQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildKstrukturQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildKstrukturQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
  *
  * @method     ChildKstrukturQuery groupById() Group by the id column
  * @method     ChildKstrukturQuery groupByType() Group by the type column
  * @method     ChildKstrukturQuery groupBySkillId() Group by the skill_id column
  * @method     ChildKstrukturQuery groupByTitle() Group by the title column
- * @method     ChildKstrukturQuery groupByParentId() Group by the parent_id column
  *
  * @method     ChildKstrukturQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildKstrukturQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildKstrukturQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildKstrukturQuery leftJoinSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the Skill relation
- * @method     ChildKstrukturQuery rightJoinSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Skill relation
- * @method     ChildKstrukturQuery innerJoinSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the Skill relation
+ * @method     ChildKstrukturQuery leftJoinStructureNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNode relation
+ * @method     ChildKstrukturQuery rightJoinStructureNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNode relation
+ * @method     ChildKstrukturQuery innerJoinStructureNode($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNode relation
  *
- * @method     ChildKstrukturQuery leftJoinParent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Parent relation
- * @method     ChildKstrukturQuery rightJoinParent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Parent relation
- * @method     ChildKstrukturQuery innerJoinParent($relationAlias = null) Adds a INNER JOIN clause to the query using the Parent relation
+ * @method     ChildKstrukturQuery leftJoinSkillRelatedBySkillId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedBySkillId relation
+ * @method     ChildKstrukturQuery rightJoinSkillRelatedBySkillId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedBySkillId relation
+ * @method     ChildKstrukturQuery innerJoinSkillRelatedBySkillId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedBySkillId relation
  *
- * @method     ChildKstrukturQuery leftJoinChildren($relationAlias = null) Adds a LEFT JOIN clause to the query using the Children relation
- * @method     ChildKstrukturQuery rightJoinChildren($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Children relation
- * @method     ChildKstrukturQuery innerJoinChildren($relationAlias = null) Adds a INNER JOIN clause to the query using the Children relation
+ * @method     ChildKstrukturQuery leftJoinRootSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the RootSkill relation
+ * @method     ChildKstrukturQuery rightJoinRootSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the RootSkill relation
+ * @method     ChildKstrukturQuery innerJoinRootSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the RootSkill relation
  *
- * @method     \gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\KstrukturQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildKstruktur findOne(ConnectionInterface $con = null) Return the first ChildKstruktur matching the query
  * @method     ChildKstruktur findOneOrCreate(ConnectionInterface $con = null) Return the first ChildKstruktur matching the query, or a new ChildKstruktur object populated from the query conditions when no match is found
@@ -57,18 +56,16 @@ use gossi\trixionary\model\Map\KstrukturTableMap;
  * @method     ChildKstruktur findOneByType(string $type) Return the first ChildKstruktur filtered by the type column
  * @method     ChildKstruktur findOneBySkillId(int $skill_id) Return the first ChildKstruktur filtered by the skill_id column
  * @method     ChildKstruktur findOneByTitle(string $title) Return the first ChildKstruktur filtered by the title column
- * @method     ChildKstruktur findOneByParentId(int $parent_id) Return the first ChildKstruktur filtered by the parent_id column
  *
  * @method     ChildKstruktur[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildKstruktur objects based on current ModelCriteria
  * @method     ChildKstruktur[]|ObjectCollection findById(int $id) Return ChildKstruktur objects filtered by the id column
  * @method     ChildKstruktur[]|ObjectCollection findByType(string $type) Return ChildKstruktur objects filtered by the type column
  * @method     ChildKstruktur[]|ObjectCollection findBySkillId(int $skill_id) Return ChildKstruktur objects filtered by the skill_id column
  * @method     ChildKstruktur[]|ObjectCollection findByTitle(string $title) Return ChildKstruktur objects filtered by the title column
- * @method     ChildKstruktur[]|ObjectCollection findByParentId(int $parent_id) Return ChildKstruktur objects filtered by the parent_id column
  * @method     ChildKstruktur[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
-abstract class KstrukturQuery extends ModelCriteria
+abstract class KstrukturQuery extends ChildStructureNodeQuery
 {
 
     /**
@@ -156,7 +153,7 @@ abstract class KstrukturQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `type`, `skill_id`, `title`, `parent_id` FROM `kk_trixionary_kstruktur` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `type`, `skill_id`, `title` FROM `kk_trixionary_kstruktur` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -256,6 +253,8 @@ abstract class KstrukturQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
+     * @see       filterByStructureNode()
+     *
      * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -326,7 +325,7 @@ abstract class KstrukturQuery extends ModelCriteria
      * $query->filterBySkillId(array('min' => 12)); // WHERE skill_id > 12
      * </code>
      *
-     * @see       filterBySkill()
+     * @see       filterBySkillRelatedBySkillId()
      *
      * @param     mixed $skillId The value to use as filter.
      *              Use scalar values for equality.
@@ -389,46 +388,80 @@ abstract class KstrukturQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the parent_id column
+     * Filter the query by a related \gossi\trixionary\model\StructureNode object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByParentId(1234); // WHERE parent_id = 1234
-     * $query->filterByParentId(array(12, 34)); // WHERE parent_id IN (12, 34)
-     * $query->filterByParentId(array('min' => 12)); // WHERE parent_id > 12
-     * </code>
+     * @param \gossi\trixionary\model\StructureNode|ObjectCollection $structureNode The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @see       filterByParent()
+     * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @param     mixed $parentId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildKstrukturQuery The current query, for fluid interface
+     * @return ChildKstrukturQuery The current query, for fluid interface
      */
-    public function filterByParentId($parentId = null, $comparison = null)
+    public function filterByStructureNode($structureNode, $comparison = null)
     {
-        if (is_array($parentId)) {
-            $useMinMax = false;
-            if (isset($parentId['min'])) {
-                $this->addUsingAlias(KstrukturTableMap::COL_PARENT_ID, $parentId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($parentId['max'])) {
-                $this->addUsingAlias(KstrukturTableMap::COL_PARENT_ID, $parentId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
+        if ($structureNode instanceof \gossi\trixionary\model\StructureNode) {
+            return $this
+                ->addUsingAlias(KstrukturTableMap::COL_ID, $structureNode->getId(), $comparison);
+        } elseif ($structureNode instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
+
+            return $this
+                ->addUsingAlias(KstrukturTableMap::COL_ID, $structureNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByStructureNode() only accepts arguments of type \gossi\trixionary\model\StructureNode or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the StructureNode relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildKstrukturQuery The current query, for fluid interface
+     */
+    public function joinStructureNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('StructureNode');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
         }
 
-        return $this->addUsingAlias(KstrukturTableMap::COL_PARENT_ID, $parentId, $comparison);
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'StructureNode');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the StructureNode relation StructureNode object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\StructureNodeQuery A secondary query class using the current class as primary query
+     */
+    public function useStructureNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinStructureNode($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'StructureNode', '\gossi\trixionary\model\StructureNodeQuery');
     }
 
     /**
@@ -441,7 +474,7 @@ abstract class KstrukturQuery extends ModelCriteria
      *
      * @return ChildKstrukturQuery The current query, for fluid interface
      */
-    public function filterBySkill($skill, $comparison = null)
+    public function filterBySkillRelatedBySkillId($skill, $comparison = null)
     {
         if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
@@ -454,22 +487,22 @@ abstract class KstrukturQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(KstrukturTableMap::COL_SKILL_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterBySkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+            throw new PropelException('filterBySkillRelatedBySkillId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Skill relation
+     * Adds a JOIN clause to the query using the SkillRelatedBySkillId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildKstrukturQuery The current query, for fluid interface
      */
-    public function joinSkill($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSkillRelatedBySkillId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Skill');
+        $relationMap = $tableMap->getRelation('SkillRelatedBySkillId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -484,14 +517,14 @@ abstract class KstrukturQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Skill');
+            $this->addJoinObject($join, 'SkillRelatedBySkillId');
         }
 
         return $this;
     }
 
     /**
-     * Use the Skill relation Skill object
+     * Use the SkillRelatedBySkillId relation Skill object
      *
      * @see useQuery()
      *
@@ -501,125 +534,48 @@ abstract class KstrukturQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useSkillQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSkillRelatedBySkillIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinSkill($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Skill', '\gossi\trixionary\model\SkillQuery');
+            ->joinSkillRelatedBySkillId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedBySkillId', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**
-     * Filter the query by a related \gossi\trixionary\model\Kstruktur object
+     * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Kstruktur|ObjectCollection $kstruktur The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildKstrukturQuery The current query, for fluid interface
-     */
-    public function filterByParent($kstruktur, $comparison = null)
-    {
-        if ($kstruktur instanceof \gossi\trixionary\model\Kstruktur) {
-            return $this
-                ->addUsingAlias(KstrukturTableMap::COL_PARENT_ID, $kstruktur->getId(), $comparison);
-        } elseif ($kstruktur instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(KstrukturTableMap::COL_PARENT_ID, $kstruktur->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByParent() only accepts arguments of type \gossi\trixionary\model\Kstruktur or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Parent relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildKstrukturQuery The current query, for fluid interface
-     */
-    public function joinParent($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Parent');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Parent');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Parent relation Kstruktur object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \gossi\trixionary\model\KstrukturQuery A secondary query class using the current class as primary query
-     */
-    public function useParentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinParent($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Parent', '\gossi\trixionary\model\KstrukturQuery');
-    }
-
-    /**
-     * Filter the query by a related \gossi\trixionary\model\Kstruktur object
-     *
-     * @param \gossi\trixionary\model\Kstruktur|ObjectCollection $kstruktur  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildKstrukturQuery The current query, for fluid interface
      */
-    public function filterByChildren($kstruktur, $comparison = null)
+    public function filterByRootSkill($skill, $comparison = null)
     {
-        if ($kstruktur instanceof \gossi\trixionary\model\Kstruktur) {
+        if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
-                ->addUsingAlias(KstrukturTableMap::COL_ID, $kstruktur->getParentId(), $comparison);
-        } elseif ($kstruktur instanceof ObjectCollection) {
+                ->addUsingAlias(KstrukturTableMap::COL_ID, $skill->getKstrukturId(), $comparison);
+        } elseif ($skill instanceof ObjectCollection) {
             return $this
-                ->useChildrenQuery()
-                ->filterByPrimaryKeys($kstruktur->getPrimaryKeys())
+                ->useRootSkillQuery()
+                ->filterByPrimaryKeys($skill->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByChildren() only accepts arguments of type \gossi\trixionary\model\Kstruktur or Collection');
+            throw new PropelException('filterByRootSkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Children relation
+     * Adds a JOIN clause to the query using the RootSkill relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildKstrukturQuery The current query, for fluid interface
      */
-    public function joinChildren($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinRootSkill($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Children');
+        $relationMap = $tableMap->getRelation('RootSkill');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -634,14 +590,14 @@ abstract class KstrukturQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Children');
+            $this->addJoinObject($join, 'RootSkill');
         }
 
         return $this;
     }
 
     /**
-     * Use the Children relation Kstruktur object
+     * Use the RootSkill relation Skill object
      *
      * @see useQuery()
      *
@@ -649,13 +605,13 @@ abstract class KstrukturQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \gossi\trixionary\model\KstrukturQuery A secondary query class using the current class as primary query
+     * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useChildrenQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useRootSkillQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinChildren($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Children', '\gossi\trixionary\model\KstrukturQuery');
+            ->joinRootSkill($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'RootSkill', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**

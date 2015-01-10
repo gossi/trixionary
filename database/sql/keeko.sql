@@ -87,6 +87,8 @@ CREATE TABLE `kk_trixionary_skill`
     `importance` INTEGER,
     `generation_ids` TEXT,
     `picture_id` INTEGER,
+    `kstruktur_id` INTEGER,
+    `function_phase_id` INTEGER,
     `version` INTEGER DEFAULT 0,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),
@@ -97,6 +99,8 @@ CREATE TABLE `kk_trixionary_skill`
     INDEX `kk_trixionary_skill_fi_ed8398` (`start_position_id`),
     INDEX `kk_trixionary_skill_fi_964073` (`end_position_id`),
     INDEX `kk_trixionary_skill_fi_86690d` (`picture_id`),
+    INDEX `kk_trixionary_skill_fi_853494` (`kstruktur_id`),
+    INDEX `kk_trixionary_skill_fi_7df6fb` (`function_phase_id`),
     CONSTRAINT `kk_trixionary_skill_fk_ff4efb`
         FOREIGN KEY (`sport_id`)
         REFERENCES `kk_trixionary_sport` (`id`)
@@ -115,7 +119,13 @@ CREATE TABLE `kk_trixionary_skill`
         REFERENCES `kk_trixionary_position` (`id`),
     CONSTRAINT `kk_trixionary_skill_fk_86690d`
         FOREIGN KEY (`picture_id`)
-        REFERENCES `kk_trixionary_picture` (`id`)
+        REFERENCES `kk_trixionary_picture` (`id`),
+    CONSTRAINT `kk_trixionary_skill_fk_853494`
+        FOREIGN KEY (`kstruktur_id`)
+        REFERENCES `kk_trixionary_kstruktur` (`id`),
+    CONSTRAINT `kk_trixionary_skill_fk_7df6fb`
+        FOREIGN KEY (`function_phase_id`)
+        REFERENCES `kk_trixionary_function_phase` (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -302,6 +312,47 @@ CREATE TABLE `kk_trixionary_reference`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- kk_trixionary_structure_node
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_structure_node`;
+
+CREATE TABLE `kk_trixionary_structure_node`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` VARCHAR(255),
+    `skill_id` INTEGER NOT NULL,
+    `title` VARCHAR(255),
+    `descendant_class` VARCHAR(100),
+    PRIMARY KEY (`id`),
+    INDEX `kk_trixionary_structure_node_fi_3713ea` (`skill_id`),
+    CONSTRAINT `kk_trixionary_structure_node_fk_3713ea`
+        FOREIGN KEY (`skill_id`)
+        REFERENCES `kk_trixionary_skill` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- kk_trixionary_structure_node_parent
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_structure_node_parent`;
+
+CREATE TABLE `kk_trixionary_structure_node_parent`
+(
+    `id` INTEGER NOT NULL,
+    `parent_id` INTEGER NOT NULL,
+    PRIMARY KEY (`id`,`parent_id`),
+    INDEX `kk_trixionary_structure_node_parent_fi_0918a7` (`parent_id`),
+    CONSTRAINT `kk_trixionary_structure_node_parent_fk_d85fca`
+        FOREIGN KEY (`id`)
+        REFERENCES `kk_trixionary_structure_node` (`id`),
+    CONSTRAINT `kk_trixionary_structure_node_parent_fk_0918a7`
+        FOREIGN KEY (`parent_id`)
+        REFERENCES `kk_trixionary_structure_node` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- kk_trixionary_kstruktur
 -- ---------------------------------------------------------------------
 
@@ -309,21 +360,19 @@ DROP TABLE IF EXISTS `kk_trixionary_kstruktur`;
 
 CREATE TABLE `kk_trixionary_kstruktur`
 (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `type` VARCHAR(255),
     `skill_id` INTEGER NOT NULL,
     `title` VARCHAR(255),
-    `parent_id` INTEGER,
     PRIMARY KEY (`id`),
-    INDEX `kk_trixionary_kstruktur_fi_3713ea` (`skill_id`),
-    INDEX `kk_trixionary_kstruktur_fi_c6025a` (`parent_id`),
+    INDEX `kk_trixionary_kstruktur_i_b22279` (`skill_id`),
+    CONSTRAINT `kk_trixionary_kstruktur_fk_d85fca`
+        FOREIGN KEY (`id`)
+        REFERENCES `kk_trixionary_structure_node` (`id`)
+        ON DELETE CASCADE,
     CONSTRAINT `kk_trixionary_kstruktur_fk_3713ea`
         FOREIGN KEY (`skill_id`)
         REFERENCES `kk_trixionary_skill` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `kk_trixionary_kstruktur_fk_c6025a`
-        FOREIGN KEY (`parent_id`)
-        REFERENCES `kk_trixionary_kstruktur` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -335,21 +384,19 @@ DROP TABLE IF EXISTS `kk_trixionary_function_phase`;
 
 CREATE TABLE `kk_trixionary_function_phase`
 (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL,
     `type` VARCHAR(255),
     `skill_id` INTEGER NOT NULL,
     `title` VARCHAR(255),
-    `parent_id` INTEGER,
     PRIMARY KEY (`id`),
-    INDEX `kk_trixionary_function_phase_fi_3713ea` (`skill_id`),
-    INDEX `kk_trixionary_function_phase_fi_dd0311` (`parent_id`),
+    INDEX `kk_trixionary_function_phase_i_b22279` (`skill_id`),
+    CONSTRAINT `kk_trixionary_function_phase_fk_d85fca`
+        FOREIGN KEY (`id`)
+        REFERENCES `kk_trixionary_structure_node` (`id`)
+        ON DELETE CASCADE,
     CONSTRAINT `kk_trixionary_function_phase_fk_3713ea`
         FOREIGN KEY (`skill_id`)
         REFERENCES `kk_trixionary_skill` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `kk_trixionary_function_phase_fk_dd0311`
-        FOREIGN KEY (`parent_id`)
-        REFERENCES `kk_trixionary_function_phase` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -386,6 +433,8 @@ CREATE TABLE `kk_trixionary_kk_trixionary_skill_version`
     `importance` INTEGER,
     `generation_ids` TEXT,
     `picture_id` INTEGER,
+    `kstruktur_id` INTEGER,
+    `function_phase_id` INTEGER,
     `version` INTEGER DEFAULT 0 NOT NULL,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),

@@ -69,6 +69,8 @@
 		<column name="importance" type="INTEGER" />
 		<column name="generation_ids" type="LONGVARCHAR"/>
 		<column name="picture_id" type="INTEGER" required="false"/>
+		<column name="kstruktur_id" type="INTEGER" required="false"/>
+		<column name="function_phase_id" type="INTEGER" required="false"/>
 
 		<foreign-key foreignTable="sport" onDelete="cascade">
 			<reference local="sport_id" foreign="id" />
@@ -87,6 +89,12 @@
 		</foreign-key>
 		<foreign-key foreignTable="picture" phpName="FeaturedPicture" refPhpName="FeaturedSkill">
 			<reference local="picture_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="kstruktur" phpName="KstrukturRoot" refPhpName="RootSkill">
+			<reference local="kstruktur_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="function_phase" phpName="FunctionPhaseRoot" refPhpName="RootSkill">
+			<reference local="function_phase_id" foreign="id"/>
 		</foreign-key>
 		<!-- <foreign-key foreignTable="user">
 			<reference local="author_id" foreign="id"/>
@@ -223,38 +231,41 @@
 		</foreign-key>
 	</table>
 	
-	<table name="kstruktur">
+	<table name="structure_node">
 		<column name="id" type="INTEGER" primaryKey="true" required="true"
 			autoIncrement="true" />
 		<column name="type" type="VARCHAR"/>
 		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="title" type="VARCHAR"/>
-		<column name="parent_id" type="INTEGER" required="false"/>
 		
 		<foreign-key foreignTable="skill" onDelete="cascade">
 			<reference local="skill_id" foreign="id"/>
 		</foreign-key>
+	</table>
+	
+	<table name="structure_node_parent" isCrossRef="true">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"/>
+		<column name="parent_id" type="INTEGER" primaryKey="true" required="true"/>
 		
-		<foreign-key foreignTable="kstruktur" phpName="Parent" refPhpName="Children" onDelete="cascade">
+		<foreign-key foreignTable="structure_node">
+			<reference local="id" foreign="id"/>
+		</foreign-key>
+		
+		<foreign-key foreignTable="structure_node" onDelete="cascade">
 			<reference local="parent_id" foreign="id"/>
 		</foreign-key>
 	</table>
 	
+	<table name="kstruktur">
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="structure_node"/>
+		</behavior>
+	</table>
+	
 	<table name="function_phase">
-		<column name="id" type="INTEGER" primaryKey="true" required="true"
-			autoIncrement="true" />
-		<column name="type" type="VARCHAR"/>
-		<column name="skill_id" type="INTEGER" required="true"/>
-		<column name="title" type="VARCHAR"/>
-		<column name="parent_id" type="INTEGER" required="false"/>
-		
-		<foreign-key foreignTable="skill" onDelete="cascade">
-			<reference local="skill_id" foreign="id"/>
-		</foreign-key>
-		
-		<foreign-key foreignTable="function_phase" phpName="Parent" refPhpName="Children" onDelete="cascade">
-			<reference local="parent_id" foreign="id"/>
-		</foreign-key>
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="structure_node"/>
+		</behavior>
 	</table>
 
 </database>

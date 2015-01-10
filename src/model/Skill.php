@@ -233,5 +233,13 @@ class Skill extends BaseSkill implements ActivityObjectInterface {
 		
 		static::$isSaving = false;
 	}
-	
+
+	public function getKstrukturs() {
+		return $this->getKstruktursRelatedBySkillIdJoinStructureNode();
+	}
+
+	public function getFunctionPhases() {
+		return $this->getFunctionPhasesRelatedBySkillIdJoinStructureNode();
+	}
+
 }
