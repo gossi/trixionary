@@ -55,7 +55,15 @@ use gossi\trixionary\model\Map\FunctionPhaseTableMap;
  * @method     ChildFunctionPhase findOneById(int $id) Return the first ChildFunctionPhase filtered by the id column
  * @method     ChildFunctionPhase findOneByType(string $type) Return the first ChildFunctionPhase filtered by the type column
  * @method     ChildFunctionPhase findOneBySkillId(int $skill_id) Return the first ChildFunctionPhase filtered by the skill_id column
- * @method     ChildFunctionPhase findOneByTitle(string $title) Return the first ChildFunctionPhase filtered by the title column
+ * @method     ChildFunctionPhase findOneByTitle(string $title) Return the first ChildFunctionPhase filtered by the title column *
+
+ * @method     ChildFunctionPhase requirePk($key, ConnectionInterface $con = null) Return the ChildFunctionPhase by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFunctionPhase requireOne(ConnectionInterface $con = null) Return the first ChildFunctionPhase matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildFunctionPhase requireOneById(int $id) Return the first ChildFunctionPhase filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFunctionPhase requireOneByType(string $type) Return the first ChildFunctionPhase filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFunctionPhase requireOneBySkillId(int $skill_id) Return the first ChildFunctionPhase filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildFunctionPhase requireOneByTitle(string $title) Return the first ChildFunctionPhase filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildFunctionPhase[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildFunctionPhase objects based on current ModelCriteria
  * @method     ChildFunctionPhase[]|ObjectCollection findById(int $id) Return ChildFunctionPhase objects filtered by the id column
@@ -67,6 +75,7 @@ use gossi\trixionary\model\Map\FunctionPhaseTableMap;
  */
 abstract class FunctionPhaseQuery extends ChildStructureNodeQuery
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\FunctionPhaseQuery object.
@@ -544,7 +553,7 @@ abstract class FunctionPhaseQuery extends ChildStructureNodeQuery
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildFunctionPhaseQuery The current query, for fluid interface

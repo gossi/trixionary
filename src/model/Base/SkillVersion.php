@@ -23,7 +23,7 @@ use gossi\trixionary\model\SkillVersionQuery as ChildSkillVersionQuery;
 use gossi\trixionary\model\Map\SkillVersionTableMap;
 
 /**
- * Base class that represents a row from the 'kk_trixionary_kk_trixionary_skill_version' table.
+ * Base class that represents a row from the 'kk_trixionary_skill_version' table.
  *
  *
  *
@@ -118,7 +118,15 @@ abstract class SkillVersion implements ActiveRecordInterface
     protected $is_rotation;
 
     /**
+     * The value for the is_acyclic field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $is_acyclic;
+
+    /**
      * The value for the is_cyclic field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_cyclic;
@@ -226,6 +234,12 @@ abstract class SkillVersion implements ActiveRecordInterface
     protected $function_phase_id;
 
     /**
+     * The value for the object_id field.
+     * @var        int
+     */
+    protected $object_id;
+
+    /**
      * The value for the version field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -305,6 +319,8 @@ abstract class SkillVersion implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
+        $this->is_acyclic = true;
+        $this->is_cyclic = false;
         $this->version = 0;
         $this->variation_of_id_version = 0;
         $this->multiple_of_id_version = 0;
@@ -640,6 +656,26 @@ abstract class SkillVersion implements ActiveRecordInterface
     }
 
     /**
+     * Get the [is_acyclic] column value.
+     *
+     * @return boolean
+     */
+    public function getIsAcyclic()
+    {
+        return $this->is_acyclic;
+    }
+
+    /**
+     * Get the [is_acyclic] column value.
+     *
+     * @return boolean
+     */
+    public function isAcyclic()
+    {
+        return $this->getIsAcyclic();
+    }
+
+    /**
      * Get the [is_cyclic] column value.
      *
      * @return boolean
@@ -731,7 +767,7 @@ abstract class SkillVersion implements ActiveRecordInterface
 
     /**
      * Get the [is_composite] column value.
-     *
+     * This skill is a composite
      * @return boolean
      */
     public function getIsComposite()
@@ -741,7 +777,7 @@ abstract class SkillVersion implements ActiveRecordInterface
 
     /**
      * Get the [is_composite] column value.
-     *
+     * This skill is a composite
      * @return boolean
      */
     public function isComposite()
@@ -751,7 +787,7 @@ abstract class SkillVersion implements ActiveRecordInterface
 
     /**
      * Get the [is_multiple] column value.
-     *
+     * This skill is a multiplier
      * @return boolean
      */
     public function getIsMultiple()
@@ -761,7 +797,7 @@ abstract class SkillVersion implements ActiveRecordInterface
 
     /**
      * Get the [is_multiple] column value.
-     *
+     * This skill is a multiplier
      * @return boolean
      */
     public function isMultiple()
@@ -847,6 +883,16 @@ abstract class SkillVersion implements ActiveRecordInterface
     public function getFunctionPhaseId()
     {
         return $this->function_phase_id;
+    }
+
+    /**
+     * Get the [object_id] column value.
+     *
+     * @return int
+     */
+    public function getObjectId()
+    {
+        return $this->object_id;
     }
 
     /**
@@ -970,7 +1016,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setId($v)
@@ -994,7 +1040,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [sport_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setSportId($v)
@@ -1014,7 +1060,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [name] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setName($v)
@@ -1034,7 +1080,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [alternative_name] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setAlternativeName($v)
@@ -1054,7 +1100,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setSlug($v)
@@ -1074,7 +1120,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setDescription($v)
@@ -1094,7 +1140,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [history] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setHistory($v)
@@ -1168,6 +1214,34 @@ abstract class SkillVersion implements ActiveRecordInterface
     } // setIsRotation()
 
     /**
+     * Sets the value of the [is_acyclic] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
+     */
+    public function setIsAcyclic($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->is_acyclic !== $v) {
+            $this->is_acyclic = $v;
+            $this->modifiedColumns[SkillVersionTableMap::COL_IS_ACYCLIC] = true;
+        }
+
+        return $this;
+    } // setIsAcyclic()
+
+    /**
      * Sets the value of the [is_cyclic] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1198,7 +1272,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [longitudinal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setLongitudinalFlags($v)
@@ -1218,7 +1292,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [latitudinal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setLatitudinalFlags($v)
@@ -1238,7 +1312,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [transversal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setTransversalFlags($v)
@@ -1258,7 +1332,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [movement_description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setMovementDescription($v)
@@ -1278,7 +1352,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [variation_of_id] column.
      * Indicates a variation
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setVariationOfId($v)
@@ -1298,7 +1372,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [start_position_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setStartPositionId($v)
@@ -1318,7 +1392,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [end_position_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setEndPositionId($v)
@@ -1341,7 +1415,7 @@ abstract class SkillVersion implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * This skill is a composite
      * @param  boolean|integer|string $v The new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
@@ -1369,7 +1443,7 @@ abstract class SkillVersion implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * This skill is a multiplier
      * @param  boolean|integer|string $v The new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
@@ -1394,7 +1468,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [multiple_of_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setMultipleOfId($v)
@@ -1414,7 +1488,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [multiplier] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setMultiplier($v)
@@ -1434,7 +1508,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [generation] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setGeneration($v)
@@ -1454,7 +1528,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [importance] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setImportance($v)
@@ -1474,7 +1548,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [generation_ids] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setGenerationIds($v)
@@ -1494,7 +1568,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [picture_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setPictureId($v)
@@ -1514,7 +1588,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [kstruktur_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setKstrukturId($v)
@@ -1534,7 +1608,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [function_phase_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setFunctionPhaseId($v)
@@ -1552,9 +1626,29 @@ abstract class SkillVersion implements ActiveRecordInterface
     } // setFunctionPhaseId()
 
     /**
+     * Set the value of [object_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
+     */
+    public function setObjectId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->object_id !== $v) {
+            $this->object_id = $v;
+            $this->modifiedColumns[SkillVersionTableMap::COL_OBJECT_ID] = true;
+        }
+
+        return $this;
+    } // setObjectId()
+
+    /**
      * Set the value of [version] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setVersion($v)
@@ -1582,8 +1676,8 @@ abstract class SkillVersion implements ActiveRecordInterface
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->version_created_at !== null || $dt !== null) {
-            if ($dt !== $this->version_created_at) {
-                $this->version_created_at = $dt;
+            if ($this->version_created_at === null || $dt === null || $dt->format("Y-m-d H:i:s") !== $this->version_created_at->format("Y-m-d H:i:s")) {
+                $this->version_created_at = $dt === null ? null : clone $dt;
                 $this->modifiedColumns[SkillVersionTableMap::COL_VERSION_CREATED_AT] = true;
             }
         } // if either are not null
@@ -1594,7 +1688,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [version_comment] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setVersionComment($v)
@@ -1614,7 +1708,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [variation_of_id_version] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setVariationOfIdVersion($v)
@@ -1634,7 +1728,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [multiple_of_id_version] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setMultipleOfIdVersion($v)
@@ -1654,7 +1748,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [kk_trixionary_skill_ids] column.
      *
-     * @param  array $v new value
+     * @param array $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setKkTrixionarySkillIds($v)
@@ -1705,7 +1799,7 @@ abstract class SkillVersion implements ActiveRecordInterface
     /**
      * Set the value of [kk_trixionary_skill_versions] column.
      *
-     * @param  array $v new value
+     * @param array $v new value
      * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
      */
     public function setKkTrixionarySkillVersions($v)
@@ -1763,6 +1857,14 @@ abstract class SkillVersion implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->is_acyclic !== true) {
+                return false;
+            }
+
+            if ($this->is_cyclic !== false) {
+                return false;
+            }
+
             if ($this->version !== 0) {
                 return false;
             }
@@ -1828,83 +1930,89 @@ abstract class SkillVersion implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SkillVersionTableMap::translateFieldName('IsRotation', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_rotation = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SkillVersionTableMap::translateFieldName('IsCyclic', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SkillVersionTableMap::translateFieldName('IsAcyclic', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->is_acyclic = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SkillVersionTableMap::translateFieldName('IsCyclic', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_cyclic = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SkillVersionTableMap::translateFieldName('LongitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SkillVersionTableMap::translateFieldName('LongitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->longitudinal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SkillVersionTableMap::translateFieldName('LatitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SkillVersionTableMap::translateFieldName('LatitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->latitudinal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SkillVersionTableMap::translateFieldName('TransversalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SkillVersionTableMap::translateFieldName('TransversalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->transversal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SkillVersionTableMap::translateFieldName('MovementDescription', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SkillVersionTableMap::translateFieldName('MovementDescription', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movement_description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->variation_of_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SkillVersionTableMap::translateFieldName('StartPositionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SkillVersionTableMap::translateFieldName('StartPositionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->start_position_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SkillVersionTableMap::translateFieldName('EndPositionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SkillVersionTableMap::translateFieldName('EndPositionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->end_position_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SkillVersionTableMap::translateFieldName('IsComposite', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SkillVersionTableMap::translateFieldName('IsComposite', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_composite = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SkillVersionTableMap::translateFieldName('IsMultiple', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : SkillVersionTableMap::translateFieldName('IsMultiple', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_multiple = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiple_of_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : SkillVersionTableMap::translateFieldName('Multiplier', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : SkillVersionTableMap::translateFieldName('Multiplier', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiplier = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : SkillVersionTableMap::translateFieldName('Generation', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : SkillVersionTableMap::translateFieldName('Generation', TableMap::TYPE_PHPNAME, $indexType)];
             $this->generation = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : SkillVersionTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillVersionTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
             $this->importance = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillVersionTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillVersionTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
             $this->generation_ids = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillVersionTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillVersionTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillVersionTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillVersionTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kstruktur_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillVersionTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillVersionTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->function_phase_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillVersionTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->object_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillVersionTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillVersionTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 32 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
             $this->variation_of_id_version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 33 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiple_of_id_version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 32 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 34 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillIds', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kk_trixionary_skill_ids = $col;
             $this->kk_trixionary_skill_ids_unserialized = null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 33 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillVersions', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 35 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillVersions', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kk_trixionary_skill_versions = $col;
             $this->kk_trixionary_skill_versions_unserialized = null;
             $this->resetModified();
@@ -1915,7 +2023,7 @@ abstract class SkillVersion implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 34; // 34 = SkillVersionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 36; // 36 = SkillVersionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\SkillVersion'), 0, $e);
@@ -2151,6 +2259,9 @@ abstract class SkillVersion implements ActiveRecordInterface
         if ($this->isColumnModified(SkillVersionTableMap::COL_IS_ROTATION)) {
             $modifiedColumns[':p' . $index++]  = '`is_rotation`';
         }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_IS_ACYCLIC)) {
+            $modifiedColumns[':p' . $index++]  = '`is_acyclic`';
+        }
         if ($this->isColumnModified(SkillVersionTableMap::COL_IS_CYCLIC)) {
             $modifiedColumns[':p' . $index++]  = '`is_cyclic`';
         }
@@ -2205,6 +2316,9 @@ abstract class SkillVersion implements ActiveRecordInterface
         if ($this->isColumnModified(SkillVersionTableMap::COL_FUNCTION_PHASE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`function_phase_id`';
         }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_OBJECT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`object_id`';
+        }
         if ($this->isColumnModified(SkillVersionTableMap::COL_VERSION)) {
             $modifiedColumns[':p' . $index++]  = '`version`';
         }
@@ -2228,7 +2342,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO `kk_trixionary_kk_trixionary_skill_version` (%s) VALUES (%s)',
+            'INSERT INTO `kk_trixionary_skill_version` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -2263,6 +2377,9 @@ abstract class SkillVersion implements ActiveRecordInterface
                         break;
                     case '`is_rotation`':
                         $stmt->bindValue($identifier, (int) $this->is_rotation, PDO::PARAM_INT);
+                        break;
+                    case '`is_acyclic`':
+                        $stmt->bindValue($identifier, (int) $this->is_acyclic, PDO::PARAM_INT);
                         break;
                     case '`is_cyclic`':
                         $stmt->bindValue($identifier, (int) $this->is_cyclic, PDO::PARAM_INT);
@@ -2317,6 +2434,9 @@ abstract class SkillVersion implements ActiveRecordInterface
                         break;
                     case '`function_phase_id`':
                         $stmt->bindValue($identifier, $this->function_phase_id, PDO::PARAM_INT);
+                        break;
+                    case '`object_id`':
+                        $stmt->bindValue($identifier, $this->object_id, PDO::PARAM_INT);
                         break;
                     case '`version`':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
@@ -2422,78 +2542,84 @@ abstract class SkillVersion implements ActiveRecordInterface
                 return $this->getIsRotation();
                 break;
             case 9:
-                return $this->getIsCyclic();
+                return $this->getIsAcyclic();
                 break;
             case 10:
-                return $this->getLongitudinalFlags();
+                return $this->getIsCyclic();
                 break;
             case 11:
-                return $this->getLatitudinalFlags();
+                return $this->getLongitudinalFlags();
                 break;
             case 12:
-                return $this->getTransversalFlags();
+                return $this->getLatitudinalFlags();
                 break;
             case 13:
-                return $this->getMovementDescription();
+                return $this->getTransversalFlags();
                 break;
             case 14:
-                return $this->getVariationOfId();
+                return $this->getMovementDescription();
                 break;
             case 15:
-                return $this->getStartPositionId();
+                return $this->getVariationOfId();
                 break;
             case 16:
-                return $this->getEndPositionId();
+                return $this->getStartPositionId();
                 break;
             case 17:
-                return $this->getIsComposite();
+                return $this->getEndPositionId();
                 break;
             case 18:
-                return $this->getIsMultiple();
+                return $this->getIsComposite();
                 break;
             case 19:
-                return $this->getMultipleOfId();
+                return $this->getIsMultiple();
                 break;
             case 20:
-                return $this->getMultiplier();
+                return $this->getMultipleOfId();
                 break;
             case 21:
-                return $this->getGeneration();
+                return $this->getMultiplier();
                 break;
             case 22:
-                return $this->getImportance();
+                return $this->getGeneration();
                 break;
             case 23:
-                return $this->getGenerationIds();
+                return $this->getImportance();
                 break;
             case 24:
-                return $this->getPictureId();
+                return $this->getGenerationIds();
                 break;
             case 25:
-                return $this->getKstrukturId();
+                return $this->getPictureId();
                 break;
             case 26:
-                return $this->getFunctionPhaseId();
+                return $this->getKstrukturId();
                 break;
             case 27:
-                return $this->getVersion();
+                return $this->getFunctionPhaseId();
                 break;
             case 28:
-                return $this->getVersionCreatedAt();
+                return $this->getObjectId();
                 break;
             case 29:
-                return $this->getVersionComment();
+                return $this->getVersion();
                 break;
             case 30:
-                return $this->getVariationOfIdVersion();
+                return $this->getVersionCreatedAt();
                 break;
             case 31:
-                return $this->getMultipleOfIdVersion();
+                return $this->getVersionComment();
                 break;
             case 32:
-                return $this->getKkTrixionarySkillIds();
+                return $this->getVariationOfIdVersion();
                 break;
             case 33:
+                return $this->getMultipleOfIdVersion();
+                break;
+            case 34:
+                return $this->getKkTrixionarySkillIds();
+                break;
+            case 35:
                 return $this->getKkTrixionarySkillVersions();
                 break;
             default:
@@ -2535,32 +2661,42 @@ abstract class SkillVersion implements ActiveRecordInterface
             $keys[6] => $this->getHistory(),
             $keys[7] => $this->getIsTranslation(),
             $keys[8] => $this->getIsRotation(),
-            $keys[9] => $this->getIsCyclic(),
-            $keys[10] => $this->getLongitudinalFlags(),
-            $keys[11] => $this->getLatitudinalFlags(),
-            $keys[12] => $this->getTransversalFlags(),
-            $keys[13] => $this->getMovementDescription(),
-            $keys[14] => $this->getVariationOfId(),
-            $keys[15] => $this->getStartPositionId(),
-            $keys[16] => $this->getEndPositionId(),
-            $keys[17] => $this->getIsComposite(),
-            $keys[18] => $this->getIsMultiple(),
-            $keys[19] => $this->getMultipleOfId(),
-            $keys[20] => $this->getMultiplier(),
-            $keys[21] => $this->getGeneration(),
-            $keys[22] => $this->getImportance(),
-            $keys[23] => $this->getGenerationIds(),
-            $keys[24] => $this->getPictureId(),
-            $keys[25] => $this->getKstrukturId(),
-            $keys[26] => $this->getFunctionPhaseId(),
-            $keys[27] => $this->getVersion(),
-            $keys[28] => $this->getVersionCreatedAt(),
-            $keys[29] => $this->getVersionComment(),
-            $keys[30] => $this->getVariationOfIdVersion(),
-            $keys[31] => $this->getMultipleOfIdVersion(),
-            $keys[32] => $this->getKkTrixionarySkillIds(),
-            $keys[33] => $this->getKkTrixionarySkillVersions(),
+            $keys[9] => $this->getIsAcyclic(),
+            $keys[10] => $this->getIsCyclic(),
+            $keys[11] => $this->getLongitudinalFlags(),
+            $keys[12] => $this->getLatitudinalFlags(),
+            $keys[13] => $this->getTransversalFlags(),
+            $keys[14] => $this->getMovementDescription(),
+            $keys[15] => $this->getVariationOfId(),
+            $keys[16] => $this->getStartPositionId(),
+            $keys[17] => $this->getEndPositionId(),
+            $keys[18] => $this->getIsComposite(),
+            $keys[19] => $this->getIsMultiple(),
+            $keys[20] => $this->getMultipleOfId(),
+            $keys[21] => $this->getMultiplier(),
+            $keys[22] => $this->getGeneration(),
+            $keys[23] => $this->getImportance(),
+            $keys[24] => $this->getGenerationIds(),
+            $keys[25] => $this->getPictureId(),
+            $keys[26] => $this->getKstrukturId(),
+            $keys[27] => $this->getFunctionPhaseId(),
+            $keys[28] => $this->getObjectId(),
+            $keys[29] => $this->getVersion(),
+            $keys[30] => $this->getVersionCreatedAt(),
+            $keys[31] => $this->getVersionComment(),
+            $keys[32] => $this->getVariationOfIdVersion(),
+            $keys[33] => $this->getMultipleOfIdVersion(),
+            $keys[34] => $this->getKkTrixionarySkillIds(),
+            $keys[35] => $this->getKkTrixionarySkillVersions(),
         );
+
+        $utc = new \DateTimeZone('utc');
+        if ($result[$keys[30]] instanceof \DateTime) {
+            // When changing timezone we don't want to change existing instances
+            $dateTime = clone $result[$keys[30]];
+            $result[$keys[30]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -2644,82 +2780,88 @@ abstract class SkillVersion implements ActiveRecordInterface
                 $this->setIsRotation($value);
                 break;
             case 9:
-                $this->setIsCyclic($value);
+                $this->setIsAcyclic($value);
                 break;
             case 10:
-                $this->setLongitudinalFlags($value);
+                $this->setIsCyclic($value);
                 break;
             case 11:
-                $this->setLatitudinalFlags($value);
+                $this->setLongitudinalFlags($value);
                 break;
             case 12:
-                $this->setTransversalFlags($value);
+                $this->setLatitudinalFlags($value);
                 break;
             case 13:
-                $this->setMovementDescription($value);
+                $this->setTransversalFlags($value);
                 break;
             case 14:
-                $this->setVariationOfId($value);
+                $this->setMovementDescription($value);
                 break;
             case 15:
-                $this->setStartPositionId($value);
+                $this->setVariationOfId($value);
                 break;
             case 16:
-                $this->setEndPositionId($value);
+                $this->setStartPositionId($value);
                 break;
             case 17:
-                $this->setIsComposite($value);
+                $this->setEndPositionId($value);
                 break;
             case 18:
-                $this->setIsMultiple($value);
+                $this->setIsComposite($value);
                 break;
             case 19:
-                $this->setMultipleOfId($value);
+                $this->setIsMultiple($value);
                 break;
             case 20:
-                $this->setMultiplier($value);
+                $this->setMultipleOfId($value);
                 break;
             case 21:
-                $this->setGeneration($value);
+                $this->setMultiplier($value);
                 break;
             case 22:
-                $this->setImportance($value);
+                $this->setGeneration($value);
                 break;
             case 23:
-                $this->setGenerationIds($value);
+                $this->setImportance($value);
                 break;
             case 24:
-                $this->setPictureId($value);
+                $this->setGenerationIds($value);
                 break;
             case 25:
-                $this->setKstrukturId($value);
+                $this->setPictureId($value);
                 break;
             case 26:
-                $this->setFunctionPhaseId($value);
+                $this->setKstrukturId($value);
                 break;
             case 27:
-                $this->setVersion($value);
+                $this->setFunctionPhaseId($value);
                 break;
             case 28:
-                $this->setVersionCreatedAt($value);
+                $this->setObjectId($value);
                 break;
             case 29:
-                $this->setVersionComment($value);
+                $this->setVersion($value);
                 break;
             case 30:
-                $this->setVariationOfIdVersion($value);
+                $this->setVersionCreatedAt($value);
                 break;
             case 31:
-                $this->setMultipleOfIdVersion($value);
+                $this->setVersionComment($value);
                 break;
             case 32:
+                $this->setVariationOfIdVersion($value);
+                break;
+            case 33:
+                $this->setMultipleOfIdVersion($value);
+                break;
+            case 34:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
                 }
                 $this->setKkTrixionarySkillIds($value);
                 break;
-            case 33:
+            case 35:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
@@ -2780,79 +2922,85 @@ abstract class SkillVersion implements ActiveRecordInterface
             $this->setIsRotation($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setIsCyclic($arr[$keys[9]]);
+            $this->setIsAcyclic($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setLongitudinalFlags($arr[$keys[10]]);
+            $this->setIsCyclic($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setLatitudinalFlags($arr[$keys[11]]);
+            $this->setLongitudinalFlags($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setTransversalFlags($arr[$keys[12]]);
+            $this->setLatitudinalFlags($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setMovementDescription($arr[$keys[13]]);
+            $this->setTransversalFlags($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setVariationOfId($arr[$keys[14]]);
+            $this->setMovementDescription($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setStartPositionId($arr[$keys[15]]);
+            $this->setVariationOfId($arr[$keys[15]]);
         }
         if (array_key_exists($keys[16], $arr)) {
-            $this->setEndPositionId($arr[$keys[16]]);
+            $this->setStartPositionId($arr[$keys[16]]);
         }
         if (array_key_exists($keys[17], $arr)) {
-            $this->setIsComposite($arr[$keys[17]]);
+            $this->setEndPositionId($arr[$keys[17]]);
         }
         if (array_key_exists($keys[18], $arr)) {
-            $this->setIsMultiple($arr[$keys[18]]);
+            $this->setIsComposite($arr[$keys[18]]);
         }
         if (array_key_exists($keys[19], $arr)) {
-            $this->setMultipleOfId($arr[$keys[19]]);
+            $this->setIsMultiple($arr[$keys[19]]);
         }
         if (array_key_exists($keys[20], $arr)) {
-            $this->setMultiplier($arr[$keys[20]]);
+            $this->setMultipleOfId($arr[$keys[20]]);
         }
         if (array_key_exists($keys[21], $arr)) {
-            $this->setGeneration($arr[$keys[21]]);
+            $this->setMultiplier($arr[$keys[21]]);
         }
         if (array_key_exists($keys[22], $arr)) {
-            $this->setImportance($arr[$keys[22]]);
+            $this->setGeneration($arr[$keys[22]]);
         }
         if (array_key_exists($keys[23], $arr)) {
-            $this->setGenerationIds($arr[$keys[23]]);
+            $this->setImportance($arr[$keys[23]]);
         }
         if (array_key_exists($keys[24], $arr)) {
-            $this->setPictureId($arr[$keys[24]]);
+            $this->setGenerationIds($arr[$keys[24]]);
         }
         if (array_key_exists($keys[25], $arr)) {
-            $this->setKstrukturId($arr[$keys[25]]);
+            $this->setPictureId($arr[$keys[25]]);
         }
         if (array_key_exists($keys[26], $arr)) {
-            $this->setFunctionPhaseId($arr[$keys[26]]);
+            $this->setKstrukturId($arr[$keys[26]]);
         }
         if (array_key_exists($keys[27], $arr)) {
-            $this->setVersion($arr[$keys[27]]);
+            $this->setFunctionPhaseId($arr[$keys[27]]);
         }
         if (array_key_exists($keys[28], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[28]]);
+            $this->setObjectId($arr[$keys[28]]);
         }
         if (array_key_exists($keys[29], $arr)) {
-            $this->setVersionComment($arr[$keys[29]]);
+            $this->setVersion($arr[$keys[29]]);
         }
         if (array_key_exists($keys[30], $arr)) {
-            $this->setVariationOfIdVersion($arr[$keys[30]]);
+            $this->setVersionCreatedAt($arr[$keys[30]]);
         }
         if (array_key_exists($keys[31], $arr)) {
-            $this->setMultipleOfIdVersion($arr[$keys[31]]);
+            $this->setVersionComment($arr[$keys[31]]);
         }
         if (array_key_exists($keys[32], $arr)) {
-            $this->setKkTrixionarySkillIds($arr[$keys[32]]);
+            $this->setVariationOfIdVersion($arr[$keys[32]]);
         }
         if (array_key_exists($keys[33], $arr)) {
-            $this->setKkTrixionarySkillVersions($arr[$keys[33]]);
+            $this->setMultipleOfIdVersion($arr[$keys[33]]);
+        }
+        if (array_key_exists($keys[34], $arr)) {
+            $this->setKkTrixionarySkillIds($arr[$keys[34]]);
+        }
+        if (array_key_exists($keys[35], $arr)) {
+            $this->setKkTrixionarySkillVersions($arr[$keys[35]]);
         }
     }
 
@@ -2922,6 +3070,9 @@ abstract class SkillVersion implements ActiveRecordInterface
         if ($this->isColumnModified(SkillVersionTableMap::COL_IS_ROTATION)) {
             $criteria->add(SkillVersionTableMap::COL_IS_ROTATION, $this->is_rotation);
         }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_IS_ACYCLIC)) {
+            $criteria->add(SkillVersionTableMap::COL_IS_ACYCLIC, $this->is_acyclic);
+        }
         if ($this->isColumnModified(SkillVersionTableMap::COL_IS_CYCLIC)) {
             $criteria->add(SkillVersionTableMap::COL_IS_CYCLIC, $this->is_cyclic);
         }
@@ -2975,6 +3126,9 @@ abstract class SkillVersion implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillVersionTableMap::COL_FUNCTION_PHASE_ID)) {
             $criteria->add(SkillVersionTableMap::COL_FUNCTION_PHASE_ID, $this->function_phase_id);
+        }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_OBJECT_ID)) {
+            $criteria->add(SkillVersionTableMap::COL_OBJECT_ID, $this->object_id);
         }
         if ($this->isColumnModified(SkillVersionTableMap::COL_VERSION)) {
             $criteria->add(SkillVersionTableMap::COL_VERSION, $this->version);
@@ -3034,7 +3188,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         $validPrimaryKeyFKs = 1;
         $primaryKeyFKs = [];
 
-        //relation kk_trixionary_kk_trixionary_skill_version_fk_717d45 to table kk_trixionary_skill
+        //relation kk_trixionary_skill_version_fk_717d45 to table kk_trixionary_skill
         if ($this->aSkill && $hash = spl_object_hash($this->aSkill)) {
             $primaryKeyFKs[] = $hash;
         } else {
@@ -3107,6 +3261,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         $copyObj->setHistory($this->getHistory());
         $copyObj->setIsTranslation($this->getIsTranslation());
         $copyObj->setIsRotation($this->getIsRotation());
+        $copyObj->setIsAcyclic($this->getIsAcyclic());
         $copyObj->setIsCyclic($this->getIsCyclic());
         $copyObj->setLongitudinalFlags($this->getLongitudinalFlags());
         $copyObj->setLatitudinalFlags($this->getLatitudinalFlags());
@@ -3125,6 +3280,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         $copyObj->setPictureId($this->getPictureId());
         $copyObj->setKstrukturId($this->getKstrukturId());
         $copyObj->setFunctionPhaseId($this->getFunctionPhaseId());
+        $copyObj->setObjectId($this->getObjectId());
         $copyObj->setVersion($this->getVersion());
         $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
         $copyObj->setVersionComment($this->getVersionComment());
@@ -3229,6 +3385,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         $this->history = null;
         $this->is_translation = null;
         $this->is_rotation = null;
+        $this->is_acyclic = null;
         $this->is_cyclic = null;
         $this->longitudinal_flags = null;
         $this->latitudinal_flags = null;
@@ -3247,6 +3404,7 @@ abstract class SkillVersion implements ActiveRecordInterface
         $this->picture_id = null;
         $this->kstruktur_id = null;
         $this->function_phase_id = null;
+        $this->object_id = null;
         $this->version = null;
         $this->version_created_at = null;
         $this->version_comment = null;

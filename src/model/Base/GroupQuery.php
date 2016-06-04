@@ -53,7 +53,16 @@ use gossi\trixionary\model\Map\GroupTableMap;
  * @method     ChildGroup findOneByTitle(string $title) Return the first ChildGroup filtered by the title column
  * @method     ChildGroup findOneByDescription(string $description) Return the first ChildGroup filtered by the description column
  * @method     ChildGroup findOneBySlug(string $slug) Return the first ChildGroup filtered by the slug column
- * @method     ChildGroup findOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column
+ * @method     ChildGroup findOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column *
+
+ * @method     ChildGroup requirePk($key, ConnectionInterface $con = null) Return the ChildGroup by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOne(ConnectionInterface $con = null) Return the first ChildGroup matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildGroup requireOneById(int $id) Return the first ChildGroup filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOneByTitle(string $title) Return the first ChildGroup filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOneByDescription(string $description) Return the first ChildGroup filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOneBySlug(string $slug) Return the first ChildGroup filtered by the slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildGroup[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildGroup objects based on current ModelCriteria
  * @method     ChildGroup[]|ObjectCollection findById(int $id) Return ChildGroup objects filtered by the id column
@@ -66,6 +75,7 @@ use gossi\trixionary\model\Map\GroupTableMap;
  */
 abstract class GroupQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\GroupQuery object.
@@ -493,7 +503,7 @@ abstract class GroupQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\SkillGroup object
      *
-     * @param \gossi\trixionary\model\SkillGroup|ObjectCollection $skillGroup  the related object to use as filter
+     * @param \gossi\trixionary\model\SkillGroup|ObjectCollection $skillGroup the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildGroupQuery The current query, for fluid interface

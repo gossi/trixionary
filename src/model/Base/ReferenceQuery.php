@@ -101,7 +101,32 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  * @method     ChildReference findOneByPages(string $pages) Return the first ChildReference filtered by the pages column
  * @method     ChildReference findOneByUrl(string $url) Return the first ChildReference filtered by the url column
  * @method     ChildReference findOneByLastchecked(string $lastchecked) Return the first ChildReference filtered by the lastchecked column
- * @method     ChildReference findOneByManaged(boolean $managed) Return the first ChildReference filtered by the managed column
+ * @method     ChildReference findOneByManaged(boolean $managed) Return the first ChildReference filtered by the managed column *
+
+ * @method     ChildReference requirePk($key, ConnectionInterface $con = null) Return the ChildReference by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOne(ConnectionInterface $con = null) Return the first ChildReference matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildReference requireOneById(int $id) Return the first ChildReference filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByType(string $type) Return the first ChildReference filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneBySkillId(int $skill_id) Return the first ChildReference filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByTitle(string $title) Return the first ChildReference filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByYear(int $year) Return the first ChildReference filtered by the year column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByPublisher(string $publisher) Return the first ChildReference filtered by the publisher column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByJournal(string $journal) Return the first ChildReference filtered by the journal column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByNumber(string $number) Return the first ChildReference filtered by the number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneBySchool(string $school) Return the first ChildReference filtered by the school column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByAuthor(string $author) Return the first ChildReference filtered by the author column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByEdition(string $edition) Return the first ChildReference filtered by the edition column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByVolume(string $volume) Return the first ChildReference filtered by the volume column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByAddress(string $address) Return the first ChildReference filtered by the address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByEditor(string $editor) Return the first ChildReference filtered by the editor column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByHowpublished(string $howpublished) Return the first ChildReference filtered by the howpublished column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByNote(string $note) Return the first ChildReference filtered by the note column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByBooktitle(string $booktitle) Return the first ChildReference filtered by the booktitle column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByPages(string $pages) Return the first ChildReference filtered by the pages column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByUrl(string $url) Return the first ChildReference filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByLastchecked(string $lastchecked) Return the first ChildReference filtered by the lastchecked column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildReference requireOneByManaged(boolean $managed) Return the first ChildReference filtered by the managed column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildReference[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildReference objects based on current ModelCriteria
  * @method     ChildReference[]|ObjectCollection findById(int $id) Return ChildReference objects filtered by the id column
@@ -130,6 +155,7 @@ use gossi\trixionary\model\Map\ReferenceTableMap;
  */
 abstract class ReferenceQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\ReferenceQuery object.
@@ -1045,7 +1071,7 @@ abstract class ReferenceQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Video object
      *
-     * @param \gossi\trixionary\model\Video|ObjectCollection $video  the related object to use as filter
+     * @param \gossi\trixionary\model\Video|ObjectCollection $video the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildReferenceQuery The current query, for fluid interface

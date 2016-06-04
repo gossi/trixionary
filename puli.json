@@ -1,0 +1,295 @@
+{
+    "version": "1.0",
+    "name": "gossi/trixionary",
+    "path-mappings": {
+        "/gossi/trixionary": "res/"
+    },
+    "config": {
+        "bootstrap-file": "vendor/autoload.php"
+    },
+    "packages": {
+        "cocur/slugify": {
+            "install-path": "vendor/cocur/slugify",
+            "installer": "composer"
+        },
+        "composer/ca-bundle": {
+            "install-path": "vendor/composer/ca-bundle",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "composer/composer": {
+            "install-path": "vendor/composer/composer",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "composer/semver": {
+            "install-path": "vendor/composer/semver",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "composer/spdx-licenses": {
+            "install-path": "vendor/composer/spdx-licenses",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "egeloen/http-adapter": {
+            "install-path": "vendor/egeloen/http-adapter",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "flow/jsonpath": {
+            "install-path": "vendor/flow/jsonpath",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "gossi/propel-l10n-behavior": {
+            "install-path": "vendor/gossi/propel-l10n-behavior",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "gossi/swagger": {
+            "install-path": "vendor/gossi/swagger",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "igorw/get-in": {
+            "install-path": "vendor/igorw/get-in",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "justinrainbow/json-schema": {
+            "install-path": "vendor/justinrainbow/json-schema",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "keeko/composer-installer": {
+            "install-path": "vendor/keeko/composer-installer",
+            "installer": "composer"
+        },
+        "keeko/core": {
+            "install-path": "vendor/keeko/core",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "keeko/framework": {
+            "install-path": "vendor/keeko/framework",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "monolog/monolog": {
+            "install-path": "vendor/monolog/monolog",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "mustangostang/spyc": {
+            "install-path": "vendor/mustangostang/spyc",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "paragonie/random_compat": {
+            "install-path": "vendor/paragonie/random_compat",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phootwork/collection": {
+            "install-path": "vendor/phootwork/collection",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phootwork/file": {
+            "install-path": "vendor/phootwork/file",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phootwork/json": {
+            "install-path": "vendor/phootwork/json",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "phootwork/lang": {
+            "install-path": "vendor/phootwork/lang",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "piwik/device-detector": {
+            "install-path": "vendor/piwik/device-detector",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "propel/propel": {
+            "install-path": "vendor/propel/propel",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "psr/http-message": {
+            "install-path": "vendor/psr/http-message",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "psr/log": {
+            "install-path": "vendor/psr/log",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "puli/composer-plugin": {
+            "install-path": "vendor/puli/composer-plugin",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "puli/discovery": {
+            "install-path": "vendor/puli/discovery",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "puli/repository": {
+            "install-path": "vendor/puli/repository",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "puli/twig-extension": {
+            "install-path": "vendor/puli/twig-extension",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "puli/url-generator": {
+            "install-path": "vendor/puli/url-generator",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "ramsey/uuid": {
+            "install-path": "vendor/ramsey/uuid",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "seld/cli-prompt": {
+            "install-path": "vendor/seld/cli-prompt",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "seld/jsonlint": {
+            "install-path": "vendor/seld/jsonlint",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "seld/phar-utils": {
+            "install-path": "vendor/seld/phar-utils",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "swiftmailer/swiftmailer": {
+            "install-path": "vendor/swiftmailer/swiftmailer",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/config": {
+            "install-path": "vendor/symfony/config",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/console": {
+            "install-path": "vendor/symfony/console",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/event-dispatcher": {
+            "install-path": "vendor/symfony/event-dispatcher",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/filesystem": {
+            "install-path": "vendor/symfony/filesystem",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/finder": {
+            "install-path": "vendor/symfony/finder",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/http-foundation": {
+            "install-path": "vendor/symfony/http-foundation",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/options-resolver": {
+            "install-path": "vendor/symfony/options-resolver",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/polyfill-mbstring": {
+            "install-path": "vendor/symfony/polyfill-mbstring",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/process": {
+            "install-path": "vendor/symfony/process",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/routing": {
+            "install-path": "vendor/symfony/routing",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/translation": {
+            "install-path": "vendor/symfony/translation",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/validator": {
+            "install-path": "vendor/symfony/validator",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "symfony/yaml": {
+            "install-path": "vendor/symfony/yaml",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "tobscure/json-api": {
+            "install-path": "vendor/tobscure/json-api",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "twig/twig": {
+            "install-path": "vendor/twig/twig",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "webmozart/assert": {
+            "install-path": "vendor/webmozart/assert",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "webmozart/expression": {
+            "install-path": "vendor/webmozart/expression",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "webmozart/glob": {
+            "install-path": "vendor/webmozart/glob",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "webmozart/json": {
+            "install-path": "vendor/webmozart/json",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "webmozart/path-util": {
+            "install-path": "vendor/webmozart/path-util",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "willdurand/geocoder": {
+            "install-path": "vendor/willdurand/geocoder",
+            "installer": "composer",
+            "env": "dev"
+        },
+        "zendframework/zend-diactoros": {
+            "install-path": "vendor/zendframework/zend-diactoros",
+            "installer": "composer",
+            "env": "dev"
+        }
+    }
+}

@@ -108,8 +108,8 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildStructureNodeParent[] Collection to store aggregation of ChildStructureNodeParent objects.
      */
-    protected $collStructureNodeParentsRelatedById;
-    protected $collStructureNodeParentsRelatedByIdPartial;
+    protected $collStructureNodeParentsRelatedByStructureNodeId;
+    protected $collStructureNodeParentsRelatedByStructureNodeIdPartial;
 
     /**
      * @var        ObjectCollection|ChildStructureNodeParent[] Collection to store aggregation of ChildStructureNodeParent objects.
@@ -140,12 +140,12 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildStructureNode[] Cross Collection to store aggregation of ChildStructureNode objects.
      */
-    protected $collStructureNodesRelatedById;
+    protected $collStructureNodesRelatedByStructureNodeId;
 
     /**
      * @var bool
      */
-    protected $collStructureNodesRelatedByIdPartial;
+    protected $collStructureNodesRelatedByStructureNodeIdPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -165,13 +165,13 @@ abstract class StructureNode implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildStructureNode[]
      */
-    protected $structureNodesRelatedByIdScheduledForDeletion = null;
+    protected $structureNodesRelatedByStructureNodeIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildStructureNodeParent[]
      */
-    protected $structureNodeParentsRelatedByIdScheduledForDeletion = null;
+    protected $structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -449,7 +449,7 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
     public function setId($v)
@@ -469,7 +469,7 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * Set the value of [type] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
     public function setType($v)
@@ -489,7 +489,7 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * Set the value of [skill_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
     public function setSkillId($v)
@@ -513,7 +513,7 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -533,7 +533,7 @@ abstract class StructureNode implements ActiveRecordInterface
     /**
      * Set the value of [descendant_class] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
     public function setDescendantClass($v)
@@ -673,7 +673,7 @@ abstract class StructureNode implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aSkill = null;
-            $this->collStructureNodeParentsRelatedById = null;
+            $this->collStructureNodeParentsRelatedByStructureNodeId = null;
 
             $this->collStructureNodeParentsRelatedByParentId = null;
 
@@ -682,7 +682,7 @@ abstract class StructureNode implements ActiveRecordInterface
             $this->singleFunctionPhase = null;
 
             $this->collStructureNodesRelatedByParentId = null;
-            $this->collStructureNodesRelatedById = null;
+            $this->collStructureNodesRelatedByStructureNodeId = null;
         } // if (deep)
     }
 
@@ -834,10 +834,10 @@ abstract class StructureNode implements ActiveRecordInterface
             }
 
 
-            if ($this->structureNodesRelatedByIdScheduledForDeletion !== null) {
-                if (!$this->structureNodesRelatedByIdScheduledForDeletion->isEmpty()) {
+            if ($this->structureNodesRelatedByStructureNodeIdScheduledForDeletion !== null) {
+                if (!$this->structureNodesRelatedByStructureNodeIdScheduledForDeletion->isEmpty()) {
                     $pks = array();
-                    foreach ($this->structureNodesRelatedByIdScheduledForDeletion as $entry) {
+                    foreach ($this->structureNodesRelatedByStructureNodeIdScheduledForDeletion as $entry) {
                         $entryPk = [];
 
                         $entryPk[1] = $this->getId();
@@ -849,31 +849,31 @@ abstract class StructureNode implements ActiveRecordInterface
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
 
-                    $this->structureNodesRelatedByIdScheduledForDeletion = null;
+                    $this->structureNodesRelatedByStructureNodeIdScheduledForDeletion = null;
                 }
 
             }
 
-            if ($this->collStructureNodesRelatedById) {
-                foreach ($this->collStructureNodesRelatedById as $structureNodeRelatedById) {
-                    if (!$structureNodeRelatedById->isDeleted() && ($structureNodeRelatedById->isNew() || $structureNodeRelatedById->isModified())) {
-                        $structureNodeRelatedById->save($con);
+            if ($this->collStructureNodesRelatedByStructureNodeId) {
+                foreach ($this->collStructureNodesRelatedByStructureNodeId as $structureNodeRelatedByStructureNodeId) {
+                    if (!$structureNodeRelatedByStructureNodeId->isDeleted() && ($structureNodeRelatedByStructureNodeId->isNew() || $structureNodeRelatedByStructureNodeId->isModified())) {
+                        $structureNodeRelatedByStructureNodeId->save($con);
                     }
                 }
             }
 
 
-            if ($this->structureNodeParentsRelatedByIdScheduledForDeletion !== null) {
-                if (!$this->structureNodeParentsRelatedByIdScheduledForDeletion->isEmpty()) {
+            if ($this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion !== null) {
+                if (!$this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\StructureNodeParentQuery::create()
-                        ->filterByPrimaryKeys($this->structureNodeParentsRelatedByIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->structureNodeParentsRelatedByIdScheduledForDeletion = null;
+                    $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collStructureNodeParentsRelatedById !== null) {
-                foreach ($this->collStructureNodeParentsRelatedById as $referrerFK) {
+            if ($this->collStructureNodeParentsRelatedByStructureNodeId !== null) {
+                foreach ($this->collStructureNodeParentsRelatedByStructureNodeId as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1110,7 +1110,7 @@ abstract class StructureNode implements ActiveRecordInterface
 
                 $result[$key] = $this->aSkill->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collStructureNodeParentsRelatedById) {
+            if (null !== $this->collStructureNodeParentsRelatedByStructureNodeId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -1123,7 +1123,7 @@ abstract class StructureNode implements ActiveRecordInterface
                         $key = 'StructureNodeParents';
                 }
 
-                $result[$key] = $this->collStructureNodeParentsRelatedById->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collStructureNodeParentsRelatedByStructureNodeId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collStructureNodeParentsRelatedByParentId) {
 
@@ -1412,9 +1412,9 @@ abstract class StructureNode implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getStructureNodeParentsRelatedById() as $relObj) {
+            foreach ($this->getStructureNodeParentsRelatedByStructureNodeId() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addStructureNodeParentRelatedById($relObj->copy($deepCopy));
+                    $copyObj->addStructureNodeParentRelatedByStructureNodeId($relObj->copy($deepCopy));
                 }
             }
 
@@ -1526,8 +1526,8 @@ abstract class StructureNode implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('StructureNodeParentRelatedById' == $relationName) {
-            return $this->initStructureNodeParentsRelatedById();
+        if ('StructureNodeParentRelatedByStructureNodeId' == $relationName) {
+            return $this->initStructureNodeParentsRelatedByStructureNodeId();
         }
         if ('StructureNodeParentRelatedByParentId' == $relationName) {
             return $this->initStructureNodeParentsRelatedByParentId();
@@ -1535,31 +1535,31 @@ abstract class StructureNode implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collStructureNodeParentsRelatedById collection
+     * Clears out the collStructureNodeParentsRelatedByStructureNodeId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addStructureNodeParentsRelatedById()
+     * @see        addStructureNodeParentsRelatedByStructureNodeId()
      */
-    public function clearStructureNodeParentsRelatedById()
+    public function clearStructureNodeParentsRelatedByStructureNodeId()
     {
-        $this->collStructureNodeParentsRelatedById = null; // important to set this to NULL since that means it is uninitialized
+        $this->collStructureNodeParentsRelatedByStructureNodeId = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collStructureNodeParentsRelatedById collection loaded partially.
+     * Reset is the collStructureNodeParentsRelatedByStructureNodeId collection loaded partially.
      */
-    public function resetPartialStructureNodeParentsRelatedById($v = true)
+    public function resetPartialStructureNodeParentsRelatedByStructureNodeId($v = true)
     {
-        $this->collStructureNodeParentsRelatedByIdPartial = $v;
+        $this->collStructureNodeParentsRelatedByStructureNodeIdPartial = $v;
     }
 
     /**
-     * Initializes the collStructureNodeParentsRelatedById collection.
+     * Initializes the collStructureNodeParentsRelatedByStructureNodeId collection.
      *
-     * By default this just sets the collStructureNodeParentsRelatedById collection to an empty array (like clearcollStructureNodeParentsRelatedById());
+     * By default this just sets the collStructureNodeParentsRelatedByStructureNodeId collection to an empty array (like clearcollStructureNodeParentsRelatedByStructureNodeId());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1568,13 +1568,13 @@ abstract class StructureNode implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initStructureNodeParentsRelatedById($overrideExisting = true)
+    public function initStructureNodeParentsRelatedByStructureNodeId($overrideExisting = true)
     {
-        if (null !== $this->collStructureNodeParentsRelatedById && !$overrideExisting) {
+        if (null !== $this->collStructureNodeParentsRelatedByStructureNodeId && !$overrideExisting) {
             return;
         }
-        $this->collStructureNodeParentsRelatedById = new ObjectCollection();
-        $this->collStructureNodeParentsRelatedById->setModel('\gossi\trixionary\model\StructureNodeParent');
+        $this->collStructureNodeParentsRelatedByStructureNodeId = new ObjectCollection();
+        $this->collStructureNodeParentsRelatedByStructureNodeId->setModel('\gossi\trixionary\model\StructureNodeParent');
     }
 
     /**
@@ -1591,48 +1591,48 @@ abstract class StructureNode implements ActiveRecordInterface
      * @return ObjectCollection|ChildStructureNodeParent[] List of ChildStructureNodeParent objects
      * @throws PropelException
      */
-    public function getStructureNodeParentsRelatedById(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getStructureNodeParentsRelatedByStructureNodeId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collStructureNodeParentsRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collStructureNodeParentsRelatedById || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collStructureNodeParentsRelatedById) {
+        $partial = $this->collStructureNodeParentsRelatedByStructureNodeIdPartial && !$this->isNew();
+        if (null === $this->collStructureNodeParentsRelatedByStructureNodeId || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collStructureNodeParentsRelatedByStructureNodeId) {
                 // return empty collection
-                $this->initStructureNodeParentsRelatedById();
+                $this->initStructureNodeParentsRelatedByStructureNodeId();
             } else {
-                $collStructureNodeParentsRelatedById = ChildStructureNodeParentQuery::create(null, $criteria)
-                    ->filterByStructureNodeRelatedById($this)
+                $collStructureNodeParentsRelatedByStructureNodeId = ChildStructureNodeParentQuery::create(null, $criteria)
+                    ->filterByStructureNodeRelatedByStructureNodeId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collStructureNodeParentsRelatedByIdPartial && count($collStructureNodeParentsRelatedById)) {
-                        $this->initStructureNodeParentsRelatedById(false);
+                    if (false !== $this->collStructureNodeParentsRelatedByStructureNodeIdPartial && count($collStructureNodeParentsRelatedByStructureNodeId)) {
+                        $this->initStructureNodeParentsRelatedByStructureNodeId(false);
 
-                        foreach ($collStructureNodeParentsRelatedById as $obj) {
-                            if (false == $this->collStructureNodeParentsRelatedById->contains($obj)) {
-                                $this->collStructureNodeParentsRelatedById->append($obj);
+                        foreach ($collStructureNodeParentsRelatedByStructureNodeId as $obj) {
+                            if (false == $this->collStructureNodeParentsRelatedByStructureNodeId->contains($obj)) {
+                                $this->collStructureNodeParentsRelatedByStructureNodeId->append($obj);
                             }
                         }
 
-                        $this->collStructureNodeParentsRelatedByIdPartial = true;
+                        $this->collStructureNodeParentsRelatedByStructureNodeIdPartial = true;
                     }
 
-                    return $collStructureNodeParentsRelatedById;
+                    return $collStructureNodeParentsRelatedByStructureNodeId;
                 }
 
-                if ($partial && $this->collStructureNodeParentsRelatedById) {
-                    foreach ($this->collStructureNodeParentsRelatedById as $obj) {
+                if ($partial && $this->collStructureNodeParentsRelatedByStructureNodeId) {
+                    foreach ($this->collStructureNodeParentsRelatedByStructureNodeId as $obj) {
                         if ($obj->isNew()) {
-                            $collStructureNodeParentsRelatedById[] = $obj;
+                            $collStructureNodeParentsRelatedByStructureNodeId[] = $obj;
                         }
                     }
                 }
 
-                $this->collStructureNodeParentsRelatedById = $collStructureNodeParentsRelatedById;
-                $this->collStructureNodeParentsRelatedByIdPartial = false;
+                $this->collStructureNodeParentsRelatedByStructureNodeId = $collStructureNodeParentsRelatedByStructureNodeId;
+                $this->collStructureNodeParentsRelatedByStructureNodeIdPartial = false;
             }
         }
 
-        return $this->collStructureNodeParentsRelatedById;
+        return $this->collStructureNodeParentsRelatedByStructureNodeId;
     }
 
     /**
@@ -1641,32 +1641,32 @@ abstract class StructureNode implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $structureNodeParentsRelatedById A Propel collection.
+     * @param      Collection $structureNodeParentsRelatedByStructureNodeId A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildStructureNode The current object (for fluent API support)
      */
-    public function setStructureNodeParentsRelatedById(Collection $structureNodeParentsRelatedById, ConnectionInterface $con = null)
+    public function setStructureNodeParentsRelatedByStructureNodeId(Collection $structureNodeParentsRelatedByStructureNodeId, ConnectionInterface $con = null)
     {
-        /** @var ChildStructureNodeParent[] $structureNodeParentsRelatedByIdToDelete */
-        $structureNodeParentsRelatedByIdToDelete = $this->getStructureNodeParentsRelatedById(new Criteria(), $con)->diff($structureNodeParentsRelatedById);
+        /** @var ChildStructureNodeParent[] $structureNodeParentsRelatedByStructureNodeIdToDelete */
+        $structureNodeParentsRelatedByStructureNodeIdToDelete = $this->getStructureNodeParentsRelatedByStructureNodeId(new Criteria(), $con)->diff($structureNodeParentsRelatedByStructureNodeId);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->structureNodeParentsRelatedByIdScheduledForDeletion = clone $structureNodeParentsRelatedByIdToDelete;
+        $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion = clone $structureNodeParentsRelatedByStructureNodeIdToDelete;
 
-        foreach ($structureNodeParentsRelatedByIdToDelete as $structureNodeParentRelatedByIdRemoved) {
-            $structureNodeParentRelatedByIdRemoved->setStructureNodeRelatedById(null);
+        foreach ($structureNodeParentsRelatedByStructureNodeIdToDelete as $structureNodeParentRelatedByStructureNodeIdRemoved) {
+            $structureNodeParentRelatedByStructureNodeIdRemoved->setStructureNodeRelatedByStructureNodeId(null);
         }
 
-        $this->collStructureNodeParentsRelatedById = null;
-        foreach ($structureNodeParentsRelatedById as $structureNodeParentRelatedById) {
-            $this->addStructureNodeParentRelatedById($structureNodeParentRelatedById);
+        $this->collStructureNodeParentsRelatedByStructureNodeId = null;
+        foreach ($structureNodeParentsRelatedByStructureNodeId as $structureNodeParentRelatedByStructureNodeId) {
+            $this->addStructureNodeParentRelatedByStructureNodeId($structureNodeParentRelatedByStructureNodeId);
         }
 
-        $this->collStructureNodeParentsRelatedById = $structureNodeParentsRelatedById;
-        $this->collStructureNodeParentsRelatedByIdPartial = false;
+        $this->collStructureNodeParentsRelatedByStructureNodeId = $structureNodeParentsRelatedByStructureNodeId;
+        $this->collStructureNodeParentsRelatedByStructureNodeIdPartial = false;
 
         return $this;
     }
@@ -1680,16 +1680,16 @@ abstract class StructureNode implements ActiveRecordInterface
      * @return int             Count of related StructureNodeParent objects.
      * @throws PropelException
      */
-    public function countStructureNodeParentsRelatedById(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countStructureNodeParentsRelatedByStructureNodeId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collStructureNodeParentsRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collStructureNodeParentsRelatedById || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collStructureNodeParentsRelatedById) {
+        $partial = $this->collStructureNodeParentsRelatedByStructureNodeIdPartial && !$this->isNew();
+        if (null === $this->collStructureNodeParentsRelatedByStructureNodeId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collStructureNodeParentsRelatedByStructureNodeId) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getStructureNodeParentsRelatedById());
+                return count($this->getStructureNodeParentsRelatedByStructureNodeId());
             }
 
             $query = ChildStructureNodeParentQuery::create(null, $criteria);
@@ -1698,11 +1698,11 @@ abstract class StructureNode implements ActiveRecordInterface
             }
 
             return $query
-                ->filterByStructureNodeRelatedById($this)
+                ->filterByStructureNodeRelatedByStructureNodeId($this)
                 ->count($con);
         }
 
-        return count($this->collStructureNodeParentsRelatedById);
+        return count($this->collStructureNodeParentsRelatedByStructureNodeId);
     }
 
     /**
@@ -1712,44 +1712,44 @@ abstract class StructureNode implements ActiveRecordInterface
      * @param  ChildStructureNodeParent $l ChildStructureNodeParent
      * @return $this|\gossi\trixionary\model\StructureNode The current object (for fluent API support)
      */
-    public function addStructureNodeParentRelatedById(ChildStructureNodeParent $l)
+    public function addStructureNodeParentRelatedByStructureNodeId(ChildStructureNodeParent $l)
     {
-        if ($this->collStructureNodeParentsRelatedById === null) {
-            $this->initStructureNodeParentsRelatedById();
-            $this->collStructureNodeParentsRelatedByIdPartial = true;
+        if ($this->collStructureNodeParentsRelatedByStructureNodeId === null) {
+            $this->initStructureNodeParentsRelatedByStructureNodeId();
+            $this->collStructureNodeParentsRelatedByStructureNodeIdPartial = true;
         }
 
-        if (!$this->collStructureNodeParentsRelatedById->contains($l)) {
-            $this->doAddStructureNodeParentRelatedById($l);
+        if (!$this->collStructureNodeParentsRelatedByStructureNodeId->contains($l)) {
+            $this->doAddStructureNodeParentRelatedByStructureNodeId($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildStructureNodeParent $structureNodeParentRelatedById The ChildStructureNodeParent object to add.
+     * @param ChildStructureNodeParent $structureNodeParentRelatedByStructureNodeId The ChildStructureNodeParent object to add.
      */
-    protected function doAddStructureNodeParentRelatedById(ChildStructureNodeParent $structureNodeParentRelatedById)
+    protected function doAddStructureNodeParentRelatedByStructureNodeId(ChildStructureNodeParent $structureNodeParentRelatedByStructureNodeId)
     {
-        $this->collStructureNodeParentsRelatedById[]= $structureNodeParentRelatedById;
-        $structureNodeParentRelatedById->setStructureNodeRelatedById($this);
+        $this->collStructureNodeParentsRelatedByStructureNodeId[]= $structureNodeParentRelatedByStructureNodeId;
+        $structureNodeParentRelatedByStructureNodeId->setStructureNodeRelatedByStructureNodeId($this);
     }
 
     /**
-     * @param  ChildStructureNodeParent $structureNodeParentRelatedById The ChildStructureNodeParent object to remove.
+     * @param  ChildStructureNodeParent $structureNodeParentRelatedByStructureNodeId The ChildStructureNodeParent object to remove.
      * @return $this|ChildStructureNode The current object (for fluent API support)
      */
-    public function removeStructureNodeParentRelatedById(ChildStructureNodeParent $structureNodeParentRelatedById)
+    public function removeStructureNodeParentRelatedByStructureNodeId(ChildStructureNodeParent $structureNodeParentRelatedByStructureNodeId)
     {
-        if ($this->getStructureNodeParentsRelatedById()->contains($structureNodeParentRelatedById)) {
-            $pos = $this->collStructureNodeParentsRelatedById->search($structureNodeParentRelatedById);
-            $this->collStructureNodeParentsRelatedById->remove($pos);
-            if (null === $this->structureNodeParentsRelatedByIdScheduledForDeletion) {
-                $this->structureNodeParentsRelatedByIdScheduledForDeletion = clone $this->collStructureNodeParentsRelatedById;
-                $this->structureNodeParentsRelatedByIdScheduledForDeletion->clear();
+        if ($this->getStructureNodeParentsRelatedByStructureNodeId()->contains($structureNodeParentRelatedByStructureNodeId)) {
+            $pos = $this->collStructureNodeParentsRelatedByStructureNodeId->search($structureNodeParentRelatedByStructureNodeId);
+            $this->collStructureNodeParentsRelatedByStructureNodeId->remove($pos);
+            if (null === $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion) {
+                $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion = clone $this->collStructureNodeParentsRelatedByStructureNodeId;
+                $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion->clear();
             }
-            $this->structureNodeParentsRelatedByIdScheduledForDeletion[]= clone $structureNodeParentRelatedById;
-            $structureNodeParentRelatedById->setStructureNodeRelatedById(null);
+            $this->structureNodeParentsRelatedByStructureNodeIdScheduledForDeletion[]= clone $structureNodeParentRelatedByStructureNodeId;
+            $structureNodeParentRelatedByStructureNodeId->setStructureNodeRelatedByStructureNodeId(null);
         }
 
         return $this;
@@ -2116,7 +2116,7 @@ abstract class StructureNode implements ActiveRecordInterface
             } else {
 
                 $query = ChildStructureNodeQuery::create(null, $criteria)
-                    ->filterByStructureNodeRelatedById($this);
+                    ->filterByStructureNodeRelatedByStructureNodeId($this);
                 $collStructureNodesRelatedByParentId = $query->find($con);
                 if (null !== $criteria) {
                     return $collStructureNodesRelatedByParentId;
@@ -2200,7 +2200,7 @@ abstract class StructureNode implements ActiveRecordInterface
                 }
 
                 return $query
-                    ->filterByStructureNodeRelatedById($this)
+                    ->filterByStructureNodeRelatedByStructureNodeId($this)
                     ->count($con);
             }
         } else {
@@ -2240,17 +2240,17 @@ abstract class StructureNode implements ActiveRecordInterface
 
         $structureNodeParent->setStructureNodeRelatedByParentId($structureNodeRelatedByParentId);
 
-        $structureNodeParent->setStructureNodeRelatedById($this);
+        $structureNodeParent->setStructureNodeRelatedByStructureNodeId($this);
 
-        $this->addStructureNodeParentRelatedById($structureNodeParent);
+        $this->addStructureNodeParentRelatedByStructureNodeId($structureNodeParent);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$structureNodeRelatedByParentId->isStructureNodesRelatedByIdLoaded()) {
-            $structureNodeRelatedByParentId->initStructureNodesRelatedById();
-            $structureNodeRelatedByParentId->getStructureNodesRelatedById()->push($this);
-        } elseif (!$structureNodeRelatedByParentId->getStructureNodesRelatedById()->contains($this)) {
-            $structureNodeRelatedByParentId->getStructureNodesRelatedById()->push($this);
+        if (!$structureNodeRelatedByParentId->isStructureNodesRelatedByStructureNodeIdLoaded()) {
+            $structureNodeRelatedByParentId->initStructureNodesRelatedByStructureNodeId();
+            $structureNodeRelatedByParentId->getStructureNodesRelatedByStructureNodeId()->push($this);
+        } elseif (!$structureNodeRelatedByParentId->getStructureNodesRelatedByStructureNodeId()->contains($this)) {
+            $structureNodeRelatedByParentId->getStructureNodesRelatedByStructureNodeId()->push($this);
         }
 
     }
@@ -2267,13 +2267,13 @@ abstract class StructureNode implements ActiveRecordInterface
         if ($this->getStructureNodesRelatedByParentId()->contains($structureNodeRelatedByParentId)) { $structureNodeParent = new ChildStructureNodeParent();
 
             $structureNodeParent->setStructureNodeRelatedByParentId($structureNodeRelatedByParentId);
-            if ($structureNodeRelatedByParentId->isStructureNodeRelatedByIdsLoaded()) {
+            if ($structureNodeRelatedByParentId->isStructureNodeRelatedByStructureNodeIdsLoaded()) {
                 //remove the back reference if available
-                $structureNodeRelatedByParentId->getStructureNodeRelatedByIds()->removeObject($this);
+                $structureNodeRelatedByParentId->getStructureNodeRelatedByStructureNodeIds()->removeObject($this);
             }
 
-            $structureNodeParent->setStructureNodeRelatedById($this);
-            $this->removeStructureNodeParentRelatedById(clone $structureNodeParent);
+            $structureNodeParent->setStructureNodeRelatedByStructureNodeId($this);
+            $this->removeStructureNodeParentRelatedByStructureNodeId(clone $structureNodeParent);
             $structureNodeParent->clear();
 
             $this->collStructureNodesRelatedByParentId->remove($this->collStructureNodesRelatedByParentId->search($structureNodeRelatedByParentId));
@@ -2291,44 +2291,44 @@ abstract class StructureNode implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collStructureNodesRelatedById collection
+     * Clears out the collStructureNodesRelatedByStructureNodeId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addStructureNodesRelatedById()
+     * @see        addStructureNodesRelatedByStructureNodeId()
      */
-    public function clearStructureNodesRelatedById()
+    public function clearStructureNodesRelatedByStructureNodeId()
     {
-        $this->collStructureNodesRelatedById = null; // important to set this to NULL since that means it is uninitialized
+        $this->collStructureNodesRelatedByStructureNodeId = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collStructureNodesRelatedById crossRef collection.
+     * Initializes the collStructureNodesRelatedByStructureNodeId crossRef collection.
      *
-     * By default this just sets the collStructureNodesRelatedById collection to an empty collection (like clearStructureNodesRelatedById());
+     * By default this just sets the collStructureNodesRelatedByStructureNodeId collection to an empty collection (like clearStructureNodesRelatedByStructureNodeId());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initStructureNodesRelatedById()
+    public function initStructureNodesRelatedByStructureNodeId()
     {
-        $this->collStructureNodesRelatedById = new ObjectCollection();
-        $this->collStructureNodesRelatedByIdPartial = true;
+        $this->collStructureNodesRelatedByStructureNodeId = new ObjectCollection();
+        $this->collStructureNodesRelatedByStructureNodeIdPartial = true;
 
-        $this->collStructureNodesRelatedById->setModel('\gossi\trixionary\model\StructureNode');
+        $this->collStructureNodesRelatedByStructureNodeId->setModel('\gossi\trixionary\model\StructureNode');
     }
 
     /**
-     * Checks if the collStructureNodesRelatedById collection is loaded.
+     * Checks if the collStructureNodesRelatedByStructureNodeId collection is loaded.
      *
      * @return bool
      */
-    public function isStructureNodesRelatedByIdLoaded()
+    public function isStructureNodesRelatedByStructureNodeIdLoaded()
     {
-        return null !== $this->collStructureNodesRelatedById;
+        return null !== $this->collStructureNodesRelatedByStructureNodeId;
     }
 
     /**
@@ -2346,39 +2346,39 @@ abstract class StructureNode implements ActiveRecordInterface
      *
      * @return ObjectCollection|ChildStructureNode[] List of ChildStructureNode objects
      */
-    public function getStructureNodesRelatedById(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getStructureNodesRelatedByStructureNodeId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collStructureNodesRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collStructureNodesRelatedById || null !== $criteria || $partial) {
+        $partial = $this->collStructureNodesRelatedByStructureNodeIdPartial && !$this->isNew();
+        if (null === $this->collStructureNodesRelatedByStructureNodeId || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collStructureNodesRelatedById) {
-                    $this->initStructureNodesRelatedById();
+                if (null === $this->collStructureNodesRelatedByStructureNodeId) {
+                    $this->initStructureNodesRelatedByStructureNodeId();
                 }
             } else {
 
                 $query = ChildStructureNodeQuery::create(null, $criteria)
                     ->filterByStructureNodeRelatedByParentId($this);
-                $collStructureNodesRelatedById = $query->find($con);
+                $collStructureNodesRelatedByStructureNodeId = $query->find($con);
                 if (null !== $criteria) {
-                    return $collStructureNodesRelatedById;
+                    return $collStructureNodesRelatedByStructureNodeId;
                 }
 
-                if ($partial && $this->collStructureNodesRelatedById) {
+                if ($partial && $this->collStructureNodesRelatedByStructureNodeId) {
                     //make sure that already added objects gets added to the list of the database.
-                    foreach ($this->collStructureNodesRelatedById as $obj) {
-                        if (!$collStructureNodesRelatedById->contains($obj)) {
-                            $collStructureNodesRelatedById[] = $obj;
+                    foreach ($this->collStructureNodesRelatedByStructureNodeId as $obj) {
+                        if (!$collStructureNodesRelatedByStructureNodeId->contains($obj)) {
+                            $collStructureNodesRelatedByStructureNodeId[] = $obj;
                         }
                     }
                 }
 
-                $this->collStructureNodesRelatedById = $collStructureNodesRelatedById;
-                $this->collStructureNodesRelatedByIdPartial = false;
+                $this->collStructureNodesRelatedByStructureNodeId = $collStructureNodesRelatedByStructureNodeId;
+                $this->collStructureNodesRelatedByStructureNodeIdPartial = false;
             }
         }
 
-        return $this->collStructureNodesRelatedById;
+        return $this->collStructureNodesRelatedByStructureNodeId;
     }
 
     /**
@@ -2387,29 +2387,29 @@ abstract class StructureNode implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $structureNodesRelatedById A Propel collection.
+     * @param  Collection $structureNodesRelatedByStructureNodeId A Propel collection.
      * @param  ConnectionInterface $con Optional connection object
      * @return $this|ChildStructureNode The current object (for fluent API support)
      */
-    public function setStructureNodesRelatedById(Collection $structureNodesRelatedById, ConnectionInterface $con = null)
+    public function setStructureNodesRelatedByStructureNodeId(Collection $structureNodesRelatedByStructureNodeId, ConnectionInterface $con = null)
     {
-        $this->clearStructureNodesRelatedById();
-        $currentStructureNodesRelatedById = $this->getStructureNodesRelatedById();
+        $this->clearStructureNodesRelatedByStructureNodeId();
+        $currentStructureNodesRelatedByStructureNodeId = $this->getStructureNodesRelatedByStructureNodeId();
 
-        $structureNodesRelatedByIdScheduledForDeletion = $currentStructureNodesRelatedById->diff($structureNodesRelatedById);
+        $structureNodesRelatedByStructureNodeIdScheduledForDeletion = $currentStructureNodesRelatedByStructureNodeId->diff($structureNodesRelatedByStructureNodeId);
 
-        foreach ($structureNodesRelatedByIdScheduledForDeletion as $toDelete) {
-            $this->removeStructureNodeRelatedById($toDelete);
+        foreach ($structureNodesRelatedByStructureNodeIdScheduledForDeletion as $toDelete) {
+            $this->removeStructureNodeRelatedByStructureNodeId($toDelete);
         }
 
-        foreach ($structureNodesRelatedById as $structureNodeRelatedById) {
-            if (!$currentStructureNodesRelatedById->contains($structureNodeRelatedById)) {
-                $this->doAddStructureNodeRelatedById($structureNodeRelatedById);
+        foreach ($structureNodesRelatedByStructureNodeId as $structureNodeRelatedByStructureNodeId) {
+            if (!$currentStructureNodesRelatedByStructureNodeId->contains($structureNodeRelatedByStructureNodeId)) {
+                $this->doAddStructureNodeRelatedByStructureNodeId($structureNodeRelatedByStructureNodeId);
             }
         }
 
-        $this->collStructureNodesRelatedByIdPartial = false;
-        $this->collStructureNodesRelatedById = $structureNodesRelatedById;
+        $this->collStructureNodesRelatedByStructureNodeIdPartial = false;
+        $this->collStructureNodesRelatedByStructureNodeId = $structureNodesRelatedByStructureNodeId;
 
         return $this;
     }
@@ -2424,16 +2424,16 @@ abstract class StructureNode implements ActiveRecordInterface
      *
      * @return int the number of related StructureNode objects
      */
-    public function countStructureNodesRelatedById(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countStructureNodesRelatedByStructureNodeId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collStructureNodesRelatedByIdPartial && !$this->isNew();
-        if (null === $this->collStructureNodesRelatedById || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collStructureNodesRelatedById) {
+        $partial = $this->collStructureNodesRelatedByStructureNodeIdPartial && !$this->isNew();
+        if (null === $this->collStructureNodesRelatedByStructureNodeId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collStructureNodesRelatedByStructureNodeId) {
                 return 0;
             } else {
 
                 if ($partial && !$criteria) {
-                    return count($this->getStructureNodesRelatedById());
+                    return count($this->getStructureNodesRelatedByStructureNodeId());
                 }
 
                 $query = ChildStructureNodeQuery::create(null, $criteria);
@@ -2446,7 +2446,7 @@ abstract class StructureNode implements ActiveRecordInterface
                     ->count($con);
             }
         } else {
-            return count($this->collStructureNodesRelatedById);
+            return count($this->collStructureNodesRelatedByStructureNodeId);
         }
     }
 
@@ -2454,19 +2454,19 @@ abstract class StructureNode implements ActiveRecordInterface
      * Associate a ChildStructureNode to this object
      * through the kk_trixionary_structure_node_parent cross reference table.
      *
-     * @param ChildStructureNode $structureNodeRelatedById
+     * @param ChildStructureNode $structureNodeRelatedByStructureNodeId
      * @return ChildStructureNode The current object (for fluent API support)
      */
-    public function addStructureNodeRelatedById(ChildStructureNode $structureNodeRelatedById)
+    public function addStructureNodeRelatedByStructureNodeId(ChildStructureNode $structureNodeRelatedByStructureNodeId)
     {
-        if ($this->collStructureNodesRelatedById === null) {
-            $this->initStructureNodesRelatedById();
+        if ($this->collStructureNodesRelatedByStructureNodeId === null) {
+            $this->initStructureNodesRelatedByStructureNodeId();
         }
 
-        if (!$this->getStructureNodesRelatedById()->contains($structureNodeRelatedById)) {
+        if (!$this->getStructureNodesRelatedByStructureNodeId()->contains($structureNodeRelatedByStructureNodeId)) {
             // only add it if the **same** object is not already associated
-            $this->collStructureNodesRelatedById->push($structureNodeRelatedById);
-            $this->doAddStructureNodeRelatedById($structureNodeRelatedById);
+            $this->collStructureNodesRelatedByStructureNodeId->push($structureNodeRelatedByStructureNodeId);
+            $this->doAddStructureNodeRelatedByStructureNodeId($structureNodeRelatedByStructureNodeId);
         }
 
         return $this;
@@ -2474,13 +2474,13 @@ abstract class StructureNode implements ActiveRecordInterface
 
     /**
      *
-     * @param ChildStructureNode $structureNodeRelatedById
+     * @param ChildStructureNode $structureNodeRelatedByStructureNodeId
      */
-    protected function doAddStructureNodeRelatedById(ChildStructureNode $structureNodeRelatedById)
+    protected function doAddStructureNodeRelatedByStructureNodeId(ChildStructureNode $structureNodeRelatedByStructureNodeId)
     {
         $structureNodeParent = new ChildStructureNodeParent();
 
-        $structureNodeParent->setStructureNodeRelatedById($structureNodeRelatedById);
+        $structureNodeParent->setStructureNodeRelatedByStructureNodeId($structureNodeRelatedByStructureNodeId);
 
         $structureNodeParent->setStructureNodeRelatedByParentId($this);
 
@@ -2488,44 +2488,44 @@ abstract class StructureNode implements ActiveRecordInterface
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$structureNodeRelatedById->isStructureNodesRelatedByParentIdLoaded()) {
-            $structureNodeRelatedById->initStructureNodesRelatedByParentId();
-            $structureNodeRelatedById->getStructureNodesRelatedByParentId()->push($this);
-        } elseif (!$structureNodeRelatedById->getStructureNodesRelatedByParentId()->contains($this)) {
-            $structureNodeRelatedById->getStructureNodesRelatedByParentId()->push($this);
+        if (!$structureNodeRelatedByStructureNodeId->isStructureNodesRelatedByParentIdLoaded()) {
+            $structureNodeRelatedByStructureNodeId->initStructureNodesRelatedByParentId();
+            $structureNodeRelatedByStructureNodeId->getStructureNodesRelatedByParentId()->push($this);
+        } elseif (!$structureNodeRelatedByStructureNodeId->getStructureNodesRelatedByParentId()->contains($this)) {
+            $structureNodeRelatedByStructureNodeId->getStructureNodesRelatedByParentId()->push($this);
         }
 
     }
 
     /**
-     * Remove structureNodeRelatedById of this object
+     * Remove structureNodeRelatedByStructureNodeId of this object
      * through the kk_trixionary_structure_node_parent cross reference table.
      *
-     * @param ChildStructureNode $structureNodeRelatedById
+     * @param ChildStructureNode $structureNodeRelatedByStructureNodeId
      * @return ChildStructureNode The current object (for fluent API support)
      */
-    public function removeStructureNodeRelatedById(ChildStructureNode $structureNodeRelatedById)
+    public function removeStructureNodeRelatedByStructureNodeId(ChildStructureNode $structureNodeRelatedByStructureNodeId)
     {
-        if ($this->getStructureNodesRelatedById()->contains($structureNodeRelatedById)) { $structureNodeParent = new ChildStructureNodeParent();
+        if ($this->getStructureNodesRelatedByStructureNodeId()->contains($structureNodeRelatedByStructureNodeId)) { $structureNodeParent = new ChildStructureNodeParent();
 
-            $structureNodeParent->setStructureNodeRelatedById($structureNodeRelatedById);
-            if ($structureNodeRelatedById->isStructureNodeRelatedByParentIdsLoaded()) {
+            $structureNodeParent->setStructureNodeRelatedByStructureNodeId($structureNodeRelatedByStructureNodeId);
+            if ($structureNodeRelatedByStructureNodeId->isStructureNodeRelatedByParentIdsLoaded()) {
                 //remove the back reference if available
-                $structureNodeRelatedById->getStructureNodeRelatedByParentIds()->removeObject($this);
+                $structureNodeRelatedByStructureNodeId->getStructureNodeRelatedByParentIds()->removeObject($this);
             }
 
             $structureNodeParent->setStructureNodeRelatedByParentId($this);
             $this->removeStructureNodeParentRelatedByParentId(clone $structureNodeParent);
             $structureNodeParent->clear();
 
-            $this->collStructureNodesRelatedById->remove($this->collStructureNodesRelatedById->search($structureNodeRelatedById));
+            $this->collStructureNodesRelatedByStructureNodeId->remove($this->collStructureNodesRelatedByStructureNodeId->search($structureNodeRelatedByStructureNodeId));
 
-            if (null === $this->structureNodesRelatedByIdScheduledForDeletion) {
-                $this->structureNodesRelatedByIdScheduledForDeletion = clone $this->collStructureNodesRelatedById;
-                $this->structureNodesRelatedByIdScheduledForDeletion->clear();
+            if (null === $this->structureNodesRelatedByStructureNodeIdScheduledForDeletion) {
+                $this->structureNodesRelatedByStructureNodeIdScheduledForDeletion = clone $this->collStructureNodesRelatedByStructureNodeId;
+                $this->structureNodesRelatedByStructureNodeIdScheduledForDeletion->clear();
             }
 
-            $this->structureNodesRelatedByIdScheduledForDeletion->push($structureNodeRelatedById);
+            $this->structureNodesRelatedByStructureNodeIdScheduledForDeletion->push($structureNodeRelatedByStructureNodeId);
         }
 
 
@@ -2565,8 +2565,8 @@ abstract class StructureNode implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collStructureNodeParentsRelatedById) {
-                foreach ($this->collStructureNodeParentsRelatedById as $o) {
+            if ($this->collStructureNodeParentsRelatedByStructureNodeId) {
+                foreach ($this->collStructureNodeParentsRelatedByStructureNodeId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2586,19 +2586,19 @@ abstract class StructureNode implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collStructureNodesRelatedById) {
-                foreach ($this->collStructureNodesRelatedById as $o) {
+            if ($this->collStructureNodesRelatedByStructureNodeId) {
+                foreach ($this->collStructureNodesRelatedByStructureNodeId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collStructureNodeParentsRelatedById = null;
+        $this->collStructureNodeParentsRelatedByStructureNodeId = null;
         $this->collStructureNodeParentsRelatedByParentId = null;
         $this->singleKstruktur = null;
         $this->singleFunctionPhase = null;
         $this->collStructureNodesRelatedByParentId = null;
-        $this->collStructureNodesRelatedById = null;
+        $this->collStructureNodesRelatedByStructureNodeId = null;
         $this->aSkill = null;
     }
 

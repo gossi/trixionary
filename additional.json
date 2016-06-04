@@ -1,0 +1,24 @@
+{
+	"actions": {
+	    "upload" : {
+			"title" : "Upload media",
+			"class" : "gossi\\trixionary\\action\\UploadAction",
+			"acl" : [
+				"admin"
+			],
+			"responder" : {
+				"json" : "gossi\\trixionary\\responder\\json\\UploadJsonResponder"
+			}
+		},
+		"upload-delete" : {
+			"title" : "Delete Uploaded media",
+			"class" : "gossi\\trixionary\\action\\UploadDeleteAction",
+			"acl" : [
+				"admin"
+			],
+			"responder" : {
+				"json" : "gossi\\trixionary\\responder\\json\\UploadDeleteJsonResponder"
+			}
+		}
+	}
+}

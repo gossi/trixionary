@@ -23,46 +23,54 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSportQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSportQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildSportQuery orderBySlug($order = Criteria::ASC) Order by the slug column
+ * @method     ChildSportQuery orderByAthleteLabel($order = Criteria::ASC) Order by the athlete_label column
+ * @method     ChildSportQuery orderByObjectSlug($order = Criteria::ASC) Order by the object_slug column
+ * @method     ChildSportQuery orderByObjectLabel($order = Criteria::ASC) Order by the object_label column
+ * @method     ChildSportQuery orderByObjectPluralLabel($order = Criteria::ASC) Order by the object_plural_label column
  * @method     ChildSportQuery orderBySkillSlug($order = Criteria::ASC) Order by the skill_slug column
  * @method     ChildSportQuery orderBySkillLabel($order = Criteria::ASC) Order by the skill_label column
  * @method     ChildSportQuery orderBySkillPluralLabel($order = Criteria::ASC) Order by the skill_plural_label column
  * @method     ChildSportQuery orderByGroupSlug($order = Criteria::ASC) Order by the group_slug column
  * @method     ChildSportQuery orderByGroupLabel($order = Criteria::ASC) Order by the group_label column
  * @method     ChildSportQuery orderByGroupPluralLabel($order = Criteria::ASC) Order by the group_plural_label column
- * @method     ChildSportQuery orderByTransitionsSlug($order = Criteria::ASC) Order by the transitions_slug column
  * @method     ChildSportQuery orderByTransitionLabel($order = Criteria::ASC) Order by the transition_label column
  * @method     ChildSportQuery orderByTransitionPluralLabel($order = Criteria::ASC) Order by the transition_plural_label column
+ * @method     ChildSportQuery orderByTransitionsSlug($order = Criteria::ASC) Order by the transitions_slug column
  * @method     ChildSportQuery orderByPositionSlug($order = Criteria::ASC) Order by the position_slug column
  * @method     ChildSportQuery orderByPositionLabel($order = Criteria::ASC) Order by the position_label column
- * @method     ChildSportQuery orderByCompositional($order = Criteria::ASC) Order by the compositional column
+ * @method     ChildSportQuery orderByFeatureComposition($order = Criteria::ASC) Order by the feature_composition column
+ * @method     ChildSportQuery orderByFeatureTester($order = Criteria::ASC) Order by the feature_tester column
  * @method     ChildSportQuery orderByIsDefault($order = Criteria::ASC) Order by the is_default column
- * @method     ChildSportQuery orderByMovender($order = Criteria::ASC) Order by the movender column
- * @method     ChildSportQuery orderByHasMovendum($order = Criteria::ASC) Order by the has_movendum column
- * @method     ChildSportQuery orderByMovendum($order = Criteria::ASC) Order by the movendum column
  *
  * @method     ChildSportQuery groupById() Group by the id column
  * @method     ChildSportQuery groupByTitle() Group by the title column
  * @method     ChildSportQuery groupBySlug() Group by the slug column
+ * @method     ChildSportQuery groupByAthleteLabel() Group by the athlete_label column
+ * @method     ChildSportQuery groupByObjectSlug() Group by the object_slug column
+ * @method     ChildSportQuery groupByObjectLabel() Group by the object_label column
+ * @method     ChildSportQuery groupByObjectPluralLabel() Group by the object_plural_label column
  * @method     ChildSportQuery groupBySkillSlug() Group by the skill_slug column
  * @method     ChildSportQuery groupBySkillLabel() Group by the skill_label column
  * @method     ChildSportQuery groupBySkillPluralLabel() Group by the skill_plural_label column
  * @method     ChildSportQuery groupByGroupSlug() Group by the group_slug column
  * @method     ChildSportQuery groupByGroupLabel() Group by the group_label column
  * @method     ChildSportQuery groupByGroupPluralLabel() Group by the group_plural_label column
- * @method     ChildSportQuery groupByTransitionsSlug() Group by the transitions_slug column
  * @method     ChildSportQuery groupByTransitionLabel() Group by the transition_label column
  * @method     ChildSportQuery groupByTransitionPluralLabel() Group by the transition_plural_label column
+ * @method     ChildSportQuery groupByTransitionsSlug() Group by the transitions_slug column
  * @method     ChildSportQuery groupByPositionSlug() Group by the position_slug column
  * @method     ChildSportQuery groupByPositionLabel() Group by the position_label column
- * @method     ChildSportQuery groupByCompositional() Group by the compositional column
+ * @method     ChildSportQuery groupByFeatureComposition() Group by the feature_composition column
+ * @method     ChildSportQuery groupByFeatureTester() Group by the feature_tester column
  * @method     ChildSportQuery groupByIsDefault() Group by the is_default column
- * @method     ChildSportQuery groupByMovender() Group by the movender column
- * @method     ChildSportQuery groupByHasMovendum() Group by the has_movendum column
- * @method     ChildSportQuery groupByMovendum() Group by the movendum column
  *
  * @method     ChildSportQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildSportQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildSportQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildSportQuery leftJoinObject($relationAlias = null) Adds a LEFT JOIN clause to the query using the Object relation
+ * @method     ChildSportQuery rightJoinObject($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Object relation
+ * @method     ChildSportQuery innerJoinObject($relationAlias = null) Adds a INNER JOIN clause to the query using the Object relation
  *
  * @method     ChildSportQuery leftJoinPosition($relationAlias = null) Adds a LEFT JOIN clause to the query using the Position relation
  * @method     ChildSportQuery rightJoinPosition($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Position relation
@@ -76,7 +84,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSportQuery rightJoinGroup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Group relation
  * @method     ChildSportQuery innerJoinGroup($relationAlias = null) Adds a INNER JOIN clause to the query using the Group relation
  *
- * @method     \gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\GroupQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\GroupQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSport findOne(ConnectionInterface $con = null) Return the first ChildSport matching the query
  * @method     ChildSport findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSport matching the query, or a new ChildSport object populated from the query conditions when no match is found
@@ -84,48 +92,78 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSport findOneById(int $id) Return the first ChildSport filtered by the id column
  * @method     ChildSport findOneByTitle(string $title) Return the first ChildSport filtered by the title column
  * @method     ChildSport findOneBySlug(string $slug) Return the first ChildSport filtered by the slug column
+ * @method     ChildSport findOneByAthleteLabel(string $athlete_label) Return the first ChildSport filtered by the athlete_label column
+ * @method     ChildSport findOneByObjectSlug(string $object_slug) Return the first ChildSport filtered by the object_slug column
+ * @method     ChildSport findOneByObjectLabel(string $object_label) Return the first ChildSport filtered by the object_label column
+ * @method     ChildSport findOneByObjectPluralLabel(string $object_plural_label) Return the first ChildSport filtered by the object_plural_label column
  * @method     ChildSport findOneBySkillSlug(string $skill_slug) Return the first ChildSport filtered by the skill_slug column
  * @method     ChildSport findOneBySkillLabel(string $skill_label) Return the first ChildSport filtered by the skill_label column
  * @method     ChildSport findOneBySkillPluralLabel(string $skill_plural_label) Return the first ChildSport filtered by the skill_plural_label column
  * @method     ChildSport findOneByGroupSlug(string $group_slug) Return the first ChildSport filtered by the group_slug column
  * @method     ChildSport findOneByGroupLabel(string $group_label) Return the first ChildSport filtered by the group_label column
  * @method     ChildSport findOneByGroupPluralLabel(string $group_plural_label) Return the first ChildSport filtered by the group_plural_label column
- * @method     ChildSport findOneByTransitionsSlug(string $transitions_slug) Return the first ChildSport filtered by the transitions_slug column
  * @method     ChildSport findOneByTransitionLabel(string $transition_label) Return the first ChildSport filtered by the transition_label column
  * @method     ChildSport findOneByTransitionPluralLabel(string $transition_plural_label) Return the first ChildSport filtered by the transition_plural_label column
+ * @method     ChildSport findOneByTransitionsSlug(string $transitions_slug) Return the first ChildSport filtered by the transitions_slug column
  * @method     ChildSport findOneByPositionSlug(string $position_slug) Return the first ChildSport filtered by the position_slug column
  * @method     ChildSport findOneByPositionLabel(string $position_label) Return the first ChildSport filtered by the position_label column
- * @method     ChildSport findOneByCompositional(boolean $compositional) Return the first ChildSport filtered by the compositional column
- * @method     ChildSport findOneByIsDefault(boolean $is_default) Return the first ChildSport filtered by the is_default column
- * @method     ChildSport findOneByMovender(string $movender) Return the first ChildSport filtered by the movender column
- * @method     ChildSport findOneByHasMovendum(boolean $has_movendum) Return the first ChildSport filtered by the has_movendum column
- * @method     ChildSport findOneByMovendum(string $movendum) Return the first ChildSport filtered by the movendum column
+ * @method     ChildSport findOneByFeatureComposition(boolean $feature_composition) Return the first ChildSport filtered by the feature_composition column
+ * @method     ChildSport findOneByFeatureTester(boolean $feature_tester) Return the first ChildSport filtered by the feature_tester column
+ * @method     ChildSport findOneByIsDefault(boolean $is_default) Return the first ChildSport filtered by the is_default column *
+
+ * @method     ChildSport requirePk($key, ConnectionInterface $con = null) Return the ChildSport by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOne(ConnectionInterface $con = null) Return the first ChildSport matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildSport requireOneById(int $id) Return the first ChildSport filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByTitle(string $title) Return the first ChildSport filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneBySlug(string $slug) Return the first ChildSport filtered by the slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByAthleteLabel(string $athlete_label) Return the first ChildSport filtered by the athlete_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByObjectSlug(string $object_slug) Return the first ChildSport filtered by the object_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByObjectLabel(string $object_label) Return the first ChildSport filtered by the object_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByObjectPluralLabel(string $object_plural_label) Return the first ChildSport filtered by the object_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneBySkillSlug(string $skill_slug) Return the first ChildSport filtered by the skill_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneBySkillLabel(string $skill_label) Return the first ChildSport filtered by the skill_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneBySkillPluralLabel(string $skill_plural_label) Return the first ChildSport filtered by the skill_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByGroupSlug(string $group_slug) Return the first ChildSport filtered by the group_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByGroupLabel(string $group_label) Return the first ChildSport filtered by the group_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByGroupPluralLabel(string $group_plural_label) Return the first ChildSport filtered by the group_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByTransitionLabel(string $transition_label) Return the first ChildSport filtered by the transition_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByTransitionPluralLabel(string $transition_plural_label) Return the first ChildSport filtered by the transition_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByTransitionsSlug(string $transitions_slug) Return the first ChildSport filtered by the transitions_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByPositionSlug(string $position_slug) Return the first ChildSport filtered by the position_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByPositionLabel(string $position_label) Return the first ChildSport filtered by the position_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByFeatureComposition(boolean $feature_composition) Return the first ChildSport filtered by the feature_composition column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByFeatureTester(boolean $feature_tester) Return the first ChildSport filtered by the feature_tester column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneByIsDefault(boolean $is_default) Return the first ChildSport filtered by the is_default column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSport[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSport objects based on current ModelCriteria
  * @method     ChildSport[]|ObjectCollection findById(int $id) Return ChildSport objects filtered by the id column
  * @method     ChildSport[]|ObjectCollection findByTitle(string $title) Return ChildSport objects filtered by the title column
  * @method     ChildSport[]|ObjectCollection findBySlug(string $slug) Return ChildSport objects filtered by the slug column
+ * @method     ChildSport[]|ObjectCollection findByAthleteLabel(string $athlete_label) Return ChildSport objects filtered by the athlete_label column
+ * @method     ChildSport[]|ObjectCollection findByObjectSlug(string $object_slug) Return ChildSport objects filtered by the object_slug column
+ * @method     ChildSport[]|ObjectCollection findByObjectLabel(string $object_label) Return ChildSport objects filtered by the object_label column
+ * @method     ChildSport[]|ObjectCollection findByObjectPluralLabel(string $object_plural_label) Return ChildSport objects filtered by the object_plural_label column
  * @method     ChildSport[]|ObjectCollection findBySkillSlug(string $skill_slug) Return ChildSport objects filtered by the skill_slug column
  * @method     ChildSport[]|ObjectCollection findBySkillLabel(string $skill_label) Return ChildSport objects filtered by the skill_label column
  * @method     ChildSport[]|ObjectCollection findBySkillPluralLabel(string $skill_plural_label) Return ChildSport objects filtered by the skill_plural_label column
  * @method     ChildSport[]|ObjectCollection findByGroupSlug(string $group_slug) Return ChildSport objects filtered by the group_slug column
  * @method     ChildSport[]|ObjectCollection findByGroupLabel(string $group_label) Return ChildSport objects filtered by the group_label column
  * @method     ChildSport[]|ObjectCollection findByGroupPluralLabel(string $group_plural_label) Return ChildSport objects filtered by the group_plural_label column
- * @method     ChildSport[]|ObjectCollection findByTransitionsSlug(string $transitions_slug) Return ChildSport objects filtered by the transitions_slug column
  * @method     ChildSport[]|ObjectCollection findByTransitionLabel(string $transition_label) Return ChildSport objects filtered by the transition_label column
  * @method     ChildSport[]|ObjectCollection findByTransitionPluralLabel(string $transition_plural_label) Return ChildSport objects filtered by the transition_plural_label column
+ * @method     ChildSport[]|ObjectCollection findByTransitionsSlug(string $transitions_slug) Return ChildSport objects filtered by the transitions_slug column
  * @method     ChildSport[]|ObjectCollection findByPositionSlug(string $position_slug) Return ChildSport objects filtered by the position_slug column
  * @method     ChildSport[]|ObjectCollection findByPositionLabel(string $position_label) Return ChildSport objects filtered by the position_label column
- * @method     ChildSport[]|ObjectCollection findByCompositional(boolean $compositional) Return ChildSport objects filtered by the compositional column
+ * @method     ChildSport[]|ObjectCollection findByFeatureComposition(boolean $feature_composition) Return ChildSport objects filtered by the feature_composition column
+ * @method     ChildSport[]|ObjectCollection findByFeatureTester(boolean $feature_tester) Return ChildSport objects filtered by the feature_tester column
  * @method     ChildSport[]|ObjectCollection findByIsDefault(boolean $is_default) Return ChildSport objects filtered by the is_default column
- * @method     ChildSport[]|ObjectCollection findByMovender(string $movender) Return ChildSport objects filtered by the movender column
- * @method     ChildSport[]|ObjectCollection findByHasMovendum(boolean $has_movendum) Return ChildSport objects filtered by the has_movendum column
- * @method     ChildSport[]|ObjectCollection findByMovendum(string $movendum) Return ChildSport objects filtered by the movendum column
  * @method     ChildSport[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
 abstract class SportQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\SportQuery object.
@@ -212,7 +250,7 @@ abstract class SportQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `slug`, `skill_slug`, `skill_label`, `skill_plural_label`, `group_slug`, `group_label`, `group_plural_label`, `transitions_slug`, `transition_label`, `transition_plural_label`, `position_slug`, `position_label`, `compositional`, `is_default`, `movender`, `has_movendum`, `movendum` FROM `kk_trixionary_sport` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `slug`, `athlete_label`, `object_slug`, `object_label`, `object_plural_label`, `skill_slug`, `skill_label`, `skill_plural_label`, `group_slug`, `group_label`, `group_plural_label`, `transition_label`, `transition_plural_label`, `transitions_slug`, `position_slug`, `position_label`, `feature_composition`, `feature_tester`, `is_default` FROM `kk_trixionary_sport` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -402,6 +440,122 @@ abstract class SportQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the athlete_label column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAthleteLabel('fooValue');   // WHERE athlete_label = 'fooValue'
+     * $query->filterByAthleteLabel('%fooValue%'); // WHERE athlete_label LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $athleteLabel The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByAthleteLabel($athleteLabel = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($athleteLabel)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $athleteLabel)) {
+                $athleteLabel = str_replace('*', '%', $athleteLabel);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_ATHLETE_LABEL, $athleteLabel, $comparison);
+    }
+
+    /**
+     * Filter the query on the object_slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByObjectSlug('fooValue');   // WHERE object_slug = 'fooValue'
+     * $query->filterByObjectSlug('%fooValue%'); // WHERE object_slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $objectSlug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByObjectSlug($objectSlug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($objectSlug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $objectSlug)) {
+                $objectSlug = str_replace('*', '%', $objectSlug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_OBJECT_SLUG, $objectSlug, $comparison);
+    }
+
+    /**
+     * Filter the query on the object_label column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByObjectLabel('fooValue');   // WHERE object_label = 'fooValue'
+     * $query->filterByObjectLabel('%fooValue%'); // WHERE object_label LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $objectLabel The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByObjectLabel($objectLabel = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($objectLabel)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $objectLabel)) {
+                $objectLabel = str_replace('*', '%', $objectLabel);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_OBJECT_LABEL, $objectLabel, $comparison);
+    }
+
+    /**
+     * Filter the query on the object_plural_label column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByObjectPluralLabel('fooValue');   // WHERE object_plural_label = 'fooValue'
+     * $query->filterByObjectPluralLabel('%fooValue%'); // WHERE object_plural_label LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $objectPluralLabel The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByObjectPluralLabel($objectPluralLabel = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($objectPluralLabel)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $objectPluralLabel)) {
+                $objectPluralLabel = str_replace('*', '%', $objectPluralLabel);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_OBJECT_PLURAL_LABEL, $objectPluralLabel, $comparison);
+    }
+
+    /**
      * Filter the query on the skill_slug column
      *
      * Example usage:
@@ -576,35 +730,6 @@ abstract class SportQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the transitions_slug column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTransitionsSlug('fooValue');   // WHERE transitions_slug = 'fooValue'
-     * $query->filterByTransitionsSlug('%fooValue%'); // WHERE transitions_slug LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $transitionsSlug The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildSportQuery The current query, for fluid interface
-     */
-    public function filterByTransitionsSlug($transitionsSlug = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($transitionsSlug)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $transitionsSlug)) {
-                $transitionsSlug = str_replace('*', '%', $transitionsSlug);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(SportTableMap::COL_TRANSITIONS_SLUG, $transitionsSlug, $comparison);
-    }
-
-    /**
      * Filter the query on the transition_label column
      *
      * Example usage:
@@ -660,6 +785,35 @@ abstract class SportQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SportTableMap::COL_TRANSITION_PLURAL_LABEL, $transitionPluralLabel, $comparison);
+    }
+
+    /**
+     * Filter the query on the transitions_slug column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTransitionsSlug('fooValue');   // WHERE transitions_slug = 'fooValue'
+     * $query->filterByTransitionsSlug('%fooValue%'); // WHERE transitions_slug LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $transitionsSlug The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByTransitionsSlug($transitionsSlug = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($transitionsSlug)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $transitionsSlug)) {
+                $transitionsSlug = str_replace('*', '%', $transitionsSlug);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_TRANSITIONS_SLUG, $transitionsSlug, $comparison);
     }
 
     /**
@@ -721,15 +875,15 @@ abstract class SportQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the compositional column
+     * Filter the query on the feature_composition column
      *
      * Example usage:
      * <code>
-     * $query->filterByCompositional(true); // WHERE compositional = true
-     * $query->filterByCompositional('yes'); // WHERE compositional = true
+     * $query->filterByFeatureComposition(true); // WHERE feature_composition = true
+     * $query->filterByFeatureComposition('yes'); // WHERE feature_composition = true
      * </code>
      *
-     * @param     boolean|string $compositional The value to use as filter.
+     * @param     boolean|string $featureComposition The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -738,13 +892,40 @@ abstract class SportQuery extends ModelCriteria
      *
      * @return $this|ChildSportQuery The current query, for fluid interface
      */
-    public function filterByCompositional($compositional = null, $comparison = null)
+    public function filterByFeatureComposition($featureComposition = null, $comparison = null)
     {
-        if (is_string($compositional)) {
-            $compositional = in_array(strtolower($compositional), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($featureComposition)) {
+            $featureComposition = in_array(strtolower($featureComposition), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(SportTableMap::COL_COMPOSITIONAL, $compositional, $comparison);
+        return $this->addUsingAlias(SportTableMap::COL_FEATURE_COMPOSITION, $featureComposition, $comparison);
+    }
+
+    /**
+     * Filter the query on the feature_tester column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFeatureTester(true); // WHERE feature_tester = true
+     * $query->filterByFeatureTester('yes'); // WHERE feature_tester = true
+     * </code>
+     *
+     * @param     boolean|string $featureTester The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterByFeatureTester($featureTester = null, $comparison = null)
+    {
+        if (is_string($featureTester)) {
+            $featureTester = in_array(strtolower($featureTester), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_FEATURE_TESTER, $featureTester, $comparison);
     }
 
     /**
@@ -775,94 +956,82 @@ abstract class SportQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the movender column
+     * Filter the query by a related \gossi\trixionary\model\Object object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByMovender('fooValue');   // WHERE movender = 'fooValue'
-     * $query->filterByMovender('%fooValue%'); // WHERE movender LIKE '%fooValue%'
-     * </code>
+     * @param \gossi\trixionary\model\Object|ObjectCollection $object the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @param     string $movender The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildSportQuery The current query, for fluid interface
+     * @return ChildSportQuery The current query, for fluid interface
      */
-    public function filterByMovender($movender = null, $comparison = null)
+    public function filterByObject($object, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($movender)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $movender)) {
-                $movender = str_replace('*', '%', $movender);
-                $comparison = Criteria::LIKE;
-            }
+        if ($object instanceof \gossi\trixionary\model\Object) {
+            return $this
+                ->addUsingAlias(SportTableMap::COL_ID, $object->getSportId(), $comparison);
+        } elseif ($object instanceof ObjectCollection) {
+            return $this
+                ->useObjectQuery()
+                ->filterByPrimaryKeys($object->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByObject() only accepts arguments of type \gossi\trixionary\model\Object or Collection');
         }
-
-        return $this->addUsingAlias(SportTableMap::COL_MOVENDER, $movender, $comparison);
     }
 
     /**
-     * Filter the query on the has_movendum column
+     * Adds a JOIN clause to the query using the Object relation
      *
-     * Example usage:
-     * <code>
-     * $query->filterByHasMovendum(true); // WHERE has_movendum = true
-     * $query->filterByHasMovendum('yes'); // WHERE has_movendum = true
-     * </code>
-     *
-     * @param     boolean|string $hasMovendum The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSportQuery The current query, for fluid interface
      */
-    public function filterByHasMovendum($hasMovendum = null, $comparison = null)
+    public function joinObject($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
-        if (is_string($hasMovendum)) {
-            $hasMovendum = in_array(strtolower($hasMovendum), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Object');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
         }
 
-        return $this->addUsingAlias(SportTableMap::COL_HAS_MOVENDUM, $hasMovendum, $comparison);
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Object');
+        }
+
+        return $this;
     }
 
     /**
-     * Filter the query on the movendum column
+     * Use the Object relation Object object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByMovendum('fooValue');   // WHERE movendum = 'fooValue'
-     * $query->filterByMovendum('%fooValue%'); // WHERE movendum LIKE '%fooValue%'
-     * </code>
+     * @see useQuery()
      *
-     * @param     string $movendum The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildSportQuery The current query, for fluid interface
+     * @return \gossi\trixionary\model\ObjectQuery A secondary query class using the current class as primary query
      */
-    public function filterByMovendum($movendum = null, $comparison = null)
+    public function useObjectQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
-        if (null === $comparison) {
-            if (is_array($movendum)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $movendum)) {
-                $movendum = str_replace('*', '%', $movendum);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(SportTableMap::COL_MOVENDUM, $movendum, $comparison);
+        return $this
+            ->joinObject($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Object', '\gossi\trixionary\model\ObjectQuery');
     }
 
     /**
      * Filter the query by a related \gossi\trixionary\model\Position object
      *
-     * @param \gossi\trixionary\model\Position|ObjectCollection $position  the related object to use as filter
+     * @param \gossi\trixionary\model\Position|ObjectCollection $position the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSportQuery The current query, for fluid interface
@@ -935,7 +1104,7 @@ abstract class SportQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSportQuery The current query, for fluid interface
@@ -1008,7 +1177,7 @@ abstract class SportQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Group object
      *
-     * @param \gossi\trixionary\model\Group|ObjectCollection $group  the related object to use as filter
+     * @param \gossi\trixionary\model\Group|ObjectCollection $group the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSportQuery The current query, for fluid interface

@@ -16,7 +16,7 @@ use gossi\trixionary\model\SkillVersionQuery;
 
 
 /**
- * This class defines the structure of the 'kk_trixionary_kk_trixionary_skill_version' table.
+ * This class defines the structure of the 'kk_trixionary_skill_version' table.
  *
  *
  *
@@ -44,7 +44,7 @@ class SkillVersionTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'kk_trixionary_kk_trixionary_skill_version';
+    const TABLE_NAME = 'kk_trixionary_skill_version';
 
     /**
      * The related Propel class for this table
@@ -59,7 +59,7 @@ class SkillVersionTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 34;
+    const NUM_COLUMNS = 36;
 
     /**
      * The number of lazy-loaded columns
@@ -69,177 +69,187 @@ class SkillVersionTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 34;
+    const NUM_HYDRATE_COLUMNS = 36;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'kk_trixionary_kk_trixionary_skill_version.id';
+    const COL_ID = 'kk_trixionary_skill_version.id';
 
     /**
      * the column name for the sport_id field
      */
-    const COL_SPORT_ID = 'kk_trixionary_kk_trixionary_skill_version.sport_id';
+    const COL_SPORT_ID = 'kk_trixionary_skill_version.sport_id';
 
     /**
      * the column name for the name field
      */
-    const COL_NAME = 'kk_trixionary_kk_trixionary_skill_version.name';
+    const COL_NAME = 'kk_trixionary_skill_version.name';
 
     /**
      * the column name for the alternative_name field
      */
-    const COL_ALTERNATIVE_NAME = 'kk_trixionary_kk_trixionary_skill_version.alternative_name';
+    const COL_ALTERNATIVE_NAME = 'kk_trixionary_skill_version.alternative_name';
 
     /**
      * the column name for the slug field
      */
-    const COL_SLUG = 'kk_trixionary_kk_trixionary_skill_version.slug';
+    const COL_SLUG = 'kk_trixionary_skill_version.slug';
 
     /**
      * the column name for the description field
      */
-    const COL_DESCRIPTION = 'kk_trixionary_kk_trixionary_skill_version.description';
+    const COL_DESCRIPTION = 'kk_trixionary_skill_version.description';
 
     /**
      * the column name for the history field
      */
-    const COL_HISTORY = 'kk_trixionary_kk_trixionary_skill_version.history';
+    const COL_HISTORY = 'kk_trixionary_skill_version.history';
 
     /**
      * the column name for the is_translation field
      */
-    const COL_IS_TRANSLATION = 'kk_trixionary_kk_trixionary_skill_version.is_translation';
+    const COL_IS_TRANSLATION = 'kk_trixionary_skill_version.is_translation';
 
     /**
      * the column name for the is_rotation field
      */
-    const COL_IS_ROTATION = 'kk_trixionary_kk_trixionary_skill_version.is_rotation';
+    const COL_IS_ROTATION = 'kk_trixionary_skill_version.is_rotation';
+
+    /**
+     * the column name for the is_acyclic field
+     */
+    const COL_IS_ACYCLIC = 'kk_trixionary_skill_version.is_acyclic';
 
     /**
      * the column name for the is_cyclic field
      */
-    const COL_IS_CYCLIC = 'kk_trixionary_kk_trixionary_skill_version.is_cyclic';
+    const COL_IS_CYCLIC = 'kk_trixionary_skill_version.is_cyclic';
 
     /**
      * the column name for the longitudinal_flags field
      */
-    const COL_LONGITUDINAL_FLAGS = 'kk_trixionary_kk_trixionary_skill_version.longitudinal_flags';
+    const COL_LONGITUDINAL_FLAGS = 'kk_trixionary_skill_version.longitudinal_flags';
 
     /**
      * the column name for the latitudinal_flags field
      */
-    const COL_LATITUDINAL_FLAGS = 'kk_trixionary_kk_trixionary_skill_version.latitudinal_flags';
+    const COL_LATITUDINAL_FLAGS = 'kk_trixionary_skill_version.latitudinal_flags';
 
     /**
      * the column name for the transversal_flags field
      */
-    const COL_TRANSVERSAL_FLAGS = 'kk_trixionary_kk_trixionary_skill_version.transversal_flags';
+    const COL_TRANSVERSAL_FLAGS = 'kk_trixionary_skill_version.transversal_flags';
 
     /**
      * the column name for the movement_description field
      */
-    const COL_MOVEMENT_DESCRIPTION = 'kk_trixionary_kk_trixionary_skill_version.movement_description';
+    const COL_MOVEMENT_DESCRIPTION = 'kk_trixionary_skill_version.movement_description';
 
     /**
      * the column name for the variation_of_id field
      */
-    const COL_VARIATION_OF_ID = 'kk_trixionary_kk_trixionary_skill_version.variation_of_id';
+    const COL_VARIATION_OF_ID = 'kk_trixionary_skill_version.variation_of_id';
 
     /**
      * the column name for the start_position_id field
      */
-    const COL_START_POSITION_ID = 'kk_trixionary_kk_trixionary_skill_version.start_position_id';
+    const COL_START_POSITION_ID = 'kk_trixionary_skill_version.start_position_id';
 
     /**
      * the column name for the end_position_id field
      */
-    const COL_END_POSITION_ID = 'kk_trixionary_kk_trixionary_skill_version.end_position_id';
+    const COL_END_POSITION_ID = 'kk_trixionary_skill_version.end_position_id';
 
     /**
      * the column name for the is_composite field
      */
-    const COL_IS_COMPOSITE = 'kk_trixionary_kk_trixionary_skill_version.is_composite';
+    const COL_IS_COMPOSITE = 'kk_trixionary_skill_version.is_composite';
 
     /**
      * the column name for the is_multiple field
      */
-    const COL_IS_MULTIPLE = 'kk_trixionary_kk_trixionary_skill_version.is_multiple';
+    const COL_IS_MULTIPLE = 'kk_trixionary_skill_version.is_multiple';
 
     /**
      * the column name for the multiple_of_id field
      */
-    const COL_MULTIPLE_OF_ID = 'kk_trixionary_kk_trixionary_skill_version.multiple_of_id';
+    const COL_MULTIPLE_OF_ID = 'kk_trixionary_skill_version.multiple_of_id';
 
     /**
      * the column name for the multiplier field
      */
-    const COL_MULTIPLIER = 'kk_trixionary_kk_trixionary_skill_version.multiplier';
+    const COL_MULTIPLIER = 'kk_trixionary_skill_version.multiplier';
 
     /**
      * the column name for the generation field
      */
-    const COL_GENERATION = 'kk_trixionary_kk_trixionary_skill_version.generation';
+    const COL_GENERATION = 'kk_trixionary_skill_version.generation';
 
     /**
      * the column name for the importance field
      */
-    const COL_IMPORTANCE = 'kk_trixionary_kk_trixionary_skill_version.importance';
+    const COL_IMPORTANCE = 'kk_trixionary_skill_version.importance';
 
     /**
      * the column name for the generation_ids field
      */
-    const COL_GENERATION_IDS = 'kk_trixionary_kk_trixionary_skill_version.generation_ids';
+    const COL_GENERATION_IDS = 'kk_trixionary_skill_version.generation_ids';
 
     /**
      * the column name for the picture_id field
      */
-    const COL_PICTURE_ID = 'kk_trixionary_kk_trixionary_skill_version.picture_id';
+    const COL_PICTURE_ID = 'kk_trixionary_skill_version.picture_id';
 
     /**
      * the column name for the kstruktur_id field
      */
-    const COL_KSTRUKTUR_ID = 'kk_trixionary_kk_trixionary_skill_version.kstruktur_id';
+    const COL_KSTRUKTUR_ID = 'kk_trixionary_skill_version.kstruktur_id';
 
     /**
      * the column name for the function_phase_id field
      */
-    const COL_FUNCTION_PHASE_ID = 'kk_trixionary_kk_trixionary_skill_version.function_phase_id';
+    const COL_FUNCTION_PHASE_ID = 'kk_trixionary_skill_version.function_phase_id';
+
+    /**
+     * the column name for the object_id field
+     */
+    const COL_OBJECT_ID = 'kk_trixionary_skill_version.object_id';
 
     /**
      * the column name for the version field
      */
-    const COL_VERSION = 'kk_trixionary_kk_trixionary_skill_version.version';
+    const COL_VERSION = 'kk_trixionary_skill_version.version';
 
     /**
      * the column name for the version_created_at field
      */
-    const COL_VERSION_CREATED_AT = 'kk_trixionary_kk_trixionary_skill_version.version_created_at';
+    const COL_VERSION_CREATED_AT = 'kk_trixionary_skill_version.version_created_at';
 
     /**
      * the column name for the version_comment field
      */
-    const COL_VERSION_COMMENT = 'kk_trixionary_kk_trixionary_skill_version.version_comment';
+    const COL_VERSION_COMMENT = 'kk_trixionary_skill_version.version_comment';
 
     /**
      * the column name for the variation_of_id_version field
      */
-    const COL_VARIATION_OF_ID_VERSION = 'kk_trixionary_kk_trixionary_skill_version.variation_of_id_version';
+    const COL_VARIATION_OF_ID_VERSION = 'kk_trixionary_skill_version.variation_of_id_version';
 
     /**
      * the column name for the multiple_of_id_version field
      */
-    const COL_MULTIPLE_OF_ID_VERSION = 'kk_trixionary_kk_trixionary_skill_version.multiple_of_id_version';
+    const COL_MULTIPLE_OF_ID_VERSION = 'kk_trixionary_skill_version.multiple_of_id_version';
 
     /**
      * the column name for the kk_trixionary_skill_ids field
      */
-    const COL_KK_TRIXIONARY_SKILL_IDS = 'kk_trixionary_kk_trixionary_skill_version.kk_trixionary_skill_ids';
+    const COL_KK_TRIXIONARY_SKILL_IDS = 'kk_trixionary_skill_version.kk_trixionary_skill_ids';
 
     /**
      * the column name for the kk_trixionary_skill_versions field
      */
-    const COL_KK_TRIXIONARY_SKILL_VERSIONS = 'kk_trixionary_kk_trixionary_skill_version.kk_trixionary_skill_versions';
+    const COL_KK_TRIXIONARY_SKILL_VERSIONS = 'kk_trixionary_skill_version.kk_trixionary_skill_versions';
 
     /**
      * The default string format for model objects of the related table
@@ -253,11 +263,11 @@ class SkillVersionTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'SportId', 'Name', 'AlternativeName', 'Slug', 'Description', 'History', 'IsTranslation', 'IsRotation', 'IsCyclic', 'LongitudinalFlags', 'LatitudinalFlags', 'TransversalFlags', 'MovementDescription', 'VariationOfId', 'StartPositionId', 'EndPositionId', 'IsComposite', 'IsMultiple', 'MultipleOfId', 'Multiplier', 'Generation', 'Importance', 'GenerationIds', 'PictureId', 'KstrukturId', 'FunctionPhaseId', 'Version', 'VersionCreatedAt', 'VersionComment', 'VariationOfIdVersion', 'MultipleOfIdVersion', 'KkTrixionarySkillIds', 'KkTrixionarySkillVersions', ),
-        self::TYPE_CAMELNAME     => array('id', 'sportId', 'name', 'alternativeName', 'slug', 'description', 'history', 'isTranslation', 'isRotation', 'isCyclic', 'longitudinalFlags', 'latitudinalFlags', 'transversalFlags', 'movementDescription', 'variationOfId', 'startPositionId', 'endPositionId', 'isComposite', 'isMultiple', 'multipleOfId', 'multiplier', 'generation', 'importance', 'generationIds', 'pictureId', 'kstrukturId', 'functionPhaseId', 'version', 'versionCreatedAt', 'versionComment', 'variationOfIdVersion', 'multipleOfIdVersion', 'kkTrixionarySkillIds', 'kkTrixionarySkillVersions', ),
-        self::TYPE_COLNAME       => array(SkillVersionTableMap::COL_ID, SkillVersionTableMap::COL_SPORT_ID, SkillVersionTableMap::COL_NAME, SkillVersionTableMap::COL_ALTERNATIVE_NAME, SkillVersionTableMap::COL_SLUG, SkillVersionTableMap::COL_DESCRIPTION, SkillVersionTableMap::COL_HISTORY, SkillVersionTableMap::COL_IS_TRANSLATION, SkillVersionTableMap::COL_IS_ROTATION, SkillVersionTableMap::COL_IS_CYCLIC, SkillVersionTableMap::COL_LONGITUDINAL_FLAGS, SkillVersionTableMap::COL_LATITUDINAL_FLAGS, SkillVersionTableMap::COL_TRANSVERSAL_FLAGS, SkillVersionTableMap::COL_MOVEMENT_DESCRIPTION, SkillVersionTableMap::COL_VARIATION_OF_ID, SkillVersionTableMap::COL_START_POSITION_ID, SkillVersionTableMap::COL_END_POSITION_ID, SkillVersionTableMap::COL_IS_COMPOSITE, SkillVersionTableMap::COL_IS_MULTIPLE, SkillVersionTableMap::COL_MULTIPLE_OF_ID, SkillVersionTableMap::COL_MULTIPLIER, SkillVersionTableMap::COL_GENERATION, SkillVersionTableMap::COL_IMPORTANCE, SkillVersionTableMap::COL_GENERATION_IDS, SkillVersionTableMap::COL_PICTURE_ID, SkillVersionTableMap::COL_KSTRUKTUR_ID, SkillVersionTableMap::COL_FUNCTION_PHASE_ID, SkillVersionTableMap::COL_VERSION, SkillVersionTableMap::COL_VERSION_CREATED_AT, SkillVersionTableMap::COL_VERSION_COMMENT, SkillVersionTableMap::COL_VARIATION_OF_ID_VERSION, SkillVersionTableMap::COL_MULTIPLE_OF_ID_VERSION, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_IDS, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_VERSIONS, ),
-        self::TYPE_FIELDNAME     => array('id', 'sport_id', 'name', 'alternative_name', 'slug', 'description', 'history', 'is_translation', 'is_rotation', 'is_cyclic', 'longitudinal_flags', 'latitudinal_flags', 'transversal_flags', 'movement_description', 'variation_of_id', 'start_position_id', 'end_position_id', 'is_composite', 'is_multiple', 'multiple_of_id', 'multiplier', 'generation', 'importance', 'generation_ids', 'picture_id', 'kstruktur_id', 'function_phase_id', 'version', 'version_created_at', 'version_comment', 'variation_of_id_version', 'multiple_of_id_version', 'kk_trixionary_skill_ids', 'kk_trixionary_skill_versions', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, )
+        self::TYPE_PHPNAME       => array('Id', 'SportId', 'Name', 'AlternativeName', 'Slug', 'Description', 'History', 'IsTranslation', 'IsRotation', 'IsAcyclic', 'IsCyclic', 'LongitudinalFlags', 'LatitudinalFlags', 'TransversalFlags', 'MovementDescription', 'VariationOfId', 'StartPositionId', 'EndPositionId', 'IsComposite', 'IsMultiple', 'MultipleOfId', 'Multiplier', 'Generation', 'Importance', 'GenerationIds', 'PictureId', 'KstrukturId', 'FunctionPhaseId', 'ObjectId', 'Version', 'VersionCreatedAt', 'VersionComment', 'VariationOfIdVersion', 'MultipleOfIdVersion', 'KkTrixionarySkillIds', 'KkTrixionarySkillVersions', ),
+        self::TYPE_CAMELNAME     => array('id', 'sportId', 'name', 'alternativeName', 'slug', 'description', 'history', 'isTranslation', 'isRotation', 'isAcyclic', 'isCyclic', 'longitudinalFlags', 'latitudinalFlags', 'transversalFlags', 'movementDescription', 'variationOfId', 'startPositionId', 'endPositionId', 'isComposite', 'isMultiple', 'multipleOfId', 'multiplier', 'generation', 'importance', 'generationIds', 'pictureId', 'kstrukturId', 'functionPhaseId', 'objectId', 'version', 'versionCreatedAt', 'versionComment', 'variationOfIdVersion', 'multipleOfIdVersion', 'kkTrixionarySkillIds', 'kkTrixionarySkillVersions', ),
+        self::TYPE_COLNAME       => array(SkillVersionTableMap::COL_ID, SkillVersionTableMap::COL_SPORT_ID, SkillVersionTableMap::COL_NAME, SkillVersionTableMap::COL_ALTERNATIVE_NAME, SkillVersionTableMap::COL_SLUG, SkillVersionTableMap::COL_DESCRIPTION, SkillVersionTableMap::COL_HISTORY, SkillVersionTableMap::COL_IS_TRANSLATION, SkillVersionTableMap::COL_IS_ROTATION, SkillVersionTableMap::COL_IS_ACYCLIC, SkillVersionTableMap::COL_IS_CYCLIC, SkillVersionTableMap::COL_LONGITUDINAL_FLAGS, SkillVersionTableMap::COL_LATITUDINAL_FLAGS, SkillVersionTableMap::COL_TRANSVERSAL_FLAGS, SkillVersionTableMap::COL_MOVEMENT_DESCRIPTION, SkillVersionTableMap::COL_VARIATION_OF_ID, SkillVersionTableMap::COL_START_POSITION_ID, SkillVersionTableMap::COL_END_POSITION_ID, SkillVersionTableMap::COL_IS_COMPOSITE, SkillVersionTableMap::COL_IS_MULTIPLE, SkillVersionTableMap::COL_MULTIPLE_OF_ID, SkillVersionTableMap::COL_MULTIPLIER, SkillVersionTableMap::COL_GENERATION, SkillVersionTableMap::COL_IMPORTANCE, SkillVersionTableMap::COL_GENERATION_IDS, SkillVersionTableMap::COL_PICTURE_ID, SkillVersionTableMap::COL_KSTRUKTUR_ID, SkillVersionTableMap::COL_FUNCTION_PHASE_ID, SkillVersionTableMap::COL_OBJECT_ID, SkillVersionTableMap::COL_VERSION, SkillVersionTableMap::COL_VERSION_CREATED_AT, SkillVersionTableMap::COL_VERSION_COMMENT, SkillVersionTableMap::COL_VARIATION_OF_ID_VERSION, SkillVersionTableMap::COL_MULTIPLE_OF_ID_VERSION, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_IDS, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_VERSIONS, ),
+        self::TYPE_FIELDNAME     => array('id', 'sport_id', 'name', 'alternative_name', 'slug', 'description', 'history', 'is_translation', 'is_rotation', 'is_acyclic', 'is_cyclic', 'longitudinal_flags', 'latitudinal_flags', 'transversal_flags', 'movement_description', 'variation_of_id', 'start_position_id', 'end_position_id', 'is_composite', 'is_multiple', 'multiple_of_id', 'multiplier', 'generation', 'importance', 'generation_ids', 'picture_id', 'kstruktur_id', 'function_phase_id', 'object_id', 'version', 'version_created_at', 'version_comment', 'variation_of_id_version', 'multiple_of_id_version', 'kk_trixionary_skill_ids', 'kk_trixionary_skill_versions', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, )
     );
 
     /**
@@ -267,11 +277,11 @@ class SkillVersionTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'SportId' => 1, 'Name' => 2, 'AlternativeName' => 3, 'Slug' => 4, 'Description' => 5, 'History' => 6, 'IsTranslation' => 7, 'IsRotation' => 8, 'IsCyclic' => 9, 'LongitudinalFlags' => 10, 'LatitudinalFlags' => 11, 'TransversalFlags' => 12, 'MovementDescription' => 13, 'VariationOfId' => 14, 'StartPositionId' => 15, 'EndPositionId' => 16, 'IsComposite' => 17, 'IsMultiple' => 18, 'MultipleOfId' => 19, 'Multiplier' => 20, 'Generation' => 21, 'Importance' => 22, 'GenerationIds' => 23, 'PictureId' => 24, 'KstrukturId' => 25, 'FunctionPhaseId' => 26, 'Version' => 27, 'VersionCreatedAt' => 28, 'VersionComment' => 29, 'VariationOfIdVersion' => 30, 'MultipleOfIdVersion' => 31, 'KkTrixionarySkillIds' => 32, 'KkTrixionarySkillVersions' => 33, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'sportId' => 1, 'name' => 2, 'alternativeName' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'isTranslation' => 7, 'isRotation' => 8, 'isCyclic' => 9, 'longitudinalFlags' => 10, 'latitudinalFlags' => 11, 'transversalFlags' => 12, 'movementDescription' => 13, 'variationOfId' => 14, 'startPositionId' => 15, 'endPositionId' => 16, 'isComposite' => 17, 'isMultiple' => 18, 'multipleOfId' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'generationIds' => 23, 'pictureId' => 24, 'kstrukturId' => 25, 'functionPhaseId' => 26, 'version' => 27, 'versionCreatedAt' => 28, 'versionComment' => 29, 'variationOfIdVersion' => 30, 'multipleOfIdVersion' => 31, 'kkTrixionarySkillIds' => 32, 'kkTrixionarySkillVersions' => 33, ),
-        self::TYPE_COLNAME       => array(SkillVersionTableMap::COL_ID => 0, SkillVersionTableMap::COL_SPORT_ID => 1, SkillVersionTableMap::COL_NAME => 2, SkillVersionTableMap::COL_ALTERNATIVE_NAME => 3, SkillVersionTableMap::COL_SLUG => 4, SkillVersionTableMap::COL_DESCRIPTION => 5, SkillVersionTableMap::COL_HISTORY => 6, SkillVersionTableMap::COL_IS_TRANSLATION => 7, SkillVersionTableMap::COL_IS_ROTATION => 8, SkillVersionTableMap::COL_IS_CYCLIC => 9, SkillVersionTableMap::COL_LONGITUDINAL_FLAGS => 10, SkillVersionTableMap::COL_LATITUDINAL_FLAGS => 11, SkillVersionTableMap::COL_TRANSVERSAL_FLAGS => 12, SkillVersionTableMap::COL_MOVEMENT_DESCRIPTION => 13, SkillVersionTableMap::COL_VARIATION_OF_ID => 14, SkillVersionTableMap::COL_START_POSITION_ID => 15, SkillVersionTableMap::COL_END_POSITION_ID => 16, SkillVersionTableMap::COL_IS_COMPOSITE => 17, SkillVersionTableMap::COL_IS_MULTIPLE => 18, SkillVersionTableMap::COL_MULTIPLE_OF_ID => 19, SkillVersionTableMap::COL_MULTIPLIER => 20, SkillVersionTableMap::COL_GENERATION => 21, SkillVersionTableMap::COL_IMPORTANCE => 22, SkillVersionTableMap::COL_GENERATION_IDS => 23, SkillVersionTableMap::COL_PICTURE_ID => 24, SkillVersionTableMap::COL_KSTRUKTUR_ID => 25, SkillVersionTableMap::COL_FUNCTION_PHASE_ID => 26, SkillVersionTableMap::COL_VERSION => 27, SkillVersionTableMap::COL_VERSION_CREATED_AT => 28, SkillVersionTableMap::COL_VERSION_COMMENT => 29, SkillVersionTableMap::COL_VARIATION_OF_ID_VERSION => 30, SkillVersionTableMap::COL_MULTIPLE_OF_ID_VERSION => 31, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_IDS => 32, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_VERSIONS => 33, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'sport_id' => 1, 'name' => 2, 'alternative_name' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'is_translation' => 7, 'is_rotation' => 8, 'is_cyclic' => 9, 'longitudinal_flags' => 10, 'latitudinal_flags' => 11, 'transversal_flags' => 12, 'movement_description' => 13, 'variation_of_id' => 14, 'start_position_id' => 15, 'end_position_id' => 16, 'is_composite' => 17, 'is_multiple' => 18, 'multiple_of_id' => 19, 'multiplier' => 20, 'generation' => 21, 'importance' => 22, 'generation_ids' => 23, 'picture_id' => 24, 'kstruktur_id' => 25, 'function_phase_id' => 26, 'version' => 27, 'version_created_at' => 28, 'version_comment' => 29, 'variation_of_id_version' => 30, 'multiple_of_id_version' => 31, 'kk_trixionary_skill_ids' => 32, 'kk_trixionary_skill_versions' => 33, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'SportId' => 1, 'Name' => 2, 'AlternativeName' => 3, 'Slug' => 4, 'Description' => 5, 'History' => 6, 'IsTranslation' => 7, 'IsRotation' => 8, 'IsAcyclic' => 9, 'IsCyclic' => 10, 'LongitudinalFlags' => 11, 'LatitudinalFlags' => 12, 'TransversalFlags' => 13, 'MovementDescription' => 14, 'VariationOfId' => 15, 'StartPositionId' => 16, 'EndPositionId' => 17, 'IsComposite' => 18, 'IsMultiple' => 19, 'MultipleOfId' => 20, 'Multiplier' => 21, 'Generation' => 22, 'Importance' => 23, 'GenerationIds' => 24, 'PictureId' => 25, 'KstrukturId' => 26, 'FunctionPhaseId' => 27, 'ObjectId' => 28, 'Version' => 29, 'VersionCreatedAt' => 30, 'VersionComment' => 31, 'VariationOfIdVersion' => 32, 'MultipleOfIdVersion' => 33, 'KkTrixionarySkillIds' => 34, 'KkTrixionarySkillVersions' => 35, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'sportId' => 1, 'name' => 2, 'alternativeName' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'isTranslation' => 7, 'isRotation' => 8, 'isAcyclic' => 9, 'isCyclic' => 10, 'longitudinalFlags' => 11, 'latitudinalFlags' => 12, 'transversalFlags' => 13, 'movementDescription' => 14, 'variationOfId' => 15, 'startPositionId' => 16, 'endPositionId' => 17, 'isComposite' => 18, 'isMultiple' => 19, 'multipleOfId' => 20, 'multiplier' => 21, 'generation' => 22, 'importance' => 23, 'generationIds' => 24, 'pictureId' => 25, 'kstrukturId' => 26, 'functionPhaseId' => 27, 'objectId' => 28, 'version' => 29, 'versionCreatedAt' => 30, 'versionComment' => 31, 'variationOfIdVersion' => 32, 'multipleOfIdVersion' => 33, 'kkTrixionarySkillIds' => 34, 'kkTrixionarySkillVersions' => 35, ),
+        self::TYPE_COLNAME       => array(SkillVersionTableMap::COL_ID => 0, SkillVersionTableMap::COL_SPORT_ID => 1, SkillVersionTableMap::COL_NAME => 2, SkillVersionTableMap::COL_ALTERNATIVE_NAME => 3, SkillVersionTableMap::COL_SLUG => 4, SkillVersionTableMap::COL_DESCRIPTION => 5, SkillVersionTableMap::COL_HISTORY => 6, SkillVersionTableMap::COL_IS_TRANSLATION => 7, SkillVersionTableMap::COL_IS_ROTATION => 8, SkillVersionTableMap::COL_IS_ACYCLIC => 9, SkillVersionTableMap::COL_IS_CYCLIC => 10, SkillVersionTableMap::COL_LONGITUDINAL_FLAGS => 11, SkillVersionTableMap::COL_LATITUDINAL_FLAGS => 12, SkillVersionTableMap::COL_TRANSVERSAL_FLAGS => 13, SkillVersionTableMap::COL_MOVEMENT_DESCRIPTION => 14, SkillVersionTableMap::COL_VARIATION_OF_ID => 15, SkillVersionTableMap::COL_START_POSITION_ID => 16, SkillVersionTableMap::COL_END_POSITION_ID => 17, SkillVersionTableMap::COL_IS_COMPOSITE => 18, SkillVersionTableMap::COL_IS_MULTIPLE => 19, SkillVersionTableMap::COL_MULTIPLE_OF_ID => 20, SkillVersionTableMap::COL_MULTIPLIER => 21, SkillVersionTableMap::COL_GENERATION => 22, SkillVersionTableMap::COL_IMPORTANCE => 23, SkillVersionTableMap::COL_GENERATION_IDS => 24, SkillVersionTableMap::COL_PICTURE_ID => 25, SkillVersionTableMap::COL_KSTRUKTUR_ID => 26, SkillVersionTableMap::COL_FUNCTION_PHASE_ID => 27, SkillVersionTableMap::COL_OBJECT_ID => 28, SkillVersionTableMap::COL_VERSION => 29, SkillVersionTableMap::COL_VERSION_CREATED_AT => 30, SkillVersionTableMap::COL_VERSION_COMMENT => 31, SkillVersionTableMap::COL_VARIATION_OF_ID_VERSION => 32, SkillVersionTableMap::COL_MULTIPLE_OF_ID_VERSION => 33, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_IDS => 34, SkillVersionTableMap::COL_KK_TRIXIONARY_SKILL_VERSIONS => 35, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'sport_id' => 1, 'name' => 2, 'alternative_name' => 3, 'slug' => 4, 'description' => 5, 'history' => 6, 'is_translation' => 7, 'is_rotation' => 8, 'is_acyclic' => 9, 'is_cyclic' => 10, 'longitudinal_flags' => 11, 'latitudinal_flags' => 12, 'transversal_flags' => 13, 'movement_description' => 14, 'variation_of_id' => 15, 'start_position_id' => 16, 'end_position_id' => 17, 'is_composite' => 18, 'is_multiple' => 19, 'multiple_of_id' => 20, 'multiplier' => 21, 'generation' => 22, 'importance' => 23, 'generation_ids' => 24, 'picture_id' => 25, 'kstruktur_id' => 26, 'function_phase_id' => 27, 'object_id' => 28, 'version' => 29, 'version_created_at' => 30, 'version_comment' => 31, 'variation_of_id_version' => 32, 'multiple_of_id_version' => 33, 'kk_trixionary_skill_ids' => 34, 'kk_trixionary_skill_versions' => 35, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, )
     );
 
     /**
@@ -284,7 +294,7 @@ class SkillVersionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('kk_trixionary_kk_trixionary_skill_version');
+        $this->setName('kk_trixionary_skill_version');
         $this->setPhpName('SkillVersion');
         $this->setIdentifierQuoting(true);
         $this->setClassName('\\gossi\\trixionary\\model\\SkillVersion');
@@ -300,7 +310,8 @@ class SkillVersionTableMap extends TableMap
         $this->addColumn('history', 'History', 'LONGVARCHAR', false, null, null);
         $this->addColumn('is_translation', 'IsTranslation', 'BOOLEAN', false, 1, null);
         $this->addColumn('is_rotation', 'IsRotation', 'BOOLEAN', false, 1, null);
-        $this->addColumn('is_cyclic', 'IsCyclic', 'BOOLEAN', false, 1, null);
+        $this->addColumn('is_acyclic', 'IsAcyclic', 'BOOLEAN', false, 1, true);
+        $this->addColumn('is_cyclic', 'IsCyclic', 'BOOLEAN', false, 1, false);
         $this->addColumn('longitudinal_flags', 'LongitudinalFlags', 'INTEGER', false, null, null);
         $this->addColumn('latitudinal_flags', 'LatitudinalFlags', 'INTEGER', false, null, null);
         $this->addColumn('transversal_flags', 'TransversalFlags', 'INTEGER', false, null, null);
@@ -318,6 +329,7 @@ class SkillVersionTableMap extends TableMap
         $this->addColumn('picture_id', 'PictureId', 'INTEGER', false, null, null);
         $this->addColumn('kstruktur_id', 'KstrukturId', 'INTEGER', false, null, null);
         $this->addColumn('function_phase_id', 'FunctionPhaseId', 'INTEGER', false, null, null);
+        $this->addColumn('object_id', 'ObjectId', 'INTEGER', false, null, null);
         $this->addPrimaryKey('version', 'Version', 'INTEGER', true, null, 0);
         $this->addColumn('version_created_at', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('version_comment', 'VersionComment', 'VARCHAR', false, 255, null);
@@ -332,7 +344,13 @@ class SkillVersionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
     } // buildRelations()
 
     /**
@@ -404,11 +422,11 @@ class SkillVersionTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 27 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 29 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 27 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)]));
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 29 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -434,7 +452,7 @@ class SkillVersionTableMap extends TableMap
         ];
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
-                ? 27 + $offset
+                ? 29 + $offset
                 : self::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)
         ];
 
@@ -547,6 +565,7 @@ class SkillVersionTableMap extends TableMap
             $criteria->addSelectColumn(SkillVersionTableMap::COL_HISTORY);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_IS_TRANSLATION);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_IS_ROTATION);
+            $criteria->addSelectColumn(SkillVersionTableMap::COL_IS_ACYCLIC);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_IS_CYCLIC);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_LONGITUDINAL_FLAGS);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_LATITUDINAL_FLAGS);
@@ -565,6 +584,7 @@ class SkillVersionTableMap extends TableMap
             $criteria->addSelectColumn(SkillVersionTableMap::COL_PICTURE_ID);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_KSTRUKTUR_ID);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_FUNCTION_PHASE_ID);
+            $criteria->addSelectColumn(SkillVersionTableMap::COL_OBJECT_ID);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_VERSION);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_VERSION_CREATED_AT);
             $criteria->addSelectColumn(SkillVersionTableMap::COL_VERSION_COMMENT);
@@ -582,6 +602,7 @@ class SkillVersionTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.history');
             $criteria->addSelectColumn($alias . '.is_translation');
             $criteria->addSelectColumn($alias . '.is_rotation');
+            $criteria->addSelectColumn($alias . '.is_acyclic');
             $criteria->addSelectColumn($alias . '.is_cyclic');
             $criteria->addSelectColumn($alias . '.longitudinal_flags');
             $criteria->addSelectColumn($alias . '.latitudinal_flags');
@@ -600,6 +621,7 @@ class SkillVersionTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.picture_id');
             $criteria->addSelectColumn($alias . '.kstruktur_id');
             $criteria->addSelectColumn($alias . '.function_phase_id');
+            $criteria->addSelectColumn($alias . '.object_id');
             $criteria->addSelectColumn($alias . '.version');
             $criteria->addSelectColumn($alias . '.version_created_at');
             $criteria->addSelectColumn($alias . '.version_comment');
@@ -685,7 +707,7 @@ class SkillVersionTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the kk_trixionary_kk_trixionary_skill_version table.
+     * Deletes all rows from the kk_trixionary_skill_version table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

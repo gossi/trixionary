@@ -254,8 +254,20 @@ class ReferenceTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), null, null);
-        $this->addRelation('Video', '\\gossi\\trixionary\\model\\Video', RelationMap::ONE_TO_MANY, array('id' => 'reference_id', ), null, null, 'Videos');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':skill_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Video', '\\gossi\\trixionary\\model\\Video', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':reference_id',
+    1 => ':id',
+  ),
+), null, null, 'Videos', false);
     } // buildRelations()
 
     /**

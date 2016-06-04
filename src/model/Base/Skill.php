@@ -24,6 +24,8 @@ use gossi\trixionary\model\Group as ChildGroup;
 use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
 use gossi\trixionary\model\Kstruktur as ChildKstruktur;
 use gossi\trixionary\model\KstrukturQuery as ChildKstrukturQuery;
+use gossi\trixionary\model\Object as ChildObject;
+use gossi\trixionary\model\ObjectQuery as ChildObjectQuery;
 use gossi\trixionary\model\Picture as ChildPicture;
 use gossi\trixionary\model\PictureQuery as ChildPictureQuery;
 use gossi\trixionary\model\Position as ChildPosition;
@@ -145,7 +147,15 @@ abstract class Skill implements ActiveRecordInterface
     protected $is_rotation;
 
     /**
+     * The value for the is_acyclic field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $is_acyclic;
+
+    /**
      * The value for the is_cyclic field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_cyclic;
@@ -253,6 +263,12 @@ abstract class Skill implements ActiveRecordInterface
     protected $function_phase_id;
 
     /**
+     * The value for the object_id field.
+     * @var        int
+     */
+    protected $object_id;
+
+    /**
      * The value for the version field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -285,6 +301,11 @@ abstract class Skill implements ActiveRecordInterface
      * @var        ChildSkill
      */
     protected $aMultipleOf;
+
+    /**
+     * @var        ChildObject
+     */
+    protected $aObject;
 
     /**
      * @var        ChildPosition
@@ -326,26 +347,26 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildSkillDependency[] Collection to store aggregation of ChildSkillDependency objects.
      */
-    protected $collSkillDependenciesRelatedByDependsId;
-    protected $collSkillDependenciesRelatedByDependsIdPartial;
+    protected $collDescendents;
+    protected $collDescendentsPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillDependency[] Collection to store aggregation of ChildSkillDependency objects.
      */
-    protected $collSkillDependenciesRelatedBySkillId;
-    protected $collSkillDependenciesRelatedBySkillIdPartial;
+    protected $collAscendents;
+    protected $collAscendentsPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillPart[] Collection to store aggregation of ChildSkillPart objects.
      */
-    protected $collSkillPartsRelatedByPartId;
-    protected $collSkillPartsRelatedByPartIdPartial;
+    protected $collParts;
+    protected $collPartsPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillPart[] Collection to store aggregation of ChildSkillPart objects.
      */
-    protected $collSkillPartsRelatedByCompositeId;
-    protected $collSkillPartsRelatedByCompositeIdPartial;
+    protected $collComposites;
+    protected $collCompositesPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillGroup[] Collection to store aggregation of ChildSkillGroup objects.
@@ -398,22 +419,22 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildSkill[] Cross Collection to store aggregation of ChildSkill objects.
      */
-    protected $collSkillsRelatedBySkillId;
+    protected $collSkillsRelatedByParentId;
 
     /**
      * @var bool
      */
-    protected $collSkillsRelatedBySkillIdPartial;
+    protected $collSkillsRelatedByParentIdPartial;
 
     /**
      * @var        ObjectCollection|ChildSkill[] Cross Collection to store aggregation of ChildSkill objects.
      */
-    protected $collSkillsRelatedByDependsId;
+    protected $collSkillsRelatedByDependencyId;
 
     /**
      * @var bool
      */
-    protected $collSkillsRelatedByDependsIdPartial;
+    protected $collSkillsRelatedByDependencyIdPartial;
 
     /**
      * @var        ObjectCollection|ChildSkill[] Cross Collection to store aggregation of ChildSkill objects.
@@ -465,13 +486,13 @@ abstract class Skill implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkill[]
      */
-    protected $skillsRelatedBySkillIdScheduledForDeletion = null;
+    protected $skillsRelatedByParentIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkill[]
      */
-    protected $skillsRelatedByDependsIdScheduledForDeletion = null;
+    protected $skillsRelatedByDependencyIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -507,25 +528,25 @@ abstract class Skill implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillDependency[]
      */
-    protected $skillDependenciesRelatedByDependsIdScheduledForDeletion = null;
+    protected $descendentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillDependency[]
      */
-    protected $skillDependenciesRelatedBySkillIdScheduledForDeletion = null;
+    protected $ascendentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillPart[]
      */
-    protected $skillPartsRelatedByPartIdScheduledForDeletion = null;
+    protected $partsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillPart[]
      */
-    protected $skillPartsRelatedByCompositeIdScheduledForDeletion = null;
+    protected $compositesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -583,6 +604,8 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
+        $this->is_acyclic = true;
+        $this->is_cyclic = false;
         $this->version = 0;
     }
 
@@ -916,6 +939,26 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
+     * Get the [is_acyclic] column value.
+     *
+     * @return boolean
+     */
+    public function getIsAcyclic()
+    {
+        return $this->is_acyclic;
+    }
+
+    /**
+     * Get the [is_acyclic] column value.
+     *
+     * @return boolean
+     */
+    public function isAcyclic()
+    {
+        return $this->getIsAcyclic();
+    }
+
+    /**
      * Get the [is_cyclic] column value.
      *
      * @return boolean
@@ -1007,7 +1050,7 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * Get the [is_composite] column value.
-     *
+     * This skill is a composite
      * @return boolean
      */
     public function getIsComposite()
@@ -1017,7 +1060,7 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * Get the [is_composite] column value.
-     *
+     * This skill is a composite
      * @return boolean
      */
     public function isComposite()
@@ -1027,7 +1070,7 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * Get the [is_multiple] column value.
-     *
+     * This skill is a multiplier
      * @return boolean
      */
     public function getIsMultiple()
@@ -1037,7 +1080,7 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * Get the [is_multiple] column value.
-     *
+     * This skill is a multiplier
      * @return boolean
      */
     public function isMultiple()
@@ -1126,6 +1169,16 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
+     * Get the [object_id] column value.
+     *
+     * @return int
+     */
+    public function getObjectId()
+    {
+        return $this->object_id;
+    }
+
+    /**
      * Get the [version] column value.
      *
      * @return int
@@ -1168,7 +1221,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setId($v)
@@ -1188,7 +1241,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [sport_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setSportId($v)
@@ -1212,7 +1265,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [name] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setName($v)
@@ -1232,7 +1285,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [alternative_name] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setAlternativeName($v)
@@ -1252,7 +1305,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setSlug($v)
@@ -1272,7 +1325,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setDescription($v)
@@ -1292,7 +1345,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [history] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setHistory($v)
@@ -1366,6 +1419,34 @@ abstract class Skill implements ActiveRecordInterface
     } // setIsRotation()
 
     /**
+     * Sets the value of the [is_acyclic] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setIsAcyclic($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->is_acyclic !== $v) {
+            $this->is_acyclic = $v;
+            $this->modifiedColumns[SkillTableMap::COL_IS_ACYCLIC] = true;
+        }
+
+        return $this;
+    } // setIsAcyclic()
+
+    /**
      * Sets the value of the [is_cyclic] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1396,7 +1477,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [longitudinal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setLongitudinalFlags($v)
@@ -1416,7 +1497,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [latitudinal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setLatitudinalFlags($v)
@@ -1436,7 +1517,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [transversal_flags] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setTransversalFlags($v)
@@ -1456,7 +1537,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [movement_description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setMovementDescription($v)
@@ -1476,7 +1557,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [variation_of_id] column.
      * Indicates a variation
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setVariationOfId($v)
@@ -1500,7 +1581,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [start_position_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setStartPositionId($v)
@@ -1524,7 +1605,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [end_position_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setEndPositionId($v)
@@ -1551,7 +1632,7 @@ abstract class Skill implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * This skill is a composite
      * @param  boolean|integer|string $v The new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
@@ -1579,7 +1660,7 @@ abstract class Skill implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * This skill is a multiplier
      * @param  boolean|integer|string $v The new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
@@ -1604,7 +1685,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [multiple_of_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setMultipleOfId($v)
@@ -1628,7 +1709,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [multiplier] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setMultiplier($v)
@@ -1648,7 +1729,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [generation] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setGeneration($v)
@@ -1668,7 +1749,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [importance] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setImportance($v)
@@ -1688,7 +1769,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [generation_ids] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setGenerationIds($v)
@@ -1708,7 +1789,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [picture_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setPictureId($v)
@@ -1732,7 +1813,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [kstruktur_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setKstrukturId($v)
@@ -1756,7 +1837,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [function_phase_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setFunctionPhaseId($v)
@@ -1778,9 +1859,33 @@ abstract class Skill implements ActiveRecordInterface
     } // setFunctionPhaseId()
 
     /**
+     * Set the value of [object_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setObjectId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->object_id !== $v) {
+            $this->object_id = $v;
+            $this->modifiedColumns[SkillTableMap::COL_OBJECT_ID] = true;
+        }
+
+        if ($this->aObject !== null && $this->aObject->getId() !== $v) {
+            $this->aObject = null;
+        }
+
+        return $this;
+    } // setObjectId()
+
+    /**
      * Set the value of [version] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setVersion($v)
@@ -1808,8 +1913,8 @@ abstract class Skill implements ActiveRecordInterface
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->version_created_at !== null || $dt !== null) {
-            if ($dt !== $this->version_created_at) {
-                $this->version_created_at = $dt;
+            if ($this->version_created_at === null || $dt === null || $dt->format("Y-m-d H:i:s") !== $this->version_created_at->format("Y-m-d H:i:s")) {
+                $this->version_created_at = $dt === null ? null : clone $dt;
                 $this->modifiedColumns[SkillTableMap::COL_VERSION_CREATED_AT] = true;
             }
         } // if either are not null
@@ -1820,7 +1925,7 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * Set the value of [version_comment] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
     public function setVersionComment($v)
@@ -1847,6 +1952,14 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->is_acyclic !== true) {
+                return false;
+            }
+
+            if ($this->is_cyclic !== false) {
+                return false;
+            }
+
             if ($this->version !== 0) {
                 return false;
             }
@@ -1904,70 +2017,76 @@ abstract class Skill implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SkillTableMap::translateFieldName('IsRotation', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_rotation = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SkillTableMap::translateFieldName('IsCyclic', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SkillTableMap::translateFieldName('IsAcyclic', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->is_acyclic = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SkillTableMap::translateFieldName('IsCyclic', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_cyclic = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SkillTableMap::translateFieldName('LongitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SkillTableMap::translateFieldName('LongitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->longitudinal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SkillTableMap::translateFieldName('LatitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SkillTableMap::translateFieldName('LatitudinalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->latitudinal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SkillTableMap::translateFieldName('TransversalFlags', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SkillTableMap::translateFieldName('TransversalFlags', TableMap::TYPE_PHPNAME, $indexType)];
             $this->transversal_flags = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SkillTableMap::translateFieldName('MovementDescription', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SkillTableMap::translateFieldName('MovementDescription', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movement_description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SkillTableMap::translateFieldName('VariationOfId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SkillTableMap::translateFieldName('VariationOfId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->variation_of_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SkillTableMap::translateFieldName('StartPositionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SkillTableMap::translateFieldName('StartPositionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->start_position_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SkillTableMap::translateFieldName('EndPositionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SkillTableMap::translateFieldName('EndPositionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->end_position_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SkillTableMap::translateFieldName('IsComposite', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SkillTableMap::translateFieldName('IsComposite', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_composite = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SkillTableMap::translateFieldName('IsMultiple', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : SkillTableMap::translateFieldName('IsMultiple', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_multiple = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : SkillTableMap::translateFieldName('MultipleOfId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : SkillTableMap::translateFieldName('MultipleOfId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiple_of_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : SkillTableMap::translateFieldName('Multiplier', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : SkillTableMap::translateFieldName('Multiplier', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiplier = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : SkillTableMap::translateFieldName('Generation', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : SkillTableMap::translateFieldName('Generation', TableMap::TYPE_PHPNAME, $indexType)];
             $this->generation = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : SkillTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
             $this->importance = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
             $this->generation_ids = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kstruktur_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->function_phase_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->object_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -1977,7 +2096,7 @@ abstract class Skill implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 30; // 30 = SkillTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 32; // 32 = SkillTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Skill'), 0, $e);
@@ -2023,6 +2142,9 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->aFunctionPhaseRoot !== null && $this->function_phase_id !== $this->aFunctionPhaseRoot->getId()) {
             $this->aFunctionPhaseRoot = null;
         }
+        if ($this->aObject !== null && $this->object_id !== $this->aObject->getId()) {
+            $this->aObject = null;
+        }
     } // ensureConsistency
 
     /**
@@ -2065,6 +2187,7 @@ abstract class Skill implements ActiveRecordInterface
             $this->aSport = null;
             $this->aVariationOf = null;
             $this->aMultipleOf = null;
+            $this->aObject = null;
             $this->aStartPosition = null;
             $this->aEndPosition = null;
             $this->aFeaturedPicture = null;
@@ -2074,13 +2197,13 @@ abstract class Skill implements ActiveRecordInterface
 
             $this->collMultiples = null;
 
-            $this->collSkillDependenciesRelatedByDependsId = null;
+            $this->collDescendents = null;
 
-            $this->collSkillDependenciesRelatedBySkillId = null;
+            $this->collAscendents = null;
 
-            $this->collSkillPartsRelatedByPartId = null;
+            $this->collParts = null;
 
-            $this->collSkillPartsRelatedByCompositeId = null;
+            $this->collComposites = null;
 
             $this->collSkillGroups = null;
 
@@ -2098,8 +2221,8 @@ abstract class Skill implements ActiveRecordInterface
 
             $this->collSkillVersions = null;
 
-            $this->collSkillsRelatedBySkillId = null;
-            $this->collSkillsRelatedByDependsId = null;
+            $this->collSkillsRelatedByParentId = null;
+            $this->collSkillsRelatedByDependencyId = null;
             $this->collSkillsRelatedByCompositeId = null;
             $this->collSkillsRelatedByPartId = null;
             $this->collGroups = null;
@@ -2240,6 +2363,13 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setMultipleOf($this->aMultipleOf);
             }
 
+            if ($this->aObject !== null) {
+                if ($this->aObject->isModified() || $this->aObject->isNew()) {
+                    $affectedRows += $this->aObject->save($con);
+                }
+                $this->setObject($this->aObject);
+            }
+
             if ($this->aStartPosition !== null) {
                 if ($this->aStartPosition->isModified() || $this->aStartPosition->isNew()) {
                     $affectedRows += $this->aStartPosition->save($con);
@@ -2286,39 +2416,10 @@ abstract class Skill implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->skillsRelatedBySkillIdScheduledForDeletion !== null) {
-                if (!$this->skillsRelatedBySkillIdScheduledForDeletion->isEmpty()) {
+            if ($this->skillsRelatedByParentIdScheduledForDeletion !== null) {
+                if (!$this->skillsRelatedByParentIdScheduledForDeletion->isEmpty()) {
                     $pks = array();
-                    foreach ($this->skillsRelatedBySkillIdScheduledForDeletion as $entry) {
-                        $entryPk = [];
-
-                        $entryPk[1] = $this->getId();
-                        $entryPk[0] = $entry->getId();
-                        $pks[] = $entryPk;
-                    }
-
-                    \gossi\trixionary\model\SkillDependencyQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-
-                    $this->skillsRelatedBySkillIdScheduledForDeletion = null;
-                }
-
-            }
-
-            if ($this->collSkillsRelatedBySkillId) {
-                foreach ($this->collSkillsRelatedBySkillId as $skillRelatedBySkillId) {
-                    if (!$skillRelatedBySkillId->isDeleted() && ($skillRelatedBySkillId->isNew() || $skillRelatedBySkillId->isModified())) {
-                        $skillRelatedBySkillId->save($con);
-                    }
-                }
-            }
-
-
-            if ($this->skillsRelatedByDependsIdScheduledForDeletion !== null) {
-                if (!$this->skillsRelatedByDependsIdScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    foreach ($this->skillsRelatedByDependsIdScheduledForDeletion as $entry) {
+                    foreach ($this->skillsRelatedByParentIdScheduledForDeletion as $entry) {
                         $entryPk = [];
 
                         $entryPk[0] = $this->getId();
@@ -2330,15 +2431,44 @@ abstract class Skill implements ActiveRecordInterface
                         ->filterByPrimaryKeys($pks)
                         ->delete($con);
 
-                    $this->skillsRelatedByDependsIdScheduledForDeletion = null;
+                    $this->skillsRelatedByParentIdScheduledForDeletion = null;
                 }
 
             }
 
-            if ($this->collSkillsRelatedByDependsId) {
-                foreach ($this->collSkillsRelatedByDependsId as $skillRelatedByDependsId) {
-                    if (!$skillRelatedByDependsId->isDeleted() && ($skillRelatedByDependsId->isNew() || $skillRelatedByDependsId->isModified())) {
-                        $skillRelatedByDependsId->save($con);
+            if ($this->collSkillsRelatedByParentId) {
+                foreach ($this->collSkillsRelatedByParentId as $skillRelatedByParentId) {
+                    if (!$skillRelatedByParentId->isDeleted() && ($skillRelatedByParentId->isNew() || $skillRelatedByParentId->isModified())) {
+                        $skillRelatedByParentId->save($con);
+                    }
+                }
+            }
+
+
+            if ($this->skillsRelatedByDependencyIdScheduledForDeletion !== null) {
+                if (!$this->skillsRelatedByDependencyIdScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    foreach ($this->skillsRelatedByDependencyIdScheduledForDeletion as $entry) {
+                        $entryPk = [];
+
+                        $entryPk[1] = $this->getId();
+                        $entryPk[0] = $entry->getId();
+                        $pks[] = $entryPk;
+                    }
+
+                    \gossi\trixionary\model\SkillDependencyQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+
+                    $this->skillsRelatedByDependencyIdScheduledForDeletion = null;
+                }
+
+            }
+
+            if ($this->collSkillsRelatedByDependencyId) {
+                foreach ($this->collSkillsRelatedByDependencyId as $skillRelatedByDependencyId) {
+                    if (!$skillRelatedByDependencyId->isDeleted() && ($skillRelatedByDependencyId->isNew() || $skillRelatedByDependencyId->isModified())) {
+                        $skillRelatedByDependencyId->save($con);
                     }
                 }
             }
@@ -2350,8 +2480,8 @@ abstract class Skill implements ActiveRecordInterface
                     foreach ($this->skillsRelatedByCompositeIdScheduledForDeletion as $entry) {
                         $entryPk = [];
 
-                        $entryPk[1] = $this->getId();
-                        $entryPk[0] = $entry->getId();
+                        $entryPk[0] = $this->getId();
+                        $entryPk[1] = $entry->getId();
                         $pks[] = $entryPk;
                     }
 
@@ -2379,8 +2509,8 @@ abstract class Skill implements ActiveRecordInterface
                     foreach ($this->skillsRelatedByPartIdScheduledForDeletion as $entry) {
                         $entryPk = [];
 
-                        $entryPk[0] = $this->getId();
-                        $entryPk[1] = $entry->getId();
+                        $entryPk[1] = $this->getId();
+                        $entryPk[0] = $entry->getId();
                         $pks[] = $entryPk;
                     }
 
@@ -2467,68 +2597,68 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            if ($this->skillDependenciesRelatedByDependsIdScheduledForDeletion !== null) {
-                if (!$this->skillDependenciesRelatedByDependsIdScheduledForDeletion->isEmpty()) {
+            if ($this->descendentsScheduledForDeletion !== null) {
+                if (!$this->descendentsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillDependencyQuery::create()
-                        ->filterByPrimaryKeys($this->skillDependenciesRelatedByDependsIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->descendentsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->skillDependenciesRelatedByDependsIdScheduledForDeletion = null;
+                    $this->descendentsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collSkillDependenciesRelatedByDependsId !== null) {
-                foreach ($this->collSkillDependenciesRelatedByDependsId as $referrerFK) {
+            if ($this->collDescendents !== null) {
+                foreach ($this->collDescendents as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->skillDependenciesRelatedBySkillIdScheduledForDeletion !== null) {
-                if (!$this->skillDependenciesRelatedBySkillIdScheduledForDeletion->isEmpty()) {
+            if ($this->ascendentsScheduledForDeletion !== null) {
+                if (!$this->ascendentsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillDependencyQuery::create()
-                        ->filterByPrimaryKeys($this->skillDependenciesRelatedBySkillIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->ascendentsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->skillDependenciesRelatedBySkillIdScheduledForDeletion = null;
+                    $this->ascendentsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collSkillDependenciesRelatedBySkillId !== null) {
-                foreach ($this->collSkillDependenciesRelatedBySkillId as $referrerFK) {
+            if ($this->collAscendents !== null) {
+                foreach ($this->collAscendents as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->skillPartsRelatedByPartIdScheduledForDeletion !== null) {
-                if (!$this->skillPartsRelatedByPartIdScheduledForDeletion->isEmpty()) {
+            if ($this->partsScheduledForDeletion !== null) {
+                if (!$this->partsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillPartQuery::create()
-                        ->filterByPrimaryKeys($this->skillPartsRelatedByPartIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->partsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->skillPartsRelatedByPartIdScheduledForDeletion = null;
+                    $this->partsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collSkillPartsRelatedByPartId !== null) {
-                foreach ($this->collSkillPartsRelatedByPartId as $referrerFK) {
+            if ($this->collParts !== null) {
+                foreach ($this->collParts as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->skillPartsRelatedByCompositeIdScheduledForDeletion !== null) {
-                if (!$this->skillPartsRelatedByCompositeIdScheduledForDeletion->isEmpty()) {
+            if ($this->compositesScheduledForDeletion !== null) {
+                if (!$this->compositesScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillPartQuery::create()
-                        ->filterByPrimaryKeys($this->skillPartsRelatedByCompositeIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->compositesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->skillPartsRelatedByCompositeIdScheduledForDeletion = null;
+                    $this->compositesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collSkillPartsRelatedByCompositeId !== null) {
-                foreach ($this->collSkillPartsRelatedByCompositeId as $referrerFK) {
+            if ($this->collComposites !== null) {
+                foreach ($this->collComposites as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2724,6 +2854,9 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_IS_ROTATION)) {
             $modifiedColumns[':p' . $index++]  = '`is_rotation`';
         }
+        if ($this->isColumnModified(SkillTableMap::COL_IS_ACYCLIC)) {
+            $modifiedColumns[':p' . $index++]  = '`is_acyclic`';
+        }
         if ($this->isColumnModified(SkillTableMap::COL_IS_CYCLIC)) {
             $modifiedColumns[':p' . $index++]  = '`is_cyclic`';
         }
@@ -2778,6 +2911,9 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_FUNCTION_PHASE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`function_phase_id`';
         }
+        if ($this->isColumnModified(SkillTableMap::COL_OBJECT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`object_id`';
+        }
         if ($this->isColumnModified(SkillTableMap::COL_VERSION)) {
             $modifiedColumns[':p' . $index++]  = '`version`';
         }
@@ -2824,6 +2960,9 @@ abstract class Skill implements ActiveRecordInterface
                         break;
                     case '`is_rotation`':
                         $stmt->bindValue($identifier, (int) $this->is_rotation, PDO::PARAM_INT);
+                        break;
+                    case '`is_acyclic`':
+                        $stmt->bindValue($identifier, (int) $this->is_acyclic, PDO::PARAM_INT);
                         break;
                     case '`is_cyclic`':
                         $stmt->bindValue($identifier, (int) $this->is_cyclic, PDO::PARAM_INT);
@@ -2878,6 +3017,9 @@ abstract class Skill implements ActiveRecordInterface
                         break;
                     case '`function_phase_id`':
                         $stmt->bindValue($identifier, $this->function_phase_id, PDO::PARAM_INT);
+                        break;
+                    case '`object_id`':
+                        $stmt->bindValue($identifier, $this->object_id, PDO::PARAM_INT);
                         break;
                     case '`version`':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
@@ -2978,66 +3120,72 @@ abstract class Skill implements ActiveRecordInterface
                 return $this->getIsRotation();
                 break;
             case 9:
-                return $this->getIsCyclic();
+                return $this->getIsAcyclic();
                 break;
             case 10:
-                return $this->getLongitudinalFlags();
+                return $this->getIsCyclic();
                 break;
             case 11:
-                return $this->getLatitudinalFlags();
+                return $this->getLongitudinalFlags();
                 break;
             case 12:
-                return $this->getTransversalFlags();
+                return $this->getLatitudinalFlags();
                 break;
             case 13:
-                return $this->getMovementDescription();
+                return $this->getTransversalFlags();
                 break;
             case 14:
-                return $this->getVariationOfId();
+                return $this->getMovementDescription();
                 break;
             case 15:
-                return $this->getStartPositionId();
+                return $this->getVariationOfId();
                 break;
             case 16:
-                return $this->getEndPositionId();
+                return $this->getStartPositionId();
                 break;
             case 17:
-                return $this->getIsComposite();
+                return $this->getEndPositionId();
                 break;
             case 18:
-                return $this->getIsMultiple();
+                return $this->getIsComposite();
                 break;
             case 19:
-                return $this->getMultipleOfId();
+                return $this->getIsMultiple();
                 break;
             case 20:
-                return $this->getMultiplier();
+                return $this->getMultipleOfId();
                 break;
             case 21:
-                return $this->getGeneration();
+                return $this->getMultiplier();
                 break;
             case 22:
-                return $this->getImportance();
+                return $this->getGeneration();
                 break;
             case 23:
-                return $this->getGenerationIds();
+                return $this->getImportance();
                 break;
             case 24:
-                return $this->getPictureId();
+                return $this->getGenerationIds();
                 break;
             case 25:
-                return $this->getKstrukturId();
+                return $this->getPictureId();
                 break;
             case 26:
-                return $this->getFunctionPhaseId();
+                return $this->getKstrukturId();
                 break;
             case 27:
-                return $this->getVersion();
+                return $this->getFunctionPhaseId();
                 break;
             case 28:
-                return $this->getVersionCreatedAt();
+                return $this->getObjectId();
                 break;
             case 29:
+                return $this->getVersion();
+                break;
+            case 30:
+                return $this->getVersionCreatedAt();
+                break;
+            case 31:
                 return $this->getVersionComment();
                 break;
             default:
@@ -3079,28 +3227,38 @@ abstract class Skill implements ActiveRecordInterface
             $keys[6] => $this->getHistory(),
             $keys[7] => $this->getIsTranslation(),
             $keys[8] => $this->getIsRotation(),
-            $keys[9] => $this->getIsCyclic(),
-            $keys[10] => $this->getLongitudinalFlags(),
-            $keys[11] => $this->getLatitudinalFlags(),
-            $keys[12] => $this->getTransversalFlags(),
-            $keys[13] => $this->getMovementDescription(),
-            $keys[14] => $this->getVariationOfId(),
-            $keys[15] => $this->getStartPositionId(),
-            $keys[16] => $this->getEndPositionId(),
-            $keys[17] => $this->getIsComposite(),
-            $keys[18] => $this->getIsMultiple(),
-            $keys[19] => $this->getMultipleOfId(),
-            $keys[20] => $this->getMultiplier(),
-            $keys[21] => $this->getGeneration(),
-            $keys[22] => $this->getImportance(),
-            $keys[23] => $this->getGenerationIds(),
-            $keys[24] => $this->getPictureId(),
-            $keys[25] => $this->getKstrukturId(),
-            $keys[26] => $this->getFunctionPhaseId(),
-            $keys[27] => $this->getVersion(),
-            $keys[28] => $this->getVersionCreatedAt(),
-            $keys[29] => $this->getVersionComment(),
+            $keys[9] => $this->getIsAcyclic(),
+            $keys[10] => $this->getIsCyclic(),
+            $keys[11] => $this->getLongitudinalFlags(),
+            $keys[12] => $this->getLatitudinalFlags(),
+            $keys[13] => $this->getTransversalFlags(),
+            $keys[14] => $this->getMovementDescription(),
+            $keys[15] => $this->getVariationOfId(),
+            $keys[16] => $this->getStartPositionId(),
+            $keys[17] => $this->getEndPositionId(),
+            $keys[18] => $this->getIsComposite(),
+            $keys[19] => $this->getIsMultiple(),
+            $keys[20] => $this->getMultipleOfId(),
+            $keys[21] => $this->getMultiplier(),
+            $keys[22] => $this->getGeneration(),
+            $keys[23] => $this->getImportance(),
+            $keys[24] => $this->getGenerationIds(),
+            $keys[25] => $this->getPictureId(),
+            $keys[26] => $this->getKstrukturId(),
+            $keys[27] => $this->getFunctionPhaseId(),
+            $keys[28] => $this->getObjectId(),
+            $keys[29] => $this->getVersion(),
+            $keys[30] => $this->getVersionCreatedAt(),
+            $keys[31] => $this->getVersionComment(),
         );
+
+        $utc = new \DateTimeZone('utc');
+        if ($result[$keys[30]] instanceof \DateTime) {
+            // When changing timezone we don't want to change existing instances
+            $dateTime = clone $result[$keys[30]];
+            $result[$keys[30]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -3151,6 +3309,21 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aMultipleOf->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aObject) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'object';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_object';
+                        break;
+                    default:
+                        $key = 'Object';
+                }
+
+                $result[$key] = $this->aObject->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aStartPosition) {
 
@@ -3257,7 +3430,7 @@ abstract class Skill implements ActiveRecordInterface
 
                 $result[$key] = $this->collMultiples->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collSkillDependenciesRelatedByDependsId) {
+            if (null !== $this->collDescendents) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3270,9 +3443,9 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillDependencies';
                 }
 
-                $result[$key] = $this->collSkillDependenciesRelatedByDependsId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collDescendents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collSkillDependenciesRelatedBySkillId) {
+            if (null !== $this->collAscendents) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3285,9 +3458,9 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillDependencies';
                 }
 
-                $result[$key] = $this->collSkillDependenciesRelatedBySkillId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collAscendents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collSkillPartsRelatedByPartId) {
+            if (null !== $this->collParts) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3300,9 +3473,9 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillParts';
                 }
 
-                $result[$key] = $this->collSkillPartsRelatedByPartId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collParts->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collSkillPartsRelatedByCompositeId) {
+            if (null !== $this->collComposites) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3315,7 +3488,7 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillParts';
                 }
 
-                $result[$key] = $this->collSkillPartsRelatedByCompositeId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collComposites->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collSkillGroups) {
 
@@ -3429,7 +3602,7 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'skillVersions';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'kk_trixionary_kk_trixionary_skill_versions';
+                        $key = 'kk_trixionary_skill_versions';
                         break;
                     default:
                         $key = 'SkillVersions';
@@ -3499,66 +3672,72 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setIsRotation($value);
                 break;
             case 9:
-                $this->setIsCyclic($value);
+                $this->setIsAcyclic($value);
                 break;
             case 10:
-                $this->setLongitudinalFlags($value);
+                $this->setIsCyclic($value);
                 break;
             case 11:
-                $this->setLatitudinalFlags($value);
+                $this->setLongitudinalFlags($value);
                 break;
             case 12:
-                $this->setTransversalFlags($value);
+                $this->setLatitudinalFlags($value);
                 break;
             case 13:
-                $this->setMovementDescription($value);
+                $this->setTransversalFlags($value);
                 break;
             case 14:
-                $this->setVariationOfId($value);
+                $this->setMovementDescription($value);
                 break;
             case 15:
-                $this->setStartPositionId($value);
+                $this->setVariationOfId($value);
                 break;
             case 16:
-                $this->setEndPositionId($value);
+                $this->setStartPositionId($value);
                 break;
             case 17:
-                $this->setIsComposite($value);
+                $this->setEndPositionId($value);
                 break;
             case 18:
-                $this->setIsMultiple($value);
+                $this->setIsComposite($value);
                 break;
             case 19:
-                $this->setMultipleOfId($value);
+                $this->setIsMultiple($value);
                 break;
             case 20:
-                $this->setMultiplier($value);
+                $this->setMultipleOfId($value);
                 break;
             case 21:
-                $this->setGeneration($value);
+                $this->setMultiplier($value);
                 break;
             case 22:
-                $this->setImportance($value);
+                $this->setGeneration($value);
                 break;
             case 23:
-                $this->setGenerationIds($value);
+                $this->setImportance($value);
                 break;
             case 24:
-                $this->setPictureId($value);
+                $this->setGenerationIds($value);
                 break;
             case 25:
-                $this->setKstrukturId($value);
+                $this->setPictureId($value);
                 break;
             case 26:
-                $this->setFunctionPhaseId($value);
+                $this->setKstrukturId($value);
                 break;
             case 27:
-                $this->setVersion($value);
+                $this->setFunctionPhaseId($value);
                 break;
             case 28:
-                $this->setVersionCreatedAt($value);
+                $this->setObjectId($value);
                 break;
             case 29:
+                $this->setVersion($value);
+                break;
+            case 30:
+                $this->setVersionCreatedAt($value);
+                break;
+            case 31:
                 $this->setVersionComment($value);
                 break;
         } // switch()
@@ -3615,67 +3794,73 @@ abstract class Skill implements ActiveRecordInterface
             $this->setIsRotation($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setIsCyclic($arr[$keys[9]]);
+            $this->setIsAcyclic($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setLongitudinalFlags($arr[$keys[10]]);
+            $this->setIsCyclic($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setLatitudinalFlags($arr[$keys[11]]);
+            $this->setLongitudinalFlags($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setTransversalFlags($arr[$keys[12]]);
+            $this->setLatitudinalFlags($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setMovementDescription($arr[$keys[13]]);
+            $this->setTransversalFlags($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setVariationOfId($arr[$keys[14]]);
+            $this->setMovementDescription($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setStartPositionId($arr[$keys[15]]);
+            $this->setVariationOfId($arr[$keys[15]]);
         }
         if (array_key_exists($keys[16], $arr)) {
-            $this->setEndPositionId($arr[$keys[16]]);
+            $this->setStartPositionId($arr[$keys[16]]);
         }
         if (array_key_exists($keys[17], $arr)) {
-            $this->setIsComposite($arr[$keys[17]]);
+            $this->setEndPositionId($arr[$keys[17]]);
         }
         if (array_key_exists($keys[18], $arr)) {
-            $this->setIsMultiple($arr[$keys[18]]);
+            $this->setIsComposite($arr[$keys[18]]);
         }
         if (array_key_exists($keys[19], $arr)) {
-            $this->setMultipleOfId($arr[$keys[19]]);
+            $this->setIsMultiple($arr[$keys[19]]);
         }
         if (array_key_exists($keys[20], $arr)) {
-            $this->setMultiplier($arr[$keys[20]]);
+            $this->setMultipleOfId($arr[$keys[20]]);
         }
         if (array_key_exists($keys[21], $arr)) {
-            $this->setGeneration($arr[$keys[21]]);
+            $this->setMultiplier($arr[$keys[21]]);
         }
         if (array_key_exists($keys[22], $arr)) {
-            $this->setImportance($arr[$keys[22]]);
+            $this->setGeneration($arr[$keys[22]]);
         }
         if (array_key_exists($keys[23], $arr)) {
-            $this->setGenerationIds($arr[$keys[23]]);
+            $this->setImportance($arr[$keys[23]]);
         }
         if (array_key_exists($keys[24], $arr)) {
-            $this->setPictureId($arr[$keys[24]]);
+            $this->setGenerationIds($arr[$keys[24]]);
         }
         if (array_key_exists($keys[25], $arr)) {
-            $this->setKstrukturId($arr[$keys[25]]);
+            $this->setPictureId($arr[$keys[25]]);
         }
         if (array_key_exists($keys[26], $arr)) {
-            $this->setFunctionPhaseId($arr[$keys[26]]);
+            $this->setKstrukturId($arr[$keys[26]]);
         }
         if (array_key_exists($keys[27], $arr)) {
-            $this->setVersion($arr[$keys[27]]);
+            $this->setFunctionPhaseId($arr[$keys[27]]);
         }
         if (array_key_exists($keys[28], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[28]]);
+            $this->setObjectId($arr[$keys[28]]);
         }
         if (array_key_exists($keys[29], $arr)) {
-            $this->setVersionComment($arr[$keys[29]]);
+            $this->setVersion($arr[$keys[29]]);
+        }
+        if (array_key_exists($keys[30], $arr)) {
+            $this->setVersionCreatedAt($arr[$keys[30]]);
+        }
+        if (array_key_exists($keys[31], $arr)) {
+            $this->setVersionComment($arr[$keys[31]]);
         }
     }
 
@@ -3745,6 +3930,9 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_IS_ROTATION)) {
             $criteria->add(SkillTableMap::COL_IS_ROTATION, $this->is_rotation);
         }
+        if ($this->isColumnModified(SkillTableMap::COL_IS_ACYCLIC)) {
+            $criteria->add(SkillTableMap::COL_IS_ACYCLIC, $this->is_acyclic);
+        }
         if ($this->isColumnModified(SkillTableMap::COL_IS_CYCLIC)) {
             $criteria->add(SkillTableMap::COL_IS_CYCLIC, $this->is_cyclic);
         }
@@ -3798,6 +3986,9 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillTableMap::COL_FUNCTION_PHASE_ID)) {
             $criteria->add(SkillTableMap::COL_FUNCTION_PHASE_ID, $this->function_phase_id);
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_OBJECT_ID)) {
+            $criteria->add(SkillTableMap::COL_OBJECT_ID, $this->object_id);
         }
         if ($this->isColumnModified(SkillTableMap::COL_VERSION)) {
             $criteria->add(SkillTableMap::COL_VERSION, $this->version);
@@ -3902,6 +4093,7 @@ abstract class Skill implements ActiveRecordInterface
         $copyObj->setHistory($this->getHistory());
         $copyObj->setIsTranslation($this->getIsTranslation());
         $copyObj->setIsRotation($this->getIsRotation());
+        $copyObj->setIsAcyclic($this->getIsAcyclic());
         $copyObj->setIsCyclic($this->getIsCyclic());
         $copyObj->setLongitudinalFlags($this->getLongitudinalFlags());
         $copyObj->setLatitudinalFlags($this->getLatitudinalFlags());
@@ -3920,6 +4112,7 @@ abstract class Skill implements ActiveRecordInterface
         $copyObj->setPictureId($this->getPictureId());
         $copyObj->setKstrukturId($this->getKstrukturId());
         $copyObj->setFunctionPhaseId($this->getFunctionPhaseId());
+        $copyObj->setObjectId($this->getObjectId());
         $copyObj->setVersion($this->getVersion());
         $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
         $copyObj->setVersionComment($this->getVersionComment());
@@ -3941,27 +4134,27 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getSkillDependenciesRelatedByDependsId() as $relObj) {
+            foreach ($this->getDescendents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSkillDependencyRelatedByDependsId($relObj->copy($deepCopy));
+                    $copyObj->addDescendent($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getSkillDependenciesRelatedBySkillId() as $relObj) {
+            foreach ($this->getAscendents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSkillDependencyRelatedBySkillId($relObj->copy($deepCopy));
+                    $copyObj->addAscendent($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getSkillPartsRelatedByPartId() as $relObj) {
+            foreach ($this->getParts() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSkillPartRelatedByPartId($relObj->copy($deepCopy));
+                    $copyObj->addPart($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getSkillPartsRelatedByCompositeId() as $relObj) {
+            foreach ($this->getComposites() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSkillPartRelatedByCompositeId($relObj->copy($deepCopy));
+                    $copyObj->addComposite($relObj->copy($deepCopy));
                 }
             }
 
@@ -4194,6 +4387,57 @@ abstract class Skill implements ActiveRecordInterface
         }
 
         return $this->aMultipleOf;
+    }
+
+    /**
+     * Declares an association between this object and a ChildObject object.
+     *
+     * @param  ChildObject $v
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setObject(ChildObject $v = null)
+    {
+        if ($v === null) {
+            $this->setObjectId(NULL);
+        } else {
+            $this->setObjectId($v->getId());
+        }
+
+        $this->aObject = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildObject object, it will not be re-added.
+        if ($v !== null) {
+            $v->addSkill($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildObject object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildObject The associated ChildObject object.
+     * @throws PropelException
+     */
+    public function getObject(ConnectionInterface $con = null)
+    {
+        if ($this->aObject === null && ($this->object_id !== null)) {
+            $this->aObject = ChildObjectQuery::create()->findPk($this->object_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aObject->addSkills($this);
+             */
+        }
+
+        return $this->aObject;
     }
 
     /**
@@ -4468,17 +4712,17 @@ abstract class Skill implements ActiveRecordInterface
         if ('Multiple' == $relationName) {
             return $this->initMultiples();
         }
-        if ('SkillDependencyRelatedByDependsId' == $relationName) {
-            return $this->initSkillDependenciesRelatedByDependsId();
+        if ('Descendent' == $relationName) {
+            return $this->initDescendents();
         }
-        if ('SkillDependencyRelatedBySkillId' == $relationName) {
-            return $this->initSkillDependenciesRelatedBySkillId();
+        if ('Ascendent' == $relationName) {
+            return $this->initAscendents();
         }
-        if ('SkillPartRelatedByPartId' == $relationName) {
-            return $this->initSkillPartsRelatedByPartId();
+        if ('Part' == $relationName) {
+            return $this->initParts();
         }
-        if ('SkillPartRelatedByCompositeId' == $relationName) {
-            return $this->initSkillPartsRelatedByCompositeId();
+        if ('Composite' == $relationName) {
+            return $this->initComposites();
         }
         if ('SkillGroup' == $relationName) {
             return $this->initSkillGroups();
@@ -4745,6 +4989,31 @@ abstract class Skill implements ActiveRecordInterface
     {
         $query = ChildSkillQuery::create(null, $criteria);
         $query->joinWith('Sport', $joinBehavior);
+
+        return $this->getVariations($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Variations from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getVariationsJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
 
         return $this->getVariations($query, $con);
     }
@@ -5134,6 +5403,31 @@ abstract class Skill implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
+    public function getMultiplesJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
+
+        return $this->getMultiples($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Multiples from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
     public function getMultiplesJoinStartPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildSkillQuery::create(null, $criteria);
@@ -5243,31 +5537,31 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collSkillDependenciesRelatedByDependsId collection
+     * Clears out the collDescendents collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillDependenciesRelatedByDependsId()
+     * @see        addDescendents()
      */
-    public function clearSkillDependenciesRelatedByDependsId()
+    public function clearDescendents()
     {
-        $this->collSkillDependenciesRelatedByDependsId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collDescendents = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collSkillDependenciesRelatedByDependsId collection loaded partially.
+     * Reset is the collDescendents collection loaded partially.
      */
-    public function resetPartialSkillDependenciesRelatedByDependsId($v = true)
+    public function resetPartialDescendents($v = true)
     {
-        $this->collSkillDependenciesRelatedByDependsIdPartial = $v;
+        $this->collDescendentsPartial = $v;
     }
 
     /**
-     * Initializes the collSkillDependenciesRelatedByDependsId collection.
+     * Initializes the collDescendents collection.
      *
-     * By default this just sets the collSkillDependenciesRelatedByDependsId collection to an empty array (like clearcollSkillDependenciesRelatedByDependsId());
+     * By default this just sets the collDescendents collection to an empty array (like clearcollDescendents());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5276,13 +5570,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initSkillDependenciesRelatedByDependsId($overrideExisting = true)
+    public function initDescendents($overrideExisting = true)
     {
-        if (null !== $this->collSkillDependenciesRelatedByDependsId && !$overrideExisting) {
+        if (null !== $this->collDescendents && !$overrideExisting) {
             return;
         }
-        $this->collSkillDependenciesRelatedByDependsId = new ObjectCollection();
-        $this->collSkillDependenciesRelatedByDependsId->setModel('\gossi\trixionary\model\SkillDependency');
+        $this->collDescendents = new ObjectCollection();
+        $this->collDescendents->setModel('\gossi\trixionary\model\SkillDependency');
     }
 
     /**
@@ -5299,48 +5593,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillDependency[] List of ChildSkillDependency objects
      * @throws PropelException
      */
-    public function getSkillDependenciesRelatedByDependsId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getDescendents(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillDependenciesRelatedByDependsIdPartial && !$this->isNew();
-        if (null === $this->collSkillDependenciesRelatedByDependsId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSkillDependenciesRelatedByDependsId) {
+        $partial = $this->collDescendentsPartial && !$this->isNew();
+        if (null === $this->collDescendents || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collDescendents) {
                 // return empty collection
-                $this->initSkillDependenciesRelatedByDependsId();
+                $this->initDescendents();
             } else {
-                $collSkillDependenciesRelatedByDependsId = ChildSkillDependencyQuery::create(null, $criteria)
-                    ->filterBySkillRelatedByDependsId($this)
+                $collDescendents = ChildSkillDependencyQuery::create(null, $criteria)
+                    ->filterBySkillRelatedByDependencyId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collSkillDependenciesRelatedByDependsIdPartial && count($collSkillDependenciesRelatedByDependsId)) {
-                        $this->initSkillDependenciesRelatedByDependsId(false);
+                    if (false !== $this->collDescendentsPartial && count($collDescendents)) {
+                        $this->initDescendents(false);
 
-                        foreach ($collSkillDependenciesRelatedByDependsId as $obj) {
-                            if (false == $this->collSkillDependenciesRelatedByDependsId->contains($obj)) {
-                                $this->collSkillDependenciesRelatedByDependsId->append($obj);
+                        foreach ($collDescendents as $obj) {
+                            if (false == $this->collDescendents->contains($obj)) {
+                                $this->collDescendents->append($obj);
                             }
                         }
 
-                        $this->collSkillDependenciesRelatedByDependsIdPartial = true;
+                        $this->collDescendentsPartial = true;
                     }
 
-                    return $collSkillDependenciesRelatedByDependsId;
+                    return $collDescendents;
                 }
 
-                if ($partial && $this->collSkillDependenciesRelatedByDependsId) {
-                    foreach ($this->collSkillDependenciesRelatedByDependsId as $obj) {
+                if ($partial && $this->collDescendents) {
+                    foreach ($this->collDescendents as $obj) {
                         if ($obj->isNew()) {
-                            $collSkillDependenciesRelatedByDependsId[] = $obj;
+                            $collDescendents[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillDependenciesRelatedByDependsId = $collSkillDependenciesRelatedByDependsId;
-                $this->collSkillDependenciesRelatedByDependsIdPartial = false;
+                $this->collDescendents = $collDescendents;
+                $this->collDescendentsPartial = false;
             }
         }
 
-        return $this->collSkillDependenciesRelatedByDependsId;
+        return $this->collDescendents;
     }
 
     /**
@@ -5349,32 +5643,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $skillDependenciesRelatedByDependsId A Propel collection.
+     * @param      Collection $descendents A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillDependenciesRelatedByDependsId(Collection $skillDependenciesRelatedByDependsId, ConnectionInterface $con = null)
+    public function setDescendents(Collection $descendents, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillDependency[] $skillDependenciesRelatedByDependsIdToDelete */
-        $skillDependenciesRelatedByDependsIdToDelete = $this->getSkillDependenciesRelatedByDependsId(new Criteria(), $con)->diff($skillDependenciesRelatedByDependsId);
+        /** @var ChildSkillDependency[] $descendentsToDelete */
+        $descendentsToDelete = $this->getDescendents(new Criteria(), $con)->diff($descendents);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->skillDependenciesRelatedByDependsIdScheduledForDeletion = clone $skillDependenciesRelatedByDependsIdToDelete;
+        $this->descendentsScheduledForDeletion = clone $descendentsToDelete;
 
-        foreach ($skillDependenciesRelatedByDependsIdToDelete as $skillDependencyRelatedByDependsIdRemoved) {
-            $skillDependencyRelatedByDependsIdRemoved->setSkillRelatedByDependsId(null);
+        foreach ($descendentsToDelete as $descendentRemoved) {
+            $descendentRemoved->setSkillRelatedByDependencyId(null);
         }
 
-        $this->collSkillDependenciesRelatedByDependsId = null;
-        foreach ($skillDependenciesRelatedByDependsId as $skillDependencyRelatedByDependsId) {
-            $this->addSkillDependencyRelatedByDependsId($skillDependencyRelatedByDependsId);
+        $this->collDescendents = null;
+        foreach ($descendents as $descendent) {
+            $this->addDescendent($descendent);
         }
 
-        $this->collSkillDependenciesRelatedByDependsId = $skillDependenciesRelatedByDependsId;
-        $this->collSkillDependenciesRelatedByDependsIdPartial = false;
+        $this->collDescendents = $descendents;
+        $this->collDescendentsPartial = false;
 
         return $this;
     }
@@ -5388,16 +5682,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillDependency objects.
      * @throws PropelException
      */
-    public function countSkillDependenciesRelatedByDependsId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countDescendents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillDependenciesRelatedByDependsIdPartial && !$this->isNew();
-        if (null === $this->collSkillDependenciesRelatedByDependsId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillDependenciesRelatedByDependsId) {
+        $partial = $this->collDescendentsPartial && !$this->isNew();
+        if (null === $this->collDescendents || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collDescendents) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getSkillDependenciesRelatedByDependsId());
+                return count($this->getDescendents());
             }
 
             $query = ChildSkillDependencyQuery::create(null, $criteria);
@@ -5406,11 +5700,11 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             return $query
-                ->filterBySkillRelatedByDependsId($this)
+                ->filterBySkillRelatedByDependencyId($this)
                 ->count($con);
         }
 
-        return count($this->collSkillDependenciesRelatedByDependsId);
+        return count($this->collDescendents);
     }
 
     /**
@@ -5420,75 +5714,75 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillDependency $l ChildSkillDependency
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addSkillDependencyRelatedByDependsId(ChildSkillDependency $l)
+    public function addDescendent(ChildSkillDependency $l)
     {
-        if ($this->collSkillDependenciesRelatedByDependsId === null) {
-            $this->initSkillDependenciesRelatedByDependsId();
-            $this->collSkillDependenciesRelatedByDependsIdPartial = true;
+        if ($this->collDescendents === null) {
+            $this->initDescendents();
+            $this->collDescendentsPartial = true;
         }
 
-        if (!$this->collSkillDependenciesRelatedByDependsId->contains($l)) {
-            $this->doAddSkillDependencyRelatedByDependsId($l);
+        if (!$this->collDescendents->contains($l)) {
+            $this->doAddDescendent($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillDependency $skillDependencyRelatedByDependsId The ChildSkillDependency object to add.
+     * @param ChildSkillDependency $descendent The ChildSkillDependency object to add.
      */
-    protected function doAddSkillDependencyRelatedByDependsId(ChildSkillDependency $skillDependencyRelatedByDependsId)
+    protected function doAddDescendent(ChildSkillDependency $descendent)
     {
-        $this->collSkillDependenciesRelatedByDependsId[]= $skillDependencyRelatedByDependsId;
-        $skillDependencyRelatedByDependsId->setSkillRelatedByDependsId($this);
+        $this->collDescendents[]= $descendent;
+        $descendent->setSkillRelatedByDependencyId($this);
     }
 
     /**
-     * @param  ChildSkillDependency $skillDependencyRelatedByDependsId The ChildSkillDependency object to remove.
+     * @param  ChildSkillDependency $descendent The ChildSkillDependency object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillDependencyRelatedByDependsId(ChildSkillDependency $skillDependencyRelatedByDependsId)
+    public function removeDescendent(ChildSkillDependency $descendent)
     {
-        if ($this->getSkillDependenciesRelatedByDependsId()->contains($skillDependencyRelatedByDependsId)) {
-            $pos = $this->collSkillDependenciesRelatedByDependsId->search($skillDependencyRelatedByDependsId);
-            $this->collSkillDependenciesRelatedByDependsId->remove($pos);
-            if (null === $this->skillDependenciesRelatedByDependsIdScheduledForDeletion) {
-                $this->skillDependenciesRelatedByDependsIdScheduledForDeletion = clone $this->collSkillDependenciesRelatedByDependsId;
-                $this->skillDependenciesRelatedByDependsIdScheduledForDeletion->clear();
+        if ($this->getDescendents()->contains($descendent)) {
+            $pos = $this->collDescendents->search($descendent);
+            $this->collDescendents->remove($pos);
+            if (null === $this->descendentsScheduledForDeletion) {
+                $this->descendentsScheduledForDeletion = clone $this->collDescendents;
+                $this->descendentsScheduledForDeletion->clear();
             }
-            $this->skillDependenciesRelatedByDependsIdScheduledForDeletion[]= clone $skillDependencyRelatedByDependsId;
-            $skillDependencyRelatedByDependsId->setSkillRelatedByDependsId(null);
+            $this->descendentsScheduledForDeletion[]= clone $descendent;
+            $descendent->setSkillRelatedByDependencyId(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collSkillDependenciesRelatedBySkillId collection
+     * Clears out the collAscendents collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillDependenciesRelatedBySkillId()
+     * @see        addAscendents()
      */
-    public function clearSkillDependenciesRelatedBySkillId()
+    public function clearAscendents()
     {
-        $this->collSkillDependenciesRelatedBySkillId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collAscendents = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collSkillDependenciesRelatedBySkillId collection loaded partially.
+     * Reset is the collAscendents collection loaded partially.
      */
-    public function resetPartialSkillDependenciesRelatedBySkillId($v = true)
+    public function resetPartialAscendents($v = true)
     {
-        $this->collSkillDependenciesRelatedBySkillIdPartial = $v;
+        $this->collAscendentsPartial = $v;
     }
 
     /**
-     * Initializes the collSkillDependenciesRelatedBySkillId collection.
+     * Initializes the collAscendents collection.
      *
-     * By default this just sets the collSkillDependenciesRelatedBySkillId collection to an empty array (like clearcollSkillDependenciesRelatedBySkillId());
+     * By default this just sets the collAscendents collection to an empty array (like clearcollAscendents());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5497,13 +5791,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initSkillDependenciesRelatedBySkillId($overrideExisting = true)
+    public function initAscendents($overrideExisting = true)
     {
-        if (null !== $this->collSkillDependenciesRelatedBySkillId && !$overrideExisting) {
+        if (null !== $this->collAscendents && !$overrideExisting) {
             return;
         }
-        $this->collSkillDependenciesRelatedBySkillId = new ObjectCollection();
-        $this->collSkillDependenciesRelatedBySkillId->setModel('\gossi\trixionary\model\SkillDependency');
+        $this->collAscendents = new ObjectCollection();
+        $this->collAscendents->setModel('\gossi\trixionary\model\SkillDependency');
     }
 
     /**
@@ -5520,48 +5814,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillDependency[] List of ChildSkillDependency objects
      * @throws PropelException
      */
-    public function getSkillDependenciesRelatedBySkillId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getAscendents(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillDependenciesRelatedBySkillIdPartial && !$this->isNew();
-        if (null === $this->collSkillDependenciesRelatedBySkillId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSkillDependenciesRelatedBySkillId) {
+        $partial = $this->collAscendentsPartial && !$this->isNew();
+        if (null === $this->collAscendents || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAscendents) {
                 // return empty collection
-                $this->initSkillDependenciesRelatedBySkillId();
+                $this->initAscendents();
             } else {
-                $collSkillDependenciesRelatedBySkillId = ChildSkillDependencyQuery::create(null, $criteria)
-                    ->filterBySkillRelatedBySkillId($this)
+                $collAscendents = ChildSkillDependencyQuery::create(null, $criteria)
+                    ->filterBySkillRelatedByParentId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collSkillDependenciesRelatedBySkillIdPartial && count($collSkillDependenciesRelatedBySkillId)) {
-                        $this->initSkillDependenciesRelatedBySkillId(false);
+                    if (false !== $this->collAscendentsPartial && count($collAscendents)) {
+                        $this->initAscendents(false);
 
-                        foreach ($collSkillDependenciesRelatedBySkillId as $obj) {
-                            if (false == $this->collSkillDependenciesRelatedBySkillId->contains($obj)) {
-                                $this->collSkillDependenciesRelatedBySkillId->append($obj);
+                        foreach ($collAscendents as $obj) {
+                            if (false == $this->collAscendents->contains($obj)) {
+                                $this->collAscendents->append($obj);
                             }
                         }
 
-                        $this->collSkillDependenciesRelatedBySkillIdPartial = true;
+                        $this->collAscendentsPartial = true;
                     }
 
-                    return $collSkillDependenciesRelatedBySkillId;
+                    return $collAscendents;
                 }
 
-                if ($partial && $this->collSkillDependenciesRelatedBySkillId) {
-                    foreach ($this->collSkillDependenciesRelatedBySkillId as $obj) {
+                if ($partial && $this->collAscendents) {
+                    foreach ($this->collAscendents as $obj) {
                         if ($obj->isNew()) {
-                            $collSkillDependenciesRelatedBySkillId[] = $obj;
+                            $collAscendents[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillDependenciesRelatedBySkillId = $collSkillDependenciesRelatedBySkillId;
-                $this->collSkillDependenciesRelatedBySkillIdPartial = false;
+                $this->collAscendents = $collAscendents;
+                $this->collAscendentsPartial = false;
             }
         }
 
-        return $this->collSkillDependenciesRelatedBySkillId;
+        return $this->collAscendents;
     }
 
     /**
@@ -5570,32 +5864,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $skillDependenciesRelatedBySkillId A Propel collection.
+     * @param      Collection $ascendents A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillDependenciesRelatedBySkillId(Collection $skillDependenciesRelatedBySkillId, ConnectionInterface $con = null)
+    public function setAscendents(Collection $ascendents, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillDependency[] $skillDependenciesRelatedBySkillIdToDelete */
-        $skillDependenciesRelatedBySkillIdToDelete = $this->getSkillDependenciesRelatedBySkillId(new Criteria(), $con)->diff($skillDependenciesRelatedBySkillId);
+        /** @var ChildSkillDependency[] $ascendentsToDelete */
+        $ascendentsToDelete = $this->getAscendents(new Criteria(), $con)->diff($ascendents);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->skillDependenciesRelatedBySkillIdScheduledForDeletion = clone $skillDependenciesRelatedBySkillIdToDelete;
+        $this->ascendentsScheduledForDeletion = clone $ascendentsToDelete;
 
-        foreach ($skillDependenciesRelatedBySkillIdToDelete as $skillDependencyRelatedBySkillIdRemoved) {
-            $skillDependencyRelatedBySkillIdRemoved->setSkillRelatedBySkillId(null);
+        foreach ($ascendentsToDelete as $ascendentRemoved) {
+            $ascendentRemoved->setSkillRelatedByParentId(null);
         }
 
-        $this->collSkillDependenciesRelatedBySkillId = null;
-        foreach ($skillDependenciesRelatedBySkillId as $skillDependencyRelatedBySkillId) {
-            $this->addSkillDependencyRelatedBySkillId($skillDependencyRelatedBySkillId);
+        $this->collAscendents = null;
+        foreach ($ascendents as $ascendent) {
+            $this->addAscendent($ascendent);
         }
 
-        $this->collSkillDependenciesRelatedBySkillId = $skillDependenciesRelatedBySkillId;
-        $this->collSkillDependenciesRelatedBySkillIdPartial = false;
+        $this->collAscendents = $ascendents;
+        $this->collAscendentsPartial = false;
 
         return $this;
     }
@@ -5609,16 +5903,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillDependency objects.
      * @throws PropelException
      */
-    public function countSkillDependenciesRelatedBySkillId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countAscendents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillDependenciesRelatedBySkillIdPartial && !$this->isNew();
-        if (null === $this->collSkillDependenciesRelatedBySkillId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillDependenciesRelatedBySkillId) {
+        $partial = $this->collAscendentsPartial && !$this->isNew();
+        if (null === $this->collAscendents || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAscendents) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getSkillDependenciesRelatedBySkillId());
+                return count($this->getAscendents());
             }
 
             $query = ChildSkillDependencyQuery::create(null, $criteria);
@@ -5627,11 +5921,11 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             return $query
-                ->filterBySkillRelatedBySkillId($this)
+                ->filterBySkillRelatedByParentId($this)
                 ->count($con);
         }
 
-        return count($this->collSkillDependenciesRelatedBySkillId);
+        return count($this->collAscendents);
     }
 
     /**
@@ -5641,75 +5935,75 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillDependency $l ChildSkillDependency
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addSkillDependencyRelatedBySkillId(ChildSkillDependency $l)
+    public function addAscendent(ChildSkillDependency $l)
     {
-        if ($this->collSkillDependenciesRelatedBySkillId === null) {
-            $this->initSkillDependenciesRelatedBySkillId();
-            $this->collSkillDependenciesRelatedBySkillIdPartial = true;
+        if ($this->collAscendents === null) {
+            $this->initAscendents();
+            $this->collAscendentsPartial = true;
         }
 
-        if (!$this->collSkillDependenciesRelatedBySkillId->contains($l)) {
-            $this->doAddSkillDependencyRelatedBySkillId($l);
+        if (!$this->collAscendents->contains($l)) {
+            $this->doAddAscendent($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillDependency $skillDependencyRelatedBySkillId The ChildSkillDependency object to add.
+     * @param ChildSkillDependency $ascendent The ChildSkillDependency object to add.
      */
-    protected function doAddSkillDependencyRelatedBySkillId(ChildSkillDependency $skillDependencyRelatedBySkillId)
+    protected function doAddAscendent(ChildSkillDependency $ascendent)
     {
-        $this->collSkillDependenciesRelatedBySkillId[]= $skillDependencyRelatedBySkillId;
-        $skillDependencyRelatedBySkillId->setSkillRelatedBySkillId($this);
+        $this->collAscendents[]= $ascendent;
+        $ascendent->setSkillRelatedByParentId($this);
     }
 
     /**
-     * @param  ChildSkillDependency $skillDependencyRelatedBySkillId The ChildSkillDependency object to remove.
+     * @param  ChildSkillDependency $ascendent The ChildSkillDependency object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillDependencyRelatedBySkillId(ChildSkillDependency $skillDependencyRelatedBySkillId)
+    public function removeAscendent(ChildSkillDependency $ascendent)
     {
-        if ($this->getSkillDependenciesRelatedBySkillId()->contains($skillDependencyRelatedBySkillId)) {
-            $pos = $this->collSkillDependenciesRelatedBySkillId->search($skillDependencyRelatedBySkillId);
-            $this->collSkillDependenciesRelatedBySkillId->remove($pos);
-            if (null === $this->skillDependenciesRelatedBySkillIdScheduledForDeletion) {
-                $this->skillDependenciesRelatedBySkillIdScheduledForDeletion = clone $this->collSkillDependenciesRelatedBySkillId;
-                $this->skillDependenciesRelatedBySkillIdScheduledForDeletion->clear();
+        if ($this->getAscendents()->contains($ascendent)) {
+            $pos = $this->collAscendents->search($ascendent);
+            $this->collAscendents->remove($pos);
+            if (null === $this->ascendentsScheduledForDeletion) {
+                $this->ascendentsScheduledForDeletion = clone $this->collAscendents;
+                $this->ascendentsScheduledForDeletion->clear();
             }
-            $this->skillDependenciesRelatedBySkillIdScheduledForDeletion[]= clone $skillDependencyRelatedBySkillId;
-            $skillDependencyRelatedBySkillId->setSkillRelatedBySkillId(null);
+            $this->ascendentsScheduledForDeletion[]= clone $ascendent;
+            $ascendent->setSkillRelatedByParentId(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collSkillPartsRelatedByPartId collection
+     * Clears out the collParts collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillPartsRelatedByPartId()
+     * @see        addParts()
      */
-    public function clearSkillPartsRelatedByPartId()
+    public function clearParts()
     {
-        $this->collSkillPartsRelatedByPartId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collParts = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collSkillPartsRelatedByPartId collection loaded partially.
+     * Reset is the collParts collection loaded partially.
      */
-    public function resetPartialSkillPartsRelatedByPartId($v = true)
+    public function resetPartialParts($v = true)
     {
-        $this->collSkillPartsRelatedByPartIdPartial = $v;
+        $this->collPartsPartial = $v;
     }
 
     /**
-     * Initializes the collSkillPartsRelatedByPartId collection.
+     * Initializes the collParts collection.
      *
-     * By default this just sets the collSkillPartsRelatedByPartId collection to an empty array (like clearcollSkillPartsRelatedByPartId());
+     * By default this just sets the collParts collection to an empty array (like clearcollParts());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5718,13 +6012,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initSkillPartsRelatedByPartId($overrideExisting = true)
+    public function initParts($overrideExisting = true)
     {
-        if (null !== $this->collSkillPartsRelatedByPartId && !$overrideExisting) {
+        if (null !== $this->collParts && !$overrideExisting) {
             return;
         }
-        $this->collSkillPartsRelatedByPartId = new ObjectCollection();
-        $this->collSkillPartsRelatedByPartId->setModel('\gossi\trixionary\model\SkillPart');
+        $this->collParts = new ObjectCollection();
+        $this->collParts->setModel('\gossi\trixionary\model\SkillPart');
     }
 
     /**
@@ -5741,48 +6035,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillPart[] List of ChildSkillPart objects
      * @throws PropelException
      */
-    public function getSkillPartsRelatedByPartId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getParts(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillPartsRelatedByPartIdPartial && !$this->isNew();
-        if (null === $this->collSkillPartsRelatedByPartId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSkillPartsRelatedByPartId) {
+        $partial = $this->collPartsPartial && !$this->isNew();
+        if (null === $this->collParts || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collParts) {
                 // return empty collection
-                $this->initSkillPartsRelatedByPartId();
+                $this->initParts();
             } else {
-                $collSkillPartsRelatedByPartId = ChildSkillPartQuery::create(null, $criteria)
+                $collParts = ChildSkillPartQuery::create(null, $criteria)
                     ->filterBySkillRelatedByPartId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collSkillPartsRelatedByPartIdPartial && count($collSkillPartsRelatedByPartId)) {
-                        $this->initSkillPartsRelatedByPartId(false);
+                    if (false !== $this->collPartsPartial && count($collParts)) {
+                        $this->initParts(false);
 
-                        foreach ($collSkillPartsRelatedByPartId as $obj) {
-                            if (false == $this->collSkillPartsRelatedByPartId->contains($obj)) {
-                                $this->collSkillPartsRelatedByPartId->append($obj);
+                        foreach ($collParts as $obj) {
+                            if (false == $this->collParts->contains($obj)) {
+                                $this->collParts->append($obj);
                             }
                         }
 
-                        $this->collSkillPartsRelatedByPartIdPartial = true;
+                        $this->collPartsPartial = true;
                     }
 
-                    return $collSkillPartsRelatedByPartId;
+                    return $collParts;
                 }
 
-                if ($partial && $this->collSkillPartsRelatedByPartId) {
-                    foreach ($this->collSkillPartsRelatedByPartId as $obj) {
+                if ($partial && $this->collParts) {
+                    foreach ($this->collParts as $obj) {
                         if ($obj->isNew()) {
-                            $collSkillPartsRelatedByPartId[] = $obj;
+                            $collParts[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillPartsRelatedByPartId = $collSkillPartsRelatedByPartId;
-                $this->collSkillPartsRelatedByPartIdPartial = false;
+                $this->collParts = $collParts;
+                $this->collPartsPartial = false;
             }
         }
 
-        return $this->collSkillPartsRelatedByPartId;
+        return $this->collParts;
     }
 
     /**
@@ -5791,32 +6085,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $skillPartsRelatedByPartId A Propel collection.
+     * @param      Collection $parts A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillPartsRelatedByPartId(Collection $skillPartsRelatedByPartId, ConnectionInterface $con = null)
+    public function setParts(Collection $parts, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillPart[] $skillPartsRelatedByPartIdToDelete */
-        $skillPartsRelatedByPartIdToDelete = $this->getSkillPartsRelatedByPartId(new Criteria(), $con)->diff($skillPartsRelatedByPartId);
+        /** @var ChildSkillPart[] $partsToDelete */
+        $partsToDelete = $this->getParts(new Criteria(), $con)->diff($parts);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->skillPartsRelatedByPartIdScheduledForDeletion = clone $skillPartsRelatedByPartIdToDelete;
+        $this->partsScheduledForDeletion = clone $partsToDelete;
 
-        foreach ($skillPartsRelatedByPartIdToDelete as $skillPartRelatedByPartIdRemoved) {
-            $skillPartRelatedByPartIdRemoved->setSkillRelatedByPartId(null);
+        foreach ($partsToDelete as $partRemoved) {
+            $partRemoved->setSkillRelatedByPartId(null);
         }
 
-        $this->collSkillPartsRelatedByPartId = null;
-        foreach ($skillPartsRelatedByPartId as $skillPartRelatedByPartId) {
-            $this->addSkillPartRelatedByPartId($skillPartRelatedByPartId);
+        $this->collParts = null;
+        foreach ($parts as $part) {
+            $this->addPart($part);
         }
 
-        $this->collSkillPartsRelatedByPartId = $skillPartsRelatedByPartId;
-        $this->collSkillPartsRelatedByPartIdPartial = false;
+        $this->collParts = $parts;
+        $this->collPartsPartial = false;
 
         return $this;
     }
@@ -5830,16 +6124,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillPart objects.
      * @throws PropelException
      */
-    public function countSkillPartsRelatedByPartId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countParts(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillPartsRelatedByPartIdPartial && !$this->isNew();
-        if (null === $this->collSkillPartsRelatedByPartId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillPartsRelatedByPartId) {
+        $partial = $this->collPartsPartial && !$this->isNew();
+        if (null === $this->collParts || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collParts) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getSkillPartsRelatedByPartId());
+                return count($this->getParts());
             }
 
             $query = ChildSkillPartQuery::create(null, $criteria);
@@ -5852,7 +6146,7 @@ abstract class Skill implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collSkillPartsRelatedByPartId);
+        return count($this->collParts);
     }
 
     /**
@@ -5862,75 +6156,75 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillPart $l ChildSkillPart
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addSkillPartRelatedByPartId(ChildSkillPart $l)
+    public function addPart(ChildSkillPart $l)
     {
-        if ($this->collSkillPartsRelatedByPartId === null) {
-            $this->initSkillPartsRelatedByPartId();
-            $this->collSkillPartsRelatedByPartIdPartial = true;
+        if ($this->collParts === null) {
+            $this->initParts();
+            $this->collPartsPartial = true;
         }
 
-        if (!$this->collSkillPartsRelatedByPartId->contains($l)) {
-            $this->doAddSkillPartRelatedByPartId($l);
+        if (!$this->collParts->contains($l)) {
+            $this->doAddPart($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillPart $skillPartRelatedByPartId The ChildSkillPart object to add.
+     * @param ChildSkillPart $part The ChildSkillPart object to add.
      */
-    protected function doAddSkillPartRelatedByPartId(ChildSkillPart $skillPartRelatedByPartId)
+    protected function doAddPart(ChildSkillPart $part)
     {
-        $this->collSkillPartsRelatedByPartId[]= $skillPartRelatedByPartId;
-        $skillPartRelatedByPartId->setSkillRelatedByPartId($this);
+        $this->collParts[]= $part;
+        $part->setSkillRelatedByPartId($this);
     }
 
     /**
-     * @param  ChildSkillPart $skillPartRelatedByPartId The ChildSkillPart object to remove.
+     * @param  ChildSkillPart $part The ChildSkillPart object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillPartRelatedByPartId(ChildSkillPart $skillPartRelatedByPartId)
+    public function removePart(ChildSkillPart $part)
     {
-        if ($this->getSkillPartsRelatedByPartId()->contains($skillPartRelatedByPartId)) {
-            $pos = $this->collSkillPartsRelatedByPartId->search($skillPartRelatedByPartId);
-            $this->collSkillPartsRelatedByPartId->remove($pos);
-            if (null === $this->skillPartsRelatedByPartIdScheduledForDeletion) {
-                $this->skillPartsRelatedByPartIdScheduledForDeletion = clone $this->collSkillPartsRelatedByPartId;
-                $this->skillPartsRelatedByPartIdScheduledForDeletion->clear();
+        if ($this->getParts()->contains($part)) {
+            $pos = $this->collParts->search($part);
+            $this->collParts->remove($pos);
+            if (null === $this->partsScheduledForDeletion) {
+                $this->partsScheduledForDeletion = clone $this->collParts;
+                $this->partsScheduledForDeletion->clear();
             }
-            $this->skillPartsRelatedByPartIdScheduledForDeletion[]= clone $skillPartRelatedByPartId;
-            $skillPartRelatedByPartId->setSkillRelatedByPartId(null);
+            $this->partsScheduledForDeletion[]= clone $part;
+            $part->setSkillRelatedByPartId(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collSkillPartsRelatedByCompositeId collection
+     * Clears out the collComposites collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillPartsRelatedByCompositeId()
+     * @see        addComposites()
      */
-    public function clearSkillPartsRelatedByCompositeId()
+    public function clearComposites()
     {
-        $this->collSkillPartsRelatedByCompositeId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collComposites = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collSkillPartsRelatedByCompositeId collection loaded partially.
+     * Reset is the collComposites collection loaded partially.
      */
-    public function resetPartialSkillPartsRelatedByCompositeId($v = true)
+    public function resetPartialComposites($v = true)
     {
-        $this->collSkillPartsRelatedByCompositeIdPartial = $v;
+        $this->collCompositesPartial = $v;
     }
 
     /**
-     * Initializes the collSkillPartsRelatedByCompositeId collection.
+     * Initializes the collComposites collection.
      *
-     * By default this just sets the collSkillPartsRelatedByCompositeId collection to an empty array (like clearcollSkillPartsRelatedByCompositeId());
+     * By default this just sets the collComposites collection to an empty array (like clearcollComposites());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5939,13 +6233,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initSkillPartsRelatedByCompositeId($overrideExisting = true)
+    public function initComposites($overrideExisting = true)
     {
-        if (null !== $this->collSkillPartsRelatedByCompositeId && !$overrideExisting) {
+        if (null !== $this->collComposites && !$overrideExisting) {
             return;
         }
-        $this->collSkillPartsRelatedByCompositeId = new ObjectCollection();
-        $this->collSkillPartsRelatedByCompositeId->setModel('\gossi\trixionary\model\SkillPart');
+        $this->collComposites = new ObjectCollection();
+        $this->collComposites->setModel('\gossi\trixionary\model\SkillPart');
     }
 
     /**
@@ -5962,48 +6256,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillPart[] List of ChildSkillPart objects
      * @throws PropelException
      */
-    public function getSkillPartsRelatedByCompositeId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getComposites(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillPartsRelatedByCompositeIdPartial && !$this->isNew();
-        if (null === $this->collSkillPartsRelatedByCompositeId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSkillPartsRelatedByCompositeId) {
+        $partial = $this->collCompositesPartial && !$this->isNew();
+        if (null === $this->collComposites || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collComposites) {
                 // return empty collection
-                $this->initSkillPartsRelatedByCompositeId();
+                $this->initComposites();
             } else {
-                $collSkillPartsRelatedByCompositeId = ChildSkillPartQuery::create(null, $criteria)
+                $collComposites = ChildSkillPartQuery::create(null, $criteria)
                     ->filterBySkillRelatedByCompositeId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collSkillPartsRelatedByCompositeIdPartial && count($collSkillPartsRelatedByCompositeId)) {
-                        $this->initSkillPartsRelatedByCompositeId(false);
+                    if (false !== $this->collCompositesPartial && count($collComposites)) {
+                        $this->initComposites(false);
 
-                        foreach ($collSkillPartsRelatedByCompositeId as $obj) {
-                            if (false == $this->collSkillPartsRelatedByCompositeId->contains($obj)) {
-                                $this->collSkillPartsRelatedByCompositeId->append($obj);
+                        foreach ($collComposites as $obj) {
+                            if (false == $this->collComposites->contains($obj)) {
+                                $this->collComposites->append($obj);
                             }
                         }
 
-                        $this->collSkillPartsRelatedByCompositeIdPartial = true;
+                        $this->collCompositesPartial = true;
                     }
 
-                    return $collSkillPartsRelatedByCompositeId;
+                    return $collComposites;
                 }
 
-                if ($partial && $this->collSkillPartsRelatedByCompositeId) {
-                    foreach ($this->collSkillPartsRelatedByCompositeId as $obj) {
+                if ($partial && $this->collComposites) {
+                    foreach ($this->collComposites as $obj) {
                         if ($obj->isNew()) {
-                            $collSkillPartsRelatedByCompositeId[] = $obj;
+                            $collComposites[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillPartsRelatedByCompositeId = $collSkillPartsRelatedByCompositeId;
-                $this->collSkillPartsRelatedByCompositeIdPartial = false;
+                $this->collComposites = $collComposites;
+                $this->collCompositesPartial = false;
             }
         }
 
-        return $this->collSkillPartsRelatedByCompositeId;
+        return $this->collComposites;
     }
 
     /**
@@ -6012,32 +6306,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $skillPartsRelatedByCompositeId A Propel collection.
+     * @param      Collection $composites A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillPartsRelatedByCompositeId(Collection $skillPartsRelatedByCompositeId, ConnectionInterface $con = null)
+    public function setComposites(Collection $composites, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillPart[] $skillPartsRelatedByCompositeIdToDelete */
-        $skillPartsRelatedByCompositeIdToDelete = $this->getSkillPartsRelatedByCompositeId(new Criteria(), $con)->diff($skillPartsRelatedByCompositeId);
+        /** @var ChildSkillPart[] $compositesToDelete */
+        $compositesToDelete = $this->getComposites(new Criteria(), $con)->diff($composites);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->skillPartsRelatedByCompositeIdScheduledForDeletion = clone $skillPartsRelatedByCompositeIdToDelete;
+        $this->compositesScheduledForDeletion = clone $compositesToDelete;
 
-        foreach ($skillPartsRelatedByCompositeIdToDelete as $skillPartRelatedByCompositeIdRemoved) {
-            $skillPartRelatedByCompositeIdRemoved->setSkillRelatedByCompositeId(null);
+        foreach ($compositesToDelete as $compositeRemoved) {
+            $compositeRemoved->setSkillRelatedByCompositeId(null);
         }
 
-        $this->collSkillPartsRelatedByCompositeId = null;
-        foreach ($skillPartsRelatedByCompositeId as $skillPartRelatedByCompositeId) {
-            $this->addSkillPartRelatedByCompositeId($skillPartRelatedByCompositeId);
+        $this->collComposites = null;
+        foreach ($composites as $composite) {
+            $this->addComposite($composite);
         }
 
-        $this->collSkillPartsRelatedByCompositeId = $skillPartsRelatedByCompositeId;
-        $this->collSkillPartsRelatedByCompositeIdPartial = false;
+        $this->collComposites = $composites;
+        $this->collCompositesPartial = false;
 
         return $this;
     }
@@ -6051,16 +6345,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillPart objects.
      * @throws PropelException
      */
-    public function countSkillPartsRelatedByCompositeId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countComposites(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillPartsRelatedByCompositeIdPartial && !$this->isNew();
-        if (null === $this->collSkillPartsRelatedByCompositeId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillPartsRelatedByCompositeId) {
+        $partial = $this->collCompositesPartial && !$this->isNew();
+        if (null === $this->collComposites || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collComposites) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getSkillPartsRelatedByCompositeId());
+                return count($this->getComposites());
             }
 
             $query = ChildSkillPartQuery::create(null, $criteria);
@@ -6073,7 +6367,7 @@ abstract class Skill implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collSkillPartsRelatedByCompositeId);
+        return count($this->collComposites);
     }
 
     /**
@@ -6083,44 +6377,44 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillPart $l ChildSkillPart
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addSkillPartRelatedByCompositeId(ChildSkillPart $l)
+    public function addComposite(ChildSkillPart $l)
     {
-        if ($this->collSkillPartsRelatedByCompositeId === null) {
-            $this->initSkillPartsRelatedByCompositeId();
-            $this->collSkillPartsRelatedByCompositeIdPartial = true;
+        if ($this->collComposites === null) {
+            $this->initComposites();
+            $this->collCompositesPartial = true;
         }
 
-        if (!$this->collSkillPartsRelatedByCompositeId->contains($l)) {
-            $this->doAddSkillPartRelatedByCompositeId($l);
+        if (!$this->collComposites->contains($l)) {
+            $this->doAddComposite($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillPart $skillPartRelatedByCompositeId The ChildSkillPart object to add.
+     * @param ChildSkillPart $composite The ChildSkillPart object to add.
      */
-    protected function doAddSkillPartRelatedByCompositeId(ChildSkillPart $skillPartRelatedByCompositeId)
+    protected function doAddComposite(ChildSkillPart $composite)
     {
-        $this->collSkillPartsRelatedByCompositeId[]= $skillPartRelatedByCompositeId;
-        $skillPartRelatedByCompositeId->setSkillRelatedByCompositeId($this);
+        $this->collComposites[]= $composite;
+        $composite->setSkillRelatedByCompositeId($this);
     }
 
     /**
-     * @param  ChildSkillPart $skillPartRelatedByCompositeId The ChildSkillPart object to remove.
+     * @param  ChildSkillPart $composite The ChildSkillPart object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillPartRelatedByCompositeId(ChildSkillPart $skillPartRelatedByCompositeId)
+    public function removeComposite(ChildSkillPart $composite)
     {
-        if ($this->getSkillPartsRelatedByCompositeId()->contains($skillPartRelatedByCompositeId)) {
-            $pos = $this->collSkillPartsRelatedByCompositeId->search($skillPartRelatedByCompositeId);
-            $this->collSkillPartsRelatedByCompositeId->remove($pos);
-            if (null === $this->skillPartsRelatedByCompositeIdScheduledForDeletion) {
-                $this->skillPartsRelatedByCompositeIdScheduledForDeletion = clone $this->collSkillPartsRelatedByCompositeId;
-                $this->skillPartsRelatedByCompositeIdScheduledForDeletion->clear();
+        if ($this->getComposites()->contains($composite)) {
+            $pos = $this->collComposites->search($composite);
+            $this->collComposites->remove($pos);
+            if (null === $this->compositesScheduledForDeletion) {
+                $this->compositesScheduledForDeletion = clone $this->collComposites;
+                $this->compositesScheduledForDeletion->clear();
             }
-            $this->skillPartsRelatedByCompositeIdScheduledForDeletion[]= clone $skillPartRelatedByCompositeId;
-            $skillPartRelatedByCompositeId->setSkillRelatedByCompositeId(null);
+            $this->compositesScheduledForDeletion[]= clone $composite;
+            $composite->setSkillRelatedByCompositeId(null);
         }
 
         return $this;
@@ -7977,44 +8271,44 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collSkillsRelatedBySkillId collection
+     * Clears out the collSkillsRelatedByParentId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillsRelatedBySkillId()
+     * @see        addSkillsRelatedByParentId()
      */
-    public function clearSkillsRelatedBySkillId()
+    public function clearSkillsRelatedByParentId()
     {
-        $this->collSkillsRelatedBySkillId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collSkillsRelatedByParentId = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collSkillsRelatedBySkillId crossRef collection.
+     * Initializes the collSkillsRelatedByParentId crossRef collection.
      *
-     * By default this just sets the collSkillsRelatedBySkillId collection to an empty collection (like clearSkillsRelatedBySkillId());
+     * By default this just sets the collSkillsRelatedByParentId collection to an empty collection (like clearSkillsRelatedByParentId());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initSkillsRelatedBySkillId()
+    public function initSkillsRelatedByParentId()
     {
-        $this->collSkillsRelatedBySkillId = new ObjectCollection();
-        $this->collSkillsRelatedBySkillIdPartial = true;
+        $this->collSkillsRelatedByParentId = new ObjectCollection();
+        $this->collSkillsRelatedByParentIdPartial = true;
 
-        $this->collSkillsRelatedBySkillId->setModel('\gossi\trixionary\model\Skill');
+        $this->collSkillsRelatedByParentId->setModel('\gossi\trixionary\model\Skill');
     }
 
     /**
-     * Checks if the collSkillsRelatedBySkillId collection is loaded.
+     * Checks if the collSkillsRelatedByParentId collection is loaded.
      *
      * @return bool
      */
-    public function isSkillsRelatedBySkillIdLoaded()
+    public function isSkillsRelatedByParentIdLoaded()
     {
-        return null !== $this->collSkillsRelatedBySkillId;
+        return null !== $this->collSkillsRelatedByParentId;
     }
 
     /**
@@ -8032,39 +8326,39 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
-    public function getSkillsRelatedBySkillId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getSkillsRelatedByParentId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillsRelatedBySkillIdPartial && !$this->isNew();
-        if (null === $this->collSkillsRelatedBySkillId || null !== $criteria || $partial) {
+        $partial = $this->collSkillsRelatedByParentIdPartial && !$this->isNew();
+        if (null === $this->collSkillsRelatedByParentId || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collSkillsRelatedBySkillId) {
-                    $this->initSkillsRelatedBySkillId();
+                if (null === $this->collSkillsRelatedByParentId) {
+                    $this->initSkillsRelatedByParentId();
                 }
             } else {
 
                 $query = ChildSkillQuery::create(null, $criteria)
-                    ->filterBySkillRelatedByDependsId($this);
-                $collSkillsRelatedBySkillId = $query->find($con);
+                    ->filterBySkillRelatedByDependencyId($this);
+                $collSkillsRelatedByParentId = $query->find($con);
                 if (null !== $criteria) {
-                    return $collSkillsRelatedBySkillId;
+                    return $collSkillsRelatedByParentId;
                 }
 
-                if ($partial && $this->collSkillsRelatedBySkillId) {
+                if ($partial && $this->collSkillsRelatedByParentId) {
                     //make sure that already added objects gets added to the list of the database.
-                    foreach ($this->collSkillsRelatedBySkillId as $obj) {
-                        if (!$collSkillsRelatedBySkillId->contains($obj)) {
-                            $collSkillsRelatedBySkillId[] = $obj;
+                    foreach ($this->collSkillsRelatedByParentId as $obj) {
+                        if (!$collSkillsRelatedByParentId->contains($obj)) {
+                            $collSkillsRelatedByParentId[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillsRelatedBySkillId = $collSkillsRelatedBySkillId;
-                $this->collSkillsRelatedBySkillIdPartial = false;
+                $this->collSkillsRelatedByParentId = $collSkillsRelatedByParentId;
+                $this->collSkillsRelatedByParentIdPartial = false;
             }
         }
 
-        return $this->collSkillsRelatedBySkillId;
+        return $this->collSkillsRelatedByParentId;
     }
 
     /**
@@ -8073,29 +8367,29 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $skillsRelatedBySkillId A Propel collection.
+     * @param  Collection $skillsRelatedByParentId A Propel collection.
      * @param  ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillsRelatedBySkillId(Collection $skillsRelatedBySkillId, ConnectionInterface $con = null)
+    public function setSkillsRelatedByParentId(Collection $skillsRelatedByParentId, ConnectionInterface $con = null)
     {
-        $this->clearSkillsRelatedBySkillId();
-        $currentSkillsRelatedBySkillId = $this->getSkillsRelatedBySkillId();
+        $this->clearSkillsRelatedByParentId();
+        $currentSkillsRelatedByParentId = $this->getSkillsRelatedByParentId();
 
-        $skillsRelatedBySkillIdScheduledForDeletion = $currentSkillsRelatedBySkillId->diff($skillsRelatedBySkillId);
+        $skillsRelatedByParentIdScheduledForDeletion = $currentSkillsRelatedByParentId->diff($skillsRelatedByParentId);
 
-        foreach ($skillsRelatedBySkillIdScheduledForDeletion as $toDelete) {
-            $this->removeSkillRelatedBySkillId($toDelete);
+        foreach ($skillsRelatedByParentIdScheduledForDeletion as $toDelete) {
+            $this->removeSkillRelatedByParentId($toDelete);
         }
 
-        foreach ($skillsRelatedBySkillId as $skillRelatedBySkillId) {
-            if (!$currentSkillsRelatedBySkillId->contains($skillRelatedBySkillId)) {
-                $this->doAddSkillRelatedBySkillId($skillRelatedBySkillId);
+        foreach ($skillsRelatedByParentId as $skillRelatedByParentId) {
+            if (!$currentSkillsRelatedByParentId->contains($skillRelatedByParentId)) {
+                $this->doAddSkillRelatedByParentId($skillRelatedByParentId);
             }
         }
 
-        $this->collSkillsRelatedBySkillIdPartial = false;
-        $this->collSkillsRelatedBySkillId = $skillsRelatedBySkillId;
+        $this->collSkillsRelatedByParentIdPartial = false;
+        $this->collSkillsRelatedByParentId = $skillsRelatedByParentId;
 
         return $this;
     }
@@ -8110,16 +8404,16 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return int the number of related Skill objects
      */
-    public function countSkillsRelatedBySkillId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countSkillsRelatedByParentId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillsRelatedBySkillIdPartial && !$this->isNew();
-        if (null === $this->collSkillsRelatedBySkillId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillsRelatedBySkillId) {
+        $partial = $this->collSkillsRelatedByParentIdPartial && !$this->isNew();
+        if (null === $this->collSkillsRelatedByParentId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSkillsRelatedByParentId) {
                 return 0;
             } else {
 
                 if ($partial && !$criteria) {
-                    return count($this->getSkillsRelatedBySkillId());
+                    return count($this->getSkillsRelatedByParentId());
                 }
 
                 $query = ChildSkillQuery::create(null, $criteria);
@@ -8128,11 +8422,11 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 return $query
-                    ->filterBySkillRelatedByDependsId($this)
+                    ->filterBySkillRelatedByDependencyId($this)
                     ->count($con);
             }
         } else {
-            return count($this->collSkillsRelatedBySkillId);
+            return count($this->collSkillsRelatedByParentId);
         }
     }
 
@@ -8140,19 +8434,19 @@ abstract class Skill implements ActiveRecordInterface
      * Associate a ChildSkill to this object
      * through the kk_trixionary_skill_dependency cross reference table.
      *
-     * @param ChildSkill $skillRelatedBySkillId
+     * @param ChildSkill $skillRelatedByParentId
      * @return ChildSkill The current object (for fluent API support)
      */
-    public function addSkillRelatedBySkillId(ChildSkill $skillRelatedBySkillId)
+    public function addSkillRelatedByParentId(ChildSkill $skillRelatedByParentId)
     {
-        if ($this->collSkillsRelatedBySkillId === null) {
-            $this->initSkillsRelatedBySkillId();
+        if ($this->collSkillsRelatedByParentId === null) {
+            $this->initSkillsRelatedByParentId();
         }
 
-        if (!$this->getSkillsRelatedBySkillId()->contains($skillRelatedBySkillId)) {
+        if (!$this->getSkillsRelatedByParentId()->contains($skillRelatedByParentId)) {
             // only add it if the **same** object is not already associated
-            $this->collSkillsRelatedBySkillId->push($skillRelatedBySkillId);
-            $this->doAddSkillRelatedBySkillId($skillRelatedBySkillId);
+            $this->collSkillsRelatedByParentId->push($skillRelatedByParentId);
+            $this->doAddSkillRelatedByParentId($skillRelatedByParentId);
         }
 
         return $this;
@@ -8160,58 +8454,58 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      *
-     * @param ChildSkill $skillRelatedBySkillId
+     * @param ChildSkill $skillRelatedByParentId
      */
-    protected function doAddSkillRelatedBySkillId(ChildSkill $skillRelatedBySkillId)
+    protected function doAddSkillRelatedByParentId(ChildSkill $skillRelatedByParentId)
     {
         $skillDependency = new ChildSkillDependency();
 
-        $skillDependency->setSkillRelatedBySkillId($skillRelatedBySkillId);
+        $skillDependency->setSkillRelatedByParentId($skillRelatedByParentId);
 
-        $skillDependency->setSkillRelatedByDependsId($this);
+        $skillDependency->setSkillRelatedByDependencyId($this);
 
-        $this->addSkillDependencyRelatedByDependsId($skillDependency);
+        $this->addDescendent($skillDependency);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$skillRelatedBySkillId->isSkillsRelatedByDependsIdLoaded()) {
-            $skillRelatedBySkillId->initSkillsRelatedByDependsId();
-            $skillRelatedBySkillId->getSkillsRelatedByDependsId()->push($this);
-        } elseif (!$skillRelatedBySkillId->getSkillsRelatedByDependsId()->contains($this)) {
-            $skillRelatedBySkillId->getSkillsRelatedByDependsId()->push($this);
+        if (!$skillRelatedByParentId->isSkillsRelatedByDependencyIdLoaded()) {
+            $skillRelatedByParentId->initSkillsRelatedByDependencyId();
+            $skillRelatedByParentId->getSkillsRelatedByDependencyId()->push($this);
+        } elseif (!$skillRelatedByParentId->getSkillsRelatedByDependencyId()->contains($this)) {
+            $skillRelatedByParentId->getSkillsRelatedByDependencyId()->push($this);
         }
 
     }
 
     /**
-     * Remove skillRelatedBySkillId of this object
+     * Remove skillRelatedByParentId of this object
      * through the kk_trixionary_skill_dependency cross reference table.
      *
-     * @param ChildSkill $skillRelatedBySkillId
+     * @param ChildSkill $skillRelatedByParentId
      * @return ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillRelatedBySkillId(ChildSkill $skillRelatedBySkillId)
+    public function removeSkillRelatedByParentId(ChildSkill $skillRelatedByParentId)
     {
-        if ($this->getSkillsRelatedBySkillId()->contains($skillRelatedBySkillId)) { $skillDependency = new ChildSkillDependency();
+        if ($this->getSkillsRelatedByParentId()->contains($skillRelatedByParentId)) { $skillDependency = new ChildSkillDependency();
 
-            $skillDependency->setSkillRelatedBySkillId($skillRelatedBySkillId);
-            if ($skillRelatedBySkillId->isSkillRelatedByDependsIdsLoaded()) {
+            $skillDependency->setSkillRelatedByParentId($skillRelatedByParentId);
+            if ($skillRelatedByParentId->isSkillRelatedByDependencyIdsLoaded()) {
                 //remove the back reference if available
-                $skillRelatedBySkillId->getSkillRelatedByDependsIds()->removeObject($this);
+                $skillRelatedByParentId->getSkillRelatedByDependencyIds()->removeObject($this);
             }
 
-            $skillDependency->setSkillRelatedByDependsId($this);
-            $this->removeSkillDependencyRelatedByDependsId(clone $skillDependency);
+            $skillDependency->setSkillRelatedByDependencyId($this);
+            $this->removeDescendent(clone $skillDependency);
             $skillDependency->clear();
 
-            $this->collSkillsRelatedBySkillId->remove($this->collSkillsRelatedBySkillId->search($skillRelatedBySkillId));
+            $this->collSkillsRelatedByParentId->remove($this->collSkillsRelatedByParentId->search($skillRelatedByParentId));
 
-            if (null === $this->skillsRelatedBySkillIdScheduledForDeletion) {
-                $this->skillsRelatedBySkillIdScheduledForDeletion = clone $this->collSkillsRelatedBySkillId;
-                $this->skillsRelatedBySkillIdScheduledForDeletion->clear();
+            if (null === $this->skillsRelatedByParentIdScheduledForDeletion) {
+                $this->skillsRelatedByParentIdScheduledForDeletion = clone $this->collSkillsRelatedByParentId;
+                $this->skillsRelatedByParentIdScheduledForDeletion->clear();
             }
 
-            $this->skillsRelatedBySkillIdScheduledForDeletion->push($skillRelatedBySkillId);
+            $this->skillsRelatedByParentIdScheduledForDeletion->push($skillRelatedByParentId);
         }
 
 
@@ -8219,44 +8513,44 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collSkillsRelatedByDependsId collection
+     * Clears out the collSkillsRelatedByDependencyId collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addSkillsRelatedByDependsId()
+     * @see        addSkillsRelatedByDependencyId()
      */
-    public function clearSkillsRelatedByDependsId()
+    public function clearSkillsRelatedByDependencyId()
     {
-        $this->collSkillsRelatedByDependsId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collSkillsRelatedByDependencyId = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collSkillsRelatedByDependsId crossRef collection.
+     * Initializes the collSkillsRelatedByDependencyId crossRef collection.
      *
-     * By default this just sets the collSkillsRelatedByDependsId collection to an empty collection (like clearSkillsRelatedByDependsId());
+     * By default this just sets the collSkillsRelatedByDependencyId collection to an empty collection (like clearSkillsRelatedByDependencyId());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
      * @return void
      */
-    public function initSkillsRelatedByDependsId()
+    public function initSkillsRelatedByDependencyId()
     {
-        $this->collSkillsRelatedByDependsId = new ObjectCollection();
-        $this->collSkillsRelatedByDependsIdPartial = true;
+        $this->collSkillsRelatedByDependencyId = new ObjectCollection();
+        $this->collSkillsRelatedByDependencyIdPartial = true;
 
-        $this->collSkillsRelatedByDependsId->setModel('\gossi\trixionary\model\Skill');
+        $this->collSkillsRelatedByDependencyId->setModel('\gossi\trixionary\model\Skill');
     }
 
     /**
-     * Checks if the collSkillsRelatedByDependsId collection is loaded.
+     * Checks if the collSkillsRelatedByDependencyId collection is loaded.
      *
      * @return bool
      */
-    public function isSkillsRelatedByDependsIdLoaded()
+    public function isSkillsRelatedByDependencyIdLoaded()
     {
-        return null !== $this->collSkillsRelatedByDependsId;
+        return null !== $this->collSkillsRelatedByDependencyId;
     }
 
     /**
@@ -8274,39 +8568,39 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
-    public function getSkillsRelatedByDependsId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getSkillsRelatedByDependencyId(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillsRelatedByDependsIdPartial && !$this->isNew();
-        if (null === $this->collSkillsRelatedByDependsId || null !== $criteria || $partial) {
+        $partial = $this->collSkillsRelatedByDependencyIdPartial && !$this->isNew();
+        if (null === $this->collSkillsRelatedByDependencyId || null !== $criteria || $partial) {
             if ($this->isNew()) {
                 // return empty collection
-                if (null === $this->collSkillsRelatedByDependsId) {
-                    $this->initSkillsRelatedByDependsId();
+                if (null === $this->collSkillsRelatedByDependencyId) {
+                    $this->initSkillsRelatedByDependencyId();
                 }
             } else {
 
                 $query = ChildSkillQuery::create(null, $criteria)
-                    ->filterBySkillRelatedBySkillId($this);
-                $collSkillsRelatedByDependsId = $query->find($con);
+                    ->filterBySkillRelatedByParentId($this);
+                $collSkillsRelatedByDependencyId = $query->find($con);
                 if (null !== $criteria) {
-                    return $collSkillsRelatedByDependsId;
+                    return $collSkillsRelatedByDependencyId;
                 }
 
-                if ($partial && $this->collSkillsRelatedByDependsId) {
+                if ($partial && $this->collSkillsRelatedByDependencyId) {
                     //make sure that already added objects gets added to the list of the database.
-                    foreach ($this->collSkillsRelatedByDependsId as $obj) {
-                        if (!$collSkillsRelatedByDependsId->contains($obj)) {
-                            $collSkillsRelatedByDependsId[] = $obj;
+                    foreach ($this->collSkillsRelatedByDependencyId as $obj) {
+                        if (!$collSkillsRelatedByDependencyId->contains($obj)) {
+                            $collSkillsRelatedByDependencyId[] = $obj;
                         }
                     }
                 }
 
-                $this->collSkillsRelatedByDependsId = $collSkillsRelatedByDependsId;
-                $this->collSkillsRelatedByDependsIdPartial = false;
+                $this->collSkillsRelatedByDependencyId = $collSkillsRelatedByDependencyId;
+                $this->collSkillsRelatedByDependencyIdPartial = false;
             }
         }
 
-        return $this->collSkillsRelatedByDependsId;
+        return $this->collSkillsRelatedByDependencyId;
     }
 
     /**
@@ -8315,29 +8609,29 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $skillsRelatedByDependsId A Propel collection.
+     * @param  Collection $skillsRelatedByDependencyId A Propel collection.
      * @param  ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setSkillsRelatedByDependsId(Collection $skillsRelatedByDependsId, ConnectionInterface $con = null)
+    public function setSkillsRelatedByDependencyId(Collection $skillsRelatedByDependencyId, ConnectionInterface $con = null)
     {
-        $this->clearSkillsRelatedByDependsId();
-        $currentSkillsRelatedByDependsId = $this->getSkillsRelatedByDependsId();
+        $this->clearSkillsRelatedByDependencyId();
+        $currentSkillsRelatedByDependencyId = $this->getSkillsRelatedByDependencyId();
 
-        $skillsRelatedByDependsIdScheduledForDeletion = $currentSkillsRelatedByDependsId->diff($skillsRelatedByDependsId);
+        $skillsRelatedByDependencyIdScheduledForDeletion = $currentSkillsRelatedByDependencyId->diff($skillsRelatedByDependencyId);
 
-        foreach ($skillsRelatedByDependsIdScheduledForDeletion as $toDelete) {
-            $this->removeSkillRelatedByDependsId($toDelete);
+        foreach ($skillsRelatedByDependencyIdScheduledForDeletion as $toDelete) {
+            $this->removeSkillRelatedByDependencyId($toDelete);
         }
 
-        foreach ($skillsRelatedByDependsId as $skillRelatedByDependsId) {
-            if (!$currentSkillsRelatedByDependsId->contains($skillRelatedByDependsId)) {
-                $this->doAddSkillRelatedByDependsId($skillRelatedByDependsId);
+        foreach ($skillsRelatedByDependencyId as $skillRelatedByDependencyId) {
+            if (!$currentSkillsRelatedByDependencyId->contains($skillRelatedByDependencyId)) {
+                $this->doAddSkillRelatedByDependencyId($skillRelatedByDependencyId);
             }
         }
 
-        $this->collSkillsRelatedByDependsIdPartial = false;
-        $this->collSkillsRelatedByDependsId = $skillsRelatedByDependsId;
+        $this->collSkillsRelatedByDependencyIdPartial = false;
+        $this->collSkillsRelatedByDependencyId = $skillsRelatedByDependencyId;
 
         return $this;
     }
@@ -8352,16 +8646,16 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return int the number of related Skill objects
      */
-    public function countSkillsRelatedByDependsId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countSkillsRelatedByDependencyId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collSkillsRelatedByDependsIdPartial && !$this->isNew();
-        if (null === $this->collSkillsRelatedByDependsId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSkillsRelatedByDependsId) {
+        $partial = $this->collSkillsRelatedByDependencyIdPartial && !$this->isNew();
+        if (null === $this->collSkillsRelatedByDependencyId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSkillsRelatedByDependencyId) {
                 return 0;
             } else {
 
                 if ($partial && !$criteria) {
-                    return count($this->getSkillsRelatedByDependsId());
+                    return count($this->getSkillsRelatedByDependencyId());
                 }
 
                 $query = ChildSkillQuery::create(null, $criteria);
@@ -8370,11 +8664,11 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 return $query
-                    ->filterBySkillRelatedBySkillId($this)
+                    ->filterBySkillRelatedByParentId($this)
                     ->count($con);
             }
         } else {
-            return count($this->collSkillsRelatedByDependsId);
+            return count($this->collSkillsRelatedByDependencyId);
         }
     }
 
@@ -8382,19 +8676,19 @@ abstract class Skill implements ActiveRecordInterface
      * Associate a ChildSkill to this object
      * through the kk_trixionary_skill_dependency cross reference table.
      *
-     * @param ChildSkill $skillRelatedByDependsId
+     * @param ChildSkill $skillRelatedByDependencyId
      * @return ChildSkill The current object (for fluent API support)
      */
-    public function addSkillRelatedByDependsId(ChildSkill $skillRelatedByDependsId)
+    public function addSkillRelatedByDependencyId(ChildSkill $skillRelatedByDependencyId)
     {
-        if ($this->collSkillsRelatedByDependsId === null) {
-            $this->initSkillsRelatedByDependsId();
+        if ($this->collSkillsRelatedByDependencyId === null) {
+            $this->initSkillsRelatedByDependencyId();
         }
 
-        if (!$this->getSkillsRelatedByDependsId()->contains($skillRelatedByDependsId)) {
+        if (!$this->getSkillsRelatedByDependencyId()->contains($skillRelatedByDependencyId)) {
             // only add it if the **same** object is not already associated
-            $this->collSkillsRelatedByDependsId->push($skillRelatedByDependsId);
-            $this->doAddSkillRelatedByDependsId($skillRelatedByDependsId);
+            $this->collSkillsRelatedByDependencyId->push($skillRelatedByDependencyId);
+            $this->doAddSkillRelatedByDependencyId($skillRelatedByDependencyId);
         }
 
         return $this;
@@ -8402,58 +8696,58 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      *
-     * @param ChildSkill $skillRelatedByDependsId
+     * @param ChildSkill $skillRelatedByDependencyId
      */
-    protected function doAddSkillRelatedByDependsId(ChildSkill $skillRelatedByDependsId)
+    protected function doAddSkillRelatedByDependencyId(ChildSkill $skillRelatedByDependencyId)
     {
         $skillDependency = new ChildSkillDependency();
 
-        $skillDependency->setSkillRelatedByDependsId($skillRelatedByDependsId);
+        $skillDependency->setSkillRelatedByDependencyId($skillRelatedByDependencyId);
 
-        $skillDependency->setSkillRelatedBySkillId($this);
+        $skillDependency->setSkillRelatedByParentId($this);
 
-        $this->addSkillDependencyRelatedBySkillId($skillDependency);
+        $this->addAscendent($skillDependency);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
-        if (!$skillRelatedByDependsId->isSkillsRelatedBySkillIdLoaded()) {
-            $skillRelatedByDependsId->initSkillsRelatedBySkillId();
-            $skillRelatedByDependsId->getSkillsRelatedBySkillId()->push($this);
-        } elseif (!$skillRelatedByDependsId->getSkillsRelatedBySkillId()->contains($this)) {
-            $skillRelatedByDependsId->getSkillsRelatedBySkillId()->push($this);
+        if (!$skillRelatedByDependencyId->isSkillsRelatedByParentIdLoaded()) {
+            $skillRelatedByDependencyId->initSkillsRelatedByParentId();
+            $skillRelatedByDependencyId->getSkillsRelatedByParentId()->push($this);
+        } elseif (!$skillRelatedByDependencyId->getSkillsRelatedByParentId()->contains($this)) {
+            $skillRelatedByDependencyId->getSkillsRelatedByParentId()->push($this);
         }
 
     }
 
     /**
-     * Remove skillRelatedByDependsId of this object
+     * Remove skillRelatedByDependencyId of this object
      * through the kk_trixionary_skill_dependency cross reference table.
      *
-     * @param ChildSkill $skillRelatedByDependsId
+     * @param ChildSkill $skillRelatedByDependencyId
      * @return ChildSkill The current object (for fluent API support)
      */
-    public function removeSkillRelatedByDependsId(ChildSkill $skillRelatedByDependsId)
+    public function removeSkillRelatedByDependencyId(ChildSkill $skillRelatedByDependencyId)
     {
-        if ($this->getSkillsRelatedByDependsId()->contains($skillRelatedByDependsId)) { $skillDependency = new ChildSkillDependency();
+        if ($this->getSkillsRelatedByDependencyId()->contains($skillRelatedByDependencyId)) { $skillDependency = new ChildSkillDependency();
 
-            $skillDependency->setSkillRelatedByDependsId($skillRelatedByDependsId);
-            if ($skillRelatedByDependsId->isSkillRelatedBySkillIdsLoaded()) {
+            $skillDependency->setSkillRelatedByDependencyId($skillRelatedByDependencyId);
+            if ($skillRelatedByDependencyId->isSkillRelatedByParentIdsLoaded()) {
                 //remove the back reference if available
-                $skillRelatedByDependsId->getSkillRelatedBySkillIds()->removeObject($this);
+                $skillRelatedByDependencyId->getSkillRelatedByParentIds()->removeObject($this);
             }
 
-            $skillDependency->setSkillRelatedBySkillId($this);
-            $this->removeSkillDependencyRelatedBySkillId(clone $skillDependency);
+            $skillDependency->setSkillRelatedByParentId($this);
+            $this->removeAscendent(clone $skillDependency);
             $skillDependency->clear();
 
-            $this->collSkillsRelatedByDependsId->remove($this->collSkillsRelatedByDependsId->search($skillRelatedByDependsId));
+            $this->collSkillsRelatedByDependencyId->remove($this->collSkillsRelatedByDependencyId->search($skillRelatedByDependencyId));
 
-            if (null === $this->skillsRelatedByDependsIdScheduledForDeletion) {
-                $this->skillsRelatedByDependsIdScheduledForDeletion = clone $this->collSkillsRelatedByDependsId;
-                $this->skillsRelatedByDependsIdScheduledForDeletion->clear();
+            if (null === $this->skillsRelatedByDependencyIdScheduledForDeletion) {
+                $this->skillsRelatedByDependencyIdScheduledForDeletion = clone $this->collSkillsRelatedByDependencyId;
+                $this->skillsRelatedByDependencyIdScheduledForDeletion->clear();
             }
 
-            $this->skillsRelatedByDependsIdScheduledForDeletion->push($skillRelatedByDependsId);
+            $this->skillsRelatedByDependencyIdScheduledForDeletion->push($skillRelatedByDependencyId);
         }
 
 
@@ -8654,7 +8948,7 @@ abstract class Skill implements ActiveRecordInterface
 
         $skillPart->setSkillRelatedByPartId($this);
 
-        $this->addSkillPartRelatedByPartId($skillPart);
+        $this->addPart($skillPart);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
@@ -8685,7 +8979,7 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             $skillPart->setSkillRelatedByPartId($this);
-            $this->removeSkillPartRelatedByPartId(clone $skillPart);
+            $this->removePart(clone $skillPart);
             $skillPart->clear();
 
             $this->collSkillsRelatedByCompositeId->remove($this->collSkillsRelatedByCompositeId->search($skillRelatedByCompositeId));
@@ -8896,7 +9190,7 @@ abstract class Skill implements ActiveRecordInterface
 
         $skillPart->setSkillRelatedByCompositeId($this);
 
-        $this->addSkillPartRelatedByCompositeId($skillPart);
+        $this->addComposite($skillPart);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
@@ -8927,7 +9221,7 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             $skillPart->setSkillRelatedByCompositeId($this);
-            $this->removeSkillPartRelatedByCompositeId(clone $skillPart);
+            $this->removeComposite(clone $skillPart);
             $skillPart->clear();
 
             $this->collSkillsRelatedByPartId->remove($this->collSkillsRelatedByPartId->search($skillRelatedByPartId));
@@ -9202,6 +9496,9 @@ abstract class Skill implements ActiveRecordInterface
         if (null !== $this->aMultipleOf) {
             $this->aMultipleOf->removeMultiple($this);
         }
+        if (null !== $this->aObject) {
+            $this->aObject->removeSkill($this);
+        }
         if (null !== $this->aStartPosition) {
             $this->aStartPosition->removeSkillRelatedByStartPositionId($this);
         }
@@ -9226,6 +9523,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->history = null;
         $this->is_translation = null;
         $this->is_rotation = null;
+        $this->is_acyclic = null;
         $this->is_cyclic = null;
         $this->longitudinal_flags = null;
         $this->latitudinal_flags = null;
@@ -9244,6 +9542,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->picture_id = null;
         $this->kstruktur_id = null;
         $this->function_phase_id = null;
+        $this->object_id = null;
         $this->version = null;
         $this->version_created_at = null;
         $this->version_comment = null;
@@ -9276,23 +9575,23 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillDependenciesRelatedByDependsId) {
-                foreach ($this->collSkillDependenciesRelatedByDependsId as $o) {
+            if ($this->collDescendents) {
+                foreach ($this->collDescendents as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillDependenciesRelatedBySkillId) {
-                foreach ($this->collSkillDependenciesRelatedBySkillId as $o) {
+            if ($this->collAscendents) {
+                foreach ($this->collAscendents as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillPartsRelatedByPartId) {
-                foreach ($this->collSkillPartsRelatedByPartId as $o) {
+            if ($this->collParts) {
+                foreach ($this->collParts as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillPartsRelatedByCompositeId) {
-                foreach ($this->collSkillPartsRelatedByCompositeId as $o) {
+            if ($this->collComposites) {
+                foreach ($this->collComposites as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -9336,13 +9635,13 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillsRelatedBySkillId) {
-                foreach ($this->collSkillsRelatedBySkillId as $o) {
+            if ($this->collSkillsRelatedByParentId) {
+                foreach ($this->collSkillsRelatedByParentId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSkillsRelatedByDependsId) {
-                foreach ($this->collSkillsRelatedByDependsId as $o) {
+            if ($this->collSkillsRelatedByDependencyId) {
+                foreach ($this->collSkillsRelatedByDependencyId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -9365,10 +9664,10 @@ abstract class Skill implements ActiveRecordInterface
 
         $this->collVariations = null;
         $this->collMultiples = null;
-        $this->collSkillDependenciesRelatedByDependsId = null;
-        $this->collSkillDependenciesRelatedBySkillId = null;
-        $this->collSkillPartsRelatedByPartId = null;
-        $this->collSkillPartsRelatedByCompositeId = null;
+        $this->collDescendents = null;
+        $this->collAscendents = null;
+        $this->collParts = null;
+        $this->collComposites = null;
         $this->collSkillGroups = null;
         $this->collPictures = null;
         $this->collVideos = null;
@@ -9377,14 +9676,15 @@ abstract class Skill implements ActiveRecordInterface
         $this->collKstruktursRelatedBySkillId = null;
         $this->collFunctionPhasesRelatedBySkillId = null;
         $this->collSkillVersions = null;
-        $this->collSkillsRelatedBySkillId = null;
-        $this->collSkillsRelatedByDependsId = null;
+        $this->collSkillsRelatedByParentId = null;
+        $this->collSkillsRelatedByDependencyId = null;
         $this->collSkillsRelatedByCompositeId = null;
         $this->collSkillsRelatedByPartId = null;
         $this->collGroups = null;
         $this->aSport = null;
         $this->aVariationOf = null;
         $this->aMultipleOf = null;
+        $this->aObject = null;
         $this->aStartPosition = null;
         $this->aEndPosition = null;
         $this->aFeaturedPicture = null;
@@ -9489,6 +9789,7 @@ abstract class Skill implements ActiveRecordInterface
         $version->setHistory($this->getHistory());
         $version->setIsTranslation($this->getIsTranslation());
         $version->setIsRotation($this->getIsRotation());
+        $version->setIsAcyclic($this->getIsAcyclic());
         $version->setIsCyclic($this->getIsCyclic());
         $version->setLongitudinalFlags($this->getLongitudinalFlags());
         $version->setLatitudinalFlags($this->getLatitudinalFlags());
@@ -9507,6 +9808,7 @@ abstract class Skill implements ActiveRecordInterface
         $version->setPictureId($this->getPictureId());
         $version->setKstrukturId($this->getKstrukturId());
         $version->setFunctionPhaseId($this->getFunctionPhaseId());
+        $version->setObjectId($this->getObjectId());
         $version->setVersion($this->getVersion());
         $version->setVersionCreatedAt($this->getVersionCreatedAt());
         $version->setVersionComment($this->getVersionComment());
@@ -9570,6 +9872,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->setHistory($version->getHistory());
         $this->setIsTranslation($version->getIsTranslation());
         $this->setIsRotation($version->getIsRotation());
+        $this->setIsAcyclic($version->getIsAcyclic());
         $this->setIsCyclic($version->getIsCyclic());
         $this->setLongitudinalFlags($version->getLongitudinalFlags());
         $this->setLatitudinalFlags($version->getLatitudinalFlags());
@@ -9588,6 +9891,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->setPictureId($version->getPictureId());
         $this->setKstrukturId($version->getKstrukturId());
         $this->setFunctionPhaseId($version->getFunctionPhaseId());
+        $this->setObjectId($version->getObjectId());
         $this->setVersion($version->getVersion());
         $this->setVersionCreatedAt($version->getVersionCreatedAt());
         $this->setVersionComment($version->getVersionComment());

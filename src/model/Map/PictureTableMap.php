@@ -182,8 +182,20 @@ class PictureTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('FeaturedSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'picture_id', ), null, null, 'FeaturedSkills');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':skill_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('FeaturedSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':picture_id',
+    1 => ':id',
+  ),
+), null, null, 'FeaturedSkills', false);
     } // buildRelations()
 
     /**

@@ -57,7 +57,16 @@ use gossi\trixionary\model\Map\PositionTableMap;
  * @method     ChildPosition findOneByTitle(string $title) Return the first ChildPosition filtered by the title column
  * @method     ChildPosition findOneBySlug(string $slug) Return the first ChildPosition filtered by the slug column
  * @method     ChildPosition findOneBySportId(int $sport_id) Return the first ChildPosition filtered by the sport_id column
- * @method     ChildPosition findOneByDescription(string $description) Return the first ChildPosition filtered by the description column
+ * @method     ChildPosition findOneByDescription(string $description) Return the first ChildPosition filtered by the description column *
+
+ * @method     ChildPosition requirePk($key, ConnectionInterface $con = null) Return the ChildPosition by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPosition requireOne(ConnectionInterface $con = null) Return the first ChildPosition matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildPosition requireOneById(int $id) Return the first ChildPosition filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPosition requireOneByTitle(string $title) Return the first ChildPosition filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPosition requireOneBySlug(string $slug) Return the first ChildPosition filtered by the slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPosition requireOneBySportId(int $sport_id) Return the first ChildPosition filtered by the sport_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPosition requireOneByDescription(string $description) Return the first ChildPosition filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPosition[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPosition objects based on current ModelCriteria
  * @method     ChildPosition[]|ObjectCollection findById(int $id) Return ChildPosition objects filtered by the id column
@@ -70,6 +79,7 @@ use gossi\trixionary\model\Map\PositionTableMap;
  */
 abstract class PositionQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\PositionQuery object.
@@ -497,7 +507,7 @@ abstract class PositionQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildPositionQuery The current query, for fluid interface
@@ -570,7 +580,7 @@ abstract class PositionQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildPositionQuery The current query, for fluid interface

@@ -152,9 +152,27 @@ class FunctionPhaseTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('StructureNode', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('RootSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'function_phase_id', ), null, null, 'RootSkills');
+        $this->addRelation('StructureNode', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':skill_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('RootSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':function_phase_id',
+    1 => ':id',
+  ),
+), null, null, 'RootSkills', false);
     } // buildRelations()
 
     /**

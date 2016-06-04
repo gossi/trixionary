@@ -62,26 +62,26 @@ abstract class SkillDependency implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the skill_id field.
+     * The value for the dependency_id field.
      * @var        int
      */
-    protected $skill_id;
+    protected $dependency_id;
 
     /**
-     * The value for the depends_id field.
+     * The value for the parent_id field.
      * @var        int
      */
-    protected $depends_id;
+    protected $parent_id;
 
     /**
      * @var        ChildSkill
      */
-    protected $aSkillRelatedByDependsId;
+    protected $aSkillRelatedByDependencyId;
 
     /**
      * @var        ChildSkill
      */
-    protected $aSkillRelatedBySkillId;
+    protected $aSkillRelatedByParentId;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -309,72 +309,72 @@ abstract class SkillDependency implements ActiveRecordInterface
     }
 
     /**
-     * Get the [skill_id] column value.
+     * Get the [dependency_id] column value.
      *
      * @return int
      */
-    public function getSkillId()
+    public function getDependencyId()
     {
-        return $this->skill_id;
+        return $this->dependency_id;
     }
 
     /**
-     * Get the [depends_id] column value.
+     * Get the [parent_id] column value.
      *
      * @return int
      */
-    public function getDependsId()
+    public function getParentId()
     {
-        return $this->depends_id;
+        return $this->parent_id;
     }
 
     /**
-     * Set the value of [skill_id] column.
+     * Set the value of [dependency_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillDependency The current object (for fluent API support)
      */
-    public function setSkillId($v)
+    public function setDependencyId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->skill_id !== $v) {
-            $this->skill_id = $v;
-            $this->modifiedColumns[SkillDependencyTableMap::COL_SKILL_ID] = true;
+        if ($this->dependency_id !== $v) {
+            $this->dependency_id = $v;
+            $this->modifiedColumns[SkillDependencyTableMap::COL_DEPENDENCY_ID] = true;
         }
 
-        if ($this->aSkillRelatedBySkillId !== null && $this->aSkillRelatedBySkillId->getId() !== $v) {
-            $this->aSkillRelatedBySkillId = null;
+        if ($this->aSkillRelatedByDependencyId !== null && $this->aSkillRelatedByDependencyId->getId() !== $v) {
+            $this->aSkillRelatedByDependencyId = null;
         }
 
         return $this;
-    } // setSkillId()
+    } // setDependencyId()
 
     /**
-     * Set the value of [depends_id] column.
+     * Set the value of [parent_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillDependency The current object (for fluent API support)
      */
-    public function setDependsId($v)
+    public function setParentId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->depends_id !== $v) {
-            $this->depends_id = $v;
-            $this->modifiedColumns[SkillDependencyTableMap::COL_DEPENDS_ID] = true;
+        if ($this->parent_id !== $v) {
+            $this->parent_id = $v;
+            $this->modifiedColumns[SkillDependencyTableMap::COL_PARENT_ID] = true;
         }
 
-        if ($this->aSkillRelatedByDependsId !== null && $this->aSkillRelatedByDependsId->getId() !== $v) {
-            $this->aSkillRelatedByDependsId = null;
+        if ($this->aSkillRelatedByParentId !== null && $this->aSkillRelatedByParentId->getId() !== $v) {
+            $this->aSkillRelatedByParentId = null;
         }
 
         return $this;
-    } // setDependsId()
+    } // setParentId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -412,11 +412,11 @@ abstract class SkillDependency implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SkillDependencyTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->skill_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SkillDependencyTableMap::translateFieldName('DependencyId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->dependency_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SkillDependencyTableMap::translateFieldName('DependsId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->depends_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SkillDependencyTableMap::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->parent_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -447,11 +447,11 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aSkillRelatedBySkillId !== null && $this->skill_id !== $this->aSkillRelatedBySkillId->getId()) {
-            $this->aSkillRelatedBySkillId = null;
+        if ($this->aSkillRelatedByDependencyId !== null && $this->dependency_id !== $this->aSkillRelatedByDependencyId->getId()) {
+            $this->aSkillRelatedByDependencyId = null;
         }
-        if ($this->aSkillRelatedByDependsId !== null && $this->depends_id !== $this->aSkillRelatedByDependsId->getId()) {
-            $this->aSkillRelatedByDependsId = null;
+        if ($this->aSkillRelatedByParentId !== null && $this->parent_id !== $this->aSkillRelatedByParentId->getId()) {
+            $this->aSkillRelatedByParentId = null;
         }
     } // ensureConsistency
 
@@ -492,8 +492,8 @@ abstract class SkillDependency implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aSkillRelatedByDependsId = null;
-            $this->aSkillRelatedBySkillId = null;
+            $this->aSkillRelatedByDependencyId = null;
+            $this->aSkillRelatedByParentId = null;
         } // if (deep)
     }
 
@@ -598,18 +598,18 @@ abstract class SkillDependency implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aSkillRelatedByDependsId !== null) {
-                if ($this->aSkillRelatedByDependsId->isModified() || $this->aSkillRelatedByDependsId->isNew()) {
-                    $affectedRows += $this->aSkillRelatedByDependsId->save($con);
+            if ($this->aSkillRelatedByDependencyId !== null) {
+                if ($this->aSkillRelatedByDependencyId->isModified() || $this->aSkillRelatedByDependencyId->isNew()) {
+                    $affectedRows += $this->aSkillRelatedByDependencyId->save($con);
                 }
-                $this->setSkillRelatedByDependsId($this->aSkillRelatedByDependsId);
+                $this->setSkillRelatedByDependencyId($this->aSkillRelatedByDependencyId);
             }
 
-            if ($this->aSkillRelatedBySkillId !== null) {
-                if ($this->aSkillRelatedBySkillId->isModified() || $this->aSkillRelatedBySkillId->isNew()) {
-                    $affectedRows += $this->aSkillRelatedBySkillId->save($con);
+            if ($this->aSkillRelatedByParentId !== null) {
+                if ($this->aSkillRelatedByParentId->isModified() || $this->aSkillRelatedByParentId->isNew()) {
+                    $affectedRows += $this->aSkillRelatedByParentId->save($con);
                 }
-                $this->setSkillRelatedBySkillId($this->aSkillRelatedBySkillId);
+                $this->setSkillRelatedByParentId($this->aSkillRelatedByParentId);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -645,11 +645,11 @@ abstract class SkillDependency implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SkillDependencyTableMap::COL_SKILL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`skill_id`';
+        if ($this->isColumnModified(SkillDependencyTableMap::COL_DEPENDENCY_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`dependency_id`';
         }
-        if ($this->isColumnModified(SkillDependencyTableMap::COL_DEPENDS_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`depends_id`';
+        if ($this->isColumnModified(SkillDependencyTableMap::COL_PARENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`parent_id`';
         }
 
         $sql = sprintf(
@@ -662,11 +662,11 @@ abstract class SkillDependency implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`skill_id`':
-                        $stmt->bindValue($identifier, $this->skill_id, PDO::PARAM_INT);
+                    case '`dependency_id`':
+                        $stmt->bindValue($identifier, $this->dependency_id, PDO::PARAM_INT);
                         break;
-                    case '`depends_id`':
-                        $stmt->bindValue($identifier, $this->depends_id, PDO::PARAM_INT);
+                    case '`parent_id`':
+                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -724,10 +724,10 @@ abstract class SkillDependency implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getSkillId();
+                return $this->getDependencyId();
                 break;
             case 1:
-                return $this->getDependsId();
+                return $this->getParentId();
                 break;
             default:
                 return null;
@@ -759,8 +759,8 @@ abstract class SkillDependency implements ActiveRecordInterface
         $alreadyDumpedObjects['SkillDependency'][$this->hashCode()] = true;
         $keys = SkillDependencyTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getSkillId(),
-            $keys[1] => $this->getDependsId(),
+            $keys[0] => $this->getDependencyId(),
+            $keys[1] => $this->getParentId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -768,7 +768,7 @@ abstract class SkillDependency implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aSkillRelatedByDependsId) {
+            if (null !== $this->aSkillRelatedByDependencyId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -781,9 +781,9 @@ abstract class SkillDependency implements ActiveRecordInterface
                         $key = 'Skill';
                 }
 
-                $result[$key] = $this->aSkillRelatedByDependsId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aSkillRelatedByDependencyId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aSkillRelatedBySkillId) {
+            if (null !== $this->aSkillRelatedByParentId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -796,7 +796,7 @@ abstract class SkillDependency implements ActiveRecordInterface
                         $key = 'Skill';
                 }
 
-                $result[$key] = $this->aSkillRelatedBySkillId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aSkillRelatedByParentId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -833,10 +833,10 @@ abstract class SkillDependency implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setSkillId($value);
+                $this->setDependencyId($value);
                 break;
             case 1:
-                $this->setDependsId($value);
+                $this->setParentId($value);
                 break;
         } // switch()
 
@@ -865,10 +865,10 @@ abstract class SkillDependency implements ActiveRecordInterface
         $keys = SkillDependencyTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setSkillId($arr[$keys[0]]);
+            $this->setDependencyId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setDependsId($arr[$keys[1]]);
+            $this->setParentId($arr[$keys[1]]);
         }
     }
 
@@ -911,11 +911,11 @@ abstract class SkillDependency implements ActiveRecordInterface
     {
         $criteria = new Criteria(SkillDependencyTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SkillDependencyTableMap::COL_SKILL_ID)) {
-            $criteria->add(SkillDependencyTableMap::COL_SKILL_ID, $this->skill_id);
+        if ($this->isColumnModified(SkillDependencyTableMap::COL_DEPENDENCY_ID)) {
+            $criteria->add(SkillDependencyTableMap::COL_DEPENDENCY_ID, $this->dependency_id);
         }
-        if ($this->isColumnModified(SkillDependencyTableMap::COL_DEPENDS_ID)) {
-            $criteria->add(SkillDependencyTableMap::COL_DEPENDS_ID, $this->depends_id);
+        if ($this->isColumnModified(SkillDependencyTableMap::COL_PARENT_ID)) {
+            $criteria->add(SkillDependencyTableMap::COL_PARENT_ID, $this->parent_id);
         }
 
         return $criteria;
@@ -934,8 +934,8 @@ abstract class SkillDependency implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildSkillDependencyQuery::create();
-        $criteria->add(SkillDependencyTableMap::COL_SKILL_ID, $this->skill_id);
-        $criteria->add(SkillDependencyTableMap::COL_DEPENDS_ID, $this->depends_id);
+        $criteria->add(SkillDependencyTableMap::COL_DEPENDENCY_ID, $this->dependency_id);
+        $criteria->add(SkillDependencyTableMap::COL_PARENT_ID, $this->parent_id);
 
         return $criteria;
     }
@@ -948,21 +948,21 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getSkillId() &&
-            null !== $this->getDependsId();
+        $validPk = null !== $this->getDependencyId() &&
+            null !== $this->getParentId();
 
         $validPrimaryKeyFKs = 2;
         $primaryKeyFKs = [];
 
-        //relation kk_trixionary_skill_dependency_fk_e7a2d5 to table kk_trixionary_skill
-        if ($this->aSkillRelatedByDependsId && $hash = spl_object_hash($this->aSkillRelatedByDependsId)) {
+        //relation skill_dependency_fk_skill to table kk_trixionary_skill
+        if ($this->aSkillRelatedByDependencyId && $hash = spl_object_hash($this->aSkillRelatedByDependencyId)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
-        //relation kk_trixionary_skill_dependency_fk_3713ea to table kk_trixionary_skill
-        if ($this->aSkillRelatedBySkillId && $hash = spl_object_hash($this->aSkillRelatedBySkillId)) {
+        //relation skill_dependency_fk_parent to table kk_trixionary_skill
+        if ($this->aSkillRelatedByParentId && $hash = spl_object_hash($this->aSkillRelatedByParentId)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
@@ -985,8 +985,8 @@ abstract class SkillDependency implements ActiveRecordInterface
     public function getPrimaryKey()
     {
         $pks = array();
-        $pks[0] = $this->getSkillId();
-        $pks[1] = $this->getDependsId();
+        $pks[0] = $this->getDependencyId();
+        $pks[1] = $this->getParentId();
 
         return $pks;
     }
@@ -999,8 +999,8 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function setPrimaryKey($keys)
     {
-        $this->setSkillId($keys[0]);
-        $this->setDependsId($keys[1]);
+        $this->setDependencyId($keys[0]);
+        $this->setParentId($keys[1]);
     }
 
     /**
@@ -1009,7 +1009,7 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return (null === $this->getSkillId()) && (null === $this->getDependsId());
+        return (null === $this->getDependencyId()) && (null === $this->getParentId());
     }
 
     /**
@@ -1025,8 +1025,8 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setSkillId($this->getSkillId());
-        $copyObj->setDependsId($this->getDependsId());
+        $copyObj->setDependencyId($this->getDependencyId());
+        $copyObj->setParentId($this->getParentId());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1061,20 +1061,20 @@ abstract class SkillDependency implements ActiveRecordInterface
      * @return $this|\gossi\trixionary\model\SkillDependency The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setSkillRelatedByDependsId(ChildSkill $v = null)
+    public function setSkillRelatedByDependencyId(ChildSkill $v = null)
     {
         if ($v === null) {
-            $this->setDependsId(NULL);
+            $this->setDependencyId(NULL);
         } else {
-            $this->setDependsId($v->getId());
+            $this->setDependencyId($v->getId());
         }
 
-        $this->aSkillRelatedByDependsId = $v;
+        $this->aSkillRelatedByDependencyId = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addSkillDependencyRelatedByDependsId($this);
+            $v->addDescendent($this);
         }
 
 
@@ -1089,20 +1089,20 @@ abstract class SkillDependency implements ActiveRecordInterface
      * @return ChildSkill The associated ChildSkill object.
      * @throws PropelException
      */
-    public function getSkillRelatedByDependsId(ConnectionInterface $con = null)
+    public function getSkillRelatedByDependencyId(ConnectionInterface $con = null)
     {
-        if ($this->aSkillRelatedByDependsId === null && ($this->depends_id !== null)) {
-            $this->aSkillRelatedByDependsId = ChildSkillQuery::create()->findPk($this->depends_id, $con);
+        if ($this->aSkillRelatedByDependencyId === null && ($this->dependency_id !== null)) {
+            $this->aSkillRelatedByDependencyId = ChildSkillQuery::create()->findPk($this->dependency_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedByDependsId->addSkillDependenciesRelatedByDependsId($this);
+                $this->aSkillRelatedByDependencyId->addDescendents($this);
              */
         }
 
-        return $this->aSkillRelatedByDependsId;
+        return $this->aSkillRelatedByDependencyId;
     }
 
     /**
@@ -1112,20 +1112,20 @@ abstract class SkillDependency implements ActiveRecordInterface
      * @return $this|\gossi\trixionary\model\SkillDependency The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setSkillRelatedBySkillId(ChildSkill $v = null)
+    public function setSkillRelatedByParentId(ChildSkill $v = null)
     {
         if ($v === null) {
-            $this->setSkillId(NULL);
+            $this->setParentId(NULL);
         } else {
-            $this->setSkillId($v->getId());
+            $this->setParentId($v->getId());
         }
 
-        $this->aSkillRelatedBySkillId = $v;
+        $this->aSkillRelatedByParentId = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addSkillDependencyRelatedBySkillId($this);
+            $v->addAscendent($this);
         }
 
 
@@ -1140,20 +1140,20 @@ abstract class SkillDependency implements ActiveRecordInterface
      * @return ChildSkill The associated ChildSkill object.
      * @throws PropelException
      */
-    public function getSkillRelatedBySkillId(ConnectionInterface $con = null)
+    public function getSkillRelatedByParentId(ConnectionInterface $con = null)
     {
-        if ($this->aSkillRelatedBySkillId === null && ($this->skill_id !== null)) {
-            $this->aSkillRelatedBySkillId = ChildSkillQuery::create()->findPk($this->skill_id, $con);
+        if ($this->aSkillRelatedByParentId === null && ($this->parent_id !== null)) {
+            $this->aSkillRelatedByParentId = ChildSkillQuery::create()->findPk($this->parent_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedBySkillId->addSkillDependenciesRelatedBySkillId($this);
+                $this->aSkillRelatedByParentId->addAscendents($this);
              */
         }
 
-        return $this->aSkillRelatedBySkillId;
+        return $this->aSkillRelatedByParentId;
     }
 
     /**
@@ -1163,14 +1163,14 @@ abstract class SkillDependency implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aSkillRelatedByDependsId) {
-            $this->aSkillRelatedByDependsId->removeSkillDependencyRelatedByDependsId($this);
+        if (null !== $this->aSkillRelatedByDependencyId) {
+            $this->aSkillRelatedByDependencyId->removeDescendent($this);
         }
-        if (null !== $this->aSkillRelatedBySkillId) {
-            $this->aSkillRelatedBySkillId->removeSkillDependencyRelatedBySkillId($this);
+        if (null !== $this->aSkillRelatedByParentId) {
+            $this->aSkillRelatedByParentId->removeAscendent($this);
         }
-        $this->skill_id = null;
-        $this->depends_id = null;
+        $this->dependency_id = null;
+        $this->parent_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1191,8 +1191,8 @@ abstract class SkillDependency implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aSkillRelatedByDependsId = null;
-        $this->aSkillRelatedBySkillId = null;
+        $this->aSkillRelatedByDependencyId = null;
+        $this->aSkillRelatedByParentId = null;
     }
 
     /**

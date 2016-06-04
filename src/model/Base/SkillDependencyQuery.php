@@ -20,40 +20,47 @@ use gossi\trixionary\model\Map\SkillDependencyTableMap;
  *
  *
  *
- * @method     ChildSkillDependencyQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
- * @method     ChildSkillDependencyQuery orderByDependsId($order = Criteria::ASC) Order by the depends_id column
+ * @method     ChildSkillDependencyQuery orderByDependencyId($order = Criteria::ASC) Order by the dependency_id column
+ * @method     ChildSkillDependencyQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
  *
- * @method     ChildSkillDependencyQuery groupBySkillId() Group by the skill_id column
- * @method     ChildSkillDependencyQuery groupByDependsId() Group by the depends_id column
+ * @method     ChildSkillDependencyQuery groupByDependencyId() Group by the dependency_id column
+ * @method     ChildSkillDependencyQuery groupByParentId() Group by the parent_id column
  *
  * @method     ChildSkillDependencyQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildSkillDependencyQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildSkillDependencyQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildSkillDependencyQuery leftJoinSkillRelatedByDependsId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedByDependsId relation
- * @method     ChildSkillDependencyQuery rightJoinSkillRelatedByDependsId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedByDependsId relation
- * @method     ChildSkillDependencyQuery innerJoinSkillRelatedByDependsId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedByDependsId relation
+ * @method     ChildSkillDependencyQuery leftJoinSkillRelatedByDependencyId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedByDependencyId relation
+ * @method     ChildSkillDependencyQuery rightJoinSkillRelatedByDependencyId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedByDependencyId relation
+ * @method     ChildSkillDependencyQuery innerJoinSkillRelatedByDependencyId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedByDependencyId relation
  *
- * @method     ChildSkillDependencyQuery leftJoinSkillRelatedBySkillId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedBySkillId relation
- * @method     ChildSkillDependencyQuery rightJoinSkillRelatedBySkillId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedBySkillId relation
- * @method     ChildSkillDependencyQuery innerJoinSkillRelatedBySkillId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedBySkillId relation
+ * @method     ChildSkillDependencyQuery leftJoinSkillRelatedByParentId($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillRelatedByParentId relation
+ * @method     ChildSkillDependencyQuery rightJoinSkillRelatedByParentId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillRelatedByParentId relation
+ * @method     ChildSkillDependencyQuery innerJoinSkillRelatedByParentId($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillRelatedByParentId relation
  *
  * @method     \gossi\trixionary\model\SkillQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSkillDependency findOne(ConnectionInterface $con = null) Return the first ChildSkillDependency matching the query
  * @method     ChildSkillDependency findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkillDependency matching the query, or a new ChildSkillDependency object populated from the query conditions when no match is found
  *
- * @method     ChildSkillDependency findOneBySkillId(int $skill_id) Return the first ChildSkillDependency filtered by the skill_id column
- * @method     ChildSkillDependency findOneByDependsId(int $depends_id) Return the first ChildSkillDependency filtered by the depends_id column
+ * @method     ChildSkillDependency findOneByDependencyId(int $dependency_id) Return the first ChildSkillDependency filtered by the dependency_id column
+ * @method     ChildSkillDependency findOneByParentId(int $parent_id) Return the first ChildSkillDependency filtered by the parent_id column *
+
+ * @method     ChildSkillDependency requirePk($key, ConnectionInterface $con = null) Return the ChildSkillDependency by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillDependency requireOne(ConnectionInterface $con = null) Return the first ChildSkillDependency matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildSkillDependency requireOneByDependencyId(int $dependency_id) Return the first ChildSkillDependency filtered by the dependency_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillDependency requireOneByParentId(int $parent_id) Return the first ChildSkillDependency filtered by the parent_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSkillDependency[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSkillDependency objects based on current ModelCriteria
- * @method     ChildSkillDependency[]|ObjectCollection findBySkillId(int $skill_id) Return ChildSkillDependency objects filtered by the skill_id column
- * @method     ChildSkillDependency[]|ObjectCollection findByDependsId(int $depends_id) Return ChildSkillDependency objects filtered by the depends_id column
+ * @method     ChildSkillDependency[]|ObjectCollection findByDependencyId(int $dependency_id) Return ChildSkillDependency objects filtered by the dependency_id column
+ * @method     ChildSkillDependency[]|ObjectCollection findByParentId(int $parent_id) Return ChildSkillDependency objects filtered by the parent_id column
  * @method     ChildSkillDependency[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
 abstract class SkillDependencyQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\SkillDependencyQuery object.
@@ -100,7 +107,7 @@ abstract class SkillDependencyQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array[$skill_id, $depends_id] $key Primary key to use for the query
+     * @param array[$dependency_id, $parent_id] $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
      * @return ChildSkillDependency|array|mixed the result, formatted by the current formatter
@@ -140,7 +147,7 @@ abstract class SkillDependencyQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `skill_id`, `depends_id` FROM `kk_trixionary_skill_dependency` WHERE `skill_id` = :p0 AND `depends_id` = :p1';
+        $sql = 'SELECT `dependency_id`, `parent_id` FROM `kk_trixionary_skill_dependency` WHERE `dependency_id` = :p0 AND `parent_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -214,8 +221,8 @@ abstract class SkillDependencyQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $key[0], Criteria::EQUAL);
-        $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $key[1], Criteria::EQUAL);
+        $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $key[1], Criteria::EQUAL);
 
         return $this;
     }
@@ -233,8 +240,8 @@ abstract class SkillDependencyQuery extends ModelCriteria
             return $this->add(null, '1<>1', Criteria::CUSTOM);
         }
         foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(SkillDependencyTableMap::COL_SKILL_ID, $key[0], Criteria::EQUAL);
-            $cton1 = $this->getNewCriterion(SkillDependencyTableMap::COL_DEPENDS_ID, $key[1], Criteria::EQUAL);
+            $cton0 = $this->getNewCriterion(SkillDependencyTableMap::COL_DEPENDENCY_ID, $key[0], Criteria::EQUAL);
+            $cton1 = $this->getNewCriterion(SkillDependencyTableMap::COL_PARENT_ID, $key[1], Criteria::EQUAL);
             $cton0->addAnd($cton1);
             $this->addOr($cton0);
         }
@@ -243,18 +250,18 @@ abstract class SkillDependencyQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the skill_id column
+     * Filter the query on the dependency_id column
      *
      * Example usage:
      * <code>
-     * $query->filterBySkillId(1234); // WHERE skill_id = 1234
-     * $query->filterBySkillId(array(12, 34)); // WHERE skill_id IN (12, 34)
-     * $query->filterBySkillId(array('min' => 12)); // WHERE skill_id > 12
+     * $query->filterByDependencyId(1234); // WHERE dependency_id = 1234
+     * $query->filterByDependencyId(array(12, 34)); // WHERE dependency_id IN (12, 34)
+     * $query->filterByDependencyId(array('min' => 12)); // WHERE dependency_id > 12
      * </code>
      *
-     * @see       filterBySkillRelatedBySkillId()
+     * @see       filterBySkillRelatedByDependencyId()
      *
-     * @param     mixed $skillId The value to use as filter.
+     * @param     mixed $dependencyId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -262,16 +269,16 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return $this|ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function filterBySkillId($skillId = null, $comparison = null)
+    public function filterByDependencyId($dependencyId = null, $comparison = null)
     {
-        if (is_array($skillId)) {
+        if (is_array($dependencyId)) {
             $useMinMax = false;
-            if (isset($skillId['min'])) {
-                $this->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $skillId['min'], Criteria::GREATER_EQUAL);
+            if (isset($dependencyId['min'])) {
+                $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $dependencyId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($skillId['max'])) {
-                $this->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $skillId['max'], Criteria::LESS_EQUAL);
+            if (isset($dependencyId['max'])) {
+                $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $dependencyId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -282,22 +289,22 @@ abstract class SkillDependencyQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $skillId, $comparison);
+        return $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $dependencyId, $comparison);
     }
 
     /**
-     * Filter the query on the depends_id column
+     * Filter the query on the parent_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByDependsId(1234); // WHERE depends_id = 1234
-     * $query->filterByDependsId(array(12, 34)); // WHERE depends_id IN (12, 34)
-     * $query->filterByDependsId(array('min' => 12)); // WHERE depends_id > 12
+     * $query->filterByParentId(1234); // WHERE parent_id = 1234
+     * $query->filterByParentId(array(12, 34)); // WHERE parent_id IN (12, 34)
+     * $query->filterByParentId(array('min' => 12)); // WHERE parent_id > 12
      * </code>
      *
-     * @see       filterBySkillRelatedByDependsId()
+     * @see       filterBySkillRelatedByParentId()
      *
-     * @param     mixed $dependsId The value to use as filter.
+     * @param     mixed $parentId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -305,16 +312,16 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return $this|ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function filterByDependsId($dependsId = null, $comparison = null)
+    public function filterByParentId($parentId = null, $comparison = null)
     {
-        if (is_array($dependsId)) {
+        if (is_array($parentId)) {
             $useMinMax = false;
-            if (isset($dependsId['min'])) {
-                $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $dependsId['min'], Criteria::GREATER_EQUAL);
+            if (isset($parentId['min'])) {
+                $this->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $parentId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($dependsId['max'])) {
-                $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $dependsId['max'], Criteria::LESS_EQUAL);
+            if (isset($parentId['max'])) {
+                $this->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $parentId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -325,7 +332,7 @@ abstract class SkillDependencyQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $dependsId, $comparison);
+        return $this->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $parentId, $comparison);
     }
 
     /**
@@ -338,35 +345,35 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function filterBySkillRelatedByDependsId($skill, $comparison = null)
+    public function filterBySkillRelatedByDependencyId($skill, $comparison = null)
     {
         if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
-                ->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $skill->getId(), $comparison);
+                ->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $skill->getId(), $comparison);
         } elseif ($skill instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(SkillDependencyTableMap::COL_DEPENDS_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(SkillDependencyTableMap::COL_DEPENDENCY_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterBySkillRelatedByDependsId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+            throw new PropelException('filterBySkillRelatedByDependencyId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the SkillRelatedByDependsId relation
+     * Adds a JOIN clause to the query using the SkillRelatedByDependencyId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function joinSkillRelatedByDependsId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSkillRelatedByDependencyId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('SkillRelatedByDependsId');
+        $relationMap = $tableMap->getRelation('SkillRelatedByDependencyId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -381,14 +388,14 @@ abstract class SkillDependencyQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'SkillRelatedByDependsId');
+            $this->addJoinObject($join, 'SkillRelatedByDependencyId');
         }
 
         return $this;
     }
 
     /**
-     * Use the SkillRelatedByDependsId relation Skill object
+     * Use the SkillRelatedByDependencyId relation Skill object
      *
      * @see useQuery()
      *
@@ -398,11 +405,11 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useSkillRelatedByDependsIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSkillRelatedByDependencyIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinSkillRelatedByDependsId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedByDependsId', '\gossi\trixionary\model\SkillQuery');
+            ->joinSkillRelatedByDependencyId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedByDependencyId', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**
@@ -415,35 +422,35 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function filterBySkillRelatedBySkillId($skill, $comparison = null)
+    public function filterBySkillRelatedByParentId($skill, $comparison = null)
     {
         if ($skill instanceof \gossi\trixionary\model\Skill) {
             return $this
-                ->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $skill->getId(), $comparison);
+                ->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $skill->getId(), $comparison);
         } elseif ($skill instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(SkillDependencyTableMap::COL_SKILL_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(SkillDependencyTableMap::COL_PARENT_ID, $skill->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterBySkillRelatedBySkillId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+            throw new PropelException('filterBySkillRelatedByParentId() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the SkillRelatedBySkillId relation
+     * Adds a JOIN clause to the query using the SkillRelatedByParentId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSkillDependencyQuery The current query, for fluid interface
      */
-    public function joinSkillRelatedBySkillId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSkillRelatedByParentId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('SkillRelatedBySkillId');
+        $relationMap = $tableMap->getRelation('SkillRelatedByParentId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -458,14 +465,14 @@ abstract class SkillDependencyQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'SkillRelatedBySkillId');
+            $this->addJoinObject($join, 'SkillRelatedByParentId');
         }
 
         return $this;
     }
 
     /**
-     * Use the SkillRelatedBySkillId relation Skill object
+     * Use the SkillRelatedByParentId relation Skill object
      *
      * @see useQuery()
      *
@@ -475,11 +482,11 @@ abstract class SkillDependencyQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
      */
-    public function useSkillRelatedBySkillIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSkillRelatedByParentIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinSkillRelatedBySkillId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedBySkillId', '\gossi\trixionary\model\SkillQuery');
+            ->joinSkillRelatedByParentId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SkillRelatedByParentId', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**
@@ -492,8 +499,8 @@ abstract class SkillDependencyQuery extends ModelCriteria
     public function prune($skillDependency = null)
     {
         if ($skillDependency) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(SkillDependencyTableMap::COL_SKILL_ID), $skillDependency->getSkillId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond1', $this->getAliasedColName(SkillDependencyTableMap::COL_DEPENDS_ID), $skillDependency->getDependsId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond0', $this->getAliasedColName(SkillDependencyTableMap::COL_DEPENDENCY_ID), $skillDependency->getDependencyId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond1', $this->getAliasedColName(SkillDependencyTableMap::COL_PARENT_ID), $skillDependency->getParentId(), Criteria::NOT_EQUAL);
             $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }
 

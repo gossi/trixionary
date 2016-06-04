@@ -72,14 +72,14 @@ class SkillPartTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 2;
 
     /**
-     * the column name for the composite_id field
-     */
-    const COL_COMPOSITE_ID = 'kk_trixionary_skill_part.composite_id';
-
-    /**
      * the column name for the part_id field
      */
     const COL_PART_ID = 'kk_trixionary_skill_part.part_id';
+
+    /**
+     * the column name for the composite_id field
+     */
+    const COL_COMPOSITE_ID = 'kk_trixionary_skill_part.composite_id';
 
     /**
      * The default string format for model objects of the related table
@@ -93,10 +93,10 @@ class SkillPartTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('CompositeId', 'PartId', ),
-        self::TYPE_CAMELNAME     => array('compositeId', 'partId', ),
-        self::TYPE_COLNAME       => array(SkillPartTableMap::COL_COMPOSITE_ID, SkillPartTableMap::COL_PART_ID, ),
-        self::TYPE_FIELDNAME     => array('composite_id', 'part_id', ),
+        self::TYPE_PHPNAME       => array('PartId', 'CompositeId', ),
+        self::TYPE_CAMELNAME     => array('partId', 'compositeId', ),
+        self::TYPE_COLNAME       => array(SkillPartTableMap::COL_PART_ID, SkillPartTableMap::COL_COMPOSITE_ID, ),
+        self::TYPE_FIELDNAME     => array('part_id', 'composite_id', ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -107,10 +107,10 @@ class SkillPartTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('CompositeId' => 0, 'PartId' => 1, ),
-        self::TYPE_CAMELNAME     => array('compositeId' => 0, 'partId' => 1, ),
-        self::TYPE_COLNAME       => array(SkillPartTableMap::COL_COMPOSITE_ID => 0, SkillPartTableMap::COL_PART_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('composite_id' => 0, 'part_id' => 1, ),
+        self::TYPE_PHPNAME       => array('PartId' => 0, 'CompositeId' => 1, ),
+        self::TYPE_CAMELNAME     => array('partId' => 0, 'compositeId' => 1, ),
+        self::TYPE_COLNAME       => array(SkillPartTableMap::COL_PART_ID => 0, SkillPartTableMap::COL_COMPOSITE_ID => 1, ),
+        self::TYPE_FIELDNAME     => array('part_id' => 0, 'composite_id' => 1, ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -132,8 +132,8 @@ class SkillPartTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('composite_id', 'CompositeId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
         $this->addForeignPrimaryKey('part_id', 'PartId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
+        $this->addForeignPrimaryKey('composite_id', 'CompositeId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -141,8 +141,20 @@ class SkillPartTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('part_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('composite_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':part_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':composite_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
     } // buildRelations()
 
     /**
@@ -160,7 +172,7 @@ class SkillPartTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled()) {
             if (null === $key) {
-                $key = serialize(array((string) $obj->getCompositeId(), (string) $obj->getPartId()));
+                $key = serialize(array((string) $obj->getPartId(), (string) $obj->getCompositeId()));
             } // if key === null
             self::$instances[$key] = $obj;
         }
@@ -180,7 +192,7 @@ class SkillPartTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
             if (is_object($value) && $value instanceof \gossi\trixionary\model\SkillPart) {
-                $key = serialize(array((string) $value->getCompositeId(), (string) $value->getPartId()));
+                $key = serialize(array((string) $value->getPartId(), (string) $value->getCompositeId()));
 
             } elseif (is_array($value) && count($value) === 2) {
                 // assume we've been passed a primary key";
@@ -214,11 +226,11 @@ class SkillPartTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)]));
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -240,12 +252,12 @@ class SkillPartTableMap extends TableMap
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)
         ];
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 1 + $offset
-                : self::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)
         ];
 
         return $pks;
@@ -348,11 +360,11 @@ class SkillPartTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(SkillPartTableMap::COL_COMPOSITE_ID);
             $criteria->addSelectColumn(SkillPartTableMap::COL_PART_ID);
+            $criteria->addSelectColumn(SkillPartTableMap::COL_COMPOSITE_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.composite_id');
             $criteria->addSelectColumn($alias . '.part_id');
+            $criteria->addSelectColumn($alias . '.composite_id');
         }
     }
 
@@ -411,8 +423,8 @@ class SkillPartTableMap extends TableMap
                 $values = array($values);
             }
             foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(SkillPartTableMap::COL_COMPOSITE_ID, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(SkillPartTableMap::COL_PART_ID, $value[1]));
+                $criterion = $criteria->getNewCriterion(SkillPartTableMap::COL_PART_ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(SkillPartTableMap::COL_COMPOSITE_ID, $value[1]));
                 $criteria->addOr($criterion);
             }
         }

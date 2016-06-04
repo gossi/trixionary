@@ -62,10 +62,10 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the structure_node_id field.
      * @var        int
      */
-    protected $id;
+    protected $structure_node_id;
 
     /**
      * The value for the parent_id field.
@@ -76,7 +76,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     /**
      * @var        ChildStructureNode
      */
-    protected $aStructureNodeRelatedById;
+    protected $aStructureNodeRelatedByStructureNodeId;
 
     /**
      * @var        ChildStructureNode
@@ -309,13 +309,13 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [structure_node_id] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getStructureNodeId()
     {
-        return $this->id;
+        return $this->structure_node_id;
     }
 
     /**
@@ -329,33 +329,33 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [id] column.
+     * Set the value of [structure_node_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\StructureNodeParent The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setStructureNodeId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[StructureNodeParentTableMap::COL_ID] = true;
+        if ($this->structure_node_id !== $v) {
+            $this->structure_node_id = $v;
+            $this->modifiedColumns[StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID] = true;
         }
 
-        if ($this->aStructureNodeRelatedById !== null && $this->aStructureNodeRelatedById->getId() !== $v) {
-            $this->aStructureNodeRelatedById = null;
+        if ($this->aStructureNodeRelatedByStructureNodeId !== null && $this->aStructureNodeRelatedByStructureNodeId->getId() !== $v) {
+            $this->aStructureNodeRelatedByStructureNodeId = null;
         }
 
         return $this;
-    } // setId()
+    } // setStructureNodeId()
 
     /**
      * Set the value of [parent_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\StructureNodeParent The current object (for fluent API support)
      */
     public function setParentId($v)
@@ -412,8 +412,8 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StructureNodeParentTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : StructureNodeParentTableMap::translateFieldName('StructureNodeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->structure_node_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : StructureNodeParentTableMap::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->parent_id = (null !== $col) ? (int) $col : null;
@@ -447,8 +447,8 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aStructureNodeRelatedById !== null && $this->id !== $this->aStructureNodeRelatedById->getId()) {
-            $this->aStructureNodeRelatedById = null;
+        if ($this->aStructureNodeRelatedByStructureNodeId !== null && $this->structure_node_id !== $this->aStructureNodeRelatedByStructureNodeId->getId()) {
+            $this->aStructureNodeRelatedByStructureNodeId = null;
         }
         if ($this->aStructureNodeRelatedByParentId !== null && $this->parent_id !== $this->aStructureNodeRelatedByParentId->getId()) {
             $this->aStructureNodeRelatedByParentId = null;
@@ -492,7 +492,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aStructureNodeRelatedById = null;
+            $this->aStructureNodeRelatedByStructureNodeId = null;
             $this->aStructureNodeRelatedByParentId = null;
         } // if (deep)
     }
@@ -598,11 +598,11 @@ abstract class StructureNodeParent implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aStructureNodeRelatedById !== null) {
-                if ($this->aStructureNodeRelatedById->isModified() || $this->aStructureNodeRelatedById->isNew()) {
-                    $affectedRows += $this->aStructureNodeRelatedById->save($con);
+            if ($this->aStructureNodeRelatedByStructureNodeId !== null) {
+                if ($this->aStructureNodeRelatedByStructureNodeId->isModified() || $this->aStructureNodeRelatedByStructureNodeId->isNew()) {
+                    $affectedRows += $this->aStructureNodeRelatedByStructureNodeId->save($con);
                 }
-                $this->setStructureNodeRelatedById($this->aStructureNodeRelatedById);
+                $this->setStructureNodeRelatedByStructureNodeId($this->aStructureNodeRelatedByStructureNodeId);
             }
 
             if ($this->aStructureNodeRelatedByParentId !== null) {
@@ -645,8 +645,8 @@ abstract class StructureNodeParent implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(StructureNodeParentTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`id`';
+        if ($this->isColumnModified(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`structure_node_id`';
         }
         if ($this->isColumnModified(StructureNodeParentTableMap::COL_PARENT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`parent_id`';
@@ -662,8 +662,8 @@ abstract class StructureNodeParent implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`id`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case '`structure_node_id`':
+                        $stmt->bindValue($identifier, $this->structure_node_id, PDO::PARAM_INT);
                         break;
                     case '`parent_id`':
                         $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
@@ -724,7 +724,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getStructureNodeId();
                 break;
             case 1:
                 return $this->getParentId();
@@ -759,7 +759,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
         $alreadyDumpedObjects['StructureNodeParent'][$this->hashCode()] = true;
         $keys = StructureNodeParentTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
+            $keys[0] => $this->getStructureNodeId(),
             $keys[1] => $this->getParentId(),
         );
         $virtualColumns = $this->virtualColumns;
@@ -768,7 +768,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aStructureNodeRelatedById) {
+            if (null !== $this->aStructureNodeRelatedByStructureNodeId) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -781,7 +781,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
                         $key = 'StructureNode';
                 }
 
-                $result[$key] = $this->aStructureNodeRelatedById->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aStructureNodeRelatedByStructureNodeId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aStructureNodeRelatedByParentId) {
 
@@ -833,7 +833,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setStructureNodeId($value);
                 break;
             case 1:
                 $this->setParentId($value);
@@ -865,7 +865,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
         $keys = StructureNodeParentTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setStructureNodeId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setParentId($arr[$keys[1]]);
@@ -911,8 +911,8 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     {
         $criteria = new Criteria(StructureNodeParentTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(StructureNodeParentTableMap::COL_ID)) {
-            $criteria->add(StructureNodeParentTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID)) {
+            $criteria->add(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $this->structure_node_id);
         }
         if ($this->isColumnModified(StructureNodeParentTableMap::COL_PARENT_ID)) {
             $criteria->add(StructureNodeParentTableMap::COL_PARENT_ID, $this->parent_id);
@@ -934,7 +934,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildStructureNodeParentQuery::create();
-        $criteria->add(StructureNodeParentTableMap::COL_ID, $this->id);
+        $criteria->add(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $this->structure_node_id);
         $criteria->add(StructureNodeParentTableMap::COL_PARENT_ID, $this->parent_id);
 
         return $criteria;
@@ -948,20 +948,20 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId() &&
+        $validPk = null !== $this->getStructureNodeId() &&
             null !== $this->getParentId();
 
         $validPrimaryKeyFKs = 2;
         $primaryKeyFKs = [];
 
-        //relation kk_trixionary_structure_node_parent_fk_d85fca to table kk_trixionary_structure_node
-        if ($this->aStructureNodeRelatedById && $hash = spl_object_hash($this->aStructureNodeRelatedById)) {
+        //relation structure_node_parent_fk_node to table kk_trixionary_structure_node
+        if ($this->aStructureNodeRelatedByStructureNodeId && $hash = spl_object_hash($this->aStructureNodeRelatedByStructureNodeId)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
-        //relation kk_trixionary_structure_node_parent_fk_0918a7 to table kk_trixionary_structure_node
+        //relation structure_node_parent_fk_parent to table kk_trixionary_structure_node
         if ($this->aStructureNodeRelatedByParentId && $hash = spl_object_hash($this->aStructureNodeRelatedByParentId)) {
             $primaryKeyFKs[] = $hash;
         } else {
@@ -985,7 +985,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
     public function getPrimaryKey()
     {
         $pks = array();
-        $pks[0] = $this->getId();
+        $pks[0] = $this->getStructureNodeId();
         $pks[1] = $this->getParentId();
 
         return $pks;
@@ -999,7 +999,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function setPrimaryKey($keys)
     {
-        $this->setId($keys[0]);
+        $this->setStructureNodeId($keys[0]);
         $this->setParentId($keys[1]);
     }
 
@@ -1009,7 +1009,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return (null === $this->getId()) && (null === $this->getParentId());
+        return (null === $this->getStructureNodeId()) && (null === $this->getParentId());
     }
 
     /**
@@ -1025,7 +1025,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setId($this->getId());
+        $copyObj->setStructureNodeId($this->getStructureNodeId());
         $copyObj->setParentId($this->getParentId());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1061,20 +1061,20 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      * @return $this|\gossi\trixionary\model\StructureNodeParent The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setStructureNodeRelatedById(ChildStructureNode $v = null)
+    public function setStructureNodeRelatedByStructureNodeId(ChildStructureNode $v = null)
     {
         if ($v === null) {
-            $this->setId(NULL);
+            $this->setStructureNodeId(NULL);
         } else {
-            $this->setId($v->getId());
+            $this->setStructureNodeId($v->getId());
         }
 
-        $this->aStructureNodeRelatedById = $v;
+        $this->aStructureNodeRelatedByStructureNodeId = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildStructureNode object, it will not be re-added.
         if ($v !== null) {
-            $v->addStructureNodeParentRelatedById($this);
+            $v->addStructureNodeParentRelatedByStructureNodeId($this);
         }
 
 
@@ -1089,20 +1089,20 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      * @return ChildStructureNode The associated ChildStructureNode object.
      * @throws PropelException
      */
-    public function getStructureNodeRelatedById(ConnectionInterface $con = null)
+    public function getStructureNodeRelatedByStructureNodeId(ConnectionInterface $con = null)
     {
-        if ($this->aStructureNodeRelatedById === null && ($this->id !== null)) {
-            $this->aStructureNodeRelatedById = ChildStructureNodeQuery::create()->findPk($this->id, $con);
+        if ($this->aStructureNodeRelatedByStructureNodeId === null && ($this->structure_node_id !== null)) {
+            $this->aStructureNodeRelatedByStructureNodeId = ChildStructureNodeQuery::create()->findPk($this->structure_node_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aStructureNodeRelatedById->addStructureNodeParentsRelatedById($this);
+                $this->aStructureNodeRelatedByStructureNodeId->addStructureNodeParentsRelatedByStructureNodeId($this);
              */
         }
 
-        return $this->aStructureNodeRelatedById;
+        return $this->aStructureNodeRelatedByStructureNodeId;
     }
 
     /**
@@ -1163,13 +1163,13 @@ abstract class StructureNodeParent implements ActiveRecordInterface
      */
     public function clear()
     {
-        if (null !== $this->aStructureNodeRelatedById) {
-            $this->aStructureNodeRelatedById->removeStructureNodeParentRelatedById($this);
+        if (null !== $this->aStructureNodeRelatedByStructureNodeId) {
+            $this->aStructureNodeRelatedByStructureNodeId->removeStructureNodeParentRelatedByStructureNodeId($this);
         }
         if (null !== $this->aStructureNodeRelatedByParentId) {
             $this->aStructureNodeRelatedByParentId->removeStructureNodeParentRelatedByParentId($this);
         }
-        $this->id = null;
+        $this->structure_node_id = null;
         $this->parent_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
@@ -1191,7 +1191,7 @@ abstract class StructureNodeParent implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aStructureNodeRelatedById = null;
+        $this->aStructureNodeRelatedByStructureNodeId = null;
         $this->aStructureNodeRelatedByParentId = null;
     }
 

@@ -379,7 +379,7 @@ abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordI
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      */
     public function setId($v)
@@ -403,7 +403,7 @@ abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordI
     /**
      * Set the value of [type] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      */
     public function setType($v)
@@ -423,7 +423,7 @@ abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordI
     /**
      * Set the value of [skill_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      */
     public function setSkillId($v)
@@ -447,7 +447,7 @@ abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordI
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\FunctionPhase The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -1631,6 +1631,31 @@ abstract class FunctionPhase extends ChildStructureNode implements ActiveRecordI
     {
         $query = ChildSkillQuery::create(null, $criteria);
         $query->joinWith('MultipleOf', $joinBehavior);
+
+        return $this->getRootSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FunctionPhase is new, it will return
+     * an empty collection; or if this FunctionPhase has previously
+     * been saved, it will retrieve related RootSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FunctionPhase.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getRootSkillsJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
 
         return $this->getRootSkills($query, $con);
     }

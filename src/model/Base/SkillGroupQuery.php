@@ -44,7 +44,13 @@ use gossi\trixionary\model\Map\SkillGroupTableMap;
  * @method     ChildSkillGroup findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkillGroup matching the query, or a new ChildSkillGroup object populated from the query conditions when no match is found
  *
  * @method     ChildSkillGroup findOneBySkillId(int $skill_id) Return the first ChildSkillGroup filtered by the skill_id column
- * @method     ChildSkillGroup findOneByGroupId(int $group_id) Return the first ChildSkillGroup filtered by the group_id column
+ * @method     ChildSkillGroup findOneByGroupId(int $group_id) Return the first ChildSkillGroup filtered by the group_id column *
+
+ * @method     ChildSkillGroup requirePk($key, ConnectionInterface $con = null) Return the ChildSkillGroup by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillGroup requireOne(ConnectionInterface $con = null) Return the first ChildSkillGroup matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildSkillGroup requireOneBySkillId(int $skill_id) Return the first ChildSkillGroup filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillGroup requireOneByGroupId(int $group_id) Return the first ChildSkillGroup filtered by the group_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSkillGroup[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSkillGroup objects based on current ModelCriteria
  * @method     ChildSkillGroup[]|ObjectCollection findBySkillId(int $skill_id) Return ChildSkillGroup objects filtered by the skill_id column
@@ -54,6 +60,7 @@ use gossi\trixionary\model\Map\SkillGroupTableMap;
  */
 abstract class SkillGroupQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\SkillGroupQuery object.

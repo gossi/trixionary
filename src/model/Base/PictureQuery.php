@@ -65,7 +65,20 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture findOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column
  * @method     ChildPicture findOneByMovender(string $movender) Return the first ChildPicture filtered by the movender column
  * @method     ChildPicture findOneByMovenderId(int $movender_id) Return the first ChildPicture filtered by the movender_id column
- * @method     ChildPicture findOneByUploaderId(int $uploader_id) Return the first ChildPicture filtered by the uploader_id column
+ * @method     ChildPicture findOneByUploaderId(int $uploader_id) Return the first ChildPicture filtered by the uploader_id column *
+
+ * @method     ChildPicture requirePk($key, ConnectionInterface $con = null) Return the ChildPicture by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOne(ConnectionInterface $con = null) Return the first ChildPicture matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildPicture requireOneById(int $id) Return the first ChildPicture filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByTitle(string $title) Return the first ChildPicture filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByDescription(string $description) Return the first ChildPicture filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneBySkillId(int $skill_id) Return the first ChildPicture filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByPhotographer(string $photographer) Return the first ChildPicture filtered by the photographer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByMovender(string $movender) Return the first ChildPicture filtered by the movender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByMovenderId(int $movender_id) Return the first ChildPicture filtered by the movender_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByUploaderId(int $uploader_id) Return the first ChildPicture filtered by the uploader_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPicture[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPicture objects based on current ModelCriteria
  * @method     ChildPicture[]|ObjectCollection findById(int $id) Return ChildPicture objects filtered by the id column
@@ -82,6 +95,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  */
 abstract class PictureQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\PictureQuery object.
@@ -661,7 +675,7 @@ abstract class PictureQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildPictureQuery The current query, for fluid interface

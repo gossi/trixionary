@@ -1,23 +1,22 @@
 <?php
 namespace gossi\trixionary\action;
 
-use keeko\core\action\AbstractAction;
+use Cocur\Slugify\Slugify;
+use keeko\framework\foundation\AbstractAction;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Propel\Generator\Behavior\Sluggable\SluggableBehavior;
-use Cocur\Slugify\Slugify;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Upload media
- * 
+ *
  * @author gossi
  */
 class UploadAction extends AbstractAction {
 
 	/**
 	 * Automatically generated run method
-	 * 
+	 *
 	 * @param Request $request
 	 * @return Response
 	 */
@@ -36,11 +35,11 @@ class UploadAction extends AbstractAction {
 						$mimeTypesMatch = true;
 					}
 				}
-				
+
 				if (!$mimeTypesMatch) {
 					throw new FileException('No matching mime type');
 				}
-				
+
 				$exts = ['png', 'jpg', 'jpeg', 'mov', 'mp4'];
 				$extMatch = false;
 				foreach ($exts as $ext) {
@@ -48,11 +47,11 @@ class UploadAction extends AbstractAction {
 						$extMatch = true;
 					}
 				}
-				
+
 				if (!$extMatch) {
 					throw new FileException('No matching extension');
 				}
-			
+
 				$slugifier = new Slugify();
 				$fileName = str_replace('.' . $file->getClientOriginalExtension(), '', $fileName);
 				$fileName = $slugifier->slugify($fileName) . '.' . $file->getClientOriginalExtension();

@@ -62,16 +62,16 @@ abstract class SkillPart implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the composite_id field.
-     * @var        int
-     */
-    protected $composite_id;
-
-    /**
      * The value for the part_id field.
      * @var        int
      */
     protected $part_id;
+
+    /**
+     * The value for the composite_id field.
+     * @var        int
+     */
+    protected $composite_id;
 
     /**
      * @var        ChildSkill
@@ -309,16 +309,6 @@ abstract class SkillPart implements ActiveRecordInterface
     }
 
     /**
-     * Get the [composite_id] column value.
-     *
-     * @return int
-     */
-    public function getCompositeId()
-    {
-        return $this->composite_id;
-    }
-
-    /**
      * Get the [part_id] column value.
      *
      * @return int
@@ -329,33 +319,19 @@ abstract class SkillPart implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [composite_id] column.
+     * Get the [composite_id] column value.
      *
-     * @param  int $v new value
-     * @return $this|\gossi\trixionary\model\SkillPart The current object (for fluent API support)
+     * @return int
      */
-    public function setCompositeId($v)
+    public function getCompositeId()
     {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->composite_id !== $v) {
-            $this->composite_id = $v;
-            $this->modifiedColumns[SkillPartTableMap::COL_COMPOSITE_ID] = true;
-        }
-
-        if ($this->aSkillRelatedByCompositeId !== null && $this->aSkillRelatedByCompositeId->getId() !== $v) {
-            $this->aSkillRelatedByCompositeId = null;
-        }
-
-        return $this;
-    } // setCompositeId()
+        return $this->composite_id;
+    }
 
     /**
      * Set the value of [part_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillPart The current object (for fluent API support)
      */
     public function setPartId($v)
@@ -375,6 +351,30 @@ abstract class SkillPart implements ActiveRecordInterface
 
         return $this;
     } // setPartId()
+
+    /**
+     * Set the value of [composite_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\SkillPart The current object (for fluent API support)
+     */
+    public function setCompositeId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->composite_id !== $v) {
+            $this->composite_id = $v;
+            $this->modifiedColumns[SkillPartTableMap::COL_COMPOSITE_ID] = true;
+        }
+
+        if ($this->aSkillRelatedByCompositeId !== null && $this->aSkillRelatedByCompositeId->getId() !== $v) {
+            $this->aSkillRelatedByCompositeId = null;
+        }
+
+        return $this;
+    } // setCompositeId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -412,11 +412,11 @@ abstract class SkillPart implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SkillPartTableMap::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->composite_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SkillPartTableMap::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SkillPartTableMap::translateFieldName('PartId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->part_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SkillPartTableMap::translateFieldName('CompositeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->composite_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -447,11 +447,11 @@ abstract class SkillPart implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aSkillRelatedByCompositeId !== null && $this->composite_id !== $this->aSkillRelatedByCompositeId->getId()) {
-            $this->aSkillRelatedByCompositeId = null;
-        }
         if ($this->aSkillRelatedByPartId !== null && $this->part_id !== $this->aSkillRelatedByPartId->getId()) {
             $this->aSkillRelatedByPartId = null;
+        }
+        if ($this->aSkillRelatedByCompositeId !== null && $this->composite_id !== $this->aSkillRelatedByCompositeId->getId()) {
+            $this->aSkillRelatedByCompositeId = null;
         }
     } // ensureConsistency
 
@@ -645,11 +645,11 @@ abstract class SkillPart implements ActiveRecordInterface
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SkillPartTableMap::COL_COMPOSITE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`composite_id`';
-        }
         if ($this->isColumnModified(SkillPartTableMap::COL_PART_ID)) {
             $modifiedColumns[':p' . $index++]  = '`part_id`';
+        }
+        if ($this->isColumnModified(SkillPartTableMap::COL_COMPOSITE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`composite_id`';
         }
 
         $sql = sprintf(
@@ -662,11 +662,11 @@ abstract class SkillPart implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`composite_id`':
-                        $stmt->bindValue($identifier, $this->composite_id, PDO::PARAM_INT);
-                        break;
                     case '`part_id`':
                         $stmt->bindValue($identifier, $this->part_id, PDO::PARAM_INT);
+                        break;
+                    case '`composite_id`':
+                        $stmt->bindValue($identifier, $this->composite_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -724,10 +724,10 @@ abstract class SkillPart implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getCompositeId();
+                return $this->getPartId();
                 break;
             case 1:
-                return $this->getPartId();
+                return $this->getCompositeId();
                 break;
             default:
                 return null;
@@ -759,8 +759,8 @@ abstract class SkillPart implements ActiveRecordInterface
         $alreadyDumpedObjects['SkillPart'][$this->hashCode()] = true;
         $keys = SkillPartTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getCompositeId(),
-            $keys[1] => $this->getPartId(),
+            $keys[0] => $this->getPartId(),
+            $keys[1] => $this->getCompositeId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -833,10 +833,10 @@ abstract class SkillPart implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setCompositeId($value);
+                $this->setPartId($value);
                 break;
             case 1:
-                $this->setPartId($value);
+                $this->setCompositeId($value);
                 break;
         } // switch()
 
@@ -865,10 +865,10 @@ abstract class SkillPart implements ActiveRecordInterface
         $keys = SkillPartTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setCompositeId($arr[$keys[0]]);
+            $this->setPartId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setPartId($arr[$keys[1]]);
+            $this->setCompositeId($arr[$keys[1]]);
         }
     }
 
@@ -911,11 +911,11 @@ abstract class SkillPart implements ActiveRecordInterface
     {
         $criteria = new Criteria(SkillPartTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SkillPartTableMap::COL_COMPOSITE_ID)) {
-            $criteria->add(SkillPartTableMap::COL_COMPOSITE_ID, $this->composite_id);
-        }
         if ($this->isColumnModified(SkillPartTableMap::COL_PART_ID)) {
             $criteria->add(SkillPartTableMap::COL_PART_ID, $this->part_id);
+        }
+        if ($this->isColumnModified(SkillPartTableMap::COL_COMPOSITE_ID)) {
+            $criteria->add(SkillPartTableMap::COL_COMPOSITE_ID, $this->composite_id);
         }
 
         return $criteria;
@@ -934,8 +934,8 @@ abstract class SkillPart implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildSkillPartQuery::create();
-        $criteria->add(SkillPartTableMap::COL_COMPOSITE_ID, $this->composite_id);
         $criteria->add(SkillPartTableMap::COL_PART_ID, $this->part_id);
+        $criteria->add(SkillPartTableMap::COL_COMPOSITE_ID, $this->composite_id);
 
         return $criteria;
     }
@@ -948,20 +948,20 @@ abstract class SkillPart implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getCompositeId() &&
-            null !== $this->getPartId();
+        $validPk = null !== $this->getPartId() &&
+            null !== $this->getCompositeId();
 
         $validPrimaryKeyFKs = 2;
         $primaryKeyFKs = [];
 
-        //relation kk_trixionary_skill_part_fk_e530c3 to table kk_trixionary_skill
+        //relation skill_part_fk_part to table kk_trixionary_skill
         if ($this->aSkillRelatedByPartId && $hash = spl_object_hash($this->aSkillRelatedByPartId)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
-        //relation kk_trixionary_skill_part_fk_2d2ee6 to table kk_trixionary_skill
+        //relation skill_part_fk_composite to table kk_trixionary_skill
         if ($this->aSkillRelatedByCompositeId && $hash = spl_object_hash($this->aSkillRelatedByCompositeId)) {
             $primaryKeyFKs[] = $hash;
         } else {
@@ -985,8 +985,8 @@ abstract class SkillPart implements ActiveRecordInterface
     public function getPrimaryKey()
     {
         $pks = array();
-        $pks[0] = $this->getCompositeId();
-        $pks[1] = $this->getPartId();
+        $pks[0] = $this->getPartId();
+        $pks[1] = $this->getCompositeId();
 
         return $pks;
     }
@@ -999,8 +999,8 @@ abstract class SkillPart implements ActiveRecordInterface
      */
     public function setPrimaryKey($keys)
     {
-        $this->setCompositeId($keys[0]);
-        $this->setPartId($keys[1]);
+        $this->setPartId($keys[0]);
+        $this->setCompositeId($keys[1]);
     }
 
     /**
@@ -1009,7 +1009,7 @@ abstract class SkillPart implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return (null === $this->getCompositeId()) && (null === $this->getPartId());
+        return (null === $this->getPartId()) && (null === $this->getCompositeId());
     }
 
     /**
@@ -1025,8 +1025,8 @@ abstract class SkillPart implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setCompositeId($this->getCompositeId());
         $copyObj->setPartId($this->getPartId());
+        $copyObj->setCompositeId($this->getCompositeId());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1074,7 +1074,7 @@ abstract class SkillPart implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addSkillPartRelatedByPartId($this);
+            $v->addPart($this);
         }
 
 
@@ -1098,7 +1098,7 @@ abstract class SkillPart implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedByPartId->addSkillPartsRelatedByPartId($this);
+                $this->aSkillRelatedByPartId->addParts($this);
              */
         }
 
@@ -1125,7 +1125,7 @@ abstract class SkillPart implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addSkillPartRelatedByCompositeId($this);
+            $v->addComposite($this);
         }
 
 
@@ -1149,7 +1149,7 @@ abstract class SkillPart implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedByCompositeId->addSkillPartsRelatedByCompositeId($this);
+                $this->aSkillRelatedByCompositeId->addComposites($this);
              */
         }
 
@@ -1164,13 +1164,13 @@ abstract class SkillPart implements ActiveRecordInterface
     public function clear()
     {
         if (null !== $this->aSkillRelatedByPartId) {
-            $this->aSkillRelatedByPartId->removeSkillPartRelatedByPartId($this);
+            $this->aSkillRelatedByPartId->removePart($this);
         }
         if (null !== $this->aSkillRelatedByCompositeId) {
-            $this->aSkillRelatedByCompositeId->removeSkillPartRelatedByCompositeId($this);
+            $this->aSkillRelatedByCompositeId->removeComposite($this);
         }
-        $this->composite_id = null;
         $this->part_id = null;
+        $this->composite_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

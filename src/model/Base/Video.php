@@ -551,7 +551,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setId($v)
@@ -571,7 +571,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -591,7 +591,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setDescription($v)
@@ -639,7 +639,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [movender] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setMovender($v)
@@ -659,7 +659,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [movender_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setMovenderId($v)
@@ -679,7 +679,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [uploader_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setUploaderId($v)
@@ -699,7 +699,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [skill_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setSkillId($v)
@@ -723,7 +723,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [reference_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setReferenceId($v)
@@ -747,7 +747,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [poster_url] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setPosterUrl($v)
@@ -767,7 +767,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [provider] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setProvider($v)
@@ -787,7 +787,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [provider_id] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setProviderId($v)
@@ -807,7 +807,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [player_url] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setPlayerUrl($v)
@@ -827,7 +827,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [width] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setWidth($v)
@@ -847,7 +847,7 @@ abstract class Video implements ActiveRecordInterface
     /**
      * Set the value of [height] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
     public function setHeight($v)

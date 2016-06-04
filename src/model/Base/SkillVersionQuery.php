@@ -16,7 +16,7 @@ use gossi\trixionary\model\SkillVersionQuery as ChildSkillVersionQuery;
 use gossi\trixionary\model\Map\SkillVersionTableMap;
 
 /**
- * Base class that represents a query for the 'kk_trixionary_kk_trixionary_skill_version' table.
+ * Base class that represents a query for the 'kk_trixionary_skill_version' table.
  *
  *
  *
@@ -29,6 +29,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery orderByHistory($order = Criteria::ASC) Order by the history column
  * @method     ChildSkillVersionQuery orderByIsTranslation($order = Criteria::ASC) Order by the is_translation column
  * @method     ChildSkillVersionQuery orderByIsRotation($order = Criteria::ASC) Order by the is_rotation column
+ * @method     ChildSkillVersionQuery orderByIsAcyclic($order = Criteria::ASC) Order by the is_acyclic column
  * @method     ChildSkillVersionQuery orderByIsCyclic($order = Criteria::ASC) Order by the is_cyclic column
  * @method     ChildSkillVersionQuery orderByLongitudinalFlags($order = Criteria::ASC) Order by the longitudinal_flags column
  * @method     ChildSkillVersionQuery orderByLatitudinalFlags($order = Criteria::ASC) Order by the latitudinal_flags column
@@ -47,6 +48,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
  * @method     ChildSkillVersionQuery orderByKstrukturId($order = Criteria::ASC) Order by the kstruktur_id column
  * @method     ChildSkillVersionQuery orderByFunctionPhaseId($order = Criteria::ASC) Order by the function_phase_id column
+ * @method     ChildSkillVersionQuery orderByObjectId($order = Criteria::ASC) Order by the object_id column
  * @method     ChildSkillVersionQuery orderByVersion($order = Criteria::ASC) Order by the version column
  * @method     ChildSkillVersionQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
  * @method     ChildSkillVersionQuery orderByVersionComment($order = Criteria::ASC) Order by the version_comment column
@@ -64,6 +66,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery groupByHistory() Group by the history column
  * @method     ChildSkillVersionQuery groupByIsTranslation() Group by the is_translation column
  * @method     ChildSkillVersionQuery groupByIsRotation() Group by the is_rotation column
+ * @method     ChildSkillVersionQuery groupByIsAcyclic() Group by the is_acyclic column
  * @method     ChildSkillVersionQuery groupByIsCyclic() Group by the is_cyclic column
  * @method     ChildSkillVersionQuery groupByLongitudinalFlags() Group by the longitudinal_flags column
  * @method     ChildSkillVersionQuery groupByLatitudinalFlags() Group by the latitudinal_flags column
@@ -82,6 +85,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery groupByPictureId() Group by the picture_id column
  * @method     ChildSkillVersionQuery groupByKstrukturId() Group by the kstruktur_id column
  * @method     ChildSkillVersionQuery groupByFunctionPhaseId() Group by the function_phase_id column
+ * @method     ChildSkillVersionQuery groupByObjectId() Group by the object_id column
  * @method     ChildSkillVersionQuery groupByVersion() Group by the version column
  * @method     ChildSkillVersionQuery groupByVersionCreatedAt() Group by the version_created_at column
  * @method     ChildSkillVersionQuery groupByVersionComment() Group by the version_comment column
@@ -112,6 +116,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion findOneByHistory(string $history) Return the first ChildSkillVersion filtered by the history column
  * @method     ChildSkillVersion findOneByIsTranslation(boolean $is_translation) Return the first ChildSkillVersion filtered by the is_translation column
  * @method     ChildSkillVersion findOneByIsRotation(boolean $is_rotation) Return the first ChildSkillVersion filtered by the is_rotation column
+ * @method     ChildSkillVersion findOneByIsAcyclic(boolean $is_acyclic) Return the first ChildSkillVersion filtered by the is_acyclic column
  * @method     ChildSkillVersion findOneByIsCyclic(boolean $is_cyclic) Return the first ChildSkillVersion filtered by the is_cyclic column
  * @method     ChildSkillVersion findOneByLongitudinalFlags(int $longitudinal_flags) Return the first ChildSkillVersion filtered by the longitudinal_flags column
  * @method     ChildSkillVersion findOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkillVersion filtered by the latitudinal_flags column
@@ -130,13 +135,54 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion findOneByPictureId(int $picture_id) Return the first ChildSkillVersion filtered by the picture_id column
  * @method     ChildSkillVersion findOneByKstrukturId(int $kstruktur_id) Return the first ChildSkillVersion filtered by the kstruktur_id column
  * @method     ChildSkillVersion findOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkillVersion filtered by the function_phase_id column
+ * @method     ChildSkillVersion findOneByObjectId(int $object_id) Return the first ChildSkillVersion filtered by the object_id column
  * @method     ChildSkillVersion findOneByVersion(int $version) Return the first ChildSkillVersion filtered by the version column
  * @method     ChildSkillVersion findOneByVersionCreatedAt(string $version_created_at) Return the first ChildSkillVersion filtered by the version_created_at column
  * @method     ChildSkillVersion findOneByVersionComment(string $version_comment) Return the first ChildSkillVersion filtered by the version_comment column
  * @method     ChildSkillVersion findOneByVariationOfIdVersion(int $variation_of_id_version) Return the first ChildSkillVersion filtered by the variation_of_id_version column
  * @method     ChildSkillVersion findOneByMultipleOfIdVersion(int $multiple_of_id_version) Return the first ChildSkillVersion filtered by the multiple_of_id_version column
  * @method     ChildSkillVersion findOneByKkTrixionarySkillIds(array $kk_trixionary_skill_ids) Return the first ChildSkillVersion filtered by the kk_trixionary_skill_ids column
- * @method     ChildSkillVersion findOneByKkTrixionarySkillVersions(array $kk_trixionary_skill_versions) Return the first ChildSkillVersion filtered by the kk_trixionary_skill_versions column
+ * @method     ChildSkillVersion findOneByKkTrixionarySkillVersions(array $kk_trixionary_skill_versions) Return the first ChildSkillVersion filtered by the kk_trixionary_skill_versions column *
+
+ * @method     ChildSkillVersion requirePk($key, ConnectionInterface $con = null) Return the ChildSkillVersion by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOne(ConnectionInterface $con = null) Return the first ChildSkillVersion matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildSkillVersion requireOneById(int $id) Return the first ChildSkillVersion filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneBySportId(int $sport_id) Return the first ChildSkillVersion filtered by the sport_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByName(string $name) Return the first ChildSkillVersion filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByAlternativeName(string $alternative_name) Return the first ChildSkillVersion filtered by the alternative_name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneBySlug(string $slug) Return the first ChildSkillVersion filtered by the slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByDescription(string $description) Return the first ChildSkillVersion filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByHistory(string $history) Return the first ChildSkillVersion filtered by the history column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsTranslation(boolean $is_translation) Return the first ChildSkillVersion filtered by the is_translation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsRotation(boolean $is_rotation) Return the first ChildSkillVersion filtered by the is_rotation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsAcyclic(boolean $is_acyclic) Return the first ChildSkillVersion filtered by the is_acyclic column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsCyclic(boolean $is_cyclic) Return the first ChildSkillVersion filtered by the is_cyclic column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByLongitudinalFlags(int $longitudinal_flags) Return the first ChildSkillVersion filtered by the longitudinal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkillVersion filtered by the latitudinal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByTransversalFlags(int $transversal_flags) Return the first ChildSkillVersion filtered by the transversal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByMovementDescription(string $movement_description) Return the first ChildSkillVersion filtered by the movement_description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVariationOfId(int $variation_of_id) Return the first ChildSkillVersion filtered by the variation_of_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByStartPositionId(int $start_position_id) Return the first ChildSkillVersion filtered by the start_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByEndPositionId(int $end_position_id) Return the first ChildSkillVersion filtered by the end_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsComposite(boolean $is_composite) Return the first ChildSkillVersion filtered by the is_composite column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByIsMultiple(boolean $is_multiple) Return the first ChildSkillVersion filtered by the is_multiple column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByMultipleOfId(int $multiple_of_id) Return the first ChildSkillVersion filtered by the multiple_of_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByMultiplier(int $multiplier) Return the first ChildSkillVersion filtered by the multiplier column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByGeneration(int $generation) Return the first ChildSkillVersion filtered by the generation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByImportance(int $importance) Return the first ChildSkillVersion filtered by the importance column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByGenerationIds(string $generation_ids) Return the first ChildSkillVersion filtered by the generation_ids column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByPictureId(int $picture_id) Return the first ChildSkillVersion filtered by the picture_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByKstrukturId(int $kstruktur_id) Return the first ChildSkillVersion filtered by the kstruktur_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkillVersion filtered by the function_phase_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByObjectId(int $object_id) Return the first ChildSkillVersion filtered by the object_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVersion(int $version) Return the first ChildSkillVersion filtered by the version column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVersionCreatedAt(string $version_created_at) Return the first ChildSkillVersion filtered by the version_created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVersionComment(string $version_comment) Return the first ChildSkillVersion filtered by the version_comment column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVariationOfIdVersion(int $variation_of_id_version) Return the first ChildSkillVersion filtered by the variation_of_id_version column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByMultipleOfIdVersion(int $multiple_of_id_version) Return the first ChildSkillVersion filtered by the multiple_of_id_version column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByKkTrixionarySkillIds(array $kk_trixionary_skill_ids) Return the first ChildSkillVersion filtered by the kk_trixionary_skill_ids column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByKkTrixionarySkillVersions(array $kk_trixionary_skill_versions) Return the first ChildSkillVersion filtered by the kk_trixionary_skill_versions column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSkillVersion[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSkillVersion objects based on current ModelCriteria
  * @method     ChildSkillVersion[]|ObjectCollection findById(int $id) Return ChildSkillVersion objects filtered by the id column
@@ -148,6 +194,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion[]|ObjectCollection findByHistory(string $history) Return ChildSkillVersion objects filtered by the history column
  * @method     ChildSkillVersion[]|ObjectCollection findByIsTranslation(boolean $is_translation) Return ChildSkillVersion objects filtered by the is_translation column
  * @method     ChildSkillVersion[]|ObjectCollection findByIsRotation(boolean $is_rotation) Return ChildSkillVersion objects filtered by the is_rotation column
+ * @method     ChildSkillVersion[]|ObjectCollection findByIsAcyclic(boolean $is_acyclic) Return ChildSkillVersion objects filtered by the is_acyclic column
  * @method     ChildSkillVersion[]|ObjectCollection findByIsCyclic(boolean $is_cyclic) Return ChildSkillVersion objects filtered by the is_cyclic column
  * @method     ChildSkillVersion[]|ObjectCollection findByLongitudinalFlags(int $longitudinal_flags) Return ChildSkillVersion objects filtered by the longitudinal_flags column
  * @method     ChildSkillVersion[]|ObjectCollection findByLatitudinalFlags(int $latitudinal_flags) Return ChildSkillVersion objects filtered by the latitudinal_flags column
@@ -166,6 +213,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkillVersion objects filtered by the picture_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByKstrukturId(int $kstruktur_id) Return ChildSkillVersion objects filtered by the kstruktur_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByFunctionPhaseId(int $function_phase_id) Return ChildSkillVersion objects filtered by the function_phase_id column
+ * @method     ChildSkillVersion[]|ObjectCollection findByObjectId(int $object_id) Return ChildSkillVersion objects filtered by the object_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersion(int $version) Return ChildSkillVersion objects filtered by the version column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersionCreatedAt(string $version_created_at) Return ChildSkillVersion objects filtered by the version_created_at column
  * @method     ChildSkillVersion[]|ObjectCollection findByVersionComment(string $version_comment) Return ChildSkillVersion objects filtered by the version_comment column
@@ -178,6 +226,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  */
 abstract class SkillVersionQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\SkillVersionQuery object.
@@ -264,7 +313,7 @@ abstract class SkillVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `generation_ids`, `picture_id`, `kstruktur_id`, `function_phase_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `generation_ids`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -647,6 +696,33 @@ abstract class SkillVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SkillVersionTableMap::COL_IS_ROTATION, $isRotation, $comparison);
+    }
+
+    /**
+     * Filter the query on the is_acyclic column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsAcyclic(true); // WHERE is_acyclic = true
+     * $query->filterByIsAcyclic('yes'); // WHERE is_acyclic = true
+     * </code>
+     *
+     * @param     boolean|string $isAcyclic The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByIsAcyclic($isAcyclic = null, $comparison = null)
+    {
+        if (is_string($isAcyclic)) {
+            $isAcyclic = in_array(strtolower($isAcyclic), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_IS_ACYCLIC, $isAcyclic, $comparison);
     }
 
     /**
@@ -1322,6 +1398,47 @@ abstract class SkillVersionQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the object_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByObjectId(1234); // WHERE object_id = 1234
+     * $query->filterByObjectId(array(12, 34)); // WHERE object_id IN (12, 34)
+     * $query->filterByObjectId(array('min' => 12)); // WHERE object_id > 12
+     * </code>
+     *
+     * @param     mixed $objectId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByObjectId($objectId = null, $comparison = null)
+    {
+        if (is_array($objectId)) {
+            $useMinMax = false;
+            if (isset($objectId['min'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_OBJECT_ID, $objectId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($objectId['max'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_OBJECT_ID, $objectId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_OBJECT_ID, $objectId, $comparison);
+    }
+
+    /**
      * Filter the query on the version column
      *
      * Example usage:
@@ -1774,7 +1891,7 @@ abstract class SkillVersionQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the kk_trixionary_kk_trixionary_skill_version table.
+     * Deletes all rows from the kk_trixionary_skill_version table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

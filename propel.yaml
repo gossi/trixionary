@@ -4,11 +4,12 @@ propel:
 
   paths:
     projectDir: .
-    schemaDir: %projectDir%/database
-    outputDir: %schemaDir%
-    phpDir: %projectDir%/src/model
-    phpConfDir: %outputDir%/generated-conf
-    sqlDir: %outputDir%/sql
+    schemaDir: %projectDir%/res/database
+    outputDir: %projectDir%
+    phpDir: %outputDir%/src/model
+    phpConfDir: %schemaDir%/generated-conf
+    sqlDir: %schemaDir%/sql
+    migrationDir: %schemaDir%/migrations
 
   database:
     connections:

@@ -40,9 +40,9 @@ use gossi\trixionary\model\Map\StructureNodeTableMap;
  * @method     ChildStructureNodeQuery rightJoinSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Skill relation
  * @method     ChildStructureNodeQuery innerJoinSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the Skill relation
  *
- * @method     ChildStructureNodeQuery leftJoinStructureNodeParentRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeParentRelatedById relation
- * @method     ChildStructureNodeQuery rightJoinStructureNodeParentRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeParentRelatedById relation
- * @method     ChildStructureNodeQuery innerJoinStructureNodeParentRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNodeParentRelatedById relation
+ * @method     ChildStructureNodeQuery leftJoinStructureNodeParentRelatedByStructureNodeId($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeParentRelatedByStructureNodeId relation
+ * @method     ChildStructureNodeQuery rightJoinStructureNodeParentRelatedByStructureNodeId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeParentRelatedByStructureNodeId relation
+ * @method     ChildStructureNodeQuery innerJoinStructureNodeParentRelatedByStructureNodeId($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNodeParentRelatedByStructureNodeId relation
  *
  * @method     ChildStructureNodeQuery leftJoinStructureNodeParentRelatedByParentId($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeParentRelatedByParentId relation
  * @method     ChildStructureNodeQuery rightJoinStructureNodeParentRelatedByParentId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeParentRelatedByParentId relation
@@ -65,7 +65,16 @@ use gossi\trixionary\model\Map\StructureNodeTableMap;
  * @method     ChildStructureNode findOneByType(string $type) Return the first ChildStructureNode filtered by the type column
  * @method     ChildStructureNode findOneBySkillId(int $skill_id) Return the first ChildStructureNode filtered by the skill_id column
  * @method     ChildStructureNode findOneByTitle(string $title) Return the first ChildStructureNode filtered by the title column
- * @method     ChildStructureNode findOneByDescendantClass(string $descendant_class) Return the first ChildStructureNode filtered by the descendant_class column
+ * @method     ChildStructureNode findOneByDescendantClass(string $descendant_class) Return the first ChildStructureNode filtered by the descendant_class column *
+
+ * @method     ChildStructureNode requirePk($key, ConnectionInterface $con = null) Return the ChildStructureNode by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNode requireOne(ConnectionInterface $con = null) Return the first ChildStructureNode matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildStructureNode requireOneById(int $id) Return the first ChildStructureNode filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNode requireOneByType(string $type) Return the first ChildStructureNode filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNode requireOneBySkillId(int $skill_id) Return the first ChildStructureNode filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNode requireOneByTitle(string $title) Return the first ChildStructureNode filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNode requireOneByDescendantClass(string $descendant_class) Return the first ChildStructureNode filtered by the descendant_class column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildStructureNode[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildStructureNode objects based on current ModelCriteria
  * @method     ChildStructureNode[]|ObjectCollection findById(int $id) Return ChildStructureNode objects filtered by the id column
@@ -78,6 +87,7 @@ use gossi\trixionary\model\Map\StructureNodeTableMap;
  */
 abstract class StructureNodeQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\StructureNodeQuery object.
@@ -505,38 +515,38 @@ abstract class StructureNodeQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\StructureNodeParent object
      *
-     * @param \gossi\trixionary\model\StructureNodeParent|ObjectCollection $structureNodeParent  the related object to use as filter
+     * @param \gossi\trixionary\model\StructureNodeParent|ObjectCollection $structureNodeParent the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildStructureNodeQuery The current query, for fluid interface
      */
-    public function filterByStructureNodeParentRelatedById($structureNodeParent, $comparison = null)
+    public function filterByStructureNodeParentRelatedByStructureNodeId($structureNodeParent, $comparison = null)
     {
         if ($structureNodeParent instanceof \gossi\trixionary\model\StructureNodeParent) {
             return $this
-                ->addUsingAlias(StructureNodeTableMap::COL_ID, $structureNodeParent->getId(), $comparison);
+                ->addUsingAlias(StructureNodeTableMap::COL_ID, $structureNodeParent->getStructureNodeId(), $comparison);
         } elseif ($structureNodeParent instanceof ObjectCollection) {
             return $this
-                ->useStructureNodeParentRelatedByIdQuery()
+                ->useStructureNodeParentRelatedByStructureNodeIdQuery()
                 ->filterByPrimaryKeys($structureNodeParent->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByStructureNodeParentRelatedById() only accepts arguments of type \gossi\trixionary\model\StructureNodeParent or Collection');
+            throw new PropelException('filterByStructureNodeParentRelatedByStructureNodeId() only accepts arguments of type \gossi\trixionary\model\StructureNodeParent or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the StructureNodeParentRelatedById relation
+     * Adds a JOIN clause to the query using the StructureNodeParentRelatedByStructureNodeId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildStructureNodeQuery The current query, for fluid interface
      */
-    public function joinStructureNodeParentRelatedById($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinStructureNodeParentRelatedByStructureNodeId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('StructureNodeParentRelatedById');
+        $relationMap = $tableMap->getRelation('StructureNodeParentRelatedByStructureNodeId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -551,14 +561,14 @@ abstract class StructureNodeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'StructureNodeParentRelatedById');
+            $this->addJoinObject($join, 'StructureNodeParentRelatedByStructureNodeId');
         }
 
         return $this;
     }
 
     /**
-     * Use the StructureNodeParentRelatedById relation StructureNodeParent object
+     * Use the StructureNodeParentRelatedByStructureNodeId relation StructureNodeParent object
      *
      * @see useQuery()
      *
@@ -568,17 +578,17 @@ abstract class StructureNodeQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\StructureNodeParentQuery A secondary query class using the current class as primary query
      */
-    public function useStructureNodeParentRelatedByIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useStructureNodeParentRelatedByStructureNodeIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinStructureNodeParentRelatedById($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'StructureNodeParentRelatedById', '\gossi\trixionary\model\StructureNodeParentQuery');
+            ->joinStructureNodeParentRelatedByStructureNodeId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'StructureNodeParentRelatedByStructureNodeId', '\gossi\trixionary\model\StructureNodeParentQuery');
     }
 
     /**
      * Filter the query by a related \gossi\trixionary\model\StructureNodeParent object
      *
-     * @param \gossi\trixionary\model\StructureNodeParent|ObjectCollection $structureNodeParent  the related object to use as filter
+     * @param \gossi\trixionary\model\StructureNodeParent|ObjectCollection $structureNodeParent the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildStructureNodeQuery The current query, for fluid interface
@@ -651,7 +661,7 @@ abstract class StructureNodeQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\Kstruktur object
      *
-     * @param \gossi\trixionary\model\Kstruktur|ObjectCollection $kstruktur  the related object to use as filter
+     * @param \gossi\trixionary\model\Kstruktur|ObjectCollection $kstruktur the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildStructureNodeQuery The current query, for fluid interface
@@ -724,7 +734,7 @@ abstract class StructureNodeQuery extends ModelCriteria
     /**
      * Filter the query by a related \gossi\trixionary\model\FunctionPhase object
      *
-     * @param \gossi\trixionary\model\FunctionPhase|ObjectCollection $functionPhase  the related object to use as filter
+     * @param \gossi\trixionary\model\FunctionPhase|ObjectCollection $functionPhase the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildStructureNodeQuery The current query, for fluid interface
@@ -806,7 +816,7 @@ abstract class StructureNodeQuery extends ModelCriteria
     public function filterByStructureNodeRelatedByParentId($structureNode, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useStructureNodeParentRelatedByIdQuery()
+            ->useStructureNodeParentRelatedByStructureNodeIdQuery()
             ->filterByStructureNodeRelatedByParentId($structureNode, $comparison)
             ->endUse();
     }
@@ -820,11 +830,11 @@ abstract class StructureNodeQuery extends ModelCriteria
      *
      * @return ChildStructureNodeQuery The current query, for fluid interface
      */
-    public function filterByStructureNodeRelatedById($structureNode, $comparison = Criteria::EQUAL)
+    public function filterByStructureNodeRelatedByStructureNodeId($structureNode, $comparison = Criteria::EQUAL)
     {
         return $this
             ->useStructureNodeParentRelatedByParentIdQuery()
-            ->filterByStructureNodeRelatedById($structureNode, $comparison)
+            ->filterByStructureNodeRelatedByStructureNodeId($structureNode, $comparison)
             ->endUse();
     }
 

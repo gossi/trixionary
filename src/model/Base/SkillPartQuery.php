@@ -20,11 +20,11 @@ use gossi\trixionary\model\Map\SkillPartTableMap;
  *
  *
  *
- * @method     ChildSkillPartQuery orderByCompositeId($order = Criteria::ASC) Order by the composite_id column
  * @method     ChildSkillPartQuery orderByPartId($order = Criteria::ASC) Order by the part_id column
+ * @method     ChildSkillPartQuery orderByCompositeId($order = Criteria::ASC) Order by the composite_id column
  *
- * @method     ChildSkillPartQuery groupByCompositeId() Group by the composite_id column
  * @method     ChildSkillPartQuery groupByPartId() Group by the part_id column
+ * @method     ChildSkillPartQuery groupByCompositeId() Group by the composite_id column
  *
  * @method     ChildSkillPartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildSkillPartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -43,17 +43,24 @@ use gossi\trixionary\model\Map\SkillPartTableMap;
  * @method     ChildSkillPart findOne(ConnectionInterface $con = null) Return the first ChildSkillPart matching the query
  * @method     ChildSkillPart findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkillPart matching the query, or a new ChildSkillPart object populated from the query conditions when no match is found
  *
- * @method     ChildSkillPart findOneByCompositeId(int $composite_id) Return the first ChildSkillPart filtered by the composite_id column
  * @method     ChildSkillPart findOneByPartId(int $part_id) Return the first ChildSkillPart filtered by the part_id column
+ * @method     ChildSkillPart findOneByCompositeId(int $composite_id) Return the first ChildSkillPart filtered by the composite_id column *
+
+ * @method     ChildSkillPart requirePk($key, ConnectionInterface $con = null) Return the ChildSkillPart by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillPart requireOne(ConnectionInterface $con = null) Return the first ChildSkillPart matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildSkillPart requireOneByPartId(int $part_id) Return the first ChildSkillPart filtered by the part_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillPart requireOneByCompositeId(int $composite_id) Return the first ChildSkillPart filtered by the composite_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSkillPart[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSkillPart objects based on current ModelCriteria
- * @method     ChildSkillPart[]|ObjectCollection findByCompositeId(int $composite_id) Return ChildSkillPart objects filtered by the composite_id column
  * @method     ChildSkillPart[]|ObjectCollection findByPartId(int $part_id) Return ChildSkillPart objects filtered by the part_id column
+ * @method     ChildSkillPart[]|ObjectCollection findByCompositeId(int $composite_id) Return ChildSkillPart objects filtered by the composite_id column
  * @method     ChildSkillPart[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
 abstract class SkillPartQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\SkillPartQuery object.
@@ -100,7 +107,7 @@ abstract class SkillPartQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array[$composite_id, $part_id] $key Primary key to use for the query
+     * @param array[$part_id, $composite_id] $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
      * @return ChildSkillPart|array|mixed the result, formatted by the current formatter
@@ -140,7 +147,7 @@ abstract class SkillPartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `composite_id`, `part_id` FROM `kk_trixionary_skill_part` WHERE `composite_id` = :p0 AND `part_id` = :p1';
+        $sql = 'SELECT `part_id`, `composite_id` FROM `kk_trixionary_skill_part` WHERE `part_id` = :p0 AND `composite_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -214,8 +221,8 @@ abstract class SkillPartQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $key[0], Criteria::EQUAL);
-        $this->addUsingAlias(SkillPartTableMap::COL_PART_ID, $key[1], Criteria::EQUAL);
+        $this->addUsingAlias(SkillPartTableMap::COL_PART_ID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $key[1], Criteria::EQUAL);
 
         return $this;
     }
@@ -233,56 +240,13 @@ abstract class SkillPartQuery extends ModelCriteria
             return $this->add(null, '1<>1', Criteria::CUSTOM);
         }
         foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(SkillPartTableMap::COL_COMPOSITE_ID, $key[0], Criteria::EQUAL);
-            $cton1 = $this->getNewCriterion(SkillPartTableMap::COL_PART_ID, $key[1], Criteria::EQUAL);
+            $cton0 = $this->getNewCriterion(SkillPartTableMap::COL_PART_ID, $key[0], Criteria::EQUAL);
+            $cton1 = $this->getNewCriterion(SkillPartTableMap::COL_COMPOSITE_ID, $key[1], Criteria::EQUAL);
             $cton0->addAnd($cton1);
             $this->addOr($cton0);
         }
 
         return $this;
-    }
-
-    /**
-     * Filter the query on the composite_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCompositeId(1234); // WHERE composite_id = 1234
-     * $query->filterByCompositeId(array(12, 34)); // WHERE composite_id IN (12, 34)
-     * $query->filterByCompositeId(array('min' => 12)); // WHERE composite_id > 12
-     * </code>
-     *
-     * @see       filterBySkillRelatedByCompositeId()
-     *
-     * @param     mixed $compositeId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildSkillPartQuery The current query, for fluid interface
-     */
-    public function filterByCompositeId($compositeId = null, $comparison = null)
-    {
-        if (is_array($compositeId)) {
-            $useMinMax = false;
-            if (isset($compositeId['min'])) {
-                $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($compositeId['max'])) {
-                $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId, $comparison);
     }
 
     /**
@@ -326,6 +290,49 @@ abstract class SkillPartQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SkillPartTableMap::COL_PART_ID, $partId, $comparison);
+    }
+
+    /**
+     * Filter the query on the composite_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCompositeId(1234); // WHERE composite_id = 1234
+     * $query->filterByCompositeId(array(12, 34)); // WHERE composite_id IN (12, 34)
+     * $query->filterByCompositeId(array('min' => 12)); // WHERE composite_id > 12
+     * </code>
+     *
+     * @see       filterBySkillRelatedByCompositeId()
+     *
+     * @param     mixed $compositeId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillPartQuery The current query, for fluid interface
+     */
+    public function filterByCompositeId($compositeId = null, $comparison = null)
+    {
+        if (is_array($compositeId)) {
+            $useMinMax = false;
+            if (isset($compositeId['min'])) {
+                $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($compositeId['max'])) {
+                $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillPartTableMap::COL_COMPOSITE_ID, $compositeId, $comparison);
     }
 
     /**
@@ -492,8 +499,8 @@ abstract class SkillPartQuery extends ModelCriteria
     public function prune($skillPart = null)
     {
         if ($skillPart) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(SkillPartTableMap::COL_COMPOSITE_ID), $skillPart->getCompositeId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond1', $this->getAliasedColName(SkillPartTableMap::COL_PART_ID), $skillPart->getPartId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond0', $this->getAliasedColName(SkillPartTableMap::COL_PART_ID), $skillPart->getPartId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond1', $this->getAliasedColName(SkillPartTableMap::COL_COMPOSITE_ID), $skillPart->getCompositeId(), Criteria::NOT_EQUAL);
             $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }
 

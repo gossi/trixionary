@@ -72,14 +72,14 @@ class SkillDependencyTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 2;
 
     /**
-     * the column name for the skill_id field
+     * the column name for the dependency_id field
      */
-    const COL_SKILL_ID = 'kk_trixionary_skill_dependency.skill_id';
+    const COL_DEPENDENCY_ID = 'kk_trixionary_skill_dependency.dependency_id';
 
     /**
-     * the column name for the depends_id field
+     * the column name for the parent_id field
      */
-    const COL_DEPENDS_ID = 'kk_trixionary_skill_dependency.depends_id';
+    const COL_PARENT_ID = 'kk_trixionary_skill_dependency.parent_id';
 
     /**
      * The default string format for model objects of the related table
@@ -93,10 +93,10 @@ class SkillDependencyTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('SkillId', 'DependsId', ),
-        self::TYPE_CAMELNAME     => array('skillId', 'dependsId', ),
-        self::TYPE_COLNAME       => array(SkillDependencyTableMap::COL_SKILL_ID, SkillDependencyTableMap::COL_DEPENDS_ID, ),
-        self::TYPE_FIELDNAME     => array('skill_id', 'depends_id', ),
+        self::TYPE_PHPNAME       => array('DependencyId', 'ParentId', ),
+        self::TYPE_CAMELNAME     => array('dependencyId', 'parentId', ),
+        self::TYPE_COLNAME       => array(SkillDependencyTableMap::COL_DEPENDENCY_ID, SkillDependencyTableMap::COL_PARENT_ID, ),
+        self::TYPE_FIELDNAME     => array('dependency_id', 'parent_id', ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -107,10 +107,10 @@ class SkillDependencyTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('SkillId' => 0, 'DependsId' => 1, ),
-        self::TYPE_CAMELNAME     => array('skillId' => 0, 'dependsId' => 1, ),
-        self::TYPE_COLNAME       => array(SkillDependencyTableMap::COL_SKILL_ID => 0, SkillDependencyTableMap::COL_DEPENDS_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('skill_id' => 0, 'depends_id' => 1, ),
+        self::TYPE_PHPNAME       => array('DependencyId' => 0, 'ParentId' => 1, ),
+        self::TYPE_CAMELNAME     => array('dependencyId' => 0, 'parentId' => 1, ),
+        self::TYPE_COLNAME       => array(SkillDependencyTableMap::COL_DEPENDENCY_ID => 0, SkillDependencyTableMap::COL_PARENT_ID => 1, ),
+        self::TYPE_FIELDNAME     => array('dependency_id' => 0, 'parent_id' => 1, ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -132,8 +132,8 @@ class SkillDependencyTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('skill_id', 'SkillId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
-        $this->addForeignPrimaryKey('depends_id', 'DependsId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
+        $this->addForeignPrimaryKey('dependency_id', 'DependencyId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
+        $this->addForeignPrimaryKey('parent_id', 'ParentId', 'INTEGER' , 'kk_trixionary_skill', 'id', true, null, null);
     } // initialize()
 
     /**
@@ -141,8 +141,20 @@ class SkillDependencyTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('SkillRelatedByDependsId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('depends_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedBySkillId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('SkillRelatedByDependencyId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':dependency_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('SkillRelatedByParentId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':parent_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
     } // buildRelations()
 
     /**
@@ -160,7 +172,7 @@ class SkillDependencyTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled()) {
             if (null === $key) {
-                $key = serialize(array((string) $obj->getSkillId(), (string) $obj->getDependsId()));
+                $key = serialize(array((string) $obj->getDependencyId(), (string) $obj->getParentId()));
             } // if key === null
             self::$instances[$key] = $obj;
         }
@@ -180,7 +192,7 @@ class SkillDependencyTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
             if (is_object($value) && $value instanceof \gossi\trixionary\model\SkillDependency) {
-                $key = serialize(array((string) $value->getSkillId(), (string) $value->getDependsId()));
+                $key = serialize(array((string) $value->getDependencyId(), (string) $value->getParentId()));
 
             } elseif (is_array($value) && count($value) === 2) {
                 // assume we've been passed a primary key";
@@ -214,11 +226,11 @@ class SkillDependencyTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('DependsId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DependencyId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('DependsId', TableMap::TYPE_PHPNAME, $indexType)]));
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('DependencyId', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -240,12 +252,12 @@ class SkillDependencyTableMap extends TableMap
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('DependencyId', TableMap::TYPE_PHPNAME, $indexType)
         ];
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 1 + $offset
-                : self::translateFieldName('DependsId', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)
         ];
 
         return $pks;
@@ -348,11 +360,11 @@ class SkillDependencyTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(SkillDependencyTableMap::COL_SKILL_ID);
-            $criteria->addSelectColumn(SkillDependencyTableMap::COL_DEPENDS_ID);
+            $criteria->addSelectColumn(SkillDependencyTableMap::COL_DEPENDENCY_ID);
+            $criteria->addSelectColumn(SkillDependencyTableMap::COL_PARENT_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.skill_id');
-            $criteria->addSelectColumn($alias . '.depends_id');
+            $criteria->addSelectColumn($alias . '.dependency_id');
+            $criteria->addSelectColumn($alias . '.parent_id');
         }
     }
 
@@ -411,8 +423,8 @@ class SkillDependencyTableMap extends TableMap
                 $values = array($values);
             }
             foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(SkillDependencyTableMap::COL_SKILL_ID, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(SkillDependencyTableMap::COL_DEPENDS_ID, $value[1]));
+                $criterion = $criteria->getNewCriterion(SkillDependencyTableMap::COL_DEPENDENCY_ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(SkillDependencyTableMap::COL_PARENT_ID, $value[1]));
                 $criteria->addOr($criterion);
             }
         }

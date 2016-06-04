@@ -55,7 +55,15 @@ use gossi\trixionary\model\Map\KstrukturTableMap;
  * @method     ChildKstruktur findOneById(int $id) Return the first ChildKstruktur filtered by the id column
  * @method     ChildKstruktur findOneByType(string $type) Return the first ChildKstruktur filtered by the type column
  * @method     ChildKstruktur findOneBySkillId(int $skill_id) Return the first ChildKstruktur filtered by the skill_id column
- * @method     ChildKstruktur findOneByTitle(string $title) Return the first ChildKstruktur filtered by the title column
+ * @method     ChildKstruktur findOneByTitle(string $title) Return the first ChildKstruktur filtered by the title column *
+
+ * @method     ChildKstruktur requirePk($key, ConnectionInterface $con = null) Return the ChildKstruktur by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildKstruktur requireOne(ConnectionInterface $con = null) Return the first ChildKstruktur matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildKstruktur requireOneById(int $id) Return the first ChildKstruktur filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildKstruktur requireOneByType(string $type) Return the first ChildKstruktur filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildKstruktur requireOneBySkillId(int $skill_id) Return the first ChildKstruktur filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildKstruktur requireOneByTitle(string $title) Return the first ChildKstruktur filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildKstruktur[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildKstruktur objects based on current ModelCriteria
  * @method     ChildKstruktur[]|ObjectCollection findById(int $id) Return ChildKstruktur objects filtered by the id column
@@ -67,6 +75,7 @@ use gossi\trixionary\model\Map\KstrukturTableMap;
  */
 abstract class KstrukturQuery extends ChildStructureNodeQuery
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\KstrukturQuery object.
@@ -544,7 +553,7 @@ abstract class KstrukturQuery extends ChildStructureNodeQuery
     /**
      * Filter the query by a related \gossi\trixionary\model\Skill object
      *
-     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill  the related object to use as filter
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildKstrukturQuery The current query, for fluid interface

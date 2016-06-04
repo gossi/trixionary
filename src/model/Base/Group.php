@@ -408,7 +408,7 @@ abstract class Group implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
      */
     public function setId($v)
@@ -428,7 +428,7 @@ abstract class Group implements ActiveRecordInterface
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -448,7 +448,7 @@ abstract class Group implements ActiveRecordInterface
     /**
      * Set the value of [description] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
      */
     public function setDescription($v)
@@ -468,7 +468,7 @@ abstract class Group implements ActiveRecordInterface
     /**
      * Set the value of [slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
      */
     public function setSlug($v)
@@ -488,7 +488,7 @@ abstract class Group implements ActiveRecordInterface
     /**
      * Set the value of [sport_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
      */
     public function setSportId($v)

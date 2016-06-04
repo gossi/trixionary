@@ -158,9 +158,27 @@ class PositionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Sport', '\\gossi\\trixionary\\model\\Sport', RelationMap::MANY_TO_ONE, array('sport_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('SkillRelatedByStartPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'start_position_id', ), null, null, 'SkillsRelatedByStartPositionId');
-        $this->addRelation('SkillRelatedByEndPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array('id' => 'end_position_id', ), null, null, 'SkillsRelatedByEndPositionId');
+        $this->addRelation('Sport', '\\gossi\\trixionary\\model\\Sport', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':sport_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('SkillRelatedByStartPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':start_position_id',
+    1 => ':id',
+  ),
+), null, null, 'SkillsRelatedByStartPositionId', false);
+        $this->addRelation('SkillRelatedByEndPositionId', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':end_position_id',
+    1 => ':id',
+  ),
+), null, null, 'SkillsRelatedByEndPositionId', false);
     } // buildRelations()
 
     /**

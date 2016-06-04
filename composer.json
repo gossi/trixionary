@@ -4,7 +4,8 @@
 	"type" : "keeko-module",
 	"license" : "MIT",
 	"authors" : [{
-			"name" : "gossi"
+			"name" : "Thomas Gossmann",
+			"homepage" : "http://gos.si"
 		}
 	],
 	"autoload" : {
@@ -18,2607 +19,1873 @@
 		"cocur/slugify" : "~0"
 	},
 	"require-dev" : {
-		"composer/composer" : "@dev",
+		"keeko/framework" : "dev-master",
 		"keeko/core" : "dev-master",
-		"propel/propel" : "@dev"
+		"propel/propel" : "@dev",
+		"puli/repository" : "@beta",
+		"puli/composer-plugin" : "@beta",
+		"puli/twig-extension" : "@beta",
+		"puli/url-generator" : "@beta",
+		"puli/discovery" : "@beta"
 	},
 	"extra" : {
 		"keeko" : {
 			"module" : {
 				"title" : "Trixionary",
 				"class" : "gossi\\trixionary\\TrixionaryModule",
-				"slug" : "gossi.trixionary",
-				"default-action" : "sport-list",
 				"actions" : {
-					"sport-create" : {
-						"title" : "Creates a sport",
-						"class" : "gossi\\trixionary\\action\\SportCreateAction",
+					"sport-paginate" : {
+						"title" : "Paginates sports",
+						"class" : "gossi\\trixionary\\action\\model\\SportPaginateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SportCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportPaginateJsonResponder"
+						}
+					},
+					"sport-create" : {
+						"title" : "Creates a sport",
+						"class" : "gossi\\trixionary\\action\\model\\SportCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportCreateJsonResponder"
 						}
 					},
 					"sport-read" : {
 						"title" : "Reads a sport",
-						"class" : "gossi\\trixionary\\action\\SportReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\SportReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SportReadJsonResponse"
-						}
-					},
-					"sport-list" : {
-						"title" : "List all sports",
-						"class" : "gossi\\trixionary\\action\\SportListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SportListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportReadJsonResponder"
 						}
 					},
 					"sport-update" : {
 						"title" : "Updates a sport",
-						"class" : "gossi\\trixionary\\action\\SportUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\SportUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SportUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportUpdateJsonResponder"
 						}
 					},
 					"sport-delete" : {
 						"title" : "Deletes a sport",
-						"class" : "gossi\\trixionary\\action\\SportDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\SportDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SportDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportDeleteJsonResponder"
+						}
+					},
+					"sport-to-object-relationship-read" : {
+						"title" : "Reads the relationship of sport to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						}
+					},
+					"sport-to-object-relationship-update" : {
+						"title" : "Updates the relationship of sport to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						}
+					},
+					"sport-to-object-relationship-add" : {
+						"title" : "Adds object as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						}
+					},
+					"sport-to-object-relationship-remove" : {
+						"title" : "Removes object as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						}
+					},
+					"sport-to-position-relationship-read" : {
+						"title" : "Reads the relationship of sport to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						}
+					},
+					"sport-to-position-relationship-update" : {
+						"title" : "Updates the relationship of sport to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						}
+					},
+					"sport-to-position-relationship-add" : {
+						"title" : "Adds position as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						}
+					},
+					"sport-to-position-relationship-remove" : {
+						"title" : "Removes position as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						}
+					},
+					"sport-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of sport to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						}
+					},
+					"sport-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of sport to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						}
+					},
+					"sport-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						}
+					},
+					"sport-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						}
+					},
+					"sport-to-group-relationship-read" : {
+						"title" : "Reads the relationship of sport to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						}
+					},
+					"sport-to-group-relationship-update" : {
+						"title" : "Updates the relationship of sport to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						}
+					},
+					"sport-to-group-relationship-add" : {
+						"title" : "Adds group as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						}
+					},
+					"sport-to-group-relationship-remove" : {
+						"title" : "Removes group as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						}
+					},
+					"object-paginate" : {
+						"title" : "Paginates objects",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectPaginateJsonResponder"
+						}
+					},
+					"object-create" : {
+						"title" : "Creates an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectCreateJsonResponder"
+						}
+					},
+					"object-read" : {
+						"title" : "Reads an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectReadJsonResponder"
+						}
+					},
+					"object-update" : {
+						"title" : "Updates an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectUpdateJsonResponder"
+						}
+					},
+					"object-delete" : {
+						"title" : "Deletes an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectDeleteAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectDeleteJsonResponder"
+						}
+					},
+					"object-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of object to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
+						}
+					},
+					"object-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of object to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
+						}
+					},
+					"position-paginate" : {
+						"title" : "Paginates positions",
+						"class" : "gossi\\trixionary\\action\\model\\PositionPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionPaginateJsonResponder"
 						}
 					},
 					"position-create" : {
 						"title" : "Creates a position",
-						"class" : "gossi\\trixionary\\action\\PositionCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\PositionCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PositionCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionCreateJsonResponder"
 						}
 					},
 					"position-read" : {
 						"title" : "Reads a position",
-						"class" : "gossi\\trixionary\\action\\PositionReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\PositionReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PositionReadJsonResponse"
-						}
-					},
-					"position-list" : {
-						"title" : "List all positions",
-						"class" : "gossi\\trixionary\\action\\PositionListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PositionListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionReadJsonResponder"
 						}
 					},
 					"position-update" : {
 						"title" : "Updates a position",
-						"class" : "gossi\\trixionary\\action\\PositionUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\PositionUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PositionUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionUpdateJsonResponder"
 						}
 					},
 					"position-delete" : {
 						"title" : "Deletes a position",
-						"class" : "gossi\\trixionary\\action\\PositionDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\PositionDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PositionDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionDeleteJsonResponder"
+						}
+					},
+					"position-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of position to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
+						}
+					},
+					"position-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of position to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
+						}
+					},
+					"position-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of position to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						}
+					},
+					"position-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of position to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						}
+					},
+					"position-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						}
+					},
+					"position-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						}
+					},
+					"skill-paginate" : {
+						"title" : "Paginates skills",
+						"class" : "gossi\\trixionary\\action\\model\\SkillPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillPaginateJsonResponder"
 						}
 					},
 					"skill-create" : {
 						"title" : "Creates a skill",
-						"class" : "gossi\\trixionary\\action\\SkillCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\SkillCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SkillCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillCreateJsonResponder"
 						}
 					},
 					"skill-read" : {
 						"title" : "Reads a skill",
-						"class" : "gossi\\trixionary\\action\\SkillReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\SkillReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SkillReadJsonResponse"
-						}
-					},
-					"skill-list" : {
-						"title" : "List all skills",
-						"class" : "gossi\\trixionary\\action\\SkillListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SkillListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillReadJsonResponder"
 						}
 					},
 					"skill-update" : {
 						"title" : "Updates a skill",
-						"class" : "gossi\\trixionary\\action\\SkillUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\SkillUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SkillUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillUpdateJsonResponder"
 						}
 					},
 					"skill-delete" : {
 						"title" : "Deletes a skill",
-						"class" : "gossi\\trixionary\\action\\SkillDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\SkillDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\SkillDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillDeleteJsonResponder"
+						}
+					},
+					"skill-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of skill to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
+						}
+					},
+					"skill-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of skill to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
+						}
+					},
+					"skill-to-variation-relationship-read" : {
+						"title" : "Reads the relationship of skill to variation",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						}
+					},
+					"skill-to-variation-relationship-update" : {
+						"title" : "Updates the relationship of skill to variation",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						}
+					},
+					"skill-to-variation-relationship-add" : {
+						"title" : "Adds variation as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						}
+					},
+					"skill-to-variation-relationship-remove" : {
+						"title" : "Removes variation as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						}
+					},
+					"skill-to-variation_of-relationship-read" : {
+						"title" : "Reads the relationship of skill to variation_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
+						}
+					},
+					"skill-to-variation_of-relationship-update" : {
+						"title" : "Updates the relationship of skill to variation_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
+						}
+					},
+					"skill-to-multiple-relationship-read" : {
+						"title" : "Reads the relationship of skill to multiple",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						}
+					},
+					"skill-to-multiple-relationship-update" : {
+						"title" : "Updates the relationship of skill to multiple",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						}
+					},
+					"skill-to-multiple-relationship-add" : {
+						"title" : "Adds multiple as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						}
+					},
+					"skill-to-multiple-relationship-remove" : {
+						"title" : "Removes multiple as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						}
+					},
+					"skill-to-multiple_of-relationship-read" : {
+						"title" : "Reads the relationship of skill to multiple_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
+						}
+					},
+					"skill-to-multiple_of-relationship-update" : {
+						"title" : "Updates the relationship of skill to multiple_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
+						}
+					},
+					"skill-to-start_position-relationship-read" : {
+						"title" : "Reads the relationship of skill to start_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
+						}
+					},
+					"skill-to-start_position-relationship-update" : {
+						"title" : "Updates the relationship of skill to start_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
+						}
+					},
+					"skill-to-end_position-relationship-read" : {
+						"title" : "Reads the relationship of skill to end_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
+						}
+					},
+					"skill-to-end_position-relationship-update" : {
+						"title" : "Updates the relationship of skill to end_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
+						}
+					},
+					"skill-to-featured_picture-relationship-read" : {
+						"title" : "Reads the relationship of skill to featured_picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
+						}
+					},
+					"skill-to-featured_picture-relationship-update" : {
+						"title" : "Updates the relationship of skill to featured_picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
+						}
+					},
+					"skill-to-kstruktur_root-relationship-read" : {
+						"title" : "Reads the relationship of skill to kstruktur_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
+						}
+					},
+					"skill-to-kstruktur_root-relationship-update" : {
+						"title" : "Updates the relationship of skill to kstruktur_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
+						}
+					},
+					"skill-to-function_phase_root-relationship-read" : {
+						"title" : "Reads the relationship of skill to function_phase_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
+						}
+					},
+					"skill-to-function_phase_root-relationship-update" : {
+						"title" : "Updates the relationship of skill to function_phase_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
+						}
+					},
+					"skill-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of skill to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillJsonResponder"
+						}
+					},
+					"skill-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of skill to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillJsonResponder"
+						}
+					},
+					"skill-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillJsonResponder"
+						}
+					},
+					"skill-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillJsonResponder"
+						}
+					},
+					"skill-to-group-relationship-read" : {
+						"title" : "Reads the relationship of skill to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						}
+					},
+					"skill-to-group-relationship-update" : {
+						"title" : "Updates the relationship of skill to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						}
+					},
+					"skill-to-group-relationship-add" : {
+						"title" : "Adds group as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						}
+					},
+					"skill-to-group-relationship-remove" : {
+						"title" : "Removes group as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						}
+					},
+					"skill-to-picture-relationship-read" : {
+						"title" : "Reads the relationship of skill to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						}
+					},
+					"skill-to-picture-relationship-update" : {
+						"title" : "Updates the relationship of skill to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						}
+					},
+					"skill-to-picture-relationship-add" : {
+						"title" : "Adds picture as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						}
+					},
+					"skill-to-picture-relationship-remove" : {
+						"title" : "Removes picture as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						}
+					},
+					"skill-to-video-relationship-read" : {
+						"title" : "Reads the relationship of skill to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						}
+					},
+					"skill-to-video-relationship-update" : {
+						"title" : "Updates the relationship of skill to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						}
+					},
+					"skill-to-video-relationship-add" : {
+						"title" : "Adds video as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						}
+					},
+					"skill-to-video-relationship-remove" : {
+						"title" : "Removes video as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						}
+					},
+					"skill-to-reference-relationship-read" : {
+						"title" : "Reads the relationship of skill to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						}
+					},
+					"skill-to-reference-relationship-update" : {
+						"title" : "Updates the relationship of skill to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						}
+					},
+					"skill-to-reference-relationship-add" : {
+						"title" : "Adds reference as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						}
+					},
+					"skill-to-reference-relationship-remove" : {
+						"title" : "Removes reference as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						}
+					},
+					"skill-to-kstruktur-relationship-read" : {
+						"title" : "Reads the relationship of skill to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						}
+					},
+					"skill-to-kstruktur-relationship-update" : {
+						"title" : "Updates the relationship of skill to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						}
+					},
+					"skill-to-kstruktur-relationship-add" : {
+						"title" : "Adds kstruktur as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						}
+					},
+					"skill-to-kstruktur-relationship-remove" : {
+						"title" : "Removes kstruktur as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						}
+					},
+					"skill-to-function_phase-relationship-read" : {
+						"title" : "Reads the relationship of skill to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						}
+					},
+					"skill-to-function_phase-relationship-update" : {
+						"title" : "Updates the relationship of skill to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						}
+					},
+					"skill-to-function_phase-relationship-add" : {
+						"title" : "Adds function_phase as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						}
+					},
+					"skill-to-function_phase-relationship-remove" : {
+						"title" : "Removes function_phase as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						}
+					},
+					"skill-to-skill_version-relationship-read" : {
+						"title" : "Reads the relationship of skill to skill_version",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillVersionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillVersionJsonResponder"
+						}
+					},
+					"skill-to-skill_version-relationship-update" : {
+						"title" : "Updates the relationship of skill to skill_version",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillVersionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillVersionJsonResponder"
+						}
+					},
+					"skill-to-skill_version-relationship-add" : {
+						"title" : "Adds skill_version as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillVersionAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillVersionJsonResponder"
+						}
+					},
+					"skill-to-skill_version-relationship-remove" : {
+						"title" : "Removes skill_version as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSkillVersionRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSkillVersionJsonResponder"
+						}
+					},
+					"group-paginate" : {
+						"title" : "Paginates groups",
+						"class" : "gossi\\trixionary\\action\\model\\GroupPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupPaginateJsonResponder"
 						}
 					},
 					"group-create" : {
 						"title" : "Creates a group",
-						"class" : "gossi\\trixionary\\action\\GroupCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\GroupCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\GroupCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupCreateJsonResponder"
 						}
 					},
 					"group-read" : {
 						"title" : "Reads a group",
-						"class" : "gossi\\trixionary\\action\\GroupReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\GroupReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\GroupReadJsonResponse"
-						}
-					},
-					"group-list" : {
-						"title" : "List all groups",
-						"class" : "gossi\\trixionary\\action\\GroupListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\GroupListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupReadJsonResponder"
 						}
 					},
 					"group-update" : {
 						"title" : "Updates a group",
-						"class" : "gossi\\trixionary\\action\\GroupUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\GroupUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\GroupUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupUpdateJsonResponder"
 						}
 					},
 					"group-delete" : {
 						"title" : "Deletes a group",
-						"class" : "gossi\\trixionary\\action\\GroupDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\GroupDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\GroupDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupDeleteJsonResponder"
+						}
+					},
+					"group-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of group to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
+						}
+					},
+					"group-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of group to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
+						}
+					},
+					"group-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of group to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						}
+					},
+					"group-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of group to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						}
+					},
+					"group-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						}
+					},
+					"group-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						}
+					},
+					"picture-paginate" : {
+						"title" : "Paginates pictures",
+						"class" : "gossi\\trixionary\\action\\model\\PicturePaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PicturePaginateJsonResponder"
 						}
 					},
 					"picture-create" : {
 						"title" : "Creates a picture",
-						"class" : "gossi\\trixionary\\action\\PictureCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\PictureCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PictureCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureCreateJsonResponder"
 						}
 					},
 					"picture-read" : {
 						"title" : "Reads a picture",
-						"class" : "gossi\\trixionary\\action\\PictureReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\PictureReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PictureReadJsonResponse"
-						}
-					},
-					"picture-list" : {
-						"title" : "List all pictures",
-						"class" : "gossi\\trixionary\\action\\PictureListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PictureListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureReadJsonResponder"
 						}
 					},
 					"picture-update" : {
 						"title" : "Updates a picture",
-						"class" : "gossi\\trixionary\\action\\PictureUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\PictureUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PictureUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureUpdateJsonResponder"
 						}
 					},
 					"picture-delete" : {
 						"title" : "Deletes a picture",
-						"class" : "gossi\\trixionary\\action\\PictureDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\PictureDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\PictureDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureDeleteJsonResponder"
+						}
+					},
+					"picture-to-featured_skill-relationship-read" : {
+						"title" : "Reads the relationship of picture to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						}
+					},
+					"picture-to-featured_skill-relationship-update" : {
+						"title" : "Updates the relationship of picture to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						}
+					},
+					"picture-to-featured_skill-relationship-add" : {
+						"title" : "Adds featured_skill as relationship to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						}
+					},
+					"picture-to-featured_skill-relationship-remove" : {
+						"title" : "Removes featured_skill as relationship to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						}
+					},
+					"picture-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of picture to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
+						}
+					},
+					"picture-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of picture to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
+						}
+					},
+					"video-paginate" : {
+						"title" : "Paginates videos",
+						"class" : "gossi\\trixionary\\action\\model\\VideoPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoPaginateJsonResponder"
 						}
 					},
 					"video-create" : {
 						"title" : "Creates a video",
-						"class" : "gossi\\trixionary\\action\\VideoCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\VideoCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\VideoCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoCreateJsonResponder"
 						}
 					},
 					"video-read" : {
 						"title" : "Reads a video",
-						"class" : "gossi\\trixionary\\action\\VideoReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\VideoReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\VideoReadJsonResponse"
-						}
-					},
-					"video-list" : {
-						"title" : "List all videos",
-						"class" : "gossi\\trixionary\\action\\VideoListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\VideoListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoReadJsonResponder"
 						}
 					},
 					"video-update" : {
 						"title" : "Updates a video",
-						"class" : "gossi\\trixionary\\action\\VideoUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\VideoUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\VideoUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoUpdateJsonResponder"
 						}
 					},
 					"video-delete" : {
 						"title" : "Deletes a video",
-						"class" : "gossi\\trixionary\\action\\VideoDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\VideoDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\VideoDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoDeleteJsonResponder"
+						}
+					},
+					"video-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of video to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
+						}
+					},
+					"video-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of video to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
+						}
+					},
+					"video-to-reference-relationship-read" : {
+						"title" : "Reads the relationship of video to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
+						}
+					},
+					"video-to-reference-relationship-update" : {
+						"title" : "Updates the relationship of video to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
+						}
+					},
+					"reference-paginate" : {
+						"title" : "Paginates references",
+						"class" : "gossi\\trixionary\\action\\model\\ReferencePaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferencePaginateJsonResponder"
 						}
 					},
 					"reference-create" : {
 						"title" : "Creates a reference",
-						"class" : "gossi\\trixionary\\action\\ReferenceCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\ReferenceCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceCreateJsonResponder"
 						}
 					},
 					"reference-read" : {
 						"title" : "Reads a reference",
-						"class" : "gossi\\trixionary\\action\\ReferenceReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\ReferenceReadJsonResponse"
-						}
-					},
-					"reference-list" : {
-						"title" : "List all references",
-						"class" : "gossi\\trixionary\\action\\ReferenceListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\ReferenceListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceReadJsonResponder"
 						}
 					},
 					"reference-update" : {
 						"title" : "Updates a reference",
-						"class" : "gossi\\trixionary\\action\\ReferenceUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\ReferenceUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceUpdateJsonResponder"
 						}
 					},
 					"reference-delete" : {
 						"title" : "Deletes a reference",
-						"class" : "gossi\\trixionary\\action\\ReferenceDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\ReferenceDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceDeleteJsonResponder"
 						}
 					},
-					"upload" : {
-						"title" : "Upload media",
-						"class" : "gossi\\trixionary\\action\\UploadAction",
+					"reference-to-video-relationship-read" : {
+						"title" : "Reads the relationship of reference to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\UploadJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
 						}
 					},
-					"upload-delete" : {
-						"title" : "Delete Uploaded media",
-						"class" : "gossi\\trixionary\\action\\UploadDeleteAction",
+					"reference-to-video-relationship-update" : {
+						"title" : "Updates the relationship of reference to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\UploadDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						}
+					},
+					"reference-to-video-relationship-add" : {
+						"title" : "Adds video as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						}
+					},
+					"reference-to-video-relationship-remove" : {
+						"title" : "Removes video as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						}
+					},
+					"reference-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of reference to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						}
+					},
+					"reference-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of reference to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						}
+					},
+					"kstruktur-paginate" : {
+						"title" : "Paginates kstrukturs",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturPaginateJsonResponder"
 						}
 					},
 					"kstruktur-create" : {
 						"title" : "Creates a kstruktur",
-						"class" : "gossi\\trixionary\\action\\KstrukturCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KstrukturCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturCreateJsonResponder"
 						}
 					},
 					"kstruktur-read" : {
 						"title" : "Reads a kstruktur",
-						"class" : "gossi\\trixionary\\action\\KstrukturReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KstrukturReadJsonResponse"
-						}
-					},
-					"kstruktur-list" : {
-						"title" : "List all kstrukturs",
-						"class" : "gossi\\trixionary\\action\\KstrukturListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KstrukturListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturReadJsonResponder"
 						}
 					},
 					"kstruktur-update" : {
 						"title" : "Updates a kstruktur",
-						"class" : "gossi\\trixionary\\action\\KstrukturUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KstrukturUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturUpdateJsonResponder"
 						}
 					},
 					"kstruktur-delete" : {
 						"title" : "Deletes a kstruktur",
-						"class" : "gossi\\trixionary\\action\\KstrukturDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KstrukturDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturDeleteJsonResponder"
+						}
+					},
+					"kstruktur-to-root_skill-relationship-read" : {
+						"title" : "Reads the relationship of kstruktur to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						}
+					},
+					"kstruktur-to-root_skill-relationship-update" : {
+						"title" : "Updates the relationship of kstruktur to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						}
+					},
+					"kstruktur-to-root_skill-relationship-add" : {
+						"title" : "Adds root_skill as relationship to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						}
+					},
+					"kstruktur-to-root_skill-relationship-remove" : {
+						"title" : "Removes root_skill as relationship to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						}
+					},
+					"kstruktur-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of kstruktur to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
+						}
+					},
+					"kstruktur-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of kstruktur to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
+						}
+					},
+					"function_phase-paginate" : {
+						"title" : "Paginates function_phases",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhasePaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhasePaginateJsonResponder"
 						}
 					},
 					"function_phase-create" : {
 						"title" : "Creates a function_phase",
-						"class" : "gossi\\trixionary\\action\\FunctionPhaseCreateAction",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseCreateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\FunctionPhaseCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseCreateJsonResponder"
 						}
 					},
 					"function_phase-read" : {
 						"title" : "Reads a function_phase",
-						"class" : "gossi\\trixionary\\action\\FunctionPhaseReadAction",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\FunctionPhaseReadJsonResponse"
-						}
-					},
-					"function_phase-list" : {
-						"title" : "List all function_phases",
-						"class" : "gossi\\trixionary\\action\\FunctionPhaseListAction",
-						"acl" : [
-							"admin"
-						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\FunctionPhaseListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseReadJsonResponder"
 						}
 					},
 					"function_phase-update" : {
 						"title" : "Updates a function_phase",
-						"class" : "gossi\\trixionary\\action\\FunctionPhaseUpdateAction",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\FunctionPhaseUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseUpdateJsonResponder"
 						}
 					},
 					"function_phase-delete" : {
 						"title" : "Deletes a function_phase",
-						"class" : "gossi\\trixionary\\action\\FunctionPhaseDeleteAction",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseDeleteAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\FunctionPhaseDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseDeleteJsonResponder"
 						}
 					},
-					"kk_trixionary_skill_version-create" : {
-						"title" : "Creates a kk_trixionary_skill_version",
-						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionCreateAction",
+					"function_phase-to-root_skill-relationship-read" : {
+						"title" : "Reads the relationship of function_phase to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionCreateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"kk_trixionary_skill_version-read" : {
-						"title" : "Reads a kk_trixionary_skill_version",
-						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionReadAction",
+					"function_phase-to-root_skill-relationship-update" : {
+						"title" : "Updates the relationship of function_phase to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillUpdateAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionReadJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"kk_trixionary_skill_version-list" : {
-						"title" : "List all kk_trixionary_skill_versions",
-						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionListAction",
+					"function_phase-to-root_skill-relationship-add" : {
+						"title" : "Adds root_skill as relationship to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillAddAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionListJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"kk_trixionary_skill_version-update" : {
-						"title" : "Updates a kk_trixionary_skill_version",
-						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionUpdateAction",
+					"function_phase-to-root_skill-relationship-remove" : {
+						"title" : "Removes root_skill as relationship to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillRemoveAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionUpdateJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"kk_trixionary_skill_version-delete" : {
-						"title" : "Deletes a kk_trixionary_skill_version",
-						"class" : "gossi\\trixionary\\action\\KkTrixionarySkillVersionDeleteAction",
+					"function_phase-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of function_phase to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillReadAction",
 						"acl" : [
 							"admin"
 						],
-						"response" : {
-							"json" : "gossi\\trixionary\\response\\KkTrixionarySkillVersionDeleteJsonResponse"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
 						}
-					}
-				},
-				"api" : {
-					"swaggerVersion" : "1.2",
-					"resourcePath" : "/gossi.trixionary",
-					"apis" : [{
-							"path" : "/sports",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a sport",
-									"nickname" : "sport-create",
-									"type" : "Sport",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new sport",
-											"required" : true,
-											"type" : "WritableSport",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all sports",
-									"nickname" : "sport-list",
-									"type" : "PagedSports"
-								}
-							]
-						}, {
-							"path" : "/sports/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a sport",
-									"nickname" : "sport-read",
-									"type" : "Sport",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The sport id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No sport found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a sport",
-									"nickname" : "sport-update",
-									"type" : "Sport",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The sport id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No sport found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a sport",
-									"nickname" : "sport-delete",
-									"type" : "Sport",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The sport id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No sport found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/positions",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a position",
-									"nickname" : "position-create",
-									"type" : "Position",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new position",
-											"required" : true,
-											"type" : "WritablePosition",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all positions",
-									"nickname" : "position-list",
-									"type" : "PagedPositions"
-								}
-							]
-						}, {
-							"path" : "/positions/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a position",
-									"nickname" : "position-read",
-									"type" : "Position",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The position id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No position found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a position",
-									"nickname" : "position-update",
-									"type" : "Position",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The position id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No position found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a position",
-									"nickname" : "position-delete",
-									"type" : "Position",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The position id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No position found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/skills",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a skill",
-									"nickname" : "skill-create",
-									"type" : "Skill",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new skill",
-											"required" : true,
-											"type" : "WritableSkill",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all skills",
-									"nickname" : "skill-list",
-									"type" : "PagedSkills"
-								}
-							]
-						}, {
-							"path" : "/skills/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a skill",
-									"nickname" : "skill-read",
-									"type" : "Skill",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The skill id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No skill found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a skill",
-									"nickname" : "skill-update",
-									"type" : "Skill",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The skill id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No skill found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a skill",
-									"nickname" : "skill-delete",
-									"type" : "Skill",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The skill id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No skill found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/groups",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a group",
-									"nickname" : "group-create",
-									"type" : "Group",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new group",
-											"required" : true,
-											"type" : "WritableGroup",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all groups",
-									"nickname" : "group-list",
-									"type" : "PagedGroups"
-								}
-							]
-						}, {
-							"path" : "/groups/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a group",
-									"nickname" : "group-read",
-									"type" : "Group",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The group id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No group found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a group",
-									"nickname" : "group-update",
-									"type" : "Group",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The group id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No group found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a group",
-									"nickname" : "group-delete",
-									"type" : "Group",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The group id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No group found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/pictures",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a picture",
-									"nickname" : "picture-create",
-									"type" : "Picture",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new picture",
-											"required" : true,
-											"type" : "WritablePicture",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all pictures",
-									"nickname" : "picture-list",
-									"type" : "PagedPictures"
-								}
-							]
-						}, {
-							"path" : "/pictures/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a picture",
-									"nickname" : "picture-read",
-									"type" : "Picture",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The picture id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No picture found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a picture",
-									"nickname" : "picture-update",
-									"type" : "Picture",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The picture id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No picture found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a picture",
-									"nickname" : "picture-delete",
-									"type" : "Picture",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The picture id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No picture found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/videos",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a video",
-									"nickname" : "video-create",
-									"type" : "Video",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new video",
-											"required" : true,
-											"type" : "WritableVideo",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all videos",
-									"nickname" : "video-list",
-									"type" : "PagedVideos"
-								}
-							]
-						}, {
-							"path" : "/videos/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a video",
-									"nickname" : "video-read",
-									"type" : "Video",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The video id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No video found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a video",
-									"nickname" : "video-update",
-									"type" : "Video",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The video id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No video found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a video",
-									"nickname" : "video-delete",
-									"type" : "Video",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The video id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No video found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/references",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a reference",
-									"nickname" : "reference-create",
-									"type" : "Reference",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new reference",
-											"required" : true,
-											"type" : "WritableReference",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all references",
-									"nickname" : "reference-list",
-									"type" : "PagedReferences"
-								}
-							]
-						}, {
-							"path" : "/references/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a reference",
-									"nickname" : "reference-read",
-									"type" : "Reference",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The reference id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No reference found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a reference",
-									"nickname" : "reference-update",
-									"type" : "Reference",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The reference id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No reference found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a reference",
-									"nickname" : "reference-delete",
-									"type" : "Reference",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The reference id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No reference found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/kstrukturs",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a kstruktur",
-									"nickname" : "kstruktur-create",
-									"type" : "Kstruktur",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new kstruktur",
-											"required" : true,
-											"type" : "WritableKstruktur",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all kstrukturs",
-									"nickname" : "kstruktur-list",
-									"type" : "PagedKstrukturs"
-								}
-							]
-						}, {
-							"path" : "/kstrukturs/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a kstruktur",
-									"nickname" : "kstruktur-read",
-									"type" : "Kstruktur",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kstruktur id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kstruktur found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a kstruktur",
-									"nickname" : "kstruktur-update",
-									"type" : "Kstruktur",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kstruktur id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kstruktur found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a kstruktur",
-									"nickname" : "kstruktur-delete",
-									"type" : "Kstruktur",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kstruktur id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kstruktur found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/function_phases",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a function_phase",
-									"nickname" : "function_phase-create",
-									"type" : "FunctionPhase",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new function_phase",
-											"required" : true,
-											"type" : "WritableFunctionPhase",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all function_phases",
-									"nickname" : "function_phase-list",
-									"type" : "PagedFunctionPhases"
-								}
-							]
-						}, {
-							"path" : "/function_phases/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a function_phase",
-									"nickname" : "function_phase-read",
-									"type" : "FunctionPhase",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The function_phase id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No function_phase found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a function_phase",
-									"nickname" : "function_phase-update",
-									"type" : "FunctionPhase",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The function_phase id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No function_phase found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a function_phase",
-									"nickname" : "function_phase-delete",
-									"type" : "FunctionPhase",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The function_phase id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No function_phase found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/kk_trixionary_skill_versions",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Creates a kk_trixionary_skill_version",
-									"nickname" : "kk_trixionary_skill_version-create",
-									"type" : "SkillVersion",
-									"parameters" : [{
-											"name" : "body",
-											"description" : "The new kk_trixionary_skill_version",
-											"required" : true,
-											"type" : "WritableSkillVersion",
-											"paramType" : "body"
-										}
-									]
-								}, {
-									"method" : "GET",
-									"summary" : "List all kk_trixionary_skill_versions",
-									"nickname" : "kk_trixionary_skill_version-list",
-									"type" : "PagedSkillVersions"
-								}
-							]
-						}, {
-							"path" : "/kk_trixionary_skill_versions/{id}",
-							"operations" : [{
-									"method" : "GET",
-									"summary" : "Reads a kk_trixionary_skill_version",
-									"nickname" : "kk_trixionary_skill_version-read",
-									"type" : "SkillVersion",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kk_trixionary_skill_version id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kk_trixionary_skill_version found"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Updates a kk_trixionary_skill_version",
-									"nickname" : "kk_trixionary_skill_version-update",
-									"type" : "SkillVersion",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kk_trixionary_skill_version id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kk_trixionary_skill_version found"
-										}
-									]
-								}, {
-									"method" : "DELETE",
-									"summary" : "Deletes a kk_trixionary_skill_version",
-									"nickname" : "kk_trixionary_skill_version-delete",
-									"type" : "SkillVersion",
-									"parameters" : [{
-											"name" : "id",
-											"description" : "The kk_trixionary_skill_version id",
-											"required" : true,
-											"type" : "id",
-											"paramType" : "path"
-										}
-									],
-									"responseMessages" : [{
-											"code" : "400",
-											"message" : "Invalid ID supplied"
-										}, {
-											"code" : "404",
-											"message" : "No kk_trixionary_skill_version found"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/upload",
-							"operations" : [{
-									"method" : "POST",
-									"summary" : "Uploads a file",
-									"nickname" : "upload",
-									"parameters" : [{
-											"name" : "file",
-											"description" : "The file",
-											"required" : true,
-											"type" : "File",
-											"paramType" : "form"
-										}
-									]
-								}, {
-									"method" : "PUT",
-									"summary" : "Uploads a file",
-									"nickname" : "upload",
-									"parameters" : [{
-											"name" : "file",
-											"description" : "The file",
-											"required" : true,
-											"type" : "File",
-											"paramType" : "form"
-										}
-									]
-								}
-							]
-						}, {
-							"path" : "/upload/{file}",
-							"operations" : [{
-									"method" : "DELETE",
-									"summary" : "Deletes an uploaded file",
-									"nickname" : "upload-delete",
-									"parameters" : [{
-											"name" : "file",
-											"description" : "The file",
-											"required" : true,
-											"type" : "string",
-											"paramType" : "path"
-										}
-									]
-								}
-							]
+					},
+					"function_phase-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of function_phase to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
 						}
-					],
-					"models" : {
-						"Meta" : {
-							"id" : "Meta",
-							"properties" : {
-								"total" : {
-									"type" : "integer"
-								},
-								"first" : {
-									"type" : "string"
-								},
-								"next" : {
-									"type" : "string"
-								},
-								"previous" : {
-									"type" : "string"
-								},
-								"last" : {
-									"type" : "string"
-								}
-							}
-						},
-						"PagedSports" : {
-							"id" : "PagedSports",
-							"properties" : {
-								"sports" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Sport"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableSport" : {
-							"id" : "WritableSport",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"skill_slug" : {
-									"type" : "string"
-								},
-								"skill_label" : {
-									"type" : "string"
-								},
-								"skill_plural_label" : {
-									"type" : "string"
-								},
-								"group_slug" : {
-									"type" : "string"
-								},
-								"group_label" : {
-									"type" : "string"
-								},
-								"group_plural_label" : {
-									"type" : "string"
-								},
-								"transitions_slug" : {
-									"type" : "string"
-								},
-								"transition_label" : {
-									"type" : "string"
-								},
-								"transition_plural_label" : {
-									"type" : "string"
-								},
-								"position_slug" : {
-									"type" : "string"
-								},
-								"position_label" : {
-									"type" : "string"
-								},
-								"compositional" : {
-									"type" : "boolean"
-								},
-								"is_default" : {
-									"type" : "boolean"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"has_movendum" : {
-									"type" : "boolean"
-								},
-								"movendum" : {
-									"type" : "string"
-								}
-							}
-						},
-						"Sport" : {
-							"id" : "Sport",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"skill_slug" : {
-									"type" : "string"
-								},
-								"skill_label" : {
-									"type" : "string"
-								},
-								"skill_plural_label" : {
-									"type" : "string"
-								},
-								"group_slug" : {
-									"type" : "string"
-								},
-								"group_label" : {
-									"type" : "string"
-								},
-								"group_plural_label" : {
-									"type" : "string"
-								},
-								"transitions_slug" : {
-									"type" : "string"
-								},
-								"transition_label" : {
-									"type" : "string"
-								},
-								"transition_plural_label" : {
-									"type" : "string"
-								},
-								"position_slug" : {
-									"type" : "string"
-								},
-								"position_label" : {
-									"type" : "string"
-								},
-								"compositional" : {
-									"type" : "boolean"
-								},
-								"is_default" : {
-									"type" : "boolean"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"has_movendum" : {
-									"type" : "boolean"
-								},
-								"movendum" : {
-									"type" : "string"
-								}
-							}
-						},
-						"PagedPositions" : {
-							"id" : "PagedPositions",
-							"properties" : {
-								"positions" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Position"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritablePosition" : {
-							"id" : "WritablePosition",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"description" : {
-									"type" : "string"
-								}
-							}
-						},
-						"Position" : {
-							"id" : "Position",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"description" : {
-									"type" : "string"
-								}
-							}
-						},
-						"PagedSkills" : {
-							"id" : "PagedSkills",
-							"properties" : {
-								"skills" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Skill"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableSkill" : {
-							"id" : "WritableSkill",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"name" : {
-									"type" : "string"
-								},
-								"alternative_name" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"history" : {
-									"type" : "string"
-								},
-								"is_translation" : {
-									"type" : "boolean"
-								},
-								"is_rotation" : {
-									"type" : "boolean"
-								},
-								"is_cyclic" : {
-									"type" : "boolean"
-								},
-								"longitudinal_flags" : {
-									"type" : "int"
-								},
-								"latitudinal_flags" : {
-									"type" : "int"
-								},
-								"transversal_flags" : {
-									"type" : "int"
-								},
-								"movement_description" : {
-									"type" : "string"
-								},
-								"variation_of_id" : {
-									"type" : "int"
-								},
-								"start_position_id" : {
-									"type" : "int"
-								},
-								"end_position_id" : {
-									"type" : "int"
-								},
-								"is_composite" : {
-									"type" : "boolean"
-								},
-								"is_multiple" : {
-									"type" : "boolean"
-								},
-								"multiple_of_id" : {
-									"type" : "int"
-								},
-								"multiplier" : {
-									"type" : "int"
-								},
-								"generation" : {
-									"type" : "int"
-								},
-								"importance" : {
-									"type" : "int"
-								},
-								"generation_ids" : {
-									"type" : "string"
-								},
-								"picture_id" : {
-									"type" : "int"
-								},
-								"version" : {
-									"type" : "int"
-								},
-								"version_created_at" : {
-									"type" : "string"
-								},
-								"version_comment" : {
-									"type" : "string"
-								}
-							}
-						},
-						"Skill" : {
-							"id" : "Skill",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"name" : {
-									"type" : "string"
-								},
-								"alternative_name" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"history" : {
-									"type" : "string"
-								},
-								"is_translation" : {
-									"type" : "boolean"
-								},
-								"is_rotation" : {
-									"type" : "boolean"
-								},
-								"is_cyclic" : {
-									"type" : "boolean"
-								},
-								"longitudinal_flags" : {
-									"type" : "int"
-								},
-								"latitudinal_flags" : {
-									"type" : "int"
-								},
-								"transversal_flags" : {
-									"type" : "int"
-								},
-								"movement_description" : {
-									"type" : "string"
-								},
-								"variation_of_id" : {
-									"type" : "int"
-								},
-								"start_position_id" : {
-									"type" : "int"
-								},
-								"end_position_id" : {
-									"type" : "int"
-								},
-								"is_composite" : {
-									"type" : "boolean"
-								},
-								"is_multiple" : {
-									"type" : "boolean"
-								},
-								"multiple_of_id" : {
-									"type" : "int"
-								},
-								"multiplier" : {
-									"type" : "int"
-								},
-								"generation" : {
-									"type" : "int"
-								},
-								"importance" : {
-									"type" : "int"
-								},
-								"generation_ids" : {
-									"type" : "string"
-								},
-								"picture_id" : {
-									"type" : "int"
-								},
-								"version" : {
-									"type" : "int"
-								},
-								"version_created_at" : {
-									"type" : "string"
-								},
-								"version_comment" : {
-									"type" : "string"
-								}
-							}
-						},
-						"PagedGroups" : {
-							"id" : "PagedGroups",
-							"properties" : {
-								"groups" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Group"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableGroup" : {
-							"id" : "WritableGroup",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"sport_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"Group" : {
-							"id" : "Group",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"sport_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"PagedPictures" : {
-							"id" : "PagedPictures",
-							"properties" : {
-								"pictures" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Picture"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritablePicture" : {
-							"id" : "WritablePicture",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"photographer" : {
-									"type" : "string"
-								},
-								"photographer_id" : {
-									"type" : "int"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"movender_id" : {
-									"type" : "int"
-								},
-								"uploader_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"Picture" : {
-							"id" : "Picture",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"photographer" : {
-									"type" : "string"
-								},
-								"photographer_id" : {
-									"type" : "int"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"movender_id" : {
-									"type" : "int"
-								},
-								"uploader_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"PagedVideos" : {
-							"id" : "PagedVideos",
-							"properties" : {
-								"videos" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Video"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableVideo" : {
-							"id" : "WritableVideo",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"is_tutorial" : {
-									"type" : "boolean"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"movender_id" : {
-									"type" : "int"
-								},
-								"uploader_id" : {
-									"type" : "int"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"reference_id" : {
-									"type" : "int"
-								},
-								"poster_url" : {
-									"type" : "string"
-								},
-								"provider" : {
-									"type" : "string"
-								},
-								"provider_id" : {
-									"type" : "string"
-								},
-								"player_url" : {
-									"type" : "string"
-								},
-								"width" : {
-									"type" : "int"
-								},
-								"height" : {
-									"type" : "int"
-								}
-							}
-						},
-						"Video" : {
-							"id" : "Video",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"is_tutorial" : {
-									"type" : "boolean"
-								},
-								"movender" : {
-									"type" : "string"
-								},
-								"movender_id" : {
-									"type" : "int"
-								},
-								"uploader_id" : {
-									"type" : "int"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"reference_id" : {
-									"type" : "int"
-								},
-								"poster_url" : {
-									"type" : "string"
-								},
-								"provider" : {
-									"type" : "string"
-								},
-								"provider_id" : {
-									"type" : "string"
-								},
-								"player_url" : {
-									"type" : "string"
-								},
-								"width" : {
-									"type" : "int"
-								},
-								"height" : {
-									"type" : "int"
-								}
-							}
-						},
-						"PagedReferences" : {
-							"id" : "PagedReferences",
-							"properties" : {
-								"references" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Reference"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableReference" : {
-							"id" : "WritableReference",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"year" : {
-									"type" : "int"
-								},
-								"publisher" : {
-									"type" : "string"
-								},
-								"journal" : {
-									"type" : "string"
-								},
-								"number" : {
-									"type" : "string"
-								},
-								"school" : {
-									"type" : "string"
-								},
-								"author" : {
-									"type" : "string"
-								},
-								"edition" : {
-									"type" : "string"
-								},
-								"volume" : {
-									"type" : "string"
-								},
-								"address" : {
-									"type" : "string"
-								},
-								"editor" : {
-									"type" : "string"
-								},
-								"howpublished" : {
-									"type" : "string"
-								},
-								"note" : {
-									"type" : "string"
-								},
-								"booktitle" : {
-									"type" : "string"
-								},
-								"pages" : {
-									"type" : "string"
-								},
-								"url" : {
-									"type" : "string"
-								},
-								"lastchecked" : {
-									"type" : "string"
-								},
-								"managed" : {
-									"type" : "boolean"
-								}
-							}
-						},
-						"Reference" : {
-							"id" : "Reference",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"year" : {
-									"type" : "int"
-								},
-								"publisher" : {
-									"type" : "string"
-								},
-								"journal" : {
-									"type" : "string"
-								},
-								"number" : {
-									"type" : "string"
-								},
-								"school" : {
-									"type" : "string"
-								},
-								"author" : {
-									"type" : "string"
-								},
-								"edition" : {
-									"type" : "string"
-								},
-								"volume" : {
-									"type" : "string"
-								},
-								"address" : {
-									"type" : "string"
-								},
-								"editor" : {
-									"type" : "string"
-								},
-								"howpublished" : {
-									"type" : "string"
-								},
-								"note" : {
-									"type" : "string"
-								},
-								"booktitle" : {
-									"type" : "string"
-								},
-								"pages" : {
-									"type" : "string"
-								},
-								"url" : {
-									"type" : "string"
-								},
-								"lastchecked" : {
-									"type" : "string"
-								},
-								"managed" : {
-									"type" : "boolean"
-								}
-							}
-						},
-						"PagedKstrukturs" : {
-							"id" : "PagedKstrukturs",
-							"properties" : {
-								"kstrukturs" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "Kstruktur"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableKstruktur" : {
-							"id" : "WritableKstruktur",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"parent_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"Kstruktur" : {
-							"id" : "Kstruktur",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"parent_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"PagedFunctionPhases" : {
-							"id" : "PagedFunctionPhases",
-							"properties" : {
-								"function_phases" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "FunctionPhase"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableFunctionPhase" : {
-							"id" : "WritableFunctionPhase",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"parent_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"FunctionPhase" : {
-							"id" : "FunctionPhase",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"type" : {
-									"type" : "string"
-								},
-								"skill_id" : {
-									"type" : "int"
-								},
-								"title" : {
-									"type" : "string"
-								},
-								"parent_id" : {
-									"type" : "int"
-								}
-							}
-						},
-						"PagedSkillVersions" : {
-							"id" : "PagedSkillVersions",
-							"properties" : {
-								"kk_trixionary_skill_versions" : {
-									"type" : "array",
-									"items" : {
-										"$ref" : "SkillVersion"
-									}
-								},
-								"meta" : {
-									"type" : "Meta"
-								}
-							}
-						},
-						"WritableSkillVersion" : {
-							"id" : "WritableSkillVersion",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"name" : {
-									"type" : "string"
-								},
-								"alternative_name" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"history" : {
-									"type" : "string"
-								},
-								"is_translation" : {
-									"type" : "boolean"
-								},
-								"is_rotation" : {
-									"type" : "boolean"
-								},
-								"is_cyclic" : {
-									"type" : "boolean"
-								},
-								"longitudinal_flags" : {
-									"type" : "int"
-								},
-								"latitudinal_flags" : {
-									"type" : "int"
-								},
-								"transversal_flags" : {
-									"type" : "int"
-								},
-								"movement_description" : {
-									"type" : "string"
-								},
-								"variation_of_id" : {
-									"type" : "int"
-								},
-								"start_position_id" : {
-									"type" : "int"
-								},
-								"end_position_id" : {
-									"type" : "int"
-								},
-								"is_composite" : {
-									"type" : "boolean"
-								},
-								"is_multiple" : {
-									"type" : "boolean"
-								},
-								"multiple_of_id" : {
-									"type" : "int"
-								},
-								"multiplier" : {
-									"type" : "int"
-								},
-								"generation" : {
-									"type" : "int"
-								},
-								"importance" : {
-									"type" : "int"
-								},
-								"generation_ids" : {
-									"type" : "string"
-								},
-								"picture_id" : {
-									"type" : "int"
-								},
-								"version" : {
-									"type" : "int"
-								},
-								"version_created_at" : {
-									"type" : "string"
-								},
-								"version_comment" : {
-									"type" : "string"
-								},
-								"variation_of_id_version" : {
-									"type" : "int"
-								},
-								"multiple_of_id_version" : {
-									"type" : "int"
-								},
-								"kk_trixionary_skill_ids" : {
-									"type" : "array"
-								},
-								"kk_trixionary_skill_versions" : {
-									"type" : "array"
-								}
-							}
-						},
-						"SkillVersion" : {
-							"id" : "SkillVersion",
-							"properties" : {
-								"id" : {
-									"type" : "int"
-								},
-								"sport_id" : {
-									"type" : "int"
-								},
-								"name" : {
-									"type" : "string"
-								},
-								"alternative_name" : {
-									"type" : "string"
-								},
-								"slug" : {
-									"type" : "string"
-								},
-								"description" : {
-									"type" : "string"
-								},
-								"history" : {
-									"type" : "string"
-								},
-								"is_translation" : {
-									"type" : "boolean"
-								},
-								"is_rotation" : {
-									"type" : "boolean"
-								},
-								"is_cyclic" : {
-									"type" : "boolean"
-								},
-								"longitudinal_flags" : {
-									"type" : "int"
-								},
-								"latitudinal_flags" : {
-									"type" : "int"
-								},
-								"transversal_flags" : {
-									"type" : "int"
-								},
-								"movement_description" : {
-									"type" : "string"
-								},
-								"variation_of_id" : {
-									"type" : "int"
-								},
-								"start_position_id" : {
-									"type" : "int"
-								},
-								"end_position_id" : {
-									"type" : "int"
-								},
-								"is_composite" : {
-									"type" : "boolean"
-								},
-								"is_multiple" : {
-									"type" : "boolean"
-								},
-								"multiple_of_id" : {
-									"type" : "int"
-								},
-								"multiplier" : {
-									"type" : "int"
-								},
-								"generation" : {
-									"type" : "int"
-								},
-								"importance" : {
-									"type" : "int"
-								},
-								"generation_ids" : {
-									"type" : "string"
-								},
-								"picture_id" : {
-									"type" : "int"
-								},
-								"version" : {
-									"type" : "int"
-								},
-								"version_created_at" : {
-									"type" : "string"
-								},
-								"version_comment" : {
-									"type" : "string"
-								},
-								"variation_of_id_version" : {
-									"type" : "int"
-								},
-								"multiple_of_id_version" : {
-									"type" : "int"
-								},
-								"kk_trixionary_skill_ids" : {
-									"type" : "array"
-								},
-								"kk_trixionary_skill_versions" : {
-									"type" : "array"
-								}
-							}
+					},
+					"skill_version-paginate" : {
+						"title" : "Paginates skill_versions",
+						"class" : "gossi\\trixionary\\action\\model\\SkillVersionPaginateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillVersionPaginateJsonResponder"
+						}
+					},
+					"skill_version-create" : {
+						"title" : "Creates a skill_version",
+						"class" : "gossi\\trixionary\\action\\model\\SkillVersionCreateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillVersionCreateJsonResponder"
+						}
+					},
+					"skill_version-read" : {
+						"title" : "Reads a skill_version",
+						"class" : "gossi\\trixionary\\action\\model\\SkillVersionReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillVersionReadJsonResponder"
+						}
+					},
+					"skill_version-update" : {
+						"title" : "Updates a skill_version",
+						"class" : "gossi\\trixionary\\action\\model\\SkillVersionUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillVersionUpdateJsonResponder"
+						}
+					},
+					"skill_version-delete" : {
+						"title" : "Deletes a skill_version",
+						"class" : "gossi\\trixionary\\action\\model\\SkillVersionDeleteAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillVersionDeleteJsonResponder"
+						}
+					},
+					"skill_version-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of skill_version to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVersionSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVersionSkillJsonResponder"
+						}
+					},
+					"skill_version-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of skill_version to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVersionSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVersionSkillJsonResponder"
+						}
+					},
+					"object-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of object to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						}
+					},
+					"object-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of object to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						}
+					},
+					"object-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						}
+					},
+					"object-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						}
+					},
+					"skill-to-object-relationship-read" : {
+						"title" : "Reads the relationship of skill to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
+						}
+					},
+					"skill-to-object-relationship-update" : {
+						"title" : "Updates the relationship of skill to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
+						}
+					},
+					"skill-to-descendent-relationship-read" : {
+						"title" : "Reads the relationship of skill to descendent",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillDescendentReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillDescendentJsonResponder"
+						}
+					},
+					"skill-to-descendent-relationship-update" : {
+						"title" : "Updates the relationship of skill to descendent",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillDescendentUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillDescendentJsonResponder"
+						}
+					},
+					"skill-to-descendent-relationship-add" : {
+						"title" : "Adds descendent as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillDescendentAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillDescendentJsonResponder"
+						}
+					},
+					"skill-to-descendent-relationship-remove" : {
+						"title" : "Removes descendent as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillDescendentRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillDescendentJsonResponder"
+						}
+					},
+					"skill-to-part-relationship-read" : {
+						"title" : "Reads the relationship of skill to part",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartReadAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						}
+					},
+					"skill-to-part-relationship-update" : {
+						"title" : "Updates the relationship of skill to part",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartUpdateAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						}
+					},
+					"skill-to-part-relationship-add" : {
+						"title" : "Adds part as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartAddAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						}
+					},
+					"skill-to-part-relationship-remove" : {
+						"title" : "Removes part as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartRemoveAction",
+						"acl" : [
+							"admin"
+						],
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
 						}
 					}
 				}
 			}
-		},
-		"local" : "../../"
+		}
 	}
 }

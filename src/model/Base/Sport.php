@@ -18,6 +18,8 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use gossi\trixionary\model\Group as ChildGroup;
 use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
+use gossi\trixionary\model\Object as ChildObject;
+use gossi\trixionary\model\ObjectQuery as ChildObjectQuery;
 use gossi\trixionary\model\Position as ChildPosition;
 use gossi\trixionary\model\PositionQuery as ChildPositionQuery;
 use gossi\trixionary\model\Skill as ChildSkill;
@@ -86,6 +88,30 @@ abstract class Sport implements ActiveRecordInterface
     protected $slug;
 
     /**
+     * The value for the athlete_label field.
+     * @var        string
+     */
+    protected $athlete_label;
+
+    /**
+     * The value for the object_slug field.
+     * @var        string
+     */
+    protected $object_slug;
+
+    /**
+     * The value for the object_label field.
+     * @var        string
+     */
+    protected $object_label;
+
+    /**
+     * The value for the object_plural_label field.
+     * @var        string
+     */
+    protected $object_plural_label;
+
+    /**
      * The value for the skill_slug field.
      * @var        string
      */
@@ -122,12 +148,6 @@ abstract class Sport implements ActiveRecordInterface
     protected $group_plural_label;
 
     /**
-     * The value for the transitions_slug field.
-     * @var        string
-     */
-    protected $transitions_slug;
-
-    /**
      * The value for the transition_label field.
      * @var        string
      */
@@ -138,6 +158,12 @@ abstract class Sport implements ActiveRecordInterface
      * @var        string
      */
     protected $transition_plural_label;
+
+    /**
+     * The value for the transitions_slug field.
+     * @var        string
+     */
+    protected $transitions_slug;
 
     /**
      * The value for the position_slug field.
@@ -152,10 +178,16 @@ abstract class Sport implements ActiveRecordInterface
     protected $position_label;
 
     /**
-     * The value for the compositional field.
+     * The value for the feature_composition field.
      * @var        boolean
      */
-    protected $compositional;
+    protected $feature_composition;
+
+    /**
+     * The value for the feature_tester field.
+     * @var        boolean
+     */
+    protected $feature_tester;
 
     /**
      * The value for the is_default field.
@@ -164,22 +196,10 @@ abstract class Sport implements ActiveRecordInterface
     protected $is_default;
 
     /**
-     * The value for the movender field.
-     * @var        string
+     * @var        ObjectCollection|ChildObject[] Collection to store aggregation of ChildObject objects.
      */
-    protected $movender;
-
-    /**
-     * The value for the has_movendum field.
-     * @var        boolean
-     */
-    protected $has_movendum;
-
-    /**
-     * The value for the movendum field.
-     * @var        string
-     */
-    protected $movendum;
+    protected $collObjects;
+    protected $collObjectsPartial;
 
     /**
      * @var        ObjectCollection|ChildPosition[] Collection to store aggregation of ChildPosition objects.
@@ -206,6 +226,12 @@ abstract class Sport implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildObject[]
+     */
+    protected $objectsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -473,6 +499,46 @@ abstract class Sport implements ActiveRecordInterface
     }
 
     /**
+     * Get the [athlete_label] column value.
+     *
+     * @return string
+     */
+    public function getAthleteLabel()
+    {
+        return $this->athlete_label;
+    }
+
+    /**
+     * Get the [object_slug] column value.
+     *
+     * @return string
+     */
+    public function getObjectSlug()
+    {
+        return $this->object_slug;
+    }
+
+    /**
+     * Get the [object_label] column value.
+     *
+     * @return string
+     */
+    public function getObjectLabel()
+    {
+        return $this->object_label;
+    }
+
+    /**
+     * Get the [object_plural_label] column value.
+     *
+     * @return string
+     */
+    public function getObjectPluralLabel()
+    {
+        return $this->object_plural_label;
+    }
+
+    /**
      * Get the [skill_slug] column value.
      *
      * @return string
@@ -533,16 +599,6 @@ abstract class Sport implements ActiveRecordInterface
     }
 
     /**
-     * Get the [transitions_slug] column value.
-     *
-     * @return string
-     */
-    public function getTransitionsSlug()
-    {
-        return $this->transitions_slug;
-    }
-
-    /**
      * Get the [transition_label] column value.
      *
      * @return string
@@ -560,6 +616,16 @@ abstract class Sport implements ActiveRecordInterface
     public function getTransitionPluralLabel()
     {
         return $this->transition_plural_label;
+    }
+
+    /**
+     * Get the [transitions_slug] column value.
+     *
+     * @return string
+     */
+    public function getTransitionsSlug()
+    {
+        return $this->transitions_slug;
     }
 
     /**
@@ -583,23 +649,43 @@ abstract class Sport implements ActiveRecordInterface
     }
 
     /**
-     * Get the [compositional] column value.
-     * Whether this is a technical compositional type of sport
+     * Get the [feature_composition] column value.
+     *
      * @return boolean
      */
-    public function getCompositional()
+    public function getFeatureComposition()
     {
-        return $this->compositional;
+        return $this->feature_composition;
     }
 
     /**
-     * Get the [compositional] column value.
-     * Whether this is a technical compositional type of sport
+     * Get the [feature_composition] column value.
+     *
      * @return boolean
      */
-    public function isCompositional()
+    public function isFeatureComposition()
     {
-        return $this->getCompositional();
+        return $this->getFeatureComposition();
+    }
+
+    /**
+     * Get the [feature_tester] column value.
+     *
+     * @return boolean
+     */
+    public function getFeatureTester()
+    {
+        return $this->feature_tester;
+    }
+
+    /**
+     * Get the [feature_tester] column value.
+     *
+     * @return boolean
+     */
+    public function isFeatureTester()
+    {
+        return $this->getFeatureTester();
     }
 
     /**
@@ -623,49 +709,9 @@ abstract class Sport implements ActiveRecordInterface
     }
 
     /**
-     * Get the [movender] column value.
-     *
-     * @return string
-     */
-    public function getMovender()
-    {
-        return $this->movender;
-    }
-
-    /**
-     * Get the [has_movendum] column value.
-     *
-     * @return boolean
-     */
-    public function getHasMovendum()
-    {
-        return $this->has_movendum;
-    }
-
-    /**
-     * Get the [has_movendum] column value.
-     *
-     * @return boolean
-     */
-    public function hasMovendum()
-    {
-        return $this->getHasMovendum();
-    }
-
-    /**
-     * Get the [movendum] column value.
-     *
-     * @return string
-     */
-    public function getMovendum()
-    {
-        return $this->movendum;
-    }
-
-    /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setId($v)
@@ -685,7 +731,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -705,7 +751,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setSlug($v)
@@ -723,9 +769,89 @@ abstract class Sport implements ActiveRecordInterface
     } // setSlug()
 
     /**
+     * Set the value of [athlete_label] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setAthleteLabel($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->athlete_label !== $v) {
+            $this->athlete_label = $v;
+            $this->modifiedColumns[SportTableMap::COL_ATHLETE_LABEL] = true;
+        }
+
+        return $this;
+    } // setAthleteLabel()
+
+    /**
+     * Set the value of [object_slug] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setObjectSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->object_slug !== $v) {
+            $this->object_slug = $v;
+            $this->modifiedColumns[SportTableMap::COL_OBJECT_SLUG] = true;
+        }
+
+        return $this;
+    } // setObjectSlug()
+
+    /**
+     * Set the value of [object_label] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setObjectLabel($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->object_label !== $v) {
+            $this->object_label = $v;
+            $this->modifiedColumns[SportTableMap::COL_OBJECT_LABEL] = true;
+        }
+
+        return $this;
+    } // setObjectLabel()
+
+    /**
+     * Set the value of [object_plural_label] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setObjectPluralLabel($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->object_plural_label !== $v) {
+            $this->object_plural_label = $v;
+            $this->modifiedColumns[SportTableMap::COL_OBJECT_PLURAL_LABEL] = true;
+        }
+
+        return $this;
+    } // setObjectPluralLabel()
+
+    /**
      * Set the value of [skill_slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setSkillSlug($v)
@@ -745,7 +871,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [skill_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setSkillLabel($v)
@@ -765,7 +891,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [skill_plural_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setSkillPluralLabel($v)
@@ -785,7 +911,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [group_slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setGroupSlug($v)
@@ -805,7 +931,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [group_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setGroupLabel($v)
@@ -825,7 +951,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [group_plural_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setGroupPluralLabel($v)
@@ -843,29 +969,9 @@ abstract class Sport implements ActiveRecordInterface
     } // setGroupPluralLabel()
 
     /**
-     * Set the value of [transitions_slug] column.
-     *
-     * @param  string $v new value
-     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
-     */
-    public function setTransitionsSlug($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->transitions_slug !== $v) {
-            $this->transitions_slug = $v;
-            $this->modifiedColumns[SportTableMap::COL_TRANSITIONS_SLUG] = true;
-        }
-
-        return $this;
-    } // setTransitionsSlug()
-
-    /**
      * Set the value of [transition_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setTransitionLabel($v)
@@ -885,7 +991,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [transition_plural_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setTransitionPluralLabel($v)
@@ -903,9 +1009,29 @@ abstract class Sport implements ActiveRecordInterface
     } // setTransitionPluralLabel()
 
     /**
+     * Set the value of [transitions_slug] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setTransitionsSlug($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->transitions_slug !== $v) {
+            $this->transitions_slug = $v;
+            $this->modifiedColumns[SportTableMap::COL_TRANSITIONS_SLUG] = true;
+        }
+
+        return $this;
+    } // setTransitionsSlug()
+
+    /**
      * Set the value of [position_slug] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setPositionSlug($v)
@@ -925,7 +1051,7 @@ abstract class Sport implements ActiveRecordInterface
     /**
      * Set the value of [position_label] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
     public function setPositionLabel($v)
@@ -943,16 +1069,16 @@ abstract class Sport implements ActiveRecordInterface
     } // setPositionLabel()
 
     /**
-     * Sets the value of the [compositional] column.
+     * Sets the value of the [feature_composition] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * Whether this is a technical compositional type of sport
+     *
      * @param  boolean|integer|string $v The new value
      * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
      */
-    public function setCompositional($v)
+    public function setFeatureComposition($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -962,13 +1088,41 @@ abstract class Sport implements ActiveRecordInterface
             }
         }
 
-        if ($this->compositional !== $v) {
-            $this->compositional = $v;
-            $this->modifiedColumns[SportTableMap::COL_COMPOSITIONAL] = true;
+        if ($this->feature_composition !== $v) {
+            $this->feature_composition = $v;
+            $this->modifiedColumns[SportTableMap::COL_FEATURE_COMPOSITION] = true;
         }
 
         return $this;
-    } // setCompositional()
+    } // setFeatureComposition()
+
+    /**
+     * Sets the value of the [feature_tester] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function setFeatureTester($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->feature_tester !== $v) {
+            $this->feature_tester = $v;
+            $this->modifiedColumns[SportTableMap::COL_FEATURE_TESTER] = true;
+        }
+
+        return $this;
+    } // setFeatureTester()
 
     /**
      * Sets the value of the [is_default] column.
@@ -997,74 +1151,6 @@ abstract class Sport implements ActiveRecordInterface
 
         return $this;
     } // setIsDefault()
-
-    /**
-     * Set the value of [movender] column.
-     *
-     * @param  string $v new value
-     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
-     */
-    public function setMovender($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->movender !== $v) {
-            $this->movender = $v;
-            $this->modifiedColumns[SportTableMap::COL_MOVENDER] = true;
-        }
-
-        return $this;
-    } // setMovender()
-
-    /**
-     * Sets the value of the [has_movendum] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param  boolean|integer|string $v The new value
-     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
-     */
-    public function setHasMovendum($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->has_movendum !== $v) {
-            $this->has_movendum = $v;
-            $this->modifiedColumns[SportTableMap::COL_HAS_MOVENDUM] = true;
-        }
-
-        return $this;
-    } // setHasMovendum()
-
-    /**
-     * Set the value of [movendum] column.
-     *
-     * @param  string $v new value
-     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
-     */
-    public function setMovendum($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->movendum !== $v) {
-            $this->movendum = $v;
-            $this->modifiedColumns[SportTableMap::COL_MOVENDUM] = true;
-        }
-
-        return $this;
-    } // setMovendum()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -1111,53 +1197,59 @@ abstract class Sport implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SportTableMap::translateFieldName('Slug', TableMap::TYPE_PHPNAME, $indexType)];
             $this->slug = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SportTableMap::translateFieldName('SkillSlug', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SportTableMap::translateFieldName('AthleteLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->athlete_label = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SportTableMap::translateFieldName('ObjectSlug', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->object_slug = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SportTableMap::translateFieldName('ObjectLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->object_label = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : SportTableMap::translateFieldName('ObjectPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->object_plural_label = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : SportTableMap::translateFieldName('SkillSlug', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_slug = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SportTableMap::translateFieldName('SkillLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SportTableMap::translateFieldName('SkillLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SportTableMap::translateFieldName('SkillPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SportTableMap::translateFieldName('SkillPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_plural_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : SportTableMap::translateFieldName('GroupSlug', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SportTableMap::translateFieldName('GroupSlug', TableMap::TYPE_PHPNAME, $indexType)];
             $this->group_slug = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : SportTableMap::translateFieldName('GroupLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SportTableMap::translateFieldName('GroupLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->group_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SportTableMap::translateFieldName('GroupPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SportTableMap::translateFieldName('GroupPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->group_plural_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SportTableMap::translateFieldName('TransitionsSlug', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->transitions_slug = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : SportTableMap::translateFieldName('TransitionLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SportTableMap::translateFieldName('TransitionLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->transition_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : SportTableMap::translateFieldName('TransitionPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SportTableMap::translateFieldName('TransitionPluralLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->transition_plural_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : SportTableMap::translateFieldName('PositionSlug', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SportTableMap::translateFieldName('TransitionsSlug', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->transitions_slug = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SportTableMap::translateFieldName('PositionSlug', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position_slug = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : SportTableMap::translateFieldName('PositionLabel', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SportTableMap::translateFieldName('PositionLabel', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position_label = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : SportTableMap::translateFieldName('Compositional', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->compositional = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SportTableMap::translateFieldName('FeatureComposition', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->feature_composition = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : SportTableMap::translateFieldName('IsDefault', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : SportTableMap::translateFieldName('FeatureTester', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->feature_tester = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : SportTableMap::translateFieldName('IsDefault', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_default = (null !== $col) ? (boolean) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : SportTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movender = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : SportTableMap::translateFieldName('HasMovendum', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->has_movendum = (null !== $col) ? (boolean) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : SportTableMap::translateFieldName('Movendum', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movendum = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1166,7 +1258,7 @@ abstract class Sport implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 19; // 19 = SportTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = SportTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Sport'), 0, $e);
@@ -1226,6 +1318,8 @@ abstract class Sport implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collObjects = null;
 
             $this->collPositions = null;
 
@@ -1343,6 +1437,23 @@ abstract class Sport implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->objectsScheduledForDeletion !== null) {
+                if (!$this->objectsScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\ObjectQuery::create()
+                        ->filterByPrimaryKeys($this->objectsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->objectsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collObjects !== null) {
+                foreach ($this->collObjects as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->positionsScheduledForDeletion !== null) {
                 if (!$this->positionsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\PositionQuery::create()
@@ -1429,6 +1540,18 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`slug`';
         }
+        if ($this->isColumnModified(SportTableMap::COL_ATHLETE_LABEL)) {
+            $modifiedColumns[':p' . $index++]  = '`athlete_label`';
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`object_slug`';
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_LABEL)) {
+            $modifiedColumns[':p' . $index++]  = '`object_label`';
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_PLURAL_LABEL)) {
+            $modifiedColumns[':p' . $index++]  = '`object_plural_label`';
+        }
         if ($this->isColumnModified(SportTableMap::COL_SKILL_SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`skill_slug`';
         }
@@ -1447,14 +1570,14 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_GROUP_PLURAL_LABEL)) {
             $modifiedColumns[':p' . $index++]  = '`group_plural_label`';
         }
-        if ($this->isColumnModified(SportTableMap::COL_TRANSITIONS_SLUG)) {
-            $modifiedColumns[':p' . $index++]  = '`transitions_slug`';
-        }
         if ($this->isColumnModified(SportTableMap::COL_TRANSITION_LABEL)) {
             $modifiedColumns[':p' . $index++]  = '`transition_label`';
         }
         if ($this->isColumnModified(SportTableMap::COL_TRANSITION_PLURAL_LABEL)) {
             $modifiedColumns[':p' . $index++]  = '`transition_plural_label`';
+        }
+        if ($this->isColumnModified(SportTableMap::COL_TRANSITIONS_SLUG)) {
+            $modifiedColumns[':p' . $index++]  = '`transitions_slug`';
         }
         if ($this->isColumnModified(SportTableMap::COL_POSITION_SLUG)) {
             $modifiedColumns[':p' . $index++]  = '`position_slug`';
@@ -1462,20 +1585,14 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_POSITION_LABEL)) {
             $modifiedColumns[':p' . $index++]  = '`position_label`';
         }
-        if ($this->isColumnModified(SportTableMap::COL_COMPOSITIONAL)) {
-            $modifiedColumns[':p' . $index++]  = '`compositional`';
+        if ($this->isColumnModified(SportTableMap::COL_FEATURE_COMPOSITION)) {
+            $modifiedColumns[':p' . $index++]  = '`feature_composition`';
+        }
+        if ($this->isColumnModified(SportTableMap::COL_FEATURE_TESTER)) {
+            $modifiedColumns[':p' . $index++]  = '`feature_tester`';
         }
         if ($this->isColumnModified(SportTableMap::COL_IS_DEFAULT)) {
             $modifiedColumns[':p' . $index++]  = '`is_default`';
-        }
-        if ($this->isColumnModified(SportTableMap::COL_MOVENDER)) {
-            $modifiedColumns[':p' . $index++]  = '`movender`';
-        }
-        if ($this->isColumnModified(SportTableMap::COL_HAS_MOVENDUM)) {
-            $modifiedColumns[':p' . $index++]  = '`has_movendum`';
-        }
-        if ($this->isColumnModified(SportTableMap::COL_MOVENDUM)) {
-            $modifiedColumns[':p' . $index++]  = '`movendum`';
         }
 
         $sql = sprintf(
@@ -1497,6 +1614,18 @@ abstract class Sport implements ActiveRecordInterface
                     case '`slug`':
                         $stmt->bindValue($identifier, $this->slug, PDO::PARAM_STR);
                         break;
+                    case '`athlete_label`':
+                        $stmt->bindValue($identifier, $this->athlete_label, PDO::PARAM_STR);
+                        break;
+                    case '`object_slug`':
+                        $stmt->bindValue($identifier, $this->object_slug, PDO::PARAM_STR);
+                        break;
+                    case '`object_label`':
+                        $stmt->bindValue($identifier, $this->object_label, PDO::PARAM_STR);
+                        break;
+                    case '`object_plural_label`':
+                        $stmt->bindValue($identifier, $this->object_plural_label, PDO::PARAM_STR);
+                        break;
                     case '`skill_slug`':
                         $stmt->bindValue($identifier, $this->skill_slug, PDO::PARAM_STR);
                         break;
@@ -1515,14 +1644,14 @@ abstract class Sport implements ActiveRecordInterface
                     case '`group_plural_label`':
                         $stmt->bindValue($identifier, $this->group_plural_label, PDO::PARAM_STR);
                         break;
-                    case '`transitions_slug`':
-                        $stmt->bindValue($identifier, $this->transitions_slug, PDO::PARAM_STR);
-                        break;
                     case '`transition_label`':
                         $stmt->bindValue($identifier, $this->transition_label, PDO::PARAM_STR);
                         break;
                     case '`transition_plural_label`':
                         $stmt->bindValue($identifier, $this->transition_plural_label, PDO::PARAM_STR);
+                        break;
+                    case '`transitions_slug`':
+                        $stmt->bindValue($identifier, $this->transitions_slug, PDO::PARAM_STR);
                         break;
                     case '`position_slug`':
                         $stmt->bindValue($identifier, $this->position_slug, PDO::PARAM_STR);
@@ -1530,20 +1659,14 @@ abstract class Sport implements ActiveRecordInterface
                     case '`position_label`':
                         $stmt->bindValue($identifier, $this->position_label, PDO::PARAM_STR);
                         break;
-                    case '`compositional`':
-                        $stmt->bindValue($identifier, (int) $this->compositional, PDO::PARAM_INT);
+                    case '`feature_composition`':
+                        $stmt->bindValue($identifier, (int) $this->feature_composition, PDO::PARAM_INT);
+                        break;
+                    case '`feature_tester`':
+                        $stmt->bindValue($identifier, (int) $this->feature_tester, PDO::PARAM_INT);
                         break;
                     case '`is_default`':
                         $stmt->bindValue($identifier, (int) $this->is_default, PDO::PARAM_INT);
-                        break;
-                    case '`movender`':
-                        $stmt->bindValue($identifier, $this->movender, PDO::PARAM_STR);
-                        break;
-                    case '`has_movendum`':
-                        $stmt->bindValue($identifier, (int) $this->has_movendum, PDO::PARAM_INT);
-                        break;
-                    case '`movendum`':
-                        $stmt->bindValue($identifier, $this->movendum, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1617,52 +1740,58 @@ abstract class Sport implements ActiveRecordInterface
                 return $this->getSlug();
                 break;
             case 3:
-                return $this->getSkillSlug();
+                return $this->getAthleteLabel();
                 break;
             case 4:
-                return $this->getSkillLabel();
+                return $this->getObjectSlug();
                 break;
             case 5:
-                return $this->getSkillPluralLabel();
+                return $this->getObjectLabel();
                 break;
             case 6:
-                return $this->getGroupSlug();
+                return $this->getObjectPluralLabel();
                 break;
             case 7:
-                return $this->getGroupLabel();
+                return $this->getSkillSlug();
                 break;
             case 8:
-                return $this->getGroupPluralLabel();
+                return $this->getSkillLabel();
                 break;
             case 9:
-                return $this->getTransitionsSlug();
+                return $this->getSkillPluralLabel();
                 break;
             case 10:
-                return $this->getTransitionLabel();
+                return $this->getGroupSlug();
                 break;
             case 11:
-                return $this->getTransitionPluralLabel();
+                return $this->getGroupLabel();
                 break;
             case 12:
-                return $this->getPositionSlug();
+                return $this->getGroupPluralLabel();
                 break;
             case 13:
-                return $this->getPositionLabel();
+                return $this->getTransitionLabel();
                 break;
             case 14:
-                return $this->getCompositional();
+                return $this->getTransitionPluralLabel();
                 break;
             case 15:
-                return $this->getIsDefault();
+                return $this->getTransitionsSlug();
                 break;
             case 16:
-                return $this->getMovender();
+                return $this->getPositionSlug();
                 break;
             case 17:
-                return $this->getHasMovendum();
+                return $this->getPositionLabel();
                 break;
             case 18:
-                return $this->getMovendum();
+                return $this->getFeatureComposition();
+                break;
+            case 19:
+                return $this->getFeatureTester();
+                break;
+            case 20:
+                return $this->getIsDefault();
                 break;
             default:
                 return null;
@@ -1697,22 +1826,24 @@ abstract class Sport implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getSlug(),
-            $keys[3] => $this->getSkillSlug(),
-            $keys[4] => $this->getSkillLabel(),
-            $keys[5] => $this->getSkillPluralLabel(),
-            $keys[6] => $this->getGroupSlug(),
-            $keys[7] => $this->getGroupLabel(),
-            $keys[8] => $this->getGroupPluralLabel(),
-            $keys[9] => $this->getTransitionsSlug(),
-            $keys[10] => $this->getTransitionLabel(),
-            $keys[11] => $this->getTransitionPluralLabel(),
-            $keys[12] => $this->getPositionSlug(),
-            $keys[13] => $this->getPositionLabel(),
-            $keys[14] => $this->getCompositional(),
-            $keys[15] => $this->getIsDefault(),
-            $keys[16] => $this->getMovender(),
-            $keys[17] => $this->getHasMovendum(),
-            $keys[18] => $this->getMovendum(),
+            $keys[3] => $this->getAthleteLabel(),
+            $keys[4] => $this->getObjectSlug(),
+            $keys[5] => $this->getObjectLabel(),
+            $keys[6] => $this->getObjectPluralLabel(),
+            $keys[7] => $this->getSkillSlug(),
+            $keys[8] => $this->getSkillLabel(),
+            $keys[9] => $this->getSkillPluralLabel(),
+            $keys[10] => $this->getGroupSlug(),
+            $keys[11] => $this->getGroupLabel(),
+            $keys[12] => $this->getGroupPluralLabel(),
+            $keys[13] => $this->getTransitionLabel(),
+            $keys[14] => $this->getTransitionPluralLabel(),
+            $keys[15] => $this->getTransitionsSlug(),
+            $keys[16] => $this->getPositionSlug(),
+            $keys[17] => $this->getPositionLabel(),
+            $keys[18] => $this->getFeatureComposition(),
+            $keys[19] => $this->getFeatureTester(),
+            $keys[20] => $this->getIsDefault(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1720,6 +1851,21 @@ abstract class Sport implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collObjects) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'objects';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_objects';
+                        break;
+                    default:
+                        $key = 'Objects';
+                }
+
+                $result[$key] = $this->collObjects->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPositions) {
 
                 switch ($keyType) {
@@ -1809,52 +1955,58 @@ abstract class Sport implements ActiveRecordInterface
                 $this->setSlug($value);
                 break;
             case 3:
-                $this->setSkillSlug($value);
+                $this->setAthleteLabel($value);
                 break;
             case 4:
-                $this->setSkillLabel($value);
+                $this->setObjectSlug($value);
                 break;
             case 5:
-                $this->setSkillPluralLabel($value);
+                $this->setObjectLabel($value);
                 break;
             case 6:
-                $this->setGroupSlug($value);
+                $this->setObjectPluralLabel($value);
                 break;
             case 7:
-                $this->setGroupLabel($value);
+                $this->setSkillSlug($value);
                 break;
             case 8:
-                $this->setGroupPluralLabel($value);
+                $this->setSkillLabel($value);
                 break;
             case 9:
-                $this->setTransitionsSlug($value);
+                $this->setSkillPluralLabel($value);
                 break;
             case 10:
-                $this->setTransitionLabel($value);
+                $this->setGroupSlug($value);
                 break;
             case 11:
-                $this->setTransitionPluralLabel($value);
+                $this->setGroupLabel($value);
                 break;
             case 12:
-                $this->setPositionSlug($value);
+                $this->setGroupPluralLabel($value);
                 break;
             case 13:
-                $this->setPositionLabel($value);
+                $this->setTransitionLabel($value);
                 break;
             case 14:
-                $this->setCompositional($value);
+                $this->setTransitionPluralLabel($value);
                 break;
             case 15:
-                $this->setIsDefault($value);
+                $this->setTransitionsSlug($value);
                 break;
             case 16:
-                $this->setMovender($value);
+                $this->setPositionSlug($value);
                 break;
             case 17:
-                $this->setHasMovendum($value);
+                $this->setPositionLabel($value);
                 break;
             case 18:
-                $this->setMovendum($value);
+                $this->setFeatureComposition($value);
+                break;
+            case 19:
+                $this->setFeatureTester($value);
+                break;
+            case 20:
+                $this->setIsDefault($value);
                 break;
         } // switch()
 
@@ -1892,52 +2044,58 @@ abstract class Sport implements ActiveRecordInterface
             $this->setSlug($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setSkillSlug($arr[$keys[3]]);
+            $this->setAthleteLabel($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setSkillLabel($arr[$keys[4]]);
+            $this->setObjectSlug($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setSkillPluralLabel($arr[$keys[5]]);
+            $this->setObjectLabel($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setGroupSlug($arr[$keys[6]]);
+            $this->setObjectPluralLabel($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setGroupLabel($arr[$keys[7]]);
+            $this->setSkillSlug($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setGroupPluralLabel($arr[$keys[8]]);
+            $this->setSkillLabel($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setTransitionsSlug($arr[$keys[9]]);
+            $this->setSkillPluralLabel($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setTransitionLabel($arr[$keys[10]]);
+            $this->setGroupSlug($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setTransitionPluralLabel($arr[$keys[11]]);
+            $this->setGroupLabel($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setPositionSlug($arr[$keys[12]]);
+            $this->setGroupPluralLabel($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setPositionLabel($arr[$keys[13]]);
+            $this->setTransitionLabel($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setCompositional($arr[$keys[14]]);
+            $this->setTransitionPluralLabel($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setIsDefault($arr[$keys[15]]);
+            $this->setTransitionsSlug($arr[$keys[15]]);
         }
         if (array_key_exists($keys[16], $arr)) {
-            $this->setMovender($arr[$keys[16]]);
+            $this->setPositionSlug($arr[$keys[16]]);
         }
         if (array_key_exists($keys[17], $arr)) {
-            $this->setHasMovendum($arr[$keys[17]]);
+            $this->setPositionLabel($arr[$keys[17]]);
         }
         if (array_key_exists($keys[18], $arr)) {
-            $this->setMovendum($arr[$keys[18]]);
+            $this->setFeatureComposition($arr[$keys[18]]);
+        }
+        if (array_key_exists($keys[19], $arr)) {
+            $this->setFeatureTester($arr[$keys[19]]);
+        }
+        if (array_key_exists($keys[20], $arr)) {
+            $this->setIsDefault($arr[$keys[20]]);
         }
     }
 
@@ -1989,6 +2147,18 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_SLUG)) {
             $criteria->add(SportTableMap::COL_SLUG, $this->slug);
         }
+        if ($this->isColumnModified(SportTableMap::COL_ATHLETE_LABEL)) {
+            $criteria->add(SportTableMap::COL_ATHLETE_LABEL, $this->athlete_label);
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_SLUG)) {
+            $criteria->add(SportTableMap::COL_OBJECT_SLUG, $this->object_slug);
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_LABEL)) {
+            $criteria->add(SportTableMap::COL_OBJECT_LABEL, $this->object_label);
+        }
+        if ($this->isColumnModified(SportTableMap::COL_OBJECT_PLURAL_LABEL)) {
+            $criteria->add(SportTableMap::COL_OBJECT_PLURAL_LABEL, $this->object_plural_label);
+        }
         if ($this->isColumnModified(SportTableMap::COL_SKILL_SLUG)) {
             $criteria->add(SportTableMap::COL_SKILL_SLUG, $this->skill_slug);
         }
@@ -2007,14 +2177,14 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_GROUP_PLURAL_LABEL)) {
             $criteria->add(SportTableMap::COL_GROUP_PLURAL_LABEL, $this->group_plural_label);
         }
-        if ($this->isColumnModified(SportTableMap::COL_TRANSITIONS_SLUG)) {
-            $criteria->add(SportTableMap::COL_TRANSITIONS_SLUG, $this->transitions_slug);
-        }
         if ($this->isColumnModified(SportTableMap::COL_TRANSITION_LABEL)) {
             $criteria->add(SportTableMap::COL_TRANSITION_LABEL, $this->transition_label);
         }
         if ($this->isColumnModified(SportTableMap::COL_TRANSITION_PLURAL_LABEL)) {
             $criteria->add(SportTableMap::COL_TRANSITION_PLURAL_LABEL, $this->transition_plural_label);
+        }
+        if ($this->isColumnModified(SportTableMap::COL_TRANSITIONS_SLUG)) {
+            $criteria->add(SportTableMap::COL_TRANSITIONS_SLUG, $this->transitions_slug);
         }
         if ($this->isColumnModified(SportTableMap::COL_POSITION_SLUG)) {
             $criteria->add(SportTableMap::COL_POSITION_SLUG, $this->position_slug);
@@ -2022,20 +2192,14 @@ abstract class Sport implements ActiveRecordInterface
         if ($this->isColumnModified(SportTableMap::COL_POSITION_LABEL)) {
             $criteria->add(SportTableMap::COL_POSITION_LABEL, $this->position_label);
         }
-        if ($this->isColumnModified(SportTableMap::COL_COMPOSITIONAL)) {
-            $criteria->add(SportTableMap::COL_COMPOSITIONAL, $this->compositional);
+        if ($this->isColumnModified(SportTableMap::COL_FEATURE_COMPOSITION)) {
+            $criteria->add(SportTableMap::COL_FEATURE_COMPOSITION, $this->feature_composition);
+        }
+        if ($this->isColumnModified(SportTableMap::COL_FEATURE_TESTER)) {
+            $criteria->add(SportTableMap::COL_FEATURE_TESTER, $this->feature_tester);
         }
         if ($this->isColumnModified(SportTableMap::COL_IS_DEFAULT)) {
             $criteria->add(SportTableMap::COL_IS_DEFAULT, $this->is_default);
-        }
-        if ($this->isColumnModified(SportTableMap::COL_MOVENDER)) {
-            $criteria->add(SportTableMap::COL_MOVENDER, $this->movender);
-        }
-        if ($this->isColumnModified(SportTableMap::COL_HAS_MOVENDUM)) {
-            $criteria->add(SportTableMap::COL_HAS_MOVENDUM, $this->has_movendum);
-        }
-        if ($this->isColumnModified(SportTableMap::COL_MOVENDUM)) {
-            $criteria->add(SportTableMap::COL_MOVENDUM, $this->movendum);
         }
 
         return $criteria;
@@ -2125,27 +2289,35 @@ abstract class Sport implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setSlug($this->getSlug());
+        $copyObj->setAthleteLabel($this->getAthleteLabel());
+        $copyObj->setObjectSlug($this->getObjectSlug());
+        $copyObj->setObjectLabel($this->getObjectLabel());
+        $copyObj->setObjectPluralLabel($this->getObjectPluralLabel());
         $copyObj->setSkillSlug($this->getSkillSlug());
         $copyObj->setSkillLabel($this->getSkillLabel());
         $copyObj->setSkillPluralLabel($this->getSkillPluralLabel());
         $copyObj->setGroupSlug($this->getGroupSlug());
         $copyObj->setGroupLabel($this->getGroupLabel());
         $copyObj->setGroupPluralLabel($this->getGroupPluralLabel());
-        $copyObj->setTransitionsSlug($this->getTransitionsSlug());
         $copyObj->setTransitionLabel($this->getTransitionLabel());
         $copyObj->setTransitionPluralLabel($this->getTransitionPluralLabel());
+        $copyObj->setTransitionsSlug($this->getTransitionsSlug());
         $copyObj->setPositionSlug($this->getPositionSlug());
         $copyObj->setPositionLabel($this->getPositionLabel());
-        $copyObj->setCompositional($this->getCompositional());
+        $copyObj->setFeatureComposition($this->getFeatureComposition());
+        $copyObj->setFeatureTester($this->getFeatureTester());
         $copyObj->setIsDefault($this->getIsDefault());
-        $copyObj->setMovender($this->getMovender());
-        $copyObj->setHasMovendum($this->getHasMovendum());
-        $copyObj->setMovendum($this->getMovendum());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
+
+            foreach ($this->getObjects() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addObject($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getPositions() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -2206,6 +2378,9 @@ abstract class Sport implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('Object' == $relationName) {
+            return $this->initObjects();
+        }
         if ('Position' == $relationName) {
             return $this->initPositions();
         }
@@ -2215,6 +2390,224 @@ abstract class Sport implements ActiveRecordInterface
         if ('Group' == $relationName) {
             return $this->initGroups();
         }
+    }
+
+    /**
+     * Clears out the collObjects collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addObjects()
+     */
+    public function clearObjects()
+    {
+        $this->collObjects = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collObjects collection loaded partially.
+     */
+    public function resetPartialObjects($v = true)
+    {
+        $this->collObjectsPartial = $v;
+    }
+
+    /**
+     * Initializes the collObjects collection.
+     *
+     * By default this just sets the collObjects collection to an empty array (like clearcollObjects());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initObjects($overrideExisting = true)
+    {
+        if (null !== $this->collObjects && !$overrideExisting) {
+            return;
+        }
+        $this->collObjects = new ObjectCollection();
+        $this->collObjects->setModel('\gossi\trixionary\model\Object');
+    }
+
+    /**
+     * Gets an array of ChildObject objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSport is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildObject[] List of ChildObject objects
+     * @throws PropelException
+     */
+    public function getObjects(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collObjectsPartial && !$this->isNew();
+        if (null === $this->collObjects || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collObjects) {
+                // return empty collection
+                $this->initObjects();
+            } else {
+                $collObjects = ChildObjectQuery::create(null, $criteria)
+                    ->filterBySport($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collObjectsPartial && count($collObjects)) {
+                        $this->initObjects(false);
+
+                        foreach ($collObjects as $obj) {
+                            if (false == $this->collObjects->contains($obj)) {
+                                $this->collObjects->append($obj);
+                            }
+                        }
+
+                        $this->collObjectsPartial = true;
+                    }
+
+                    return $collObjects;
+                }
+
+                if ($partial && $this->collObjects) {
+                    foreach ($this->collObjects as $obj) {
+                        if ($obj->isNew()) {
+                            $collObjects[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collObjects = $collObjects;
+                $this->collObjectsPartial = false;
+            }
+        }
+
+        return $this->collObjects;
+    }
+
+    /**
+     * Sets a collection of ChildObject objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $objects A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSport The current object (for fluent API support)
+     */
+    public function setObjects(Collection $objects, ConnectionInterface $con = null)
+    {
+        /** @var ChildObject[] $objectsToDelete */
+        $objectsToDelete = $this->getObjects(new Criteria(), $con)->diff($objects);
+
+
+        $this->objectsScheduledForDeletion = $objectsToDelete;
+
+        foreach ($objectsToDelete as $objectRemoved) {
+            $objectRemoved->setSport(null);
+        }
+
+        $this->collObjects = null;
+        foreach ($objects as $object) {
+            $this->addObject($object);
+        }
+
+        $this->collObjects = $objects;
+        $this->collObjectsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Object objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Object objects.
+     * @throws PropelException
+     */
+    public function countObjects(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collObjectsPartial && !$this->isNew();
+        if (null === $this->collObjects || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collObjects) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getObjects());
+            }
+
+            $query = ChildObjectQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySport($this)
+                ->count($con);
+        }
+
+        return count($this->collObjects);
+    }
+
+    /**
+     * Method called to associate a ChildObject object to this object
+     * through the ChildObject foreign key attribute.
+     *
+     * @param  ChildObject $l ChildObject
+     * @return $this|\gossi\trixionary\model\Sport The current object (for fluent API support)
+     */
+    public function addObject(ChildObject $l)
+    {
+        if ($this->collObjects === null) {
+            $this->initObjects();
+            $this->collObjectsPartial = true;
+        }
+
+        if (!$this->collObjects->contains($l)) {
+            $this->doAddObject($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildObject $object The ChildObject object to add.
+     */
+    protected function doAddObject(ChildObject $object)
+    {
+        $this->collObjects[]= $object;
+        $object->setSport($this);
+    }
+
+    /**
+     * @param  ChildObject $object The ChildObject object to remove.
+     * @return $this|ChildSport The current object (for fluent API support)
+     */
+    public function removeObject(ChildObject $object)
+    {
+        if ($this->getObjects()->contains($object)) {
+            $pos = $this->collObjects->search($object);
+            $this->collObjects->remove($pos);
+            if (null === $this->objectsScheduledForDeletion) {
+                $this->objectsScheduledForDeletion = clone $this->collObjects;
+                $this->objectsScheduledForDeletion->clear();
+            }
+            $this->objectsScheduledForDeletion[]= clone $object;
+            $object->setSport(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -2720,6 +3113,31 @@ abstract class Sport implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
+    public function getSkillsJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
+
+        return $this->getSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sport is new, it will return
+     * an empty collection; or if this Sport has previously
+     * been saved, it will retrieve related Skills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sport.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
     public function getSkillsJoinStartPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildSkillQuery::create(null, $criteria);
@@ -3056,22 +3474,24 @@ abstract class Sport implements ActiveRecordInterface
         $this->id = null;
         $this->title = null;
         $this->slug = null;
+        $this->athlete_label = null;
+        $this->object_slug = null;
+        $this->object_label = null;
+        $this->object_plural_label = null;
         $this->skill_slug = null;
         $this->skill_label = null;
         $this->skill_plural_label = null;
         $this->group_slug = null;
         $this->group_label = null;
         $this->group_plural_label = null;
-        $this->transitions_slug = null;
         $this->transition_label = null;
         $this->transition_plural_label = null;
+        $this->transitions_slug = null;
         $this->position_slug = null;
         $this->position_label = null;
-        $this->compositional = null;
+        $this->feature_composition = null;
+        $this->feature_tester = null;
         $this->is_default = null;
-        $this->movender = null;
-        $this->has_movendum = null;
-        $this->movendum = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -3090,6 +3510,11 @@ abstract class Sport implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collObjects) {
+                foreach ($this->collObjects as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPositions) {
                 foreach ($this->collPositions as $o) {
                     $o->clearAllReferences($deep);
@@ -3107,6 +3532,7 @@ abstract class Sport implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collObjects = null;
         $this->collPositions = null;
         $this->collSkills = null;
         $this->collGroups = null;

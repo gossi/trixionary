@@ -682,7 +682,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setId($v)
@@ -702,7 +702,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [type] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setType($v)
@@ -722,7 +722,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [skill_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setSkillId($v)
@@ -746,7 +746,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [title] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setTitle($v)
@@ -766,7 +766,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [year] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setYear($v)
@@ -786,7 +786,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [publisher] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setPublisher($v)
@@ -806,7 +806,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [journal] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setJournal($v)
@@ -826,7 +826,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [number] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setNumber($v)
@@ -846,7 +846,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [school] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setSchool($v)
@@ -866,7 +866,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [author] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setAuthor($v)
@@ -886,7 +886,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [edition] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setEdition($v)
@@ -906,7 +906,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [volume] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setVolume($v)
@@ -926,7 +926,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [address] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setAddress($v)
@@ -946,7 +946,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [editor] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setEditor($v)
@@ -966,7 +966,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [howpublished] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setHowpublished($v)
@@ -986,7 +986,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [note] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setNote($v)
@@ -1006,7 +1006,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [booktitle] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setBooktitle($v)
@@ -1026,7 +1026,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [pages] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setPages($v)
@@ -1046,7 +1046,7 @@ abstract class Reference implements ActiveRecordInterface
     /**
      * Set the value of [url] column.
      *
-     * @param  string $v new value
+     * @param string $v new value
      * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
      */
     public function setUrl($v)
@@ -1074,8 +1074,8 @@ abstract class Reference implements ActiveRecordInterface
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->lastchecked !== null || $dt !== null) {
-            if ($dt !== $this->lastchecked) {
-                $this->lastchecked = $dt;
+            if ($this->lastchecked === null || $dt === null || $dt->format("Y-m-d") !== $this->lastchecked->format("Y-m-d")) {
+                $this->lastchecked = $dt === null ? null : clone $dt;
                 $this->modifiedColumns[ReferenceTableMap::COL_LASTCHECKED] = true;
             }
         } // if either are not null
@@ -1771,6 +1771,14 @@ abstract class Reference implements ActiveRecordInterface
             $keys[19] => $this->getLastchecked(),
             $keys[20] => $this->getManaged(),
         );
+
+        $utc = new \DateTimeZone('utc');
+        if ($result[$keys[19]] instanceof \DateTime) {
+            // When changing timezone we don't want to change existing instances
+            $dateTime = clone $result[$keys[19]];
+            $result[$keys[19]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;

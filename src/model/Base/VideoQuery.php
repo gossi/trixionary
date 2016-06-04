@@ -83,7 +83,26 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo findOneByProviderId(string $provider_id) Return the first ChildVideo filtered by the provider_id column
  * @method     ChildVideo findOneByPlayerUrl(string $player_url) Return the first ChildVideo filtered by the player_url column
  * @method     ChildVideo findOneByWidth(int $width) Return the first ChildVideo filtered by the width column
- * @method     ChildVideo findOneByHeight(int $height) Return the first ChildVideo filtered by the height column
+ * @method     ChildVideo findOneByHeight(int $height) Return the first ChildVideo filtered by the height column *
+
+ * @method     ChildVideo requirePk($key, ConnectionInterface $con = null) Return the ChildVideo by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOne(ConnectionInterface $con = null) Return the first ChildVideo matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildVideo requireOneById(int $id) Return the first ChildVideo filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByTitle(string $title) Return the first ChildVideo filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByDescription(string $description) Return the first ChildVideo filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByIsTutorial(boolean $is_tutorial) Return the first ChildVideo filtered by the is_tutorial column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByMovender(string $movender) Return the first ChildVideo filtered by the movender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByMovenderId(int $movender_id) Return the first ChildVideo filtered by the movender_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByUploaderId(int $uploader_id) Return the first ChildVideo filtered by the uploader_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneBySkillId(int $skill_id) Return the first ChildVideo filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByReferenceId(int $reference_id) Return the first ChildVideo filtered by the reference_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByPosterUrl(string $poster_url) Return the first ChildVideo filtered by the poster_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByProvider(string $provider) Return the first ChildVideo filtered by the provider column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByProviderId(string $provider_id) Return the first ChildVideo filtered by the provider_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByPlayerUrl(string $player_url) Return the first ChildVideo filtered by the player_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByWidth(int $width) Return the first ChildVideo filtered by the width column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByHeight(int $height) Return the first ChildVideo filtered by the height column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildVideo[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildVideo objects based on current ModelCriteria
  * @method     ChildVideo[]|ObjectCollection findById(int $id) Return ChildVideo objects filtered by the id column
@@ -106,6 +125,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  */
 abstract class VideoQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\VideoQuery object.

@@ -72,9 +72,9 @@ class StructureNodeParentTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 2;
 
     /**
-     * the column name for the id field
+     * the column name for the structure_node_id field
      */
-    const COL_ID = 'kk_trixionary_structure_node_parent.id';
+    const COL_STRUCTURE_NODE_ID = 'kk_trixionary_structure_node_parent.structure_node_id';
 
     /**
      * the column name for the parent_id field
@@ -93,10 +93,10 @@ class StructureNodeParentTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ParentId', ),
-        self::TYPE_CAMELNAME     => array('id', 'parentId', ),
-        self::TYPE_COLNAME       => array(StructureNodeParentTableMap::COL_ID, StructureNodeParentTableMap::COL_PARENT_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'parent_id', ),
+        self::TYPE_PHPNAME       => array('StructureNodeId', 'ParentId', ),
+        self::TYPE_CAMELNAME     => array('structureNodeId', 'parentId', ),
+        self::TYPE_COLNAME       => array(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, StructureNodeParentTableMap::COL_PARENT_ID, ),
+        self::TYPE_FIELDNAME     => array('structure_node_id', 'parent_id', ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -107,10 +107,10 @@ class StructureNodeParentTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ParentId' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'parentId' => 1, ),
-        self::TYPE_COLNAME       => array(StructureNodeParentTableMap::COL_ID => 0, StructureNodeParentTableMap::COL_PARENT_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'parent_id' => 1, ),
+        self::TYPE_PHPNAME       => array('StructureNodeId' => 0, 'ParentId' => 1, ),
+        self::TYPE_CAMELNAME     => array('structureNodeId' => 0, 'parentId' => 1, ),
+        self::TYPE_COLNAME       => array(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID => 0, StructureNodeParentTableMap::COL_PARENT_ID => 1, ),
+        self::TYPE_FIELDNAME     => array('structure_node_id' => 0, 'parent_id' => 1, ),
         self::TYPE_NUM           => array(0, 1, )
     );
 
@@ -132,7 +132,7 @@ class StructureNodeParentTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('id', 'Id', 'INTEGER' , 'kk_trixionary_structure_node', 'id', true, null, null);
+        $this->addForeignPrimaryKey('structure_node_id', 'StructureNodeId', 'INTEGER' , 'kk_trixionary_structure_node', 'id', true, null, null);
         $this->addForeignPrimaryKey('parent_id', 'ParentId', 'INTEGER' , 'kk_trixionary_structure_node', 'id', true, null, null);
     } // initialize()
 
@@ -141,8 +141,20 @@ class StructureNodeParentTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('StructureNodeRelatedById', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array('id' => 'id', ), null, null);
-        $this->addRelation('StructureNodeRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array('parent_id' => 'id', ), null, null);
+        $this->addRelation('StructureNodeRelatedByStructureNodeId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':structure_node_id',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('StructureNodeRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':parent_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
     } // buildRelations()
 
     /**
@@ -160,7 +172,7 @@ class StructureNodeParentTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled()) {
             if (null === $key) {
-                $key = serialize(array((string) $obj->getId(), (string) $obj->getParentId()));
+                $key = serialize(array((string) $obj->getStructureNodeId(), (string) $obj->getParentId()));
             } // if key === null
             self::$instances[$key] = $obj;
         }
@@ -180,7 +192,7 @@ class StructureNodeParentTableMap extends TableMap
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
             if (is_object($value) && $value instanceof \gossi\trixionary\model\StructureNodeParent) {
-                $key = serialize(array((string) $value->getId(), (string) $value->getParentId()));
+                $key = serialize(array((string) $value->getStructureNodeId(), (string) $value->getParentId()));
 
             } elseif (is_array($value) && count($value) === 2) {
                 // assume we've been passed a primary key";
@@ -214,11 +226,11 @@ class StructureNodeParentTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StructureNodeId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)]));
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('StructureNodeId', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -240,7 +252,7 @@ class StructureNodeParentTableMap extends TableMap
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('StructureNodeId', TableMap::TYPE_PHPNAME, $indexType)
         ];
         $pks[] = (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -348,10 +360,10 @@ class StructureNodeParentTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(StructureNodeParentTableMap::COL_ID);
+            $criteria->addSelectColumn(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID);
             $criteria->addSelectColumn(StructureNodeParentTableMap::COL_PARENT_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.structure_node_id');
             $criteria->addSelectColumn($alias . '.parent_id');
         }
     }
@@ -411,7 +423,7 @@ class StructureNodeParentTableMap extends TableMap
                 $values = array($values);
             }
             foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(StructureNodeParentTableMap::COL_ID, $value[0]);
+                $criterion = $criteria->getNewCriterion(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $value[0]);
                 $criterion->addAnd($criteria->getNewCriterion(StructureNodeParentTableMap::COL_PARENT_ID, $value[1]));
                 $criteria->addOr($criterion);
             }

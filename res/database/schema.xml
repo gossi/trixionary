@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="keeko" namespace="gossi\trixionary\model" identifierQuoting="true"
+	defaultPhpNamingMethod="phpname" xmlns:xsi="http://www.w3.org/2001/XMLSchema-inposition"
+	xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/propelorm/Propel2/master/resources/xsd/database.xsd"
+	tablePrefix="kk_trixionary_">
+	
+	<!-- <external-schema filename="vendor/keeko/core/res/database/schema.xml"/> -->
+	
+	<table name="sport">
+		<column name="id" type="INTEGER" primaryKey="true" required="true"
+			autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="athlete_label" type="VARCHAR" size="255"/>
+		<column name="object_slug" type="VARCHAR" size="255"/>
+		<column name="object_label" type="VARCHAR" size="255"/>
+		<column name="object_plural_label" type="VARCHAR" size="255"/>
+		<column name="skill_slug" type="VARCHAR" size="255"/>
+		<column name="skill_label" type="VARCHAR" size="255"/>
+		<column name="skill_plural_label" type="VARCHAR" size="255"/>
+		<column name="group_slug" type="VARCHAR" size="255"/>
+		<column name="group_label" type="VARCHAR" size="255"/>
+		<column name="group_plural_label" type="VARCHAR" size="255"/>
+		<column name="transition_label" type="VARCHAR" size="255"/>
+		<column name="transition_plural_label" type="VARCHAR" size="255"/>
+		<column name="transitions_slug" type="VARCHAR" size="255"/>
+		<column name="position_slug" type="VARCHAR" size="255"/>
+		<column name="position_label" type="VARCHAR" size="255"/>
+		<column name="feature_composition" type="BOOLEAN"/>
+		<column name="feature_tester" type="BOOLEAN"/>
+		<column name="is_default" type="BOOLEAN"/>
+	</table>
+	
+	<table name="object">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="fixed" type="BOOLEAN"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="sport_id" type="INTEGER" required="true" />
+
+		<foreign-key foreignTable="sport" onDelete="cascade" name="object_fk_sport">
+			<reference local="sport_id" foreign="id"/>
+		</foreign-key>
+	</table>
+
+	<table name="position">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="sport_id" type="INTEGER" required="true" />
+		<column name="description" type="LONGVARCHAR"/>
+
+		<foreign-key foreignTable="sport" onDelete="cascade" name="position_fk_sport">
+			<reference local="sport_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="skill">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="sport_id" type="INTEGER" required="true" />
+		<column name="name" type="VARCHAR" size="255"/>
+		<column name="alternative_name" type="VARCHAR" size="255"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="history" type="LONGVARCHAR"/>
+		<column name="is_translation" type="BOOLEAN"/>
+		<column name="is_rotation" type="BOOLEAN"/>
+		<column name="is_cyclic" type="BOOLEAN" default="false"/>
+		<column name="is_cyclic" type="BOOLEAN" default="false"/>
+		<column name="longitudinal_flags" type="INTEGER"/>
+		<column name="latitudinal_flags" type="INTEGER"/>
+		<column name="transversal_flags" type="INTEGER"/>
+		<column name="movement_description" type="LONGVARCHAR"/>
+		<column name="variation_of_id" type="INTEGER" required="false" description="Indicates a variation"/>
+		<column name="start_position_id"  type="INTEGER" required="false" />
+		<column name="end_position_id"  type="INTEGER" required="false" />
+		<column name="is_composite" type="BOOLEAN" description="This skill is a composite"/>
+		<column name="is_multiple" type="BOOLEAN" description="This skill is a multiplier"/>
+		<column name="multiple_of_id" type="INTEGER" required="false"/>
+		<column name="multiplier" type="INTEGER" />
+		<column name="generation" type="INTEGER" />
+		<column name="importance" type="INTEGER" />
+		<column name="generation_ids" type="LONGVARCHAR"/>
+		<column name="picture_id" type="INTEGER" required="false"/>
+		<column name="kstruktur_id" type="INTEGER" required="false"/>
+		<column name="function_phase_id" type="INTEGER" required="false"/>
+		<column name="object_id" type="INTEGER" required="false"/>
+
+		<foreign-key foreignTable="sport" onDelete="cascade" name="skill_fk_sport">
+			<reference local="sport_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" refPhpName="Variation" phpName="VariationOf" name="skill_fk_variation">
+			<reference local="variation_of_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="skill" refPhpName="Multiple" phpName="MultipleOf" name="skill_fk_multiple">
+			<reference local="multiple_of_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="object" name="skill_fk_object">
+			<reference local="object_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="position" phpName="StartPosition" name="skill_fk_start_position">
+			<reference local="start_position_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="position" phpName="EndPosition" name="skill_fk_end_position">
+			<reference local="end_position_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="picture" phpName="FeaturedPicture" refPhpName="FeaturedSkill" name="skill_fk_featured_picture">
+			<reference local="picture_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="kstruktur" phpName="KstrukturRoot" refPhpName="RootSkill" name="skill_fk_kstruktur">
+			<reference local="kstruktur_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="function_phase" phpName="FunctionPhaseRoot" refPhpName="RootSkill" name="skill_fk_function_phase">
+			<reference local="function_phase_id" foreign="id"/>
+		</foreign-key>
+
+		<behavior name="versionable">
+			<parameter name="log_created_at" value="true"/>
+			<parameter name="log_comment" value="true"/>
+			<parameter name="version_table" value="skill_version"/>
+		</behavior>
+	</table>
+	
+	<table name="skill_dependency" isCrossRef="true">
+		<!-- dependency_id depends on parent_id -->
+		<column name="dependency_id" type="INTEGER" primaryKey="true" required="true" />
+		<column name="parent_id" type="INTEGER" primaryKey="true" required="true" />
+		
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_skill" refPhpName="Descendent">
+			<reference local="dependency_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_parent" refPhpName="Ascendent">
+			<reference local="parent_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<table name="skill_part" isCrossRef="true">
+		<!-- part_id is a part of composite_id -->
+		<column name="part_id" type="INTEGER" primaryKey="true" required="true" />
+		<column name="composite_id" type="INTEGER" primaryKey="true" required="true" />
+
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_part_fk_part" refPhpName="Part">
+			<reference local="part_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_part_fk_composite" refPhpName="Composite">
+			<reference local="composite_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<table name="group">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="slug" type="VARCHAR" size="255"/>
+		<column name="sport_id" type="INTEGER" required="true" />
+		
+		<foreign-key foreignTable="sport" onDelete="cascade" name="group_fk_sport">
+			<reference local="sport_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="skill_group" isCrossRef="true">
+		<column name="skill_id" type="INTEGER" primaryKey="true" required="true" />
+		<column name="group_id" type="INTEGER" primaryKey="true" required="true" />
+		
+		<foreign-key foreignTable="group" onDelete="cascade" name="skill_group_fk_group">
+			<reference local="group_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_group_fk_skill">
+			<reference local="skill_id" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="picture">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="photographer" type="VARCHAR" required="false"/>
+		<column name="photographer_id" type="INTEGER" required="false"/>
+		<column name="movender" type="VARCHAR" required="false"/>
+		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="uploader_id" type="INTEGER"/>
+
+		<foreign-key foreignTable="skill" refPhpName="Picture" phpName="Skill" onDelete="CASCADE" name="picture_fk_skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="video">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="title" type="VARCHAR" size="255"/>
+		<column name="description" type="LONGVARCHAR"/>
+		<column name="is_tutorial" type="BOOLEAN"/>
+		<column name="movender" type="VARCHAR" required="false"/>
+		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="uploader_id" type="INTEGER"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="reference_id" type="INTEGER" required="false"/>
+		<column name="poster_url" type="VARCHAR"/>
+		<column name="provider" type="VARCHAR"/>
+		<column name="provider_id" type="VARCHAR"/>
+		<column name="player_url" type="VARCHAR"/>
+		<column name="width" type="INTEGER"/>
+		<column name="height" type="INTEGER"/>
+
+		<foreign-key foreignTable="skill" onDelete="cascade" name="video_fk_skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+
+		<foreign-key foreignTable="reference" name="video_fk_reference">
+			<reference local="reference_id" foreign="id"/>
+		</foreign-key>
+	</table>
+
+	<table name="reference">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="type" type="VARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="title" type="VARCHAR"/>
+		<column name="year" type="INTEGER"/>
+		<column name="publisher" type="VARCHAR"/>
+		<column name="journal" type="VARCHAR"/>
+		<column name="number" type="VARCHAR"/>
+		<column name="school" type="VARCHAR"/>
+		<column name="author" type="VARCHAR"/>
+		<column name="edition" type="VARCHAR"/>
+		<column name="volume" type="VARCHAR"/>
+		<column name="address" type="VARCHAR"/>
+		<column name="editor" type="VARCHAR"/>
+		<column name="howpublished" type="VARCHAR"/>
+		<column name="note" type="VARCHAR"/>
+		<column name="booktitle" type="VARCHAR"/>
+		<column name="pages" type="VARCHAR"/>
+		<column name="url" type="VARCHAR"/>
+		<column name="lastchecked" type="DATE"/>
+		<column name="managed" type="BOOLEAN" default="false"/>
+
+		<foreign-key foreignTable="skill" name="reference_fk_skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="structure_node">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="type" type="VARCHAR"/>
+		<column name="skill_id" type="INTEGER" required="true"/>
+		<column name="title" type="VARCHAR"/>
+		
+		<foreign-key foreignTable="skill" onDelete="cascade" name="structure_node_fk_skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="structure_node_parent" isCrossRef="true">
+		<column name="structure_node_id" type="INTEGER" primaryKey="true" required="true"/>
+		<column name="parent_id" type="INTEGER" primaryKey="true" required="true"/>
+		
+		<foreign-key foreignTable="structure_node" name="structure_node_parent_fk_node">
+			<reference local="structure_node_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="structure_node" onDelete="cascade" name="structure_node_parent_fk_parent">
+			<reference local="parent_id" foreign="id"/>
+		</foreign-key>
+	</table>
+	
+	<table name="kstruktur">
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="structure_node"/>
+		</behavior>
+	</table>
+	
+	<table name="function_phase">
+		<behavior name="concrete_inheritance">
+			<parameter name="extends" value="structure_node"/>
+		</behavior>
+	</table>
+
+</database>

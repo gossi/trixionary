@@ -333,7 +333,7 @@ abstract class SkillGroup implements ActiveRecordInterface
     /**
      * Set the value of [skill_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillGroup The current object (for fluent API support)
      */
     public function setSkillId($v)
@@ -357,7 +357,7 @@ abstract class SkillGroup implements ActiveRecordInterface
     /**
      * Set the value of [group_id] column.
      *
-     * @param  int $v new value
+     * @param int $v new value
      * @return $this|\gossi\trixionary\model\SkillGroup The current object (for fluent API support)
      */
     public function setGroupId($v)
@@ -956,14 +956,14 @@ abstract class SkillGroup implements ActiveRecordInterface
         $validPrimaryKeyFKs = 2;
         $primaryKeyFKs = [];
 
-        //relation kk_trixionary_skill_group_fk_b8c14a to table kk_trixionary_group
+        //relation skill_group_fk_group to table kk_trixionary_group
         if ($this->aGroup && $hash = spl_object_hash($this->aGroup)) {
             $primaryKeyFKs[] = $hash;
         } else {
             $validPrimaryKeyFKs = false;
         }
 
-        //relation kk_trixionary_skill_group_fk_3713ea to table kk_trixionary_skill
+        //relation skill_group_fk_skill to table kk_trixionary_skill
         if ($this->aSkill && $hash = spl_object_hash($this->aSkill)) {
             $primaryKeyFKs[] = $hash;
         } else {

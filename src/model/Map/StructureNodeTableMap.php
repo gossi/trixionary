@@ -158,13 +158,43 @@ class StructureNodeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array('skill_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('StructureNodeParentRelatedById', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array('id' => 'id', ), null, null, 'StructureNodeParentsRelatedById');
-        $this->addRelation('StructureNodeParentRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), null, null, 'StructureNodeParentsRelatedByParentId');
-        $this->addRelation('Kstruktur', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('FunctionPhase', '\\gossi\\trixionary\\model\\FunctionPhase', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('StructureNodeRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), null, null, 'StructureNodesRelatedByParentId');
-        $this->addRelation('StructureNodeRelatedById', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), null, null, 'StructureNodesRelatedById');
+        $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':skill_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('StructureNodeParentRelatedByStructureNodeId', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':structure_node_id',
+    1 => ':id',
+  ),
+), null, null, 'StructureNodeParentsRelatedByStructureNodeId', false);
+        $this->addRelation('StructureNodeParentRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNodeParent', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':parent_id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, 'StructureNodeParentsRelatedByParentId', false);
+        $this->addRelation('Kstruktur', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::ONE_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('FunctionPhase', '\\gossi\\trixionary\\model\\FunctionPhase', RelationMap::ONE_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':id',
+  ),
+), 'CASCADE', null, null, false);
+        $this->addRelation('StructureNodeRelatedByParentId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'StructureNodesRelatedByParentId');
+        $this->addRelation('StructureNodeRelatedByStructureNodeId', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::MANY_TO_MANY, array(), null, null, 'StructureNodesRelatedByStructureNodeId');
     } // buildRelations()
 
     /**
@@ -186,6 +216,7 @@ class StructureNodeTableMap extends TableMap
     {
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        StructureNodeParentTableMap::clearInstancePool();
         KstrukturTableMap::clearInstancePool();
         FunctionPhaseTableMap::clearInstancePool();
     }

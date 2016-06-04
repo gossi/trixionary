@@ -20,19 +20,19 @@ use gossi\trixionary\model\Map\StructureNodeParentTableMap;
  *
  *
  *
- * @method     ChildStructureNodeParentQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildStructureNodeParentQuery orderByStructureNodeId($order = Criteria::ASC) Order by the structure_node_id column
  * @method     ChildStructureNodeParentQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
  *
- * @method     ChildStructureNodeParentQuery groupById() Group by the id column
+ * @method     ChildStructureNodeParentQuery groupByStructureNodeId() Group by the structure_node_id column
  * @method     ChildStructureNodeParentQuery groupByParentId() Group by the parent_id column
  *
  * @method     ChildStructureNodeParentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildStructureNodeParentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildStructureNodeParentQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildStructureNodeParentQuery leftJoinStructureNodeRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeRelatedById relation
- * @method     ChildStructureNodeParentQuery rightJoinStructureNodeRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeRelatedById relation
- * @method     ChildStructureNodeParentQuery innerJoinStructureNodeRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNodeRelatedById relation
+ * @method     ChildStructureNodeParentQuery leftJoinStructureNodeRelatedByStructureNodeId($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeRelatedByStructureNodeId relation
+ * @method     ChildStructureNodeParentQuery rightJoinStructureNodeRelatedByStructureNodeId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeRelatedByStructureNodeId relation
+ * @method     ChildStructureNodeParentQuery innerJoinStructureNodeRelatedByStructureNodeId($relationAlias = null) Adds a INNER JOIN clause to the query using the StructureNodeRelatedByStructureNodeId relation
  *
  * @method     ChildStructureNodeParentQuery leftJoinStructureNodeRelatedByParentId($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNodeRelatedByParentId relation
  * @method     ChildStructureNodeParentQuery rightJoinStructureNodeRelatedByParentId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNodeRelatedByParentId relation
@@ -43,17 +43,24 @@ use gossi\trixionary\model\Map\StructureNodeParentTableMap;
  * @method     ChildStructureNodeParent findOne(ConnectionInterface $con = null) Return the first ChildStructureNodeParent matching the query
  * @method     ChildStructureNodeParent findOneOrCreate(ConnectionInterface $con = null) Return the first ChildStructureNodeParent matching the query, or a new ChildStructureNodeParent object populated from the query conditions when no match is found
  *
- * @method     ChildStructureNodeParent findOneById(int $id) Return the first ChildStructureNodeParent filtered by the id column
- * @method     ChildStructureNodeParent findOneByParentId(int $parent_id) Return the first ChildStructureNodeParent filtered by the parent_id column
+ * @method     ChildStructureNodeParent findOneByStructureNodeId(int $structure_node_id) Return the first ChildStructureNodeParent filtered by the structure_node_id column
+ * @method     ChildStructureNodeParent findOneByParentId(int $parent_id) Return the first ChildStructureNodeParent filtered by the parent_id column *
+
+ * @method     ChildStructureNodeParent requirePk($key, ConnectionInterface $con = null) Return the ChildStructureNodeParent by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNodeParent requireOne(ConnectionInterface $con = null) Return the first ChildStructureNodeParent matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ *
+ * @method     ChildStructureNodeParent requireOneByStructureNodeId(int $structure_node_id) Return the first ChildStructureNodeParent filtered by the structure_node_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildStructureNodeParent requireOneByParentId(int $parent_id) Return the first ChildStructureNodeParent filtered by the parent_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildStructureNodeParent[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildStructureNodeParent objects based on current ModelCriteria
- * @method     ChildStructureNodeParent[]|ObjectCollection findById(int $id) Return ChildStructureNodeParent objects filtered by the id column
+ * @method     ChildStructureNodeParent[]|ObjectCollection findByStructureNodeId(int $structure_node_id) Return ChildStructureNodeParent objects filtered by the structure_node_id column
  * @method     ChildStructureNodeParent[]|ObjectCollection findByParentId(int $parent_id) Return ChildStructureNodeParent objects filtered by the parent_id column
  * @method     ChildStructureNodeParent[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
 abstract class StructureNodeParentQuery extends ModelCriteria
 {
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \gossi\trixionary\model\Base\StructureNodeParentQuery object.
@@ -100,7 +107,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array[$id, $parent_id] $key Primary key to use for the query
+     * @param array[$structure_node_id, $parent_id] $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
      * @return ChildStructureNodeParent|array|mixed the result, formatted by the current formatter
@@ -140,7 +147,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `parent_id` FROM `kk_trixionary_structure_node_parent` WHERE `id` = :p0 AND `parent_id` = :p1';
+        $sql = 'SELECT `structure_node_id`, `parent_id` FROM `kk_trixionary_structure_node_parent` WHERE `structure_node_id` = :p0 AND `parent_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -214,7 +221,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(StructureNodeParentTableMap::COL_ID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $key[0], Criteria::EQUAL);
         $this->addUsingAlias(StructureNodeParentTableMap::COL_PARENT_ID, $key[1], Criteria::EQUAL);
 
         return $this;
@@ -233,7 +240,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
             return $this->add(null, '1<>1', Criteria::CUSTOM);
         }
         foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(StructureNodeParentTableMap::COL_ID, $key[0], Criteria::EQUAL);
+            $cton0 = $this->getNewCriterion(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $key[0], Criteria::EQUAL);
             $cton1 = $this->getNewCriterion(StructureNodeParentTableMap::COL_PARENT_ID, $key[1], Criteria::EQUAL);
             $cton0->addAnd($cton1);
             $this->addOr($cton0);
@@ -243,18 +250,18 @@ abstract class StructureNodeParentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the id column
+     * Filter the query on the structure_node_id column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE id = 1234
-     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterByStructureNodeId(1234); // WHERE structure_node_id = 1234
+     * $query->filterByStructureNodeId(array(12, 34)); // WHERE structure_node_id IN (12, 34)
+     * $query->filterByStructureNodeId(array('min' => 12)); // WHERE structure_node_id > 12
      * </code>
      *
-     * @see       filterByStructureNodeRelatedById()
+     * @see       filterByStructureNodeRelatedByStructureNodeId()
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $structureNodeId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -262,16 +269,16 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      *
      * @return $this|ChildStructureNodeParentQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByStructureNodeId($structureNodeId = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($structureNodeId)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(StructureNodeParentTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($structureNodeId['min'])) {
+                $this->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $structureNodeId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(StructureNodeParentTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($structureNodeId['max'])) {
+                $this->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $structureNodeId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -282,7 +289,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(StructureNodeParentTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $structureNodeId, $comparison);
     }
 
     /**
@@ -338,35 +345,35 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      *
      * @return ChildStructureNodeParentQuery The current query, for fluid interface
      */
-    public function filterByStructureNodeRelatedById($structureNode, $comparison = null)
+    public function filterByStructureNodeRelatedByStructureNodeId($structureNode, $comparison = null)
     {
         if ($structureNode instanceof \gossi\trixionary\model\StructureNode) {
             return $this
-                ->addUsingAlias(StructureNodeParentTableMap::COL_ID, $structureNode->getId(), $comparison);
+                ->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $structureNode->getId(), $comparison);
         } elseif ($structureNode instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(StructureNodeParentTableMap::COL_ID, $structureNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID, $structureNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByStructureNodeRelatedById() only accepts arguments of type \gossi\trixionary\model\StructureNode or Collection');
+            throw new PropelException('filterByStructureNodeRelatedByStructureNodeId() only accepts arguments of type \gossi\trixionary\model\StructureNode or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the StructureNodeRelatedById relation
+     * Adds a JOIN clause to the query using the StructureNodeRelatedByStructureNodeId relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildStructureNodeParentQuery The current query, for fluid interface
      */
-    public function joinStructureNodeRelatedById($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinStructureNodeRelatedByStructureNodeId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('StructureNodeRelatedById');
+        $relationMap = $tableMap->getRelation('StructureNodeRelatedByStructureNodeId');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -381,14 +388,14 @@ abstract class StructureNodeParentQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'StructureNodeRelatedById');
+            $this->addJoinObject($join, 'StructureNodeRelatedByStructureNodeId');
         }
 
         return $this;
     }
 
     /**
-     * Use the StructureNodeRelatedById relation StructureNode object
+     * Use the StructureNodeRelatedByStructureNodeId relation StructureNode object
      *
      * @see useQuery()
      *
@@ -398,11 +405,11 @@ abstract class StructureNodeParentQuery extends ModelCriteria
      *
      * @return \gossi\trixionary\model\StructureNodeQuery A secondary query class using the current class as primary query
      */
-    public function useStructureNodeRelatedByIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useStructureNodeRelatedByStructureNodeIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinStructureNodeRelatedById($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'StructureNodeRelatedById', '\gossi\trixionary\model\StructureNodeQuery');
+            ->joinStructureNodeRelatedByStructureNodeId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'StructureNodeRelatedByStructureNodeId', '\gossi\trixionary\model\StructureNodeQuery');
     }
 
     /**
@@ -492,7 +499,7 @@ abstract class StructureNodeParentQuery extends ModelCriteria
     public function prune($structureNodeParent = null)
     {
         if ($structureNodeParent) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(StructureNodeParentTableMap::COL_ID), $structureNodeParent->getId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond0', $this->getAliasedColName(StructureNodeParentTableMap::COL_STRUCTURE_NODE_ID), $structureNodeParent->getStructureNodeId(), Criteria::NOT_EQUAL);
             $this->addCond('pruneCond1', $this->getAliasedColName(StructureNodeParentTableMap::COL_PARENT_ID), $structureNodeParent->getParentId(), Criteria::NOT_EQUAL);
             $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }

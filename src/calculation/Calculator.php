@@ -2,17 +2,17 @@
 namespace gossi\trixionary\calculation;
 
 use gossi\trixionary\model\Skill;
-use gossi\collection\ArrayList;
-use gossi\collection\Queue;
+use phootwork\collection\ArrayList;
+use phootwork\collection\Queue;
 
 class Calculator {
-	
+
 	private static $instance;
 	private $processedImportanceSkills;
 	private $processedGenerationSkills;
 	private $queuedImportanceSkills;
 	private $steps = [];
-	
+
 	private function __construct() {
 		$this->processedGenerationSkills = new ArrayList();
 		$this->processedImportanceSkills = new ArrayList();
@@ -26,51 +26,51 @@ class Calculator {
 		if (static::$instance === null) {
 			static::$instance = new static();
 		}
-		
+
 		return static::$instance;
 	}
-	
+
 	private function addForImportanceUpdate(Skill $skill) {
 		if (!$this->processedImportanceSkills->contains($skill)) {
 			$this->queuedImportanceSkills->enqueue($skill);
 		}
 	}
-	
+
 	public function updateImportance(Skill $skill) {
 		if ($this->processedImportanceSkills->contains($skill)) {
 			return false;
 		}
 
 		$importanceDump = $skill->getImportance();
-		
+
 		$descendents = $skill->getDescendents();
 		$importance = count($descendents);
-		
+
 		$skill->setImportance($importance);
 		$skill->save();
-		
+
 		$this->processedImportanceSkills->add($skill);
-		
+
 		if ($importance !== $importanceDump) {
 			$this->queuedImportanceSkills->enqueueAll($skill->getParents());
 		}
 	}
-	
+
 	public function updateOutstandingImportance() {
 		if ($this->queuedImportanceSkills->size() == 0) {
 			return;
 		}
-			
+
 		$skills = $this->queuedImportanceSkills->toArray();
 		$this->queuedImportanceSkills->clear();
-		
+
 		foreach ($skills as $skill) {
 			$this->updateImportance($skill);
 		}
 
 		$this->updateOutstandingImportance();
 	}
-	
+
 	public function updateGeneration(Skill $skill) {
 		if ($this->processedGenerationSkills->contains($skill)) {
 			return false;
@@ -80,22 +80,22 @@ class Calculator {
 		$ancestors = $skill->getAncestors();
 		if (count($ancestors)) {
 			$root = $this->findRoot($ancestors);
-			
+
 			if ($root !== null) {
 				$generation = $this->nextStep($root, $skill, $ancestors);
 			}
 		}
-		
+
 		$skill->setGeneration($generation);
 		$skill->setGenerationIds(json_encode($this->steps));
 		$skill->save();
 		$this->processedGenerationSkills->add($skill);
-		
+
 		return true;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param Skill $skill
 	 * @param Skill $target
 	 * @param Skill[] $pool
@@ -110,7 +110,7 @@ class Calculator {
 		$max = 0;
 		$next = null;
 		$steps++;
-		
+
 		// filter children to get only available skills from the pool
 		// find the one with the highest importance ...
 		foreach ($children as $child) {
@@ -125,15 +125,15 @@ class Calculator {
 				}
 			}
 		}
-		
+
 		// ... and continue
 		if ($next !== null) {
 			return $this->nextStep($next, $target, $pool, $steps);
 		}
-		
+
 		return $steps;
 	}
-	
+
 	/**
 	 * @param Skill[] $ancestors
 	 * @return Skill|null
@@ -147,7 +147,7 @@ class Calculator {
 		}
 		return $root;
 	}
-	
+
 	private function getDescendentsFromImportanceChangedSkills() {
 		$descendents = [];
 		foreach ($this->processedImportanceSkills as $skill) {
@@ -159,10 +159,10 @@ class Calculator {
 
 		return $descendents;
 	}
-	
+
 	public function updateOutstandingGeneration() {
 		$skills = $this->getDescendentsFromImportanceChangedSkills();
-		
+
 		foreach ($skills as $skill) {
 			$this->updateGeneration($skill);
 		}
