@@ -22,12 +22,57 @@ use Tobscure\JsonApi\Resource;
 trait SkillSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'variations' => 'Variation',
+		'multiples' => 'Multiple',
+		'children' => 'SkillRelatedByDependencyId',
+		'parents' => 'SkillRelatedByParentId',
+		'parts' => 'SkillRelatedByPartId',
+		'composites' => 'SkillRelatedByCompositeId',
+		'groups' => 'Group',
+		'pictures' => 'Picture',
+		'videos' => 'Video',
+		'references' => 'Reference',
+		'kstrukturs' => 'Kstruktur',
+		'function-phases' => 'FunctionPhase'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'variations' => 'Variations',
+		'multiples' => 'Multiples',
+		'children' => 'SkillsRelatedByDependencyId',
+		'parents' => 'SkillsRelatedByParentId',
+		'parts' => 'SkillsRelatedByPartId',
+		'composites' => 'SkillsRelatedByCompositeId',
+		'groups' => 'Groups',
+		'pictures' => 'Pictures',
+		'videos' => 'Videos',
+		'references' => 'References',
+		'kstrukturs' => 'Kstrukturs',
+		'function-phases' => 'FunctionPhases'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @return Relationship
 	 */
-	public function descendents($model) {
-		$relationship = new Relationship(new Collection($model->getDescendents(), Skill::getSerializer()));
-		return $this->addRelationshipSelfLink($relationship, $model, 'descendent');
+	public function children($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('children');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'child');
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
+	public function composites($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('composites');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'composite');
 	}
 
 	/**
@@ -89,7 +134,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function functionPhases($model) {
-		$relationship = new Relationship(new Collection($model->getFunctionPhases(), FunctionPhase::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('function-phases');
+		$relationship = new Relationship(new Collection($model->$method(), FunctionPhase::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'function-phase');
 	}
 
@@ -106,6 +152,7 @@ trait SkillSerializerTrait {
 			'history' => $model->getHistory(),
 			'is-translation' => $model->getIsTranslation(),
 			'is-rotation' => $model->getIsRotation(),
+			'is-acyclic' => $model->getIsAcyclic(),
 			'is-cyclic' => $model->getIsCyclic(),
 			'longitudinal-flags' => $model->getLongitudinalFlags(),
 			'latitudinal-flags' => $model->getLatitudinalFlags(),
@@ -126,7 +173,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -156,8 +203,10 @@ trait SkillSerializerTrait {
 			'featured-picture' => Picture::getSerializer()->getType(null),
 			'kstruktur-root' => Kstruktur::getSerializer()->getType(null),
 			'function-phase-root' => FunctionPhase::getSerializer()->getType(null),
-			'descendents' => Skill::getSerializer()->getType(null),
+			'children' => Skill::getSerializer()->getType(null),
+			'parents' => Skill::getSerializer()->getType(null),
 			'parts' => Skill::getSerializer()->getType(null),
+			'composites' => Skill::getSerializer()->getType(null),
 			'groups' => Group::getSerializer()->getType(null),
 			'pictures' => Picture::getSerializer()->getType(null),
 			'videos' => Video::getSerializer()->getType(null),
@@ -170,7 +219,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -186,7 +235,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function groups($model) {
-		$relationship = new Relationship(new Collection($model->getGroups(), Group::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('groups');
+		$relationship = new Relationship(new Collection($model->$method(), Group::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'group');
 	}
 
@@ -199,7 +249,7 @@ trait SkillSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'generation-ids', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'generation-ids', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
 
 		// relationships
 		$this->hydrateRelationships($model, $data);
@@ -230,7 +280,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function kstrukturs($model) {
-		$relationship = new Relationship(new Collection($model->getKstrukturs(), Kstruktur::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('kstrukturs');
+		$relationship = new Relationship(new Collection($model->$method(), Kstruktur::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'kstruktur');
 	}
 
@@ -257,7 +308,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function multiples($model) {
-		$relationship = new Relationship(new Collection($model->getMultiples(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('multiples');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'multiple');
 	}
 
@@ -283,8 +335,19 @@ trait SkillSerializerTrait {
 	 * @param mixed $model
 	 * @return Relationship
 	 */
+	public function parents($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('parents');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'parent');
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
 	public function parts($model) {
-		$relationship = new Relationship(new Collection($model->getParts(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('parts');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'part');
 	}
 
@@ -293,7 +356,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function pictures($model) {
-		$relationship = new Relationship(new Collection($model->getPictures(), Picture::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('pictures');
+		$relationship = new Relationship(new Collection($model->$method(), Picture::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'picture');
 	}
 
@@ -302,7 +366,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function references($model) {
-		$relationship = new Relationship(new Collection($model->getReferences(), Reference::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('references');
+		$relationship = new Relationship(new Collection($model->$method(), Reference::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'reference');
 	}
 
@@ -365,7 +430,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function variations($model) {
-		$relationship = new Relationship(new Collection($model->getVariations(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('variations');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'variation');
 	}
 
@@ -374,7 +440,8 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	public function videos($model) {
-		$relationship = new Relationship(new Collection($model->getVideos(), Video::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('videos');
+		$relationship = new Relationship(new Collection($model->$method(), Video::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'video');
 	}
 
@@ -385,6 +452,26 @@ trait SkillSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

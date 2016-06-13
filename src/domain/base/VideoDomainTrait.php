@@ -47,12 +47,11 @@ trait VideoDomainTrait {
 
 		// dispatch
 		$event = new VideoEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(VideoEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(VideoEvent::PRE_SAVE, $event);
+		$this->dispatch(VideoEvent::PRE_CREATE, $event);
+		$this->dispatch(VideoEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(VideoEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(VideoEvent::POST_SAVE, $event);
+		$this->dispatch(VideoEvent::POST_CREATE, $event);
+		$this->dispatch(VideoEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -72,12 +71,11 @@ trait VideoDomainTrait {
 
 		// delete
 		$event = new VideoEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(VideoEvent::PRE_DELETE, $event);
+		$this->dispatch(VideoEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(VideoEvent::POST_DELETE, $event);
+			$this->dispatch(VideoEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -156,13 +154,12 @@ trait VideoDomainTrait {
 			$model->setReferenceId($relatedId);
 
 			$event = new VideoEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(VideoEvent::PRE_REFERENCE_UPDATE, $event);
-			$dispatcher->dispatch(VideoEvent::PRE_SAVE, $event);
+			$this->dispatch(VideoEvent::PRE_REFERENCE_UPDATE, $event);
+			$this->dispatch(VideoEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(VideoEvent::POST_REFERENCE_UPDATE, $event);
-			$dispatcher->dispatch(VideoEvent::POST_SAVE, $event);
-			
+			$this->dispatch(VideoEvent::POST_REFERENCE_UPDATE, $event);
+			$this->dispatch(VideoEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -189,13 +186,12 @@ trait VideoDomainTrait {
 			$model->setSkillId($relatedId);
 
 			$event = new VideoEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(VideoEvent::PRE_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(VideoEvent::PRE_SAVE, $event);
+			$this->dispatch(VideoEvent::PRE_SKILL_UPDATE, $event);
+			$this->dispatch(VideoEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(VideoEvent::POST_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(VideoEvent::POST_SAVE, $event);
-			
+			$this->dispatch(VideoEvent::POST_SKILL_UPDATE, $event);
+			$this->dispatch(VideoEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -231,12 +227,11 @@ trait VideoDomainTrait {
 
 		// dispatch
 		$event = new VideoEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(VideoEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(VideoEvent::PRE_SAVE, $event);
+		$this->dispatch(VideoEvent::PRE_UPDATE, $event);
+		$this->dispatch(VideoEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(VideoEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(VideoEvent::POST_SAVE, $event);
+		$this->dispatch(VideoEvent::POST_UPDATE, $event);
+		$this->dispatch(VideoEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -271,6 +266,34 @@ trait VideoDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param VideoEvent $event
+	 */
+	protected function dispatch($type, VideoEvent $event) {
+		$model = $event->getVideo();
+		$methods = [
+			VideoEvent::PRE_CREATE => 'preCreate',
+			VideoEvent::POST_CREATE => 'postCreate',
+			VideoEvent::PRE_UPDATE => 'preUpdate',
+			VideoEvent::POST_UPDATE => 'postUpdate',
+			VideoEvent::PRE_DELETE => 'preDelete',
+			VideoEvent::POST_DELETE => 'postDelete',
+			VideoEvent::PRE_SAVE => 'preSave',
+			VideoEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a skill
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillCreateJsonResponder extends AbstractPayloadResponder {
 

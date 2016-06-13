@@ -41,15 +41,17 @@ trait KstrukturDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Kstruktur not found.']);
 		}
-		 
+
 		// update
+		$serializer = Kstruktur::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('root-skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addRootSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -58,12 +60,11 @@ trait KstrukturDomainTrait {
 
 		// save and dispatch events
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_ADD, $event);
-		$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_ADD, $event);
+		$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(KstrukturEvent::POST_ROOT_SKILLS_ADD, $event);
-		$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
+		$this->dispatch(KstrukturEvent::POST_ROOT_SKILLS_ADD, $event);
+		$this->dispatch(KstrukturEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -93,12 +94,11 @@ trait KstrukturDomainTrait {
 
 		// dispatch
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_CREATE, $event);
+		$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(KstrukturEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
+		$this->dispatch(KstrukturEvent::POST_CREATE, $event);
+		$this->dispatch(KstrukturEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -118,12 +118,11 @@ trait KstrukturDomainTrait {
 
 		// delete
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_DELETE, $event);
+		$this->dispatch(KstrukturEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(KstrukturEvent::POST_DELETE, $event);
+			$this->dispatch(KstrukturEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -198,13 +197,15 @@ trait KstrukturDomainTrait {
 		}
 
 		// remove them
+		$serializer = Kstruktur::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('root-skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeRootSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -213,12 +214,11 @@ trait KstrukturDomainTrait {
 
 		// save and dispatch events
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_REMOVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(KstrukturEvent::POST_ROOT_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
+		$this->dispatch(KstrukturEvent::POST_ROOT_SKILLS_REMOVE, $event);
+		$this->dispatch(KstrukturEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -247,13 +247,12 @@ trait KstrukturDomainTrait {
 			$model->setSkillId($relatedId);
 
 			$event = new KstrukturEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(KstrukturEvent::PRE_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+			$this->dispatch(KstrukturEvent::PRE_SKILL_UPDATE, $event);
+			$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(KstrukturEvent::POST_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
-			
+			$this->dispatch(KstrukturEvent::POST_SKILL_UPDATE, $event);
+			$this->dispatch(KstrukturEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -289,12 +288,11 @@ trait KstrukturDomainTrait {
 
 		// dispatch
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_UPDATE, $event);
+		$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(KstrukturEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
+		$this->dispatch(KstrukturEvent::POST_UPDATE, $event);
+		$this->dispatch(KstrukturEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -339,12 +337,11 @@ trait KstrukturDomainTrait {
 
 		// save and dispatch events
 		$event = new KstrukturEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::PRE_SAVE, $event);
+		$this->dispatch(KstrukturEvent::PRE_ROOT_SKILLS_UPDATE, $event);
+		$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(KstrukturEvent::POST_ROOT_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(KstrukturEvent::POST_SAVE, $event);
+		$this->dispatch(KstrukturEvent::POST_ROOT_SKILLS_UPDATE, $event);
+		$this->dispatch(KstrukturEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -377,6 +374,34 @@ trait KstrukturDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param KstrukturEvent $event
+	 */
+	protected function dispatch($type, KstrukturEvent $event) {
+		$model = $event->getKstruktur();
+		$methods = [
+			KstrukturEvent::PRE_CREATE => 'preCreate',
+			KstrukturEvent::POST_CREATE => 'postCreate',
+			KstrukturEvent::PRE_UPDATE => 'preUpdate',
+			KstrukturEvent::POST_UPDATE => 'postUpdate',
+			KstrukturEvent::PRE_DELETE => 'preDelete',
+			KstrukturEvent::POST_DELETE => 'postDelete',
+			KstrukturEvent::PRE_SAVE => 'preSave',
+			KstrukturEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

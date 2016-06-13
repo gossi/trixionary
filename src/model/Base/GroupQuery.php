@@ -25,12 +25,14 @@ use gossi\trixionary\model\Map\GroupTableMap;
  * @method     ChildGroupQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildGroupQuery orderBySlug($order = Criteria::ASC) Order by the slug column
  * @method     ChildGroupQuery orderBySportId($order = Criteria::ASC) Order by the sport_id column
+ * @method     ChildGroupQuery orderBySkillCount($order = Criteria::ASC) Order by the skill_count column
  *
  * @method     ChildGroupQuery groupById() Group by the id column
  * @method     ChildGroupQuery groupByTitle() Group by the title column
  * @method     ChildGroupQuery groupByDescription() Group by the description column
  * @method     ChildGroupQuery groupBySlug() Group by the slug column
  * @method     ChildGroupQuery groupBySportId() Group by the sport_id column
+ * @method     ChildGroupQuery groupBySkillCount() Group by the skill_count column
  *
  * @method     ChildGroupQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildGroupQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -53,7 +55,8 @@ use gossi\trixionary\model\Map\GroupTableMap;
  * @method     ChildGroup findOneByTitle(string $title) Return the first ChildGroup filtered by the title column
  * @method     ChildGroup findOneByDescription(string $description) Return the first ChildGroup filtered by the description column
  * @method     ChildGroup findOneBySlug(string $slug) Return the first ChildGroup filtered by the slug column
- * @method     ChildGroup findOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column *
+ * @method     ChildGroup findOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column
+ * @method     ChildGroup findOneBySkillCount(int $skill_count) Return the first ChildGroup filtered by the skill_count column *
 
  * @method     ChildGroup requirePk($key, ConnectionInterface $con = null) Return the ChildGroup by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGroup requireOne(ConnectionInterface $con = null) Return the first ChildGroup matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -63,6 +66,7 @@ use gossi\trixionary\model\Map\GroupTableMap;
  * @method     ChildGroup requireOneByDescription(string $description) Return the first ChildGroup filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGroup requireOneBySlug(string $slug) Return the first ChildGroup filtered by the slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildGroup requireOneBySportId(int $sport_id) Return the first ChildGroup filtered by the sport_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildGroup requireOneBySkillCount(int $skill_count) Return the first ChildGroup filtered by the skill_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildGroup[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildGroup objects based on current ModelCriteria
  * @method     ChildGroup[]|ObjectCollection findById(int $id) Return ChildGroup objects filtered by the id column
@@ -70,6 +74,7 @@ use gossi\trixionary\model\Map\GroupTableMap;
  * @method     ChildGroup[]|ObjectCollection findByDescription(string $description) Return ChildGroup objects filtered by the description column
  * @method     ChildGroup[]|ObjectCollection findBySlug(string $slug) Return ChildGroup objects filtered by the slug column
  * @method     ChildGroup[]|ObjectCollection findBySportId(int $sport_id) Return ChildGroup objects filtered by the sport_id column
+ * @method     ChildGroup[]|ObjectCollection findBySkillCount(int $skill_count) Return ChildGroup objects filtered by the skill_count column
  * @method     ChildGroup[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -162,7 +167,7 @@ abstract class GroupQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `slug`, `sport_id` FROM `kk_trixionary_group` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `slug`, `sport_id`, `skill_count` FROM `kk_trixionary_group` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -421,6 +426,47 @@ abstract class GroupQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(GroupTableMap::COL_SPORT_ID, $sportId, $comparison);
+    }
+
+    /**
+     * Filter the query on the skill_count column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySkillCount(1234); // WHERE skill_count = 1234
+     * $query->filterBySkillCount(array(12, 34)); // WHERE skill_count IN (12, 34)
+     * $query->filterBySkillCount(array('min' => 12)); // WHERE skill_count > 12
+     * </code>
+     *
+     * @param     mixed $skillCount The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildGroupQuery The current query, for fluid interface
+     */
+    public function filterBySkillCount($skillCount = null, $comparison = null)
+    {
+        if (is_array($skillCount)) {
+            $useMinMax = false;
+            if (isset($skillCount['min'])) {
+                $this->addUsingAlias(GroupTableMap::COL_SKILL_COUNT, $skillCount['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($skillCount['max'])) {
+                $this->addUsingAlias(GroupTableMap::COL_SKILL_COUNT, $skillCount['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(GroupTableMap::COL_SKILL_COUNT, $skillCount, $comparison);
     }
 
     /**

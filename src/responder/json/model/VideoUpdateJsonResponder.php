@@ -20,7 +20,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a video
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class VideoUpdateJsonResponder extends AbstractPayloadResponder {
 

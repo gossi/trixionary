@@ -17,7 +17,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Reads a reference
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ReferenceReadJsonResponder extends AbstractPayloadResponder {
 

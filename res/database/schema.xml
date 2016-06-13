@@ -29,6 +29,24 @@
 		<column name="feature_composition" type="BOOLEAN"/>
 		<column name="feature_tester" type="BOOLEAN"/>
 		<column name="is_default" type="BOOLEAN"/>
+		
+		<!-- <behavior name="aggregate_column">
+			<parameter name="name" value="skill_count"/>
+			<parameter name="foreign_table" value="skill"/>
+			<parameter name="expression" value="COUNT(id)"/>
+		</behavior>
+		
+		<behavior name="aggregate_column">
+			<parameter name="name" value="group_count"/>
+			<parameter name="foreign_table" value="group"/>
+			<parameter name="expression" value="COUNT(id)"/>
+		</behavior>
+		
+		<behavior name="aggregate_column">
+			<parameter name="name" value="object_count"/>
+			<parameter name="foreign_table" value="object"/>
+			<parameter name="expression" value="COUNT(id)"/>
+		</behavior> -->
 	</table>
 	
 	<table name="object">
@@ -42,6 +60,12 @@
 		<foreign-key foreignTable="sport" onDelete="cascade" name="object_fk_sport">
 			<reference local="sport_id" foreign="id"/>
 		</foreign-key>
+		
+		<behavior name="aggregate_column">
+			<parameter name="name" value="skill_count"/>
+			<parameter name="foreign_table" value="skill"/>
+			<parameter name="expression" value="COUNT(id)"/>
+		</behavior>
 	</table>
 
 	<table name="position">
@@ -64,9 +88,9 @@
 		<column name="slug" type="VARCHAR" size="255"/>
 		<column name="description" type="LONGVARCHAR"/>
 		<column name="history" type="LONGVARCHAR"/>
-		<column name="is_translation" type="BOOLEAN"/>
-		<column name="is_rotation" type="BOOLEAN"/>
-		<column name="is_cyclic" type="BOOLEAN" default="false"/>
+		<column name="is_translation" type="BOOLEAN" default="false"/>
+		<column name="is_rotation" type="BOOLEAN" default="false"/>
+		<column name="is_acyclic" type="BOOLEAN" default="false"/>
 		<column name="is_cyclic" type="BOOLEAN" default="false"/>
 		<column name="longitudinal_flags" type="INTEGER"/>
 		<column name="latitudinal_flags" type="INTEGER"/>
@@ -75,8 +99,8 @@
 		<column name="variation_of_id" type="INTEGER" required="false" description="Indicates a variation"/>
 		<column name="start_position_id"  type="INTEGER" required="false" />
 		<column name="end_position_id"  type="INTEGER" required="false" />
-		<column name="is_composite" type="BOOLEAN" description="This skill is a composite"/>
-		<column name="is_multiple" type="BOOLEAN" description="This skill is a multiplier"/>
+		<column name="is_composite" type="BOOLEAN" default="false" description="This skill is a composite"/>
+		<column name="is_multiple" type="BOOLEAN" default="false" description="This skill is a multiplier"/>
 		<column name="multiple_of_id" type="INTEGER" required="false"/>
 		<column name="multiplier" type="INTEGER" />
 		<column name="generation" type="INTEGER" />
@@ -127,10 +151,10 @@
 		<column name="dependency_id" type="INTEGER" primaryKey="true" required="true" />
 		<column name="parent_id" type="INTEGER" primaryKey="true" required="true" />
 		
-		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_skill" refPhpName="Descendent">
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_skill" refPhpName="Child">
 			<reference local="dependency_id" foreign="id"/>
 		</foreign-key>
-		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_parent" refPhpName="Ascendent">
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_dependency_fk_parent" refPhpName="Parent">
 			<reference local="parent_id" foreign="id" />
 		</foreign-key>
 	</table>
@@ -158,6 +182,12 @@
 		<foreign-key foreignTable="sport" onDelete="cascade" name="group_fk_sport">
 			<reference local="sport_id" foreign="id" />
 		</foreign-key>
+		
+		<behavior name="aggregate_column">
+			<parameter name="name" value="skill_count"/>
+			<parameter name="foreign_table" value="skill_group"/>
+			<parameter name="expression" value="COUNT(skill_id)" />
+		</behavior>
 	</table>
 	
 	<table name="skill_group" isCrossRef="true">

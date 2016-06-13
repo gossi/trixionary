@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes a group
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class GroupDeleteJsonResponder extends AbstractPayloadResponder {
 

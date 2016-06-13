@@ -44,15 +44,17 @@ trait SportDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
-		 
+
 		// update
+		$serializer = Sport::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('groups');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Group';
 			}
 			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->addGroup($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -61,12 +63,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_GROUPS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_ADD, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_GROUPS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_ADD, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -89,15 +90,17 @@ trait SportDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
-		 
+
 		// update
+		$serializer = Sport::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('objects');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Object';
 			}
 			$related = ObjectQuery::create()->findOneById($entry['id']);
-			$model->addObject($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -106,12 +109,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_OBJECTS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_ADD, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_OBJECTS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_ADD, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -134,15 +136,17 @@ trait SportDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
-		 
+
 		// update
+		$serializer = Sport::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('positions');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Position';
 			}
 			$related = PositionQuery::create()->findOneById($entry['id']);
-			$model->addPosition($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -151,12 +155,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_POSITIONS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_ADD, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_POSITIONS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_ADD, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -179,15 +182,17 @@ trait SportDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
-		 
+
 		// update
+		$serializer = Sport::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -196,12 +201,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_SKILLS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_ADD, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_SKILLS_ADD, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_ADD, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -231,12 +235,11 @@ trait SportDomainTrait {
 
 		// dispatch
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_CREATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(SportEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_CREATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -256,12 +259,11 @@ trait SportDomainTrait {
 
 		// delete
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_DELETE, $event);
+		$this->dispatch(SportEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(SportEvent::POST_DELETE, $event);
+			$this->dispatch(SportEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -336,13 +338,15 @@ trait SportDomainTrait {
 		}
 
 		// remove them
+		$serializer = Sport::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('groups');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Group';
 			}
 			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->removeGroup($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -351,12 +355,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_GROUPS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_REMOVE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_GROUPS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_REMOVE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -381,13 +384,15 @@ trait SportDomainTrait {
 		}
 
 		// remove them
+		$serializer = Sport::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('objects');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Object';
 			}
 			$related = ObjectQuery::create()->findOneById($entry['id']);
-			$model->removeObject($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -396,12 +401,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_OBJECTS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_REMOVE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_OBJECTS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_REMOVE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -426,13 +430,15 @@ trait SportDomainTrait {
 		}
 
 		// remove them
+		$serializer = Sport::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('positions');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Position';
 			}
 			$related = PositionQuery::create()->findOneById($entry['id']);
-			$model->removePosition($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -441,12 +447,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_POSITIONS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_REMOVE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_POSITIONS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_REMOVE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -471,13 +476,15 @@ trait SportDomainTrait {
 		}
 
 		// remove them
+		$serializer = Sport::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -486,12 +493,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_REMOVE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_REMOVE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -529,12 +535,11 @@ trait SportDomainTrait {
 
 		// dispatch
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_UPDATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_UPDATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -579,12 +584,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_GROUPS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_UPDATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_GROUPS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_UPDATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -627,12 +631,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_OBJECTS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_UPDATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_OBJECTS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_UPDATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -675,12 +678,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_POSITIONS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_UPDATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_POSITIONS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_UPDATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -723,12 +725,11 @@ trait SportDomainTrait {
 
 		// save and dispatch events
 		$event = new SportEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SportEvent::PRE_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_UPDATE, $event);
+		$this->dispatch(SportEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SportEvent::POST_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_UPDATE, $event);
+		$this->dispatch(SportEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -761,6 +762,34 @@ trait SportDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param SportEvent $event
+	 */
+	protected function dispatch($type, SportEvent $event) {
+		$model = $event->getSport();
+		$methods = [
+			SportEvent::PRE_CREATE => 'preCreate',
+			SportEvent::POST_CREATE => 'postCreate',
+			SportEvent::PRE_UPDATE => 'preUpdate',
+			SportEvent::POST_UPDATE => 'postUpdate',
+			SportEvent::PRE_DELETE => 'preDelete',
+			SportEvent::POST_DELETE => 'postDelete',
+			SportEvent::PRE_SAVE => 'preSave',
+			SportEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

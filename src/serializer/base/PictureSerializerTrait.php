@@ -12,6 +12,18 @@ use Tobscure\JsonApi\Resource;
 trait PictureSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+
+	];
+
+	/**
 	 * @param mixed $model
 	 * @return Relationship
 	 */
@@ -128,6 +140,26 @@ trait PictureSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

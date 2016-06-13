@@ -36,28 +36,30 @@ trait SkillDomainTrait {
 	protected $pool;
 
 	/**
-	 * Adds Descendents to Skill
+	 * Adds Children to Skill
 	 * 
 	 * @param mixed $id
 	 * @param mixed $data
 	 * @return PayloadInterface
 	 */
-	public function addDescendents($id, $data) {
+	public function addChildren($id, $data) {
 		// find
 		$model = $this->get($id);
 
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('children');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addDescendent($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -66,12 +68,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_DESCENDENTS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_DESCENDENTS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -94,15 +95,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('function-phases');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for FunctionPhase';
 			}
 			$related = FunctionPhaseQuery::create()->findOneById($entry['id']);
-			$model->addFunctionPhase($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -111,12 +114,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_FUNCTION_PHASES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_FUNCTION_PHASES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -139,15 +141,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('groups');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Group';
 			}
 			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->addGroup($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -156,12 +160,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_GROUPS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_GROUPS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -184,15 +187,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('kstrukturs');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Kstruktur';
 			}
 			$related = KstrukturQuery::create()->findOneById($entry['id']);
-			$model->addKstruktur($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -201,12 +206,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_KSTRUKTURS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_KSTRUKTURS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -229,15 +233,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('multiples');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addMultiple($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -246,12 +252,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_MULTIPLES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_MULTIPLES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -274,15 +279,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('parts');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addPart($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -291,12 +298,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PARTS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PARTS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -319,15 +325,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('pictures');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Picture';
 			}
 			$related = PictureQuery::create()->findOneById($entry['id']);
-			$model->addPicture($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -336,12 +344,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PICTURES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PICTURES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -364,15 +371,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('references');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Reference';
 			}
 			$related = ReferenceQuery::create()->findOneById($entry['id']);
-			$model->addReference($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -381,12 +390,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_REFERENCES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_REFERENCES_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -409,15 +417,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('variations');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addVariation($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -426,12 +436,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VARIATIONS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VARIATIONS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -454,15 +463,17 @@ trait SkillDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Skill not found.']);
 		}
-		 
+
 		// update
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('videos');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Video';
 			}
 			$related = VideoQuery::create()->findOneById($entry['id']);
-			$model->addVideo($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -471,12 +482,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VIDEOS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_ADD, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VIDEOS_ADD, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_ADD, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -506,12 +516,11 @@ trait SkillDomainTrait {
 
 		// dispatch
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CREATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(SkillEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CREATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -531,12 +540,11 @@ trait SkillDomainTrait {
 
 		// delete
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_DELETE, $event);
+		$this->dispatch(SkillEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(SkillEvent::POST_DELETE, $event);
+			$this->dispatch(SkillEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -596,13 +604,13 @@ trait SkillDomainTrait {
 	}
 
 	/**
-	 * Removes Descendents from Skill
+	 * Removes Children from Skill
 	 * 
 	 * @param mixed $id
 	 * @param mixed $data
 	 * @return PayloadInterface
 	 */
-	public function removeDescendents($id, $data) {
+	public function removeChildren($id, $data) {
 		// find
 		$model = $this->get($id);
 
@@ -611,13 +619,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('children');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeDescendent($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -626,12 +636,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_DESCENDENTS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_DESCENDENTS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -656,13 +665,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('function-phases');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for FunctionPhase';
 			}
 			$related = FunctionPhaseQuery::create()->findOneById($entry['id']);
-			$model->removeFunctionPhase($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -671,12 +682,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_FUNCTION_PHASES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_FUNCTION_PHASES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -701,13 +711,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('groups');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Group';
 			}
 			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->removeGroup($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -716,12 +728,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_GROUPS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_GROUPS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -746,13 +757,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('kstrukturs');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Kstruktur';
 			}
 			$related = KstrukturQuery::create()->findOneById($entry['id']);
-			$model->removeKstruktur($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -761,12 +774,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_KSTRUKTURS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_KSTRUKTURS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -791,13 +803,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('multiples');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeMultiple($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -806,12 +820,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_MULTIPLES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_MULTIPLES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -836,13 +849,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('parts');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removePart($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -851,12 +866,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PARTS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PARTS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -881,13 +895,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('pictures');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Picture';
 			}
 			$related = PictureQuery::create()->findOneById($entry['id']);
-			$model->removePicture($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -896,12 +912,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PICTURES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PICTURES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -926,13 +941,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('references');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Reference';
 			}
 			$related = ReferenceQuery::create()->findOneById($entry['id']);
-			$model->removeReference($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -941,12 +958,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_REFERENCES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_REFERENCES_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -971,13 +987,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('variations');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeVariation($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -986,12 +1004,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VARIATIONS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VARIATIONS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1016,13 +1033,15 @@ trait SkillDomainTrait {
 		}
 
 		// remove them
+		$serializer = Skill::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('videos');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Video';
 			}
 			$related = VideoQuery::create()->findOneById($entry['id']);
-			$model->removeVideo($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -1031,12 +1050,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VIDEOS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_REMOVE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VIDEOS_REMOVE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_REMOVE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1065,13 +1083,12 @@ trait SkillDomainTrait {
 			$model->setEndPositionId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_END_POSITION_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_END_POSITION_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_END_POSITION_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_END_POSITION_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1098,13 +1115,12 @@ trait SkillDomainTrait {
 			$model->setPictureId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_FEATURED_PICTURE_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_FEATURED_PICTURE_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_FEATURED_PICTURE_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_FEATURED_PICTURE_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1131,13 +1147,12 @@ trait SkillDomainTrait {
 			$model->setFunctionPhaseId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_FUNCTION_PHASE_ROOT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_FUNCTION_PHASE_ROOT_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_FUNCTION_PHASE_ROOT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_FUNCTION_PHASE_ROOT_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1164,13 +1179,12 @@ trait SkillDomainTrait {
 			$model->setKstrukturId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_KSTRUKTUR_ROOT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_KSTRUKTUR_ROOT_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_KSTRUKTUR_ROOT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_KSTRUKTUR_ROOT_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1197,13 +1211,12 @@ trait SkillDomainTrait {
 			$model->setMultipleOfId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_MULTIPLE_OF_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_MULTIPLE_OF_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_MULTIPLE_OF_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_MULTIPLE_OF_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1230,13 +1243,12 @@ trait SkillDomainTrait {
 			$model->setObjectId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_OBJECT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_OBJECT_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_OBJECT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_OBJECT_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1263,13 +1275,12 @@ trait SkillDomainTrait {
 			$model->setSportId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_SPORT_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_SPORT_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1296,13 +1307,12 @@ trait SkillDomainTrait {
 			$model->setStartPositionId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_START_POSITION_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_START_POSITION_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_START_POSITION_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_START_POSITION_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1329,13 +1339,12 @@ trait SkillDomainTrait {
 			$model->setVariationOfId($relatedId);
 
 			$event = new SkillEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(SkillEvent::PRE_VARIATION_OF_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_VARIATION_OF_UPDATE, $event);
+			$this->dispatch(SkillEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(SkillEvent::POST_VARIATION_OF_UPDATE, $event);
-			$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
-			
+			$this->dispatch(SkillEvent::POST_VARIATION_OF_UPDATE, $event);
+			$this->dispatch(SkillEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -1371,12 +1380,11 @@ trait SkillDomainTrait {
 
 		// dispatch
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -1388,13 +1396,13 @@ trait SkillDomainTrait {
 	}
 
 	/**
-	 * Updates Descendents on Skill
+	 * Updates Children on Skill
 	 * 
 	 * @param mixed $id
 	 * @param mixed $data
 	 * @return PayloadInterface
 	 */
-	public function updateDescendents($id, $data) {
+	public function updateChildren($id, $data) {
 		// find
 		$model = $this->get($id);
 
@@ -1403,16 +1411,18 @@ trait SkillDomainTrait {
 		}
 
 		// remove all relationships before
-		SkillDependencyQuery::create()->filterByAscendent($model)->delete();
+		SkillDependencyQuery::create()->filterByParent($model)->delete();
 
 		// add them
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('children');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addDescendent($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -1421,12 +1431,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_DESCENDENTS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_DESCENDENTS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1469,12 +1478,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_FUNCTION_PHASES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_FUNCTION_PHASES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1502,13 +1510,15 @@ trait SkillDomainTrait {
 		SkillGroupQuery::create()->filterBySkill($model)->delete();
 
 		// add them
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('groups');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Group';
 			}
 			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->addGroup($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -1517,12 +1527,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_GROUPS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_GROUPS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1565,12 +1574,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_KSTRUKTURS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_KSTRUKTURS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1613,12 +1621,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_MULTIPLES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_MULTIPLES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1646,13 +1653,15 @@ trait SkillDomainTrait {
 		SkillPartQuery::create()->filterByComposite($model)->delete();
 
 		// add them
+		$serializer = Skill::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('parts');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addPart($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -1661,12 +1670,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PARTS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PARTS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1709,12 +1717,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_PICTURES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_PICTURES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1757,12 +1764,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_REFERENCES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_REFERENCES_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1805,12 +1811,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VARIATIONS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VARIATIONS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1853,12 +1858,11 @@ trait SkillDomainTrait {
 
 		// save and dispatch events
 		$event = new SkillEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(SkillEvent::PRE_VIDEOS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_UPDATE, $event);
+		$this->dispatch(SkillEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(SkillEvent::POST_VIDEOS_UPDATE, $event);
-		$dispatcher->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_UPDATE, $event);
+		$this->dispatch(SkillEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1891,6 +1895,34 @@ trait SkillDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param SkillEvent $event
+	 */
+	protected function dispatch($type, SkillEvent $event) {
+		$model = $event->getSkill();
+		$methods = [
+			SkillEvent::PRE_CREATE => 'preCreate',
+			SkillEvent::POST_CREATE => 'postCreate',
+			SkillEvent::PRE_UPDATE => 'preUpdate',
+			SkillEvent::POST_UPDATE => 'postUpdate',
+			SkillEvent::PRE_DELETE => 'preDelete',
+			SkillEvent::POST_DELETE => 'postDelete',
+			SkillEvent::PRE_SAVE => 'preSave',
+			SkillEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

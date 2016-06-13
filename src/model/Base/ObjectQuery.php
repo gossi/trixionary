@@ -26,6 +26,7 @@ use gossi\trixionary\model\Map\ObjectTableMap;
  * @method     ChildObjectQuery orderByFixed($order = Criteria::ASC) Order by the fixed column
  * @method     ChildObjectQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildObjectQuery orderBySportId($order = Criteria::ASC) Order by the sport_id column
+ * @method     ChildObjectQuery orderBySkillCount($order = Criteria::ASC) Order by the skill_count column
  *
  * @method     ChildObjectQuery groupById() Group by the id column
  * @method     ChildObjectQuery groupByTitle() Group by the title column
@@ -33,6 +34,7 @@ use gossi\trixionary\model\Map\ObjectTableMap;
  * @method     ChildObjectQuery groupByFixed() Group by the fixed column
  * @method     ChildObjectQuery groupByDescription() Group by the description column
  * @method     ChildObjectQuery groupBySportId() Group by the sport_id column
+ * @method     ChildObjectQuery groupBySkillCount() Group by the skill_count column
  *
  * @method     ChildObjectQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildObjectQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -56,7 +58,8 @@ use gossi\trixionary\model\Map\ObjectTableMap;
  * @method     ChildObject findOneBySlug(string $slug) Return the first ChildObject filtered by the slug column
  * @method     ChildObject findOneByFixed(boolean $fixed) Return the first ChildObject filtered by the fixed column
  * @method     ChildObject findOneByDescription(string $description) Return the first ChildObject filtered by the description column
- * @method     ChildObject findOneBySportId(int $sport_id) Return the first ChildObject filtered by the sport_id column *
+ * @method     ChildObject findOneBySportId(int $sport_id) Return the first ChildObject filtered by the sport_id column
+ * @method     ChildObject findOneBySkillCount(int $skill_count) Return the first ChildObject filtered by the skill_count column *
 
  * @method     ChildObject requirePk($key, ConnectionInterface $con = null) Return the ChildObject by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildObject requireOne(ConnectionInterface $con = null) Return the first ChildObject matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -67,6 +70,7 @@ use gossi\trixionary\model\Map\ObjectTableMap;
  * @method     ChildObject requireOneByFixed(boolean $fixed) Return the first ChildObject filtered by the fixed column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildObject requireOneByDescription(string $description) Return the first ChildObject filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildObject requireOneBySportId(int $sport_id) Return the first ChildObject filtered by the sport_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildObject requireOneBySkillCount(int $skill_count) Return the first ChildObject filtered by the skill_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildObject[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildObject objects based on current ModelCriteria
  * @method     ChildObject[]|ObjectCollection findById(int $id) Return ChildObject objects filtered by the id column
@@ -75,6 +79,7 @@ use gossi\trixionary\model\Map\ObjectTableMap;
  * @method     ChildObject[]|ObjectCollection findByFixed(boolean $fixed) Return ChildObject objects filtered by the fixed column
  * @method     ChildObject[]|ObjectCollection findByDescription(string $description) Return ChildObject objects filtered by the description column
  * @method     ChildObject[]|ObjectCollection findBySportId(int $sport_id) Return ChildObject objects filtered by the sport_id column
+ * @method     ChildObject[]|ObjectCollection findBySkillCount(int $skill_count) Return ChildObject objects filtered by the skill_count column
  * @method     ChildObject[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -167,7 +172,7 @@ abstract class ObjectQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `slug`, `fixed`, `description`, `sport_id` FROM `kk_trixionary_object` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `slug`, `fixed`, `description`, `sport_id`, `skill_count` FROM `kk_trixionary_object` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -453,6 +458,47 @@ abstract class ObjectQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ObjectTableMap::COL_SPORT_ID, $sportId, $comparison);
+    }
+
+    /**
+     * Filter the query on the skill_count column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySkillCount(1234); // WHERE skill_count = 1234
+     * $query->filterBySkillCount(array(12, 34)); // WHERE skill_count IN (12, 34)
+     * $query->filterBySkillCount(array('min' => 12)); // WHERE skill_count > 12
+     * </code>
+     *
+     * @param     mixed $skillCount The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildObjectQuery The current query, for fluid interface
+     */
+    public function filterBySkillCount($skillCount = null, $comparison = null)
+    {
+        if (is_array($skillCount)) {
+            $useMinMax = false;
+            if (isset($skillCount['min'])) {
+                $this->addUsingAlias(ObjectTableMap::COL_SKILL_COUNT, $skillCount['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($skillCount['max'])) {
+                $this->addUsingAlias(ObjectTableMap::COL_SKILL_COUNT, $skillCount['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ObjectTableMap::COL_SKILL_COUNT, $skillCount, $comparison);
     }
 
     /**

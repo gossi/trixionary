@@ -42,15 +42,17 @@ trait GroupDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Group not found.']);
 		}
-		 
+
 		// update
+		$serializer = Group::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -59,12 +61,11 @@ trait GroupDomainTrait {
 
 		// save and dispatch events
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_SKILLS_ADD, $event);
-		$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+		$this->dispatch(GroupEvent::PRE_SKILLS_ADD, $event);
+		$this->dispatch(GroupEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(GroupEvent::POST_SKILLS_ADD, $event);
-		$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
+		$this->dispatch(GroupEvent::POST_SKILLS_ADD, $event);
+		$this->dispatch(GroupEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -94,12 +95,11 @@ trait GroupDomainTrait {
 
 		// dispatch
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+		$this->dispatch(GroupEvent::PRE_CREATE, $event);
+		$this->dispatch(GroupEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(GroupEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
+		$this->dispatch(GroupEvent::POST_CREATE, $event);
+		$this->dispatch(GroupEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -119,12 +119,11 @@ trait GroupDomainTrait {
 
 		// delete
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_DELETE, $event);
+		$this->dispatch(GroupEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(GroupEvent::POST_DELETE, $event);
+			$this->dispatch(GroupEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -199,13 +198,15 @@ trait GroupDomainTrait {
 		}
 
 		// remove them
+		$serializer = Group::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -214,12 +215,11 @@ trait GroupDomainTrait {
 
 		// save and dispatch events
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+		$this->dispatch(GroupEvent::PRE_SKILLS_REMOVE, $event);
+		$this->dispatch(GroupEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(GroupEvent::POST_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
+		$this->dispatch(GroupEvent::POST_SKILLS_REMOVE, $event);
+		$this->dispatch(GroupEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -248,13 +248,12 @@ trait GroupDomainTrait {
 			$model->setSportId($relatedId);
 
 			$event = new GroupEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(GroupEvent::PRE_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+			$this->dispatch(GroupEvent::PRE_SPORT_UPDATE, $event);
+			$this->dispatch(GroupEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(GroupEvent::POST_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
-			
+			$this->dispatch(GroupEvent::POST_SPORT_UPDATE, $event);
+			$this->dispatch(GroupEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -290,12 +289,11 @@ trait GroupDomainTrait {
 
 		// dispatch
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+		$this->dispatch(GroupEvent::PRE_UPDATE, $event);
+		$this->dispatch(GroupEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(GroupEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
+		$this->dispatch(GroupEvent::POST_UPDATE, $event);
+		$this->dispatch(GroupEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -325,13 +323,15 @@ trait GroupDomainTrait {
 		SkillGroupQuery::create()->filterByGroup($model)->delete();
 
 		// add them
+		$serializer = Group::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -340,12 +340,11 @@ trait GroupDomainTrait {
 
 		// save and dispatch events
 		$event = new GroupEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(GroupEvent::PRE_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(GroupEvent::PRE_SAVE, $event);
+		$this->dispatch(GroupEvent::PRE_SKILLS_UPDATE, $event);
+		$this->dispatch(GroupEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(GroupEvent::POST_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(GroupEvent::POST_SAVE, $event);
+		$this->dispatch(GroupEvent::POST_SKILLS_UPDATE, $event);
+		$this->dispatch(GroupEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -378,6 +377,34 @@ trait GroupDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param GroupEvent $event
+	 */
+	protected function dispatch($type, GroupEvent $event) {
+		$model = $event->getGroup();
+		$methods = [
+			GroupEvent::PRE_CREATE => 'preCreate',
+			GroupEvent::POST_CREATE => 'postCreate',
+			GroupEvent::PRE_UPDATE => 'preUpdate',
+			GroupEvent::POST_UPDATE => 'postUpdate',
+			GroupEvent::PRE_DELETE => 'preDelete',
+			GroupEvent::POST_DELETE => 'postDelete',
+			GroupEvent::PRE_SAVE => 'preSave',
+			GroupEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

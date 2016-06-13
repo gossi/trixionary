@@ -13,6 +13,18 @@ use Tobscure\JsonApi\Resource;
 trait KstrukturSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'root-skills' => 'RootSkill'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'root-skills' => 'RootSkills'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -86,7 +98,8 @@ trait KstrukturSerializerTrait {
 	 * @return Relationship
 	 */
 	public function rootSkills($model) {
-		$relationship = new Relationship(new Collection($model->getRootSkills(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('root-skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'root-skill');
 	}
 
@@ -115,6 +128,26 @@ trait KstrukturSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

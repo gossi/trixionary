@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Exception\InvalidParameterException;
  * 
  * This code is automatically created. Modifications will probably be overwritten.
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillKstrukturRemoveAction extends AbstractAction {
 

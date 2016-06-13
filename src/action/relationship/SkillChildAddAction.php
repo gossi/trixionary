@@ -1,20 +1,22 @@
 <?php
 namespace gossi\trixionary\action\relationship;
 
-use gossi\trixionary\domain\SkillVersionDomain;
+use gossi\trixionary\domain\SkillDomain;
 use keeko\framework\foundation\AbstractAction;
+use phootwork\json\Json;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tobscure\JsonApi\Exception\InvalidParameterException;
 
 /**
- * Reads the relationship of skill_version to skill
+ * Adds child as relationship to skill
  * 
  * This code is automatically created. Modifications will probably be overwritten.
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
-class SkillVersionSkillReadAction extends AbstractAction {
+class SkillChildAddAction extends AbstractAction {
 
 	/**
 	 * @param OptionsResolver $resolver
@@ -30,9 +32,14 @@ class SkillVersionSkillReadAction extends AbstractAction {
 	 * @return Response
 	 */
 	public function run(Request $request) {
+		$body = Json::decode($request->getContent());
+		if (!isset($body['data'])) {
+			throw new InvalidParameterException();
+		}
+		$data = $body['data'];
 		$id = $this->getParam('id');
-		$domain = new SkillVersionDomain($this->getServiceContainer());
-		$payload = $domain->read($id);
+		$domain = new SkillDomain($this->getServiceContainer());
+		$payload = $domain->addSkill($id, $data);
 		return $this->responder->run($request, $payload);
 	}
 }

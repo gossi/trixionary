@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of skill to group
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillGroupJsonResponder extends AbstractPayloadResponder {
 

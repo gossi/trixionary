@@ -93,6 +93,12 @@ abstract class SkillGroup implements ActiveRecordInterface
      */
     protected $alreadyInSave = false;
 
+    // aggregate_column_relation_aggregate_column behavior
+    /**
+     * @var ChildGroup
+     */
+    protected $oldGroupSkillCount;
+
     /**
      * Initializes internal state of gossi\trixionary\model\Base\SkillGroup object.
      */
@@ -569,6 +575,8 @@ abstract class SkillGroup implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
+                // aggregate_column_relation_aggregate_column behavior
+                $this->updateRelatedGroupSkillCount($con);
                 SkillGroupTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -1065,6 +1073,10 @@ abstract class SkillGroup implements ActiveRecordInterface
      */
     public function setGroup(ChildGroup $v = null)
     {
+        // aggregate_column_relation behavior
+        if (null !== $this->aGroup && $v !== $this->aGroup) {
+            $this->oldGroupSkillCount = $this->aGroup;
+        }
         if ($v === null) {
             $this->setGroupId(NULL);
         } else {
@@ -1205,6 +1217,24 @@ abstract class SkillGroup implements ActiveRecordInterface
     public function __toString()
     {
         return (string) $this->exportTo(SkillGroupTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // aggregate_column_relation_aggregate_column behavior
+
+    /**
+     * Update the aggregate column in the related Group object
+     *
+     * @param ConnectionInterface $con A connection object
+     */
+    protected function updateRelatedGroupSkillCount(ConnectionInterface $con)
+    {
+        if ($group = $this->getGroup()) {
+            $group->updateSkillCount($con);
+        }
+        if ($this->oldGroupSkillCount) {
+            $this->oldGroupSkillCount->updateSkillCount($con);
+            $this->oldGroupSkillCount = null;
+        }
     }
 
     /**

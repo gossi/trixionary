@@ -15,7 +15,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates positions
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PositionPaginateJsonResponder extends AbstractPayloadResponder {
 

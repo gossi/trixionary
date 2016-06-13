@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of skill to object
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillObjectJsonResponder extends AbstractPayloadResponder {
 

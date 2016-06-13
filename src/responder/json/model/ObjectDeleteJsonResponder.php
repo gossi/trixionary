@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes an object
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ObjectDeleteJsonResponder extends AbstractPayloadResponder {
 

@@ -15,7 +15,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates objects
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ObjectPaginateJsonResponder extends AbstractPayloadResponder {
 
@@ -28,7 +28,7 @@ class ObjectPaginateJsonResponder extends AbstractPayloadResponder {
 		$data = $payload->getModel();
 		$serializer = Object::getSerializer();
 		$resource = new Collection($data, $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'skills']));
+		$resource = $resource->with($params->getInclude(['sport', 'skills', 'skills.variations', 'skills.variationOf', 'skills.multiples', 'sport.objects']));
 		$resource = $resource->fields($params->getFields([
 			'object' => Object::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),

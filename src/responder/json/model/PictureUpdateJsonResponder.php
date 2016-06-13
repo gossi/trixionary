@@ -19,7 +19,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a picture
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PictureUpdateJsonResponder extends AbstractPayloadResponder {
 

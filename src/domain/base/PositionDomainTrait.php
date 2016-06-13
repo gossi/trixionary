@@ -47,12 +47,11 @@ trait PositionDomainTrait {
 
 		// dispatch
 		$event = new PositionEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PositionEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(PositionEvent::PRE_SAVE, $event);
+		$this->dispatch(PositionEvent::PRE_CREATE, $event);
+		$this->dispatch(PositionEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(PositionEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(PositionEvent::POST_SAVE, $event);
+		$this->dispatch(PositionEvent::POST_CREATE, $event);
+		$this->dispatch(PositionEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -72,12 +71,11 @@ trait PositionDomainTrait {
 
 		// delete
 		$event = new PositionEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PositionEvent::PRE_DELETE, $event);
+		$this->dispatch(PositionEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(PositionEvent::POST_DELETE, $event);
+			$this->dispatch(PositionEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -156,13 +154,12 @@ trait PositionDomainTrait {
 			$model->setEndPositionId($relatedId);
 
 			$event = new PositionEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(PositionEvent::PRE_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PositionEvent::PRE_SAVE, $event);
+			$this->dispatch(PositionEvent::PRE_SKILL_UPDATE, $event);
+			$this->dispatch(PositionEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(PositionEvent::POST_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PositionEvent::POST_SAVE, $event);
-			
+			$this->dispatch(PositionEvent::POST_SKILL_UPDATE, $event);
+			$this->dispatch(PositionEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -189,13 +186,12 @@ trait PositionDomainTrait {
 			$model->setSportId($relatedId);
 
 			$event = new PositionEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(PositionEvent::PRE_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(PositionEvent::PRE_SAVE, $event);
+			$this->dispatch(PositionEvent::PRE_SPORT_UPDATE, $event);
+			$this->dispatch(PositionEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(PositionEvent::POST_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(PositionEvent::POST_SAVE, $event);
-			
+			$this->dispatch(PositionEvent::POST_SPORT_UPDATE, $event);
+			$this->dispatch(PositionEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -231,12 +227,11 @@ trait PositionDomainTrait {
 
 		// dispatch
 		$event = new PositionEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PositionEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(PositionEvent::PRE_SAVE, $event);
+		$this->dispatch(PositionEvent::PRE_UPDATE, $event);
+		$this->dispatch(PositionEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(PositionEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(PositionEvent::POST_SAVE, $event);
+		$this->dispatch(PositionEvent::POST_UPDATE, $event);
+		$this->dispatch(PositionEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -271,6 +266,34 @@ trait PositionDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param PositionEvent $event
+	 */
+	protected function dispatch($type, PositionEvent $event) {
+		$model = $event->getPosition();
+		$methods = [
+			PositionEvent::PRE_CREATE => 'preCreate',
+			PositionEvent::POST_CREATE => 'postCreate',
+			PositionEvent::PRE_UPDATE => 'preUpdate',
+			PositionEvent::POST_UPDATE => 'postUpdate',
+			PositionEvent::PRE_DELETE => 'preDelete',
+			PositionEvent::POST_DELETE => 'postDelete',
+			PositionEvent::PRE_SAVE => 'preSave',
+			PositionEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

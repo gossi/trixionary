@@ -102,6 +102,12 @@ abstract class Object implements ActiveRecordInterface
     protected $sport_id;
 
     /**
+     * The value for the skill_count field.
+     * @var        int
+     */
+    protected $skill_count;
+
+    /**
      * @var        ChildSport
      */
     protected $aSport;
@@ -414,6 +420,16 @@ abstract class Object implements ActiveRecordInterface
     }
 
     /**
+     * Get the [skill_count] column value.
+     *
+     * @return int
+     */
+    public function getSkillCount()
+    {
+        return $this->skill_count;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -546,6 +562,26 @@ abstract class Object implements ActiveRecordInterface
     } // setSportId()
 
     /**
+     * Set the value of [skill_count] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\Object The current object (for fluent API support)
+     */
+    public function setSkillCount($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->skill_count !== $v) {
+            $this->skill_count = $v;
+            $this->modifiedColumns[ObjectTableMap::COL_SKILL_COUNT] = true;
+        }
+
+        return $this;
+    } // setSkillCount()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -598,6 +634,9 @@ abstract class Object implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ObjectTableMap::translateFieldName('SportId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sport_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ObjectTableMap::translateFieldName('SkillCount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->skill_count = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -606,7 +645,7 @@ abstract class Object implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = ObjectTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ObjectTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Object'), 0, $e);
@@ -857,6 +896,9 @@ abstract class Object implements ActiveRecordInterface
         if ($this->isColumnModified(ObjectTableMap::COL_SPORT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`sport_id`';
         }
+        if ($this->isColumnModified(ObjectTableMap::COL_SKILL_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = '`skill_count`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `kk_trixionary_object` (%s) VALUES (%s)',
@@ -885,6 +927,9 @@ abstract class Object implements ActiveRecordInterface
                         break;
                     case '`sport_id`':
                         $stmt->bindValue($identifier, $this->sport_id, PDO::PARAM_INT);
+                        break;
+                    case '`skill_count`':
+                        $stmt->bindValue($identifier, $this->skill_count, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -966,6 +1011,9 @@ abstract class Object implements ActiveRecordInterface
             case 5:
                 return $this->getSportId();
                 break;
+            case 6:
+                return $this->getSkillCount();
+                break;
             default:
                 return null;
                 break;
@@ -1002,6 +1050,7 @@ abstract class Object implements ActiveRecordInterface
             $keys[3] => $this->getFixed(),
             $keys[4] => $this->getDescription(),
             $keys[5] => $this->getSportId(),
+            $keys[6] => $this->getSkillCount(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1091,6 +1140,9 @@ abstract class Object implements ActiveRecordInterface
             case 5:
                 $this->setSportId($value);
                 break;
+            case 6:
+                $this->setSkillCount($value);
+                break;
         } // switch()
 
         return $this;
@@ -1134,6 +1186,9 @@ abstract class Object implements ActiveRecordInterface
         }
         if (array_key_exists($keys[5], $arr)) {
             $this->setSportId($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setSkillCount($arr[$keys[6]]);
         }
     }
 
@@ -1193,6 +1248,9 @@ abstract class Object implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ObjectTableMap::COL_SPORT_ID)) {
             $criteria->add(ObjectTableMap::COL_SPORT_ID, $this->sport_id);
+        }
+        if ($this->isColumnModified(ObjectTableMap::COL_SKILL_COUNT)) {
+            $criteria->add(ObjectTableMap::COL_SKILL_COUNT, $this->skill_count);
         }
 
         return $criteria;
@@ -1285,6 +1343,7 @@ abstract class Object implements ActiveRecordInterface
         $copyObj->setFixed($this->getFixed());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setSportId($this->getSportId());
+        $copyObj->setSkillCount($this->getSkillCount());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1828,6 +1887,7 @@ abstract class Object implements ActiveRecordInterface
         $this->fixed = null;
         $this->description = null;
         $this->sport_id = null;
+        $this->skill_count = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1865,6 +1925,33 @@ abstract class Object implements ActiveRecordInterface
     public function __toString()
     {
         return (string) $this->exportTo(ObjectTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // aggregate_column behavior
+
+    /**
+     * Computes the value of the aggregate column skill_count *
+     * @param ConnectionInterface $con A connection object
+     *
+     * @return mixed The scalar result from the aggregate query
+     */
+    public function computeSkillCount(ConnectionInterface $con)
+    {
+        $stmt = $con->prepare('SELECT COUNT(id) FROM `kk_trixionary_skill` WHERE kk_trixionary_skill.OBJECT_ID = :p1');
+        $stmt->bindValue(':p1', $this->getId());
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Updates the aggregate column skill_count *
+     * @param ConnectionInterface $con A connection object
+     */
+    public function updateSkillCount(ConnectionInterface $con)
+    {
+        $this->setSkillCount($this->computeSkillCount($con));
+        $this->save($con);
     }
 
     /**

@@ -27,7 +27,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a skill
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillUpdateJsonResponder extends AbstractPayloadResponder {
 
@@ -63,7 +63,7 @@ class SkillUpdateJsonResponder extends AbstractPayloadResponder {
 		$params = new Parameters($request->query->all());
 		$serializer = Skill::getSerializer();
 		$resource = new Resource($payload->getModel(), $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'descendents', 'parts', 'groups', 'pictures', 'videos', 'references', 'kstrukturs', 'function-phases']));
+		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'pictures', 'videos', 'references', 'kstrukturs', 'function-phases', 'sport.skills']));
 		$resource = $resource->fields($params->getFields([
 			'skill' => Skill::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),
@@ -77,8 +77,10 @@ class SkillUpdateJsonResponder extends AbstractPayloadResponder {
 			'featured-picture' => Picture::getSerializer()->getFields(),
 			'kstruktur-root' => Kstruktur::getSerializer()->getFields(),
 			'function-phase-root' => FunctionPhase::getSerializer()->getFields(),
-			'descendent' => Skill::getSerializer()->getFields(),
+			'child' => Skill::getSerializer()->getFields(),
+			'parent' => Skill::getSerializer()->getFields(),
 			'part' => Skill::getSerializer()->getFields(),
+			'composite' => Skill::getSerializer()->getFields(),
 			'group' => Group::getSerializer()->getFields(),
 			'picture' => Picture::getSerializer()->getFields(),
 			'video' => Video::getSerializer()->getFields(),

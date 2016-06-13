@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes a position
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PositionDeleteJsonResponder extends AbstractPayloadResponder {
 

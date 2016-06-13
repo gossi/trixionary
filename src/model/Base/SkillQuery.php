@@ -134,13 +134,13 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinMultiple($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Multiple relation
  * @method     ChildSkillQuery innerJoinMultiple($relationAlias = null) Adds a INNER JOIN clause to the query using the Multiple relation
  *
- * @method     ChildSkillQuery leftJoinDescendent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Descendent relation
- * @method     ChildSkillQuery rightJoinDescendent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Descendent relation
- * @method     ChildSkillQuery innerJoinDescendent($relationAlias = null) Adds a INNER JOIN clause to the query using the Descendent relation
+ * @method     ChildSkillQuery leftJoinChild($relationAlias = null) Adds a LEFT JOIN clause to the query using the Child relation
+ * @method     ChildSkillQuery rightJoinChild($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Child relation
+ * @method     ChildSkillQuery innerJoinChild($relationAlias = null) Adds a INNER JOIN clause to the query using the Child relation
  *
- * @method     ChildSkillQuery leftJoinAscendent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ascendent relation
- * @method     ChildSkillQuery rightJoinAscendent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ascendent relation
- * @method     ChildSkillQuery innerJoinAscendent($relationAlias = null) Adds a INNER JOIN clause to the query using the Ascendent relation
+ * @method     ChildSkillQuery leftJoinParent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Parent relation
+ * @method     ChildSkillQuery rightJoinParent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Parent relation
+ * @method     ChildSkillQuery innerJoinParent($relationAlias = null) Adds a INNER JOIN clause to the query using the Parent relation
  *
  * @method     ChildSkillQuery leftJoinPart($relationAlias = null) Adds a LEFT JOIN clause to the query using the Part relation
  * @method     ChildSkillQuery rightJoinPart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Part relation
@@ -2477,33 +2477,33 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return ChildSkillQuery The current query, for fluid interface
      */
-    public function filterByDescendent($skillDependency, $comparison = null)
+    public function filterByChild($skillDependency, $comparison = null)
     {
         if ($skillDependency instanceof \gossi\trixionary\model\SkillDependency) {
             return $this
                 ->addUsingAlias(SkillTableMap::COL_ID, $skillDependency->getDependencyId(), $comparison);
         } elseif ($skillDependency instanceof ObjectCollection) {
             return $this
-                ->useDescendentQuery()
+                ->useChildQuery()
                 ->filterByPrimaryKeys($skillDependency->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByDescendent() only accepts arguments of type \gossi\trixionary\model\SkillDependency or Collection');
+            throw new PropelException('filterByChild() only accepts arguments of type \gossi\trixionary\model\SkillDependency or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Descendent relation
+     * Adds a JOIN clause to the query using the Child relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSkillQuery The current query, for fluid interface
      */
-    public function joinDescendent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinChild($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Descendent');
+        $relationMap = $tableMap->getRelation('Child');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2518,14 +2518,14 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Descendent');
+            $this->addJoinObject($join, 'Child');
         }
 
         return $this;
     }
 
     /**
-     * Use the Descendent relation SkillDependency object
+     * Use the Child relation SkillDependency object
      *
      * @see useQuery()
      *
@@ -2535,11 +2535,11 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return \gossi\trixionary\model\SkillDependencyQuery A secondary query class using the current class as primary query
      */
-    public function useDescendentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useChildQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinDescendent($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Descendent', '\gossi\trixionary\model\SkillDependencyQuery');
+            ->joinChild($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Child', '\gossi\trixionary\model\SkillDependencyQuery');
     }
 
     /**
@@ -2550,33 +2550,33 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return ChildSkillQuery The current query, for fluid interface
      */
-    public function filterByAscendent($skillDependency, $comparison = null)
+    public function filterByParent($skillDependency, $comparison = null)
     {
         if ($skillDependency instanceof \gossi\trixionary\model\SkillDependency) {
             return $this
                 ->addUsingAlias(SkillTableMap::COL_ID, $skillDependency->getParentId(), $comparison);
         } elseif ($skillDependency instanceof ObjectCollection) {
             return $this
-                ->useAscendentQuery()
+                ->useParentQuery()
                 ->filterByPrimaryKeys($skillDependency->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByAscendent() only accepts arguments of type \gossi\trixionary\model\SkillDependency or Collection');
+            throw new PropelException('filterByParent() only accepts arguments of type \gossi\trixionary\model\SkillDependency or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Ascendent relation
+     * Adds a JOIN clause to the query using the Parent relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSkillQuery The current query, for fluid interface
      */
-    public function joinAscendent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinParent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Ascendent');
+        $relationMap = $tableMap->getRelation('Parent');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -2591,14 +2591,14 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Ascendent');
+            $this->addJoinObject($join, 'Parent');
         }
 
         return $this;
     }
 
     /**
-     * Use the Ascendent relation SkillDependency object
+     * Use the Parent relation SkillDependency object
      *
      * @see useQuery()
      *
@@ -2608,11 +2608,11 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return \gossi\trixionary\model\SkillDependencyQuery A secondary query class using the current class as primary query
      */
-    public function useAscendentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useParentQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinAscendent($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Ascendent', '\gossi\trixionary\model\SkillDependencyQuery');
+            ->joinParent($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Parent', '\gossi\trixionary\model\SkillDependencyQuery');
     }
 
     /**
@@ -3357,7 +3357,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     public function filterBySkillRelatedByParentId($skill, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useDescendentQuery()
+            ->useChildQuery()
             ->filterBySkillRelatedByParentId($skill, $comparison)
             ->endUse();
     }
@@ -3374,7 +3374,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     public function filterBySkillRelatedByDependencyId($skill, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useAscendentQuery()
+            ->useParentQuery()
             ->filterBySkillRelatedByDependencyId($skill, $comparison)
             ->endUse();
     }
@@ -3444,6 +3444,62 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         return $this;
+    }
+
+    /**
+     * Code to execute before every DELETE statement
+     *
+     * @param     ConnectionInterface $con The connection object used by the query
+     */
+    protected function basePreDelete(ConnectionInterface $con)
+    {
+        // aggregate_column_relation_aggregate_column behavior
+        $this->findRelatedObjectSkillCounts($con);
+
+        return $this->preDelete($con);
+    }
+
+    /**
+     * Code to execute after every DELETE statement
+     *
+     * @param     int $affectedRows the number of deleted rows
+     * @param     ConnectionInterface $con The connection object used by the query
+     */
+    protected function basePostDelete($affectedRows, ConnectionInterface $con)
+    {
+        // aggregate_column_relation_aggregate_column behavior
+        $this->updateRelatedObjectSkillCounts($con);
+
+        return $this->postDelete($affectedRows, $con);
+    }
+
+    /**
+     * Code to execute before every UPDATE statement
+     *
+     * @param     array $values The associative array of columns and values for the update
+     * @param     ConnectionInterface $con The connection object used by the query
+     * @param     boolean $forceIndividualSaves If false (default), the resulting call is a Criteria::doUpdate(), otherwise it is a series of save() calls on all the found objects
+     */
+    protected function basePreUpdate(&$values, ConnectionInterface $con, $forceIndividualSaves = false)
+    {
+        // aggregate_column_relation_aggregate_column behavior
+        $this->findRelatedObjectSkillCounts($con);
+
+        return $this->preUpdate($values, $con, $forceIndividualSaves);
+    }
+
+    /**
+     * Code to execute after every UPDATE statement
+     *
+     * @param     int $affectedRows the number of updated rows
+     * @param     ConnectionInterface $con The connection object used by the query
+     */
+    protected function basePostUpdate($affectedRows, ConnectionInterface $con)
+    {
+        // aggregate_column_relation_aggregate_column behavior
+        $this->updateRelatedObjectSkillCounts($con);
+
+        return $this->postUpdate($affectedRows, $con);
     }
 
     /**
@@ -3533,6 +3589,36 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     static public function disableVersioning()
     {
         self::$isVersioningEnabled = false;
+    }
+
+    // aggregate_column_relation_aggregate_column behavior
+
+    /**
+     * Finds the related Object objects and keep them for later
+     *
+     * @param ConnectionInterface $con A connection object
+     */
+    protected function findRelatedObjectSkillCounts($con)
+    {
+        $criteria = clone $this;
+        if ($this->useAliasInSQL) {
+            $alias = $this->getModelAlias();
+            $criteria->removeAlias($alias);
+        } else {
+            $alias = '';
+        }
+        $this->objectSkillCounts = \gossi\trixionary\model\ObjectQuery::create()
+            ->joinSkill($alias)
+            ->mergeWith($criteria)
+            ->find($con);
+    }
+
+    protected function updateRelatedObjectSkillCounts($con)
+    {
+        foreach ($this->objectSkillCounts as $objectSkillCount) {
+            $objectSkillCount->updateSkillCount($con);
+        }
+        $this->objectSkillCounts = array();
     }
 
 } // SkillQuery

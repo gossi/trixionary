@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of reference to video
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ReferenceVideoJsonResponder extends AbstractPayloadResponder {
 

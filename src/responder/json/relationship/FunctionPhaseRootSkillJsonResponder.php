@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of function_phase to root_skill
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class FunctionPhaseRootSkillJsonResponder extends AbstractPayloadResponder {
 

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of skill to multiple
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillMultipleJsonResponder extends AbstractPayloadResponder {
 

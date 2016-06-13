@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes a reference
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ReferenceDeleteJsonResponder extends AbstractPayloadResponder {
 

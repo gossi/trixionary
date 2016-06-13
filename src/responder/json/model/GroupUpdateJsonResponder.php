@@ -20,7 +20,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a group
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class GroupUpdateJsonResponder extends AbstractPayloadResponder {
 
@@ -56,7 +56,7 @@ class GroupUpdateJsonResponder extends AbstractPayloadResponder {
 		$params = new Parameters($request->query->all());
 		$serializer = Group::getSerializer();
 		$resource = new Resource($payload->getModel(), $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'skills']));
+		$resource = $resource->with($params->getInclude(['sport', 'skills', 'skills.variations', 'skills.variationOf', 'skills.multiples', 'sport.objects']));
 		$resource = $resource->fields($params->getFields([
 			'group' => Group::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),

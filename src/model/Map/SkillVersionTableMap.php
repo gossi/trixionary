@@ -310,7 +310,7 @@ class SkillVersionTableMap extends TableMap
         $this->addColumn('history', 'History', 'LONGVARCHAR', false, null, null);
         $this->addColumn('is_translation', 'IsTranslation', 'BOOLEAN', false, 1, null);
         $this->addColumn('is_rotation', 'IsRotation', 'BOOLEAN', false, 1, null);
-        $this->addColumn('is_acyclic', 'IsAcyclic', 'BOOLEAN', false, 1, true);
+        $this->addColumn('is_acyclic', 'IsAcyclic', 'BOOLEAN', false, 1, false);
         $this->addColumn('is_cyclic', 'IsCyclic', 'BOOLEAN', false, 1, false);
         $this->addColumn('longitudinal_flags', 'LongitudinalFlags', 'INTEGER', false, null, null);
         $this->addColumn('latitudinal_flags', 'LatitudinalFlags', 'INTEGER', false, null, null);

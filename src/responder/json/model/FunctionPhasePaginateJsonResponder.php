@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates function_phases
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class FunctionPhasePaginateJsonResponder extends AbstractPayloadResponder {
 

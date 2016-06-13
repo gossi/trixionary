@@ -290,7 +290,7 @@ class SkillTableMap extends TableMap
         $this->addColumn('history', 'History', 'LONGVARCHAR', false, null, null);
         $this->addColumn('is_translation', 'IsTranslation', 'BOOLEAN', false, 1, null);
         $this->addColumn('is_rotation', 'IsRotation', 'BOOLEAN', false, 1, null);
-        $this->addColumn('is_acyclic', 'IsAcyclic', 'BOOLEAN', false, 1, true);
+        $this->addColumn('is_acyclic', 'IsAcyclic', 'BOOLEAN', false, 1, false);
         $this->addColumn('is_cyclic', 'IsCyclic', 'BOOLEAN', false, 1, false);
         $this->addColumn('longitudinal_flags', 'LongitudinalFlags', 'INTEGER', false, null, null);
         $this->addColumn('latitudinal_flags', 'LatitudinalFlags', 'INTEGER', false, null, null);
@@ -397,20 +397,20 @@ class SkillTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Multiples', false);
-        $this->addRelation('Descendent', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Child', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':dependency_id',
     1 => ':id',
   ),
-), 'CASCADE', null, 'Descendents', false);
-        $this->addRelation('Ascendent', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array (
+), 'CASCADE', null, 'Children', false);
+        $this->addRelation('Parent', '\\gossi\\trixionary\\model\\SkillDependency', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':parent_id',
     1 => ':id',
   ),
-), 'CASCADE', null, 'Ascendents', false);
+), 'CASCADE', null, 'Parents', false);
         $this->addRelation('Part', '\\gossi\\trixionary\\model\\SkillPart', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -498,6 +498,7 @@ class SkillTableMap extends TableMap
     {
         return array(
             'versionable' => array('version_column' => 'version', 'version_table' => 'skill_version', 'log_created_at' => 'true', 'log_created_by' => 'false', 'log_comment' => 'true', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', 'indices' => 'false', ),
+            'aggregate_column_relation_aggregate_column' => array('foreign_table' => 'kk_trixionary_object', 'update_method' => 'updateSkillCount', 'aggregate_name' => 'SkillCount', ),
         );
     } // getBehaviors()
     /**

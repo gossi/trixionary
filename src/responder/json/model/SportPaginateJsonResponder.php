@@ -17,7 +17,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates sports
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SportPaginateJsonResponder extends AbstractPayloadResponder {
 

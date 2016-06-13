@@ -14,6 +14,18 @@ use Tobscure\JsonApi\Resource;
 trait GroupSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'skills' => 'Skill'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'skills' => 'Skills'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -21,14 +33,15 @@ trait GroupSerializerTrait {
 		return [
 			'title' => $model->getTitle(),
 			'description' => $model->getDescription(),
-			'slug' => $model->getSlug()
+			'slug' => $model->getSlug(),
+			'skill-count' => $model->getSkillCount()
 		];
 	}
 
 	/**
 	 */
 	public function getFields() {
-		return ['title', 'description', 'slug'];
+		return ['title', 'description', 'slug', 'skill-count'];
 	}
 
 	/**
@@ -55,7 +68,7 @@ trait GroupSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['title', 'description', 'slug'];
+		return ['title', 'description', 'slug', 'skill-count'];
 	}
 
 	/**
@@ -88,7 +101,8 @@ trait GroupSerializerTrait {
 	 * @return Relationship
 	 */
 	public function skills($model) {
-		$relationship = new Relationship(new Collection($model->getSkills(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'skill');
 	}
 
@@ -117,6 +131,26 @@ trait GroupSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

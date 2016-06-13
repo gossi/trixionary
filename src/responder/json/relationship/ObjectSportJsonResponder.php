@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of object to sport
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ObjectSportJsonResponder extends AbstractPayloadResponder {
 

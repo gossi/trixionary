@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a kstruktur
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class KstrukturCreateJsonResponder extends AbstractPayloadResponder {
 

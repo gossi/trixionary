@@ -13,6 +13,18 @@ use Tobscure\JsonApi\Resource;
 trait VideoSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -134,6 +146,26 @@ trait VideoSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

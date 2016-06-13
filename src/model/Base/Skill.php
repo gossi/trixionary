@@ -148,7 +148,7 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * The value for the is_acyclic field.
-     * Note: this column has a database default value of: true
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_acyclic;
@@ -347,14 +347,14 @@ abstract class Skill implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildSkillDependency[] Collection to store aggregation of ChildSkillDependency objects.
      */
-    protected $collDescendents;
-    protected $collDescendentsPartial;
+    protected $collChildren;
+    protected $collChildrenPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillDependency[] Collection to store aggregation of ChildSkillDependency objects.
      */
-    protected $collAscendents;
-    protected $collAscendentsPartial;
+    protected $collParents;
+    protected $collParentsPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillPart[] Collection to store aggregation of ChildSkillPart objects.
@@ -482,6 +482,12 @@ abstract class Skill implements ActiveRecordInterface
      */
     protected $enforceVersion = false;
 
+    // aggregate_column_relation_aggregate_column behavior
+    /**
+     * @var ChildObject
+     */
+    protected $oldObjectSkillCount;
+
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkill[]
@@ -528,13 +534,13 @@ abstract class Skill implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillDependency[]
      */
-    protected $descendentsScheduledForDeletion = null;
+    protected $childrenScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillDependency[]
      */
-    protected $ascendentsScheduledForDeletion = null;
+    protected $parentsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -604,7 +610,7 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
-        $this->is_acyclic = true;
+        $this->is_acyclic = false;
         $this->is_cyclic = false;
         $this->version = 0;
     }
@@ -1952,7 +1958,7 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->is_acyclic !== true) {
+            if ($this->is_acyclic !== false) {
                 return false;
             }
 
@@ -2197,9 +2203,9 @@ abstract class Skill implements ActiveRecordInterface
 
             $this->collMultiples = null;
 
-            $this->collDescendents = null;
+            $this->collChildren = null;
 
-            $this->collAscendents = null;
+            $this->collParents = null;
 
             $this->collParts = null;
 
@@ -2311,6 +2317,8 @@ abstract class Skill implements ActiveRecordInterface
                 if (isset($createVersion)) {
                     $this->addVersion($con);
                 }
+                // aggregate_column_relation_aggregate_column behavior
+                $this->updateRelatedObjectSkillCount($con);
                 SkillTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -2597,34 +2605,34 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            if ($this->descendentsScheduledForDeletion !== null) {
-                if (!$this->descendentsScheduledForDeletion->isEmpty()) {
+            if ($this->childrenScheduledForDeletion !== null) {
+                if (!$this->childrenScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillDependencyQuery::create()
-                        ->filterByPrimaryKeys($this->descendentsScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->childrenScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->descendentsScheduledForDeletion = null;
+                    $this->childrenScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collDescendents !== null) {
-                foreach ($this->collDescendents as $referrerFK) {
+            if ($this->collChildren !== null) {
+                foreach ($this->collChildren as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->ascendentsScheduledForDeletion !== null) {
-                if (!$this->ascendentsScheduledForDeletion->isEmpty()) {
+            if ($this->parentsScheduledForDeletion !== null) {
+                if (!$this->parentsScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillDependencyQuery::create()
-                        ->filterByPrimaryKeys($this->ascendentsScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->parentsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->ascendentsScheduledForDeletion = null;
+                    $this->parentsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collAscendents !== null) {
-                foreach ($this->collAscendents as $referrerFK) {
+            if ($this->collParents !== null) {
+                foreach ($this->collParents as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3430,7 +3438,7 @@ abstract class Skill implements ActiveRecordInterface
 
                 $result[$key] = $this->collMultiples->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collDescendents) {
+            if (null !== $this->collChildren) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3443,9 +3451,9 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillDependencies';
                 }
 
-                $result[$key] = $this->collDescendents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collChildren->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collAscendents) {
+            if (null !== $this->collParents) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -3458,7 +3466,7 @@ abstract class Skill implements ActiveRecordInterface
                         $key = 'SkillDependencies';
                 }
 
-                $result[$key] = $this->collAscendents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collParents->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collParts) {
 
@@ -4134,15 +4142,15 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getDescendents() as $relObj) {
+            foreach ($this->getChildren() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addDescendent($relObj->copy($deepCopy));
+                    $copyObj->addChild($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getAscendents() as $relObj) {
+            foreach ($this->getParents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAscendent($relObj->copy($deepCopy));
+                    $copyObj->addParent($relObj->copy($deepCopy));
                 }
             }
 
@@ -4398,6 +4406,10 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function setObject(ChildObject $v = null)
     {
+        // aggregate_column_relation behavior
+        if (null !== $this->aObject && $v !== $this->aObject) {
+            $this->oldObjectSkillCount = $this->aObject;
+        }
         if ($v === null) {
             $this->setObjectId(NULL);
         } else {
@@ -4712,11 +4724,11 @@ abstract class Skill implements ActiveRecordInterface
         if ('Multiple' == $relationName) {
             return $this->initMultiples();
         }
-        if ('Descendent' == $relationName) {
-            return $this->initDescendents();
+        if ('Child' == $relationName) {
+            return $this->initChildren();
         }
-        if ('Ascendent' == $relationName) {
-            return $this->initAscendents();
+        if ('Parent' == $relationName) {
+            return $this->initParents();
         }
         if ('Part' == $relationName) {
             return $this->initParts();
@@ -5537,31 +5549,31 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collDescendents collection
+     * Clears out the collChildren collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addDescendents()
+     * @see        addChildren()
      */
-    public function clearDescendents()
+    public function clearChildren()
     {
-        $this->collDescendents = null; // important to set this to NULL since that means it is uninitialized
+        $this->collChildren = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collDescendents collection loaded partially.
+     * Reset is the collChildren collection loaded partially.
      */
-    public function resetPartialDescendents($v = true)
+    public function resetPartialChildren($v = true)
     {
-        $this->collDescendentsPartial = $v;
+        $this->collChildrenPartial = $v;
     }
 
     /**
-     * Initializes the collDescendents collection.
+     * Initializes the collChildren collection.
      *
-     * By default this just sets the collDescendents collection to an empty array (like clearcollDescendents());
+     * By default this just sets the collChildren collection to an empty array (like clearcollChildren());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5570,13 +5582,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initDescendents($overrideExisting = true)
+    public function initChildren($overrideExisting = true)
     {
-        if (null !== $this->collDescendents && !$overrideExisting) {
+        if (null !== $this->collChildren && !$overrideExisting) {
             return;
         }
-        $this->collDescendents = new ObjectCollection();
-        $this->collDescendents->setModel('\gossi\trixionary\model\SkillDependency');
+        $this->collChildren = new ObjectCollection();
+        $this->collChildren->setModel('\gossi\trixionary\model\SkillDependency');
     }
 
     /**
@@ -5593,48 +5605,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillDependency[] List of ChildSkillDependency objects
      * @throws PropelException
      */
-    public function getDescendents(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getChildren(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collDescendentsPartial && !$this->isNew();
-        if (null === $this->collDescendents || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collDescendents) {
+        $partial = $this->collChildrenPartial && !$this->isNew();
+        if (null === $this->collChildren || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collChildren) {
                 // return empty collection
-                $this->initDescendents();
+                $this->initChildren();
             } else {
-                $collDescendents = ChildSkillDependencyQuery::create(null, $criteria)
+                $collChildren = ChildSkillDependencyQuery::create(null, $criteria)
                     ->filterBySkillRelatedByDependencyId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collDescendentsPartial && count($collDescendents)) {
-                        $this->initDescendents(false);
+                    if (false !== $this->collChildrenPartial && count($collChildren)) {
+                        $this->initChildren(false);
 
-                        foreach ($collDescendents as $obj) {
-                            if (false == $this->collDescendents->contains($obj)) {
-                                $this->collDescendents->append($obj);
+                        foreach ($collChildren as $obj) {
+                            if (false == $this->collChildren->contains($obj)) {
+                                $this->collChildren->append($obj);
                             }
                         }
 
-                        $this->collDescendentsPartial = true;
+                        $this->collChildrenPartial = true;
                     }
 
-                    return $collDescendents;
+                    return $collChildren;
                 }
 
-                if ($partial && $this->collDescendents) {
-                    foreach ($this->collDescendents as $obj) {
+                if ($partial && $this->collChildren) {
+                    foreach ($this->collChildren as $obj) {
                         if ($obj->isNew()) {
-                            $collDescendents[] = $obj;
+                            $collChildren[] = $obj;
                         }
                     }
                 }
 
-                $this->collDescendents = $collDescendents;
-                $this->collDescendentsPartial = false;
+                $this->collChildren = $collChildren;
+                $this->collChildrenPartial = false;
             }
         }
 
-        return $this->collDescendents;
+        return $this->collChildren;
     }
 
     /**
@@ -5643,32 +5655,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $descendents A Propel collection.
+     * @param      Collection $children A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setDescendents(Collection $descendents, ConnectionInterface $con = null)
+    public function setChildren(Collection $children, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillDependency[] $descendentsToDelete */
-        $descendentsToDelete = $this->getDescendents(new Criteria(), $con)->diff($descendents);
+        /** @var ChildSkillDependency[] $childrenToDelete */
+        $childrenToDelete = $this->getChildren(new Criteria(), $con)->diff($children);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->descendentsScheduledForDeletion = clone $descendentsToDelete;
+        $this->childrenScheduledForDeletion = clone $childrenToDelete;
 
-        foreach ($descendentsToDelete as $descendentRemoved) {
-            $descendentRemoved->setSkillRelatedByDependencyId(null);
+        foreach ($childrenToDelete as $childRemoved) {
+            $childRemoved->setSkillRelatedByDependencyId(null);
         }
 
-        $this->collDescendents = null;
-        foreach ($descendents as $descendent) {
-            $this->addDescendent($descendent);
+        $this->collChildren = null;
+        foreach ($children as $child) {
+            $this->addChild($child);
         }
 
-        $this->collDescendents = $descendents;
-        $this->collDescendentsPartial = false;
+        $this->collChildren = $children;
+        $this->collChildrenPartial = false;
 
         return $this;
     }
@@ -5682,16 +5694,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillDependency objects.
      * @throws PropelException
      */
-    public function countDescendents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countChildren(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collDescendentsPartial && !$this->isNew();
-        if (null === $this->collDescendents || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collDescendents) {
+        $partial = $this->collChildrenPartial && !$this->isNew();
+        if (null === $this->collChildren || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collChildren) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getDescendents());
+                return count($this->getChildren());
             }
 
             $query = ChildSkillDependencyQuery::create(null, $criteria);
@@ -5704,7 +5716,7 @@ abstract class Skill implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collDescendents);
+        return count($this->collChildren);
     }
 
     /**
@@ -5714,75 +5726,75 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillDependency $l ChildSkillDependency
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addDescendent(ChildSkillDependency $l)
+    public function addChild(ChildSkillDependency $l)
     {
-        if ($this->collDescendents === null) {
-            $this->initDescendents();
-            $this->collDescendentsPartial = true;
+        if ($this->collChildren === null) {
+            $this->initChildren();
+            $this->collChildrenPartial = true;
         }
 
-        if (!$this->collDescendents->contains($l)) {
-            $this->doAddDescendent($l);
+        if (!$this->collChildren->contains($l)) {
+            $this->doAddChild($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillDependency $descendent The ChildSkillDependency object to add.
+     * @param ChildSkillDependency $child The ChildSkillDependency object to add.
      */
-    protected function doAddDescendent(ChildSkillDependency $descendent)
+    protected function doAddChild(ChildSkillDependency $child)
     {
-        $this->collDescendents[]= $descendent;
-        $descendent->setSkillRelatedByDependencyId($this);
+        $this->collChildren[]= $child;
+        $child->setSkillRelatedByDependencyId($this);
     }
 
     /**
-     * @param  ChildSkillDependency $descendent The ChildSkillDependency object to remove.
+     * @param  ChildSkillDependency $child The ChildSkillDependency object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeDescendent(ChildSkillDependency $descendent)
+    public function removeChild(ChildSkillDependency $child)
     {
-        if ($this->getDescendents()->contains($descendent)) {
-            $pos = $this->collDescendents->search($descendent);
-            $this->collDescendents->remove($pos);
-            if (null === $this->descendentsScheduledForDeletion) {
-                $this->descendentsScheduledForDeletion = clone $this->collDescendents;
-                $this->descendentsScheduledForDeletion->clear();
+        if ($this->getChildren()->contains($child)) {
+            $pos = $this->collChildren->search($child);
+            $this->collChildren->remove($pos);
+            if (null === $this->childrenScheduledForDeletion) {
+                $this->childrenScheduledForDeletion = clone $this->collChildren;
+                $this->childrenScheduledForDeletion->clear();
             }
-            $this->descendentsScheduledForDeletion[]= clone $descendent;
-            $descendent->setSkillRelatedByDependencyId(null);
+            $this->childrenScheduledForDeletion[]= clone $child;
+            $child->setSkillRelatedByDependencyId(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collAscendents collection
+     * Clears out the collParents collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addAscendents()
+     * @see        addParents()
      */
-    public function clearAscendents()
+    public function clearParents()
     {
-        $this->collAscendents = null; // important to set this to NULL since that means it is uninitialized
+        $this->collParents = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collAscendents collection loaded partially.
+     * Reset is the collParents collection loaded partially.
      */
-    public function resetPartialAscendents($v = true)
+    public function resetPartialParents($v = true)
     {
-        $this->collAscendentsPartial = $v;
+        $this->collParentsPartial = $v;
     }
 
     /**
-     * Initializes the collAscendents collection.
+     * Initializes the collParents collection.
      *
-     * By default this just sets the collAscendents collection to an empty array (like clearcollAscendents());
+     * By default this just sets the collParents collection to an empty array (like clearcollParents());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -5791,13 +5803,13 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initAscendents($overrideExisting = true)
+    public function initParents($overrideExisting = true)
     {
-        if (null !== $this->collAscendents && !$overrideExisting) {
+        if (null !== $this->collParents && !$overrideExisting) {
             return;
         }
-        $this->collAscendents = new ObjectCollection();
-        $this->collAscendents->setModel('\gossi\trixionary\model\SkillDependency');
+        $this->collParents = new ObjectCollection();
+        $this->collParents->setModel('\gossi\trixionary\model\SkillDependency');
     }
 
     /**
@@ -5814,48 +5826,48 @@ abstract class Skill implements ActiveRecordInterface
      * @return ObjectCollection|ChildSkillDependency[] List of ChildSkillDependency objects
      * @throws PropelException
      */
-    public function getAscendents(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getParents(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collAscendentsPartial && !$this->isNew();
-        if (null === $this->collAscendents || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAscendents) {
+        $partial = $this->collParentsPartial && !$this->isNew();
+        if (null === $this->collParents || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collParents) {
                 // return empty collection
-                $this->initAscendents();
+                $this->initParents();
             } else {
-                $collAscendents = ChildSkillDependencyQuery::create(null, $criteria)
+                $collParents = ChildSkillDependencyQuery::create(null, $criteria)
                     ->filterBySkillRelatedByParentId($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collAscendentsPartial && count($collAscendents)) {
-                        $this->initAscendents(false);
+                    if (false !== $this->collParentsPartial && count($collParents)) {
+                        $this->initParents(false);
 
-                        foreach ($collAscendents as $obj) {
-                            if (false == $this->collAscendents->contains($obj)) {
-                                $this->collAscendents->append($obj);
+                        foreach ($collParents as $obj) {
+                            if (false == $this->collParents->contains($obj)) {
+                                $this->collParents->append($obj);
                             }
                         }
 
-                        $this->collAscendentsPartial = true;
+                        $this->collParentsPartial = true;
                     }
 
-                    return $collAscendents;
+                    return $collParents;
                 }
 
-                if ($partial && $this->collAscendents) {
-                    foreach ($this->collAscendents as $obj) {
+                if ($partial && $this->collParents) {
+                    foreach ($this->collParents as $obj) {
                         if ($obj->isNew()) {
-                            $collAscendents[] = $obj;
+                            $collParents[] = $obj;
                         }
                     }
                 }
 
-                $this->collAscendents = $collAscendents;
-                $this->collAscendentsPartial = false;
+                $this->collParents = $collParents;
+                $this->collParentsPartial = false;
             }
         }
 
-        return $this->collAscendents;
+        return $this->collParents;
     }
 
     /**
@@ -5864,32 +5876,32 @@ abstract class Skill implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $ascendents A Propel collection.
+     * @param      Collection $parents A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setAscendents(Collection $ascendents, ConnectionInterface $con = null)
+    public function setParents(Collection $parents, ConnectionInterface $con = null)
     {
-        /** @var ChildSkillDependency[] $ascendentsToDelete */
-        $ascendentsToDelete = $this->getAscendents(new Criteria(), $con)->diff($ascendents);
+        /** @var ChildSkillDependency[] $parentsToDelete */
+        $parentsToDelete = $this->getParents(new Criteria(), $con)->diff($parents);
 
 
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->ascendentsScheduledForDeletion = clone $ascendentsToDelete;
+        $this->parentsScheduledForDeletion = clone $parentsToDelete;
 
-        foreach ($ascendentsToDelete as $ascendentRemoved) {
-            $ascendentRemoved->setSkillRelatedByParentId(null);
+        foreach ($parentsToDelete as $parentRemoved) {
+            $parentRemoved->setSkillRelatedByParentId(null);
         }
 
-        $this->collAscendents = null;
-        foreach ($ascendents as $ascendent) {
-            $this->addAscendent($ascendent);
+        $this->collParents = null;
+        foreach ($parents as $parent) {
+            $this->addParent($parent);
         }
 
-        $this->collAscendents = $ascendents;
-        $this->collAscendentsPartial = false;
+        $this->collParents = $parents;
+        $this->collParentsPartial = false;
 
         return $this;
     }
@@ -5903,16 +5915,16 @@ abstract class Skill implements ActiveRecordInterface
      * @return int             Count of related SkillDependency objects.
      * @throws PropelException
      */
-    public function countAscendents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countParents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collAscendentsPartial && !$this->isNew();
-        if (null === $this->collAscendents || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAscendents) {
+        $partial = $this->collParentsPartial && !$this->isNew();
+        if (null === $this->collParents || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collParents) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getAscendents());
+                return count($this->getParents());
             }
 
             $query = ChildSkillDependencyQuery::create(null, $criteria);
@@ -5925,7 +5937,7 @@ abstract class Skill implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collAscendents);
+        return count($this->collParents);
     }
 
     /**
@@ -5935,44 +5947,44 @@ abstract class Skill implements ActiveRecordInterface
      * @param  ChildSkillDependency $l ChildSkillDependency
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addAscendent(ChildSkillDependency $l)
+    public function addParent(ChildSkillDependency $l)
     {
-        if ($this->collAscendents === null) {
-            $this->initAscendents();
-            $this->collAscendentsPartial = true;
+        if ($this->collParents === null) {
+            $this->initParents();
+            $this->collParentsPartial = true;
         }
 
-        if (!$this->collAscendents->contains($l)) {
-            $this->doAddAscendent($l);
+        if (!$this->collParents->contains($l)) {
+            $this->doAddParent($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildSkillDependency $ascendent The ChildSkillDependency object to add.
+     * @param ChildSkillDependency $parent The ChildSkillDependency object to add.
      */
-    protected function doAddAscendent(ChildSkillDependency $ascendent)
+    protected function doAddParent(ChildSkillDependency $parent)
     {
-        $this->collAscendents[]= $ascendent;
-        $ascendent->setSkillRelatedByParentId($this);
+        $this->collParents[]= $parent;
+        $parent->setSkillRelatedByParentId($this);
     }
 
     /**
-     * @param  ChildSkillDependency $ascendent The ChildSkillDependency object to remove.
+     * @param  ChildSkillDependency $parent The ChildSkillDependency object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeAscendent(ChildSkillDependency $ascendent)
+    public function removeParent(ChildSkillDependency $parent)
     {
-        if ($this->getAscendents()->contains($ascendent)) {
-            $pos = $this->collAscendents->search($ascendent);
-            $this->collAscendents->remove($pos);
-            if (null === $this->ascendentsScheduledForDeletion) {
-                $this->ascendentsScheduledForDeletion = clone $this->collAscendents;
-                $this->ascendentsScheduledForDeletion->clear();
+        if ($this->getParents()->contains($parent)) {
+            $pos = $this->collParents->search($parent);
+            $this->collParents->remove($pos);
+            if (null === $this->parentsScheduledForDeletion) {
+                $this->parentsScheduledForDeletion = clone $this->collParents;
+                $this->parentsScheduledForDeletion->clear();
             }
-            $this->ascendentsScheduledForDeletion[]= clone $ascendent;
-            $ascendent->setSkillRelatedByParentId(null);
+            $this->parentsScheduledForDeletion[]= clone $parent;
+            $parent->setSkillRelatedByParentId(null);
         }
 
         return $this;
@@ -8464,7 +8476,7 @@ abstract class Skill implements ActiveRecordInterface
 
         $skillDependency->setSkillRelatedByDependencyId($this);
 
-        $this->addDescendent($skillDependency);
+        $this->addChild($skillDependency);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
@@ -8495,7 +8507,7 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             $skillDependency->setSkillRelatedByDependencyId($this);
-            $this->removeDescendent(clone $skillDependency);
+            $this->removeChild(clone $skillDependency);
             $skillDependency->clear();
 
             $this->collSkillsRelatedByParentId->remove($this->collSkillsRelatedByParentId->search($skillRelatedByParentId));
@@ -8706,7 +8718,7 @@ abstract class Skill implements ActiveRecordInterface
 
         $skillDependency->setSkillRelatedByParentId($this);
 
-        $this->addAscendent($skillDependency);
+        $this->addParent($skillDependency);
 
         // set the back reference to this object directly as using provided method either results
         // in endless loop or in multiple relations
@@ -8737,7 +8749,7 @@ abstract class Skill implements ActiveRecordInterface
             }
 
             $skillDependency->setSkillRelatedByParentId($this);
-            $this->removeAscendent(clone $skillDependency);
+            $this->removeParent(clone $skillDependency);
             $skillDependency->clear();
 
             $this->collSkillsRelatedByDependencyId->remove($this->collSkillsRelatedByDependencyId->search($skillRelatedByDependencyId));
@@ -9575,13 +9587,13 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collDescendents) {
-                foreach ($this->collDescendents as $o) {
+            if ($this->collChildren) {
+                foreach ($this->collChildren as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collAscendents) {
-                foreach ($this->collAscendents as $o) {
+            if ($this->collParents) {
+                foreach ($this->collParents as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -9664,8 +9676,8 @@ abstract class Skill implements ActiveRecordInterface
 
         $this->collVariations = null;
         $this->collMultiples = null;
-        $this->collDescendents = null;
-        $this->collAscendents = null;
+        $this->collChildren = null;
+        $this->collParents = null;
         $this->collParts = null;
         $this->collComposites = null;
         $this->collSkillGroups = null;
@@ -10148,6 +10160,24 @@ abstract class Skill implements ActiveRecordInterface
 
         return $this->getSkillVersions($criteria, $con);
     }
+    // aggregate_column_relation_aggregate_column behavior
+
+    /**
+     * Update the aggregate column in the related Object object
+     *
+     * @param ConnectionInterface $con A connection object
+     */
+    protected function updateRelatedObjectSkillCount(ConnectionInterface $con)
+    {
+        if ($object = $this->getObject()) {
+            $object->updateSkillCount($con);
+        }
+        if ($this->oldObjectSkillCount) {
+            $this->oldObjectSkillCount->updateSkillCount($con);
+            $this->oldObjectSkillCount = null;
+        }
+    }
+
     /**
      * Code to be run before persisting the object
      * @param  ConnectionInterface $con

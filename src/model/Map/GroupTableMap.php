@@ -59,7 +59,7 @@ class GroupTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class GroupTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the id field
@@ -97,6 +97,11 @@ class GroupTableMap extends TableMap
     const COL_SPORT_ID = 'kk_trixionary_group.sport_id';
 
     /**
+     * the column name for the skill_count field
+     */
+    const COL_SKILL_COUNT = 'kk_trixionary_group.skill_count';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -108,11 +113,11 @@ class GroupTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Slug', 'SportId', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'slug', 'sportId', ),
-        self::TYPE_COLNAME       => array(GroupTableMap::COL_ID, GroupTableMap::COL_TITLE, GroupTableMap::COL_DESCRIPTION, GroupTableMap::COL_SLUG, GroupTableMap::COL_SPORT_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'slug', 'sport_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Slug', 'SportId', 'SkillCount', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'slug', 'sportId', 'skillCount', ),
+        self::TYPE_COLNAME       => array(GroupTableMap::COL_ID, GroupTableMap::COL_TITLE, GroupTableMap::COL_DESCRIPTION, GroupTableMap::COL_SLUG, GroupTableMap::COL_SPORT_ID, GroupTableMap::COL_SKILL_COUNT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'slug', 'sport_id', 'skill_count', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -122,11 +127,11 @@ class GroupTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Slug' => 3, 'SportId' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'slug' => 3, 'sportId' => 4, ),
-        self::TYPE_COLNAME       => array(GroupTableMap::COL_ID => 0, GroupTableMap::COL_TITLE => 1, GroupTableMap::COL_DESCRIPTION => 2, GroupTableMap::COL_SLUG => 3, GroupTableMap::COL_SPORT_ID => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'slug' => 3, 'sport_id' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Slug' => 3, 'SportId' => 4, 'SkillCount' => 5, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'slug' => 3, 'sportId' => 4, 'skillCount' => 5, ),
+        self::TYPE_COLNAME       => array(GroupTableMap::COL_ID => 0, GroupTableMap::COL_TITLE => 1, GroupTableMap::COL_DESCRIPTION => 2, GroupTableMap::COL_SLUG => 3, GroupTableMap::COL_SPORT_ID => 4, GroupTableMap::COL_SKILL_COUNT => 5, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'slug' => 3, 'sport_id' => 4, 'skill_count' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -151,6 +156,7 @@ class GroupTableMap extends TableMap
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
         $this->addForeignKey('sport_id', 'SportId', 'INTEGER', 'kk_trixionary_sport', 'id', true, null, null);
+        $this->addColumn('skill_count', 'SkillCount', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -174,6 +180,19 @@ class GroupTableMap extends TableMap
 ), 'CASCADE', null, 'SkillGroups', false);
         $this->addRelation('Skill', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Skills');
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'aggregate_column' => array('name' => 'skill_count', 'expression' => 'COUNT(skill_id)', 'condition' => '', 'foreign_table' => 'skill_group', 'foreign_schema' => '', ),
+        );
+    } // getBehaviors()
     /**
      * Method to invalidate the instance pool of all tables related to kk_trixionary_group     * by a foreign key with ON DELETE CASCADE
      */
@@ -330,12 +349,14 @@ class GroupTableMap extends TableMap
             $criteria->addSelectColumn(GroupTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(GroupTableMap::COL_SLUG);
             $criteria->addSelectColumn(GroupTableMap::COL_SPORT_ID);
+            $criteria->addSelectColumn(GroupTableMap::COL_SKILL_COUNT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.slug');
             $criteria->addSelectColumn($alias . '.sport_id');
+            $criteria->addSelectColumn($alias . '.skill_count');
         }
     }
 

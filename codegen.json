@@ -5,7 +5,20 @@
 	            "skill_fk_start_position": "one-to-one",
 	            "skill_fk_end_position": "one-to-one",
 	            "skill_fk_featured_picture": "one-to-one"
-	        }
+	        },
+	        "includes": [
+	            "sport.skills"
+	        ]
+	    },
+	    "group": {
+	        "includes": [
+	        	"skills.variations", "skills.variationOf", "skills.multiples", "sport.objects"
+	        ]
+	    },
+	    "object": {
+	        "includes": [
+	        	"skills.variations", "skills.variationOf", "skills.multiples", "sport.objects"
+	        ]
 	    }
 	}
 }

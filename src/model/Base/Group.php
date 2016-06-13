@@ -98,6 +98,12 @@ abstract class Group implements ActiveRecordInterface
     protected $sport_id;
 
     /**
+     * The value for the skill_count field.
+     * @var        int
+     */
+    protected $skill_count;
+
+    /**
      * @var        ChildSport
      */
     protected $aSport;
@@ -406,6 +412,16 @@ abstract class Group implements ActiveRecordInterface
     }
 
     /**
+     * Get the [skill_count] column value.
+     *
+     * @return int
+     */
+    public function getSkillCount()
+    {
+        return $this->skill_count;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -510,6 +526,26 @@ abstract class Group implements ActiveRecordInterface
     } // setSportId()
 
     /**
+     * Set the value of [skill_count] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\Group The current object (for fluent API support)
+     */
+    public function setSkillCount($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->skill_count !== $v) {
+            $this->skill_count = $v;
+            $this->modifiedColumns[GroupTableMap::COL_SKILL_COUNT] = true;
+        }
+
+        return $this;
+    } // setSkillCount()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -559,6 +595,9 @@ abstract class Group implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : GroupTableMap::translateFieldName('SportId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sport_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : GroupTableMap::translateFieldName('SkillCount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->skill_count = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -567,7 +606,7 @@ abstract class Group implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = GroupTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = GroupTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Group'), 0, $e);
@@ -844,6 +883,9 @@ abstract class Group implements ActiveRecordInterface
         if ($this->isColumnModified(GroupTableMap::COL_SPORT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`sport_id`';
         }
+        if ($this->isColumnModified(GroupTableMap::COL_SKILL_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = '`skill_count`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `kk_trixionary_group` (%s) VALUES (%s)',
@@ -869,6 +911,9 @@ abstract class Group implements ActiveRecordInterface
                         break;
                     case '`sport_id`':
                         $stmt->bindValue($identifier, $this->sport_id, PDO::PARAM_INT);
+                        break;
+                    case '`skill_count`':
+                        $stmt->bindValue($identifier, $this->skill_count, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -947,6 +992,9 @@ abstract class Group implements ActiveRecordInterface
             case 4:
                 return $this->getSportId();
                 break;
+            case 5:
+                return $this->getSkillCount();
+                break;
             default:
                 return null;
                 break;
@@ -982,6 +1030,7 @@ abstract class Group implements ActiveRecordInterface
             $keys[2] => $this->getDescription(),
             $keys[3] => $this->getSlug(),
             $keys[4] => $this->getSportId(),
+            $keys[5] => $this->getSkillCount(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1068,6 +1117,9 @@ abstract class Group implements ActiveRecordInterface
             case 4:
                 $this->setSportId($value);
                 break;
+            case 5:
+                $this->setSkillCount($value);
+                break;
         } // switch()
 
         return $this;
@@ -1108,6 +1160,9 @@ abstract class Group implements ActiveRecordInterface
         }
         if (array_key_exists($keys[4], $arr)) {
             $this->setSportId($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setSkillCount($arr[$keys[5]]);
         }
     }
 
@@ -1164,6 +1219,9 @@ abstract class Group implements ActiveRecordInterface
         }
         if ($this->isColumnModified(GroupTableMap::COL_SPORT_ID)) {
             $criteria->add(GroupTableMap::COL_SPORT_ID, $this->sport_id);
+        }
+        if ($this->isColumnModified(GroupTableMap::COL_SKILL_COUNT)) {
+            $criteria->add(GroupTableMap::COL_SKILL_COUNT, $this->skill_count);
         }
 
         return $criteria;
@@ -1255,6 +1313,7 @@ abstract class Group implements ActiveRecordInterface
         $copyObj->setDescription($this->getDescription());
         $copyObj->setSlug($this->getSlug());
         $copyObj->setSportId($this->getSportId());
+        $copyObj->setSkillCount($this->getSkillCount());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1867,6 +1926,7 @@ abstract class Group implements ActiveRecordInterface
         $this->description = null;
         $this->slug = null;
         $this->sport_id = null;
+        $this->skill_count = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1910,6 +1970,33 @@ abstract class Group implements ActiveRecordInterface
     public function __toString()
     {
         return (string) $this->exportTo(GroupTableMap::DEFAULT_STRING_FORMAT);
+    }
+
+    // aggregate_column behavior
+
+    /**
+     * Computes the value of the aggregate column skill_count *
+     * @param ConnectionInterface $con A connection object
+     *
+     * @return mixed The scalar result from the aggregate query
+     */
+    public function computeSkillCount(ConnectionInterface $con)
+    {
+        $stmt = $con->prepare('SELECT COUNT(skill_id) FROM `kk_trixionary_skill_group` WHERE kk_trixionary_skill_group.GROUP_ID = :p1');
+        $stmt->bindValue(':p1', $this->getId());
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Updates the aggregate column skill_count *
+     * @param ConnectionInterface $con A connection object
+     */
+    public function updateSkillCount(ConnectionInterface $con)
+    {
+        $this->setSkillCount($this->computeSkillCount($con));
+        $this->save($con);
     }
 
     /**

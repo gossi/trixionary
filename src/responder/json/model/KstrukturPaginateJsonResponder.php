@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates kstrukturs
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class KstrukturPaginateJsonResponder extends AbstractPayloadResponder {
 

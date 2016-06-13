@@ -41,15 +41,17 @@ trait ObjectDomainTrait {
 		if ($model === null) {
 			return new NotFound(['message' => 'Object not found.']);
 		}
-		 
+
 		// update
+		$serializer = Object::getSerializer();
+		$method = 'add' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -58,12 +60,11 @@ trait ObjectDomainTrait {
 
 		// save and dispatch events
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_SKILLS_ADD, $event);
-		$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_ADD, $event);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(ObjectEvent::POST_SKILLS_ADD, $event);
-		$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_ADD, $event);
+		$this->dispatch(ObjectEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -93,12 +94,11 @@ trait ObjectDomainTrait {
 
 		// dispatch
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_CREATE, $event);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(ObjectEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_CREATE, $event);
+		$this->dispatch(ObjectEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -118,12 +118,11 @@ trait ObjectDomainTrait {
 
 		// delete
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_DELETE, $event);
+		$this->dispatch(ObjectEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(ObjectEvent::POST_DELETE, $event);
+			$this->dispatch(ObjectEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -198,13 +197,15 @@ trait ObjectDomainTrait {
 		}
 
 		// remove them
+		$serializer = Object::getSerializer();
+		$method = 'remove' . $serializer->getCollectionMethodName('skills');
 		$errors = [];
 		foreach ($data as $entry) {
 			if (!isset($entry['id'])) {
 				$errors[] = 'Missing id for Skill';
 			}
 			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->removeSkill($related);
+			$model->$method($related);
 		}
 
 		if (count($errors) > 0) {
@@ -213,12 +214,11 @@ trait ObjectDomainTrait {
 
 		// save and dispatch events
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_REMOVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(ObjectEvent::POST_SKILLS_REMOVE, $event);
-		$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_REMOVE, $event);
+		$this->dispatch(ObjectEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -247,13 +247,12 @@ trait ObjectDomainTrait {
 			$model->setSportId($relatedId);
 
 			$event = new ObjectEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(ObjectEvent::PRE_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+			$this->dispatch(ObjectEvent::PRE_SPORT_UPDATE, $event);
+			$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(ObjectEvent::POST_SPORT_UPDATE, $event);
-			$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
-			
+			$this->dispatch(ObjectEvent::POST_SPORT_UPDATE, $event);
+			$this->dispatch(ObjectEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -289,12 +288,11 @@ trait ObjectDomainTrait {
 
 		// dispatch
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_UPDATE, $event);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(ObjectEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_UPDATE, $event);
+		$this->dispatch(ObjectEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -339,12 +337,11 @@ trait ObjectDomainTrait {
 
 		// save and dispatch events
 		$event = new ObjectEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(ObjectEvent::PRE_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_UPDATE, $event);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(ObjectEvent::POST_SKILLS_UPDATE, $event);
-		$dispatcher->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_UPDATE, $event);
+		$this->dispatch(ObjectEvent::POST_SAVE, $event);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -377,6 +374,34 @@ trait ObjectDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param ObjectEvent $event
+	 */
+	protected function dispatch($type, ObjectEvent $event) {
+		$model = $event->getObject();
+		$methods = [
+			ObjectEvent::PRE_CREATE => 'preCreate',
+			ObjectEvent::POST_CREATE => 'postCreate',
+			ObjectEvent::PRE_UPDATE => 'preUpdate',
+			ObjectEvent::POST_UPDATE => 'postUpdate',
+			ObjectEvent::PRE_DELETE => 'preDelete',
+			ObjectEvent::POST_DELETE => 'postDelete',
+			ObjectEvent::PRE_SAVE => 'preSave',
+			ObjectEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a picture
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PictureCreateJsonResponder extends AbstractPayloadResponder {
 

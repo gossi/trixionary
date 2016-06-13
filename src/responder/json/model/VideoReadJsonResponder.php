@@ -17,7 +17,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Reads a video
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class VideoReadJsonResponder extends AbstractPayloadResponder {
 

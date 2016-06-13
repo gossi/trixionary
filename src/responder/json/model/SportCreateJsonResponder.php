@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a sport
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SportCreateJsonResponder extends AbstractPayloadResponder {
 

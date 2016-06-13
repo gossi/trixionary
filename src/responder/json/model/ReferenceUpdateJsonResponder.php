@@ -20,7 +20,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a reference
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class ReferenceUpdateJsonResponder extends AbstractPayloadResponder {
 

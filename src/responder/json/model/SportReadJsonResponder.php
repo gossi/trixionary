@@ -19,7 +19,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Reads a sport
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SportReadJsonResponder extends AbstractPayloadResponder {
 

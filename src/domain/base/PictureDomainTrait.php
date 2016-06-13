@@ -47,12 +47,11 @@ trait PictureDomainTrait {
 
 		// dispatch
 		$event = new PictureEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PictureEvent::PRE_CREATE, $event);
-		$dispatcher->dispatch(PictureEvent::PRE_SAVE, $event);
+		$this->dispatch(PictureEvent::PRE_CREATE, $event);
+		$this->dispatch(PictureEvent::PRE_SAVE, $event);
 		$model->save();
-		$dispatcher->dispatch(PictureEvent::POST_CREATE, $event);
-		$dispatcher->dispatch(PictureEvent::POST_SAVE, $event);
+		$this->dispatch(PictureEvent::POST_CREATE, $event);
+		$this->dispatch(PictureEvent::POST_SAVE, $event);
 		return new Created(['model' => $model]);
 	}
 
@@ -72,12 +71,11 @@ trait PictureDomainTrait {
 
 		// delete
 		$event = new PictureEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PictureEvent::PRE_DELETE, $event);
+		$this->dispatch(PictureEvent::PRE_DELETE, $event);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$dispatcher->dispatch(PictureEvent::POST_DELETE, $event);
+			$this->dispatch(PictureEvent::POST_DELETE, $event);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -156,13 +154,12 @@ trait PictureDomainTrait {
 			$model->setPictureId($relatedId);
 
 			$event = new PictureEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(PictureEvent::PRE_FEATURED_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PictureEvent::PRE_SAVE, $event);
+			$this->dispatch(PictureEvent::PRE_FEATURED_SKILL_UPDATE, $event);
+			$this->dispatch(PictureEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(PictureEvent::POST_FEATURED_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PictureEvent::POST_SAVE, $event);
-			
+			$this->dispatch(PictureEvent::POST_FEATURED_SKILL_UPDATE, $event);
+			$this->dispatch(PictureEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -189,13 +186,12 @@ trait PictureDomainTrait {
 			$model->setSkillId($relatedId);
 
 			$event = new PictureEvent($model);
-			$dispatcher = $this->getServiceContainer()->getDispatcher();
-			$dispatcher->dispatch(PictureEvent::PRE_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PictureEvent::PRE_SAVE, $event);
+			$this->dispatch(PictureEvent::PRE_SKILL_UPDATE, $event);
+			$this->dispatch(PictureEvent::PRE_SAVE, $event);
 			$model->save();
-			$dispatcher->dispatch(PictureEvent::POST_SKILL_UPDATE, $event);
-			$dispatcher->dispatch(PictureEvent::POST_SAVE, $event);
-			
+			$this->dispatch(PictureEvent::POST_SKILL_UPDATE, $event);
+			$this->dispatch(PictureEvent::POST_SAVE, $event);
+
 			return Updated(['model' => $model]);
 		}
 
@@ -231,12 +227,11 @@ trait PictureDomainTrait {
 
 		// dispatch
 		$event = new PictureEvent($model);
-		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch(PictureEvent::PRE_UPDATE, $event);
-		$dispatcher->dispatch(PictureEvent::PRE_SAVE, $event);
+		$this->dispatch(PictureEvent::PRE_UPDATE, $event);
+		$this->dispatch(PictureEvent::PRE_SAVE, $event);
 		$rows = $model->save();
-		$dispatcher->dispatch(PictureEvent::POST_UPDATE, $event);
-		$dispatcher->dispatch(PictureEvent::POST_SAVE, $event);
+		$this->dispatch(PictureEvent::POST_UPDATE, $event);
+		$this->dispatch(PictureEvent::POST_SAVE, $event);
 
 		$payload = ['model' => $model];
 
@@ -271,6 +266,34 @@ trait PictureDomainTrait {
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $type
+	 * @param PictureEvent $event
+	 */
+	protected function dispatch($type, PictureEvent $event) {
+		$model = $event->getPicture();
+		$methods = [
+			PictureEvent::PRE_CREATE => 'preCreate',
+			PictureEvent::POST_CREATE => 'postCreate',
+			PictureEvent::PRE_UPDATE => 'preUpdate',
+			PictureEvent::POST_UPDATE => 'postUpdate',
+			PictureEvent::PRE_DELETE => 'preDelete',
+			PictureEvent::POST_DELETE => 'postDelete',
+			PictureEvent::PRE_SAVE => 'preSave',
+			PictureEvent::POST_SAVE => 'postSave'
+		];
+
+		if (isset($methods[$type])) {
+			$method = $methods[$type];
+			if (method_exists($this, $method)) {
+				$this->$method($model);
+			}
+		}
+
+		$dispatcher = $this->getServiceContainer()->getDispatcher();
+		$dispatcher->dispatch($type, $event);
 	}
 
 	/**

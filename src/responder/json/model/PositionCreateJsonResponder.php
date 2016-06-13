@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a position
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PositionCreateJsonResponder extends AbstractPayloadResponder {
 

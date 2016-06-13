@@ -20,7 +20,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a position
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class PositionUpdateJsonResponder extends AbstractPayloadResponder {
 

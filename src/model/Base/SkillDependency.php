@@ -1074,7 +1074,7 @@ abstract class SkillDependency implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addDescendent($this);
+            $v->addChild($this);
         }
 
 
@@ -1098,7 +1098,7 @@ abstract class SkillDependency implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedByDependencyId->addDescendents($this);
+                $this->aSkillRelatedByDependencyId->addChildren($this);
              */
         }
 
@@ -1125,7 +1125,7 @@ abstract class SkillDependency implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSkill object, it will not be re-added.
         if ($v !== null) {
-            $v->addAscendent($this);
+            $v->addParent($this);
         }
 
 
@@ -1149,7 +1149,7 @@ abstract class SkillDependency implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSkillRelatedByParentId->addAscendents($this);
+                $this->aSkillRelatedByParentId->addParents($this);
              */
         }
 
@@ -1164,10 +1164,10 @@ abstract class SkillDependency implements ActiveRecordInterface
     public function clear()
     {
         if (null !== $this->aSkillRelatedByDependencyId) {
-            $this->aSkillRelatedByDependencyId->removeDescendent($this);
+            $this->aSkillRelatedByDependencyId->removeChild($this);
         }
         if (null !== $this->aSkillRelatedByParentId) {
-            $this->aSkillRelatedByParentId->removeAscendent($this);
+            $this->aSkillRelatedByParentId->removeParent($this);
         }
         $this->dependency_id = null;
         $this->parent_id = null;

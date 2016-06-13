@@ -15,6 +15,24 @@ use Tobscure\JsonApi\Relationship;
 trait SportSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'objects' => 'Object',
+		'positions' => 'Position',
+		'skills' => 'Skill',
+		'groups' => 'Group'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'objects' => 'Objects',
+		'positions' => 'Positions',
+		'skills' => 'Skills',
+		'groups' => 'Groups'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -91,7 +109,8 @@ trait SportSerializerTrait {
 	 * @return Relationship
 	 */
 	public function groups($model) {
-		$relationship = new Relationship(new Collection($model->getGroups(), Group::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('groups');
+		$relationship = new Relationship(new Collection($model->$method(), Group::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'group');
 	}
 
@@ -117,7 +136,8 @@ trait SportSerializerTrait {
 	 * @return Relationship
 	 */
 	public function objects($model) {
-		$relationship = new Relationship(new Collection($model->getObjects(), Object::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('objects');
+		$relationship = new Relationship(new Collection($model->$method(), Object::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'object');
 	}
 
@@ -126,7 +146,8 @@ trait SportSerializerTrait {
 	 * @return Relationship
 	 */
 	public function positions($model) {
-		$relationship = new Relationship(new Collection($model->getPositions(), Position::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('positions');
+		$relationship = new Relationship(new Collection($model->$method(), Position::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'position');
 	}
 
@@ -135,7 +156,8 @@ trait SportSerializerTrait {
 	 * @return Relationship
 	 */
 	public function skills($model) {
-		$relationship = new Relationship(new Collection($model->getSkills(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'skill');
 	}
 
@@ -146,6 +168,26 @@ trait SportSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

@@ -14,6 +14,18 @@ use Tobscure\JsonApi\Resource;
 trait ReferenceSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'videos' => 'Video'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'videos' => 'Videos'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -122,7 +134,8 @@ trait ReferenceSerializerTrait {
 	 * @return Relationship
 	 */
 	public function videos($model) {
-		$relationship = new Relationship(new Collection($model->getVideos(), Video::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('videos');
+		$relationship = new Relationship(new Collection($model->$method(), Video::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'video');
 	}
 
@@ -133,6 +146,26 @@ trait ReferenceSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

@@ -14,6 +14,18 @@ use Tobscure\JsonApi\Resource;
 trait ObjectSerializerTrait {
 
 	/**
+	 */
+	private $methodNames = [
+		'skills' => 'Skill'
+	];
+
+	/**
+	 */
+	private $methodPluralNames = [
+		'skills' => 'Skills'
+	];
+
+	/**
 	 * @param mixed $model
 	 * @param array $fields
 	 */
@@ -22,14 +34,15 @@ trait ObjectSerializerTrait {
 			'title' => $model->getTitle(),
 			'slug' => $model->getSlug(),
 			'fixed' => $model->getFixed(),
-			'description' => $model->getDescription()
+			'description' => $model->getDescription(),
+			'skill-count' => $model->getSkillCount()
 		];
 	}
 
 	/**
 	 */
 	public function getFields() {
-		return ['title', 'slug', 'fixed', 'description'];
+		return ['title', 'slug', 'fixed', 'description', 'skill-count'];
 	}
 
 	/**
@@ -56,7 +69,7 @@ trait ObjectSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['title', 'slug', 'fixed', 'description'];
+		return ['title', 'slug', 'fixed', 'description', 'skill-count'];
 	}
 
 	/**
@@ -89,7 +102,8 @@ trait ObjectSerializerTrait {
 	 * @return Relationship
 	 */
 	public function skills($model) {
-		$relationship = new Relationship(new Collection($model->getSkills(), Skill::getSerializer()));
+		$method = 'get' . $this->getCollectionMethodPluralName('skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'skill');
 	}
 
@@ -118,6 +132,26 @@ trait ObjectSerializerTrait {
 	 * @return Relationship
 	 */
 	abstract protected function addRelationshipSelfLink(Relationship $relationship, $model, $related);
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodName($relatedName) {
+		if (isset($this->methodNames[$relatedName])) {
+			return $this->methodNames[$relatedName];
+		}
+		return null;
+	}
+
+	/**
+	 * @param mixed $relatedName
+	 */
+	protected function getCollectionMethodPluralName($relatedName) {
+		if (isset($this->methodPluralNames[$relatedName])) {
+			return $this->methodPluralNames[$relatedName];
+		}
+		return null;
+	}
 
 	/**
 	 */

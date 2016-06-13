@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Reads the relationship of skill to variation
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class SkillVariationJsonResponder extends AbstractPayloadResponder {
 

@@ -14,7 +14,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Creates a function_phase
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class FunctionPhaseCreateJsonResponder extends AbstractPayloadResponder {
 

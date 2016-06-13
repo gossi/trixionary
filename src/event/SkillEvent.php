@@ -10,23 +10,23 @@ class SkillEvent extends Event {
 
 	/**
 	 */
+	const POST_CHILDREN_ADD = 'gossi.trixionary.skill.post_children_add';
+
+	/**
+	 */
+	const POST_CHILDREN_REMOVE = 'gossi.trixionary.skill.post_children_add';
+
+	/**
+	 */
+	const POST_CHILDREN_UPDATE = 'gossi.trixionary.skill.post_children_update';
+
+	/**
+	 */
 	const POST_CREATE = 'gossi.trixionary.skill.post_create';
 
 	/**
 	 */
 	const POST_DELETE = 'gossi.trixionary.skill.post_delete';
-
-	/**
-	 */
-	const POST_DESCENDENTS_ADD = 'gossi.trixionary.skill.post_descendents_add';
-
-	/**
-	 */
-	const POST_DESCENDENTS_REMOVE = 'gossi.trixionary.skill.post_descendents_add';
-
-	/**
-	 */
-	const POST_DESCENDENTS_UPDATE = 'gossi.trixionary.skill.post_descendents_update';
 
 	/**
 	 */
@@ -182,23 +182,23 @@ class SkillEvent extends Event {
 
 	/**
 	 */
+	const PRE_CHILDREN_ADD = 'gossi.trixionary.skill.pre_children_add';
+
+	/**
+	 */
+	const PRE_CHILDREN_REMOVE = 'gossi.trixionary.skill.pre_children_add';
+
+	/**
+	 */
+	const PRE_CHILDREN_UPDATE = 'gossi.trixionary.skill.pre_children_update';
+
+	/**
+	 */
 	const PRE_CREATE = 'gossi.trixionary.skill.pre_create';
 
 	/**
 	 */
 	const PRE_DELETE = 'gossi.trixionary.skill.pre_delete';
-
-	/**
-	 */
-	const PRE_DESCENDENTS_ADD = 'gossi.trixionary.skill.pre_descendents_add';
-
-	/**
-	 */
-	const PRE_DESCENDENTS_REMOVE = 'gossi.trixionary.skill.pre_descendents_add';
-
-	/**
-	 */
-	const PRE_DESCENDENTS_UPDATE = 'gossi.trixionary.skill.pre_descendents_update';
 
 	/**
 	 */

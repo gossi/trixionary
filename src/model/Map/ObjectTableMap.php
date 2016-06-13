@@ -59,7 +59,7 @@ class ObjectTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class ObjectTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the id field
@@ -102,6 +102,11 @@ class ObjectTableMap extends TableMap
     const COL_SPORT_ID = 'kk_trixionary_object.sport_id';
 
     /**
+     * the column name for the skill_count field
+     */
+    const COL_SKILL_COUNT = 'kk_trixionary_object.skill_count';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -113,11 +118,11 @@ class ObjectTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Slug', 'Fixed', 'Description', 'SportId', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'slug', 'fixed', 'description', 'sportId', ),
-        self::TYPE_COLNAME       => array(ObjectTableMap::COL_ID, ObjectTableMap::COL_TITLE, ObjectTableMap::COL_SLUG, ObjectTableMap::COL_FIXED, ObjectTableMap::COL_DESCRIPTION, ObjectTableMap::COL_SPORT_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'slug', 'fixed', 'description', 'sport_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Slug', 'Fixed', 'Description', 'SportId', 'SkillCount', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'slug', 'fixed', 'description', 'sportId', 'skillCount', ),
+        self::TYPE_COLNAME       => array(ObjectTableMap::COL_ID, ObjectTableMap::COL_TITLE, ObjectTableMap::COL_SLUG, ObjectTableMap::COL_FIXED, ObjectTableMap::COL_DESCRIPTION, ObjectTableMap::COL_SPORT_ID, ObjectTableMap::COL_SKILL_COUNT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'slug', 'fixed', 'description', 'sport_id', 'skill_count', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -127,11 +132,11 @@ class ObjectTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Slug' => 2, 'Fixed' => 3, 'Description' => 4, 'SportId' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'fixed' => 3, 'description' => 4, 'sportId' => 5, ),
-        self::TYPE_COLNAME       => array(ObjectTableMap::COL_ID => 0, ObjectTableMap::COL_TITLE => 1, ObjectTableMap::COL_SLUG => 2, ObjectTableMap::COL_FIXED => 3, ObjectTableMap::COL_DESCRIPTION => 4, ObjectTableMap::COL_SPORT_ID => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'fixed' => 3, 'description' => 4, 'sport_id' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Slug' => 2, 'Fixed' => 3, 'Description' => 4, 'SportId' => 5, 'SkillCount' => 6, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'fixed' => 3, 'description' => 4, 'sportId' => 5, 'skillCount' => 6, ),
+        self::TYPE_COLNAME       => array(ObjectTableMap::COL_ID => 0, ObjectTableMap::COL_TITLE => 1, ObjectTableMap::COL_SLUG => 2, ObjectTableMap::COL_FIXED => 3, ObjectTableMap::COL_DESCRIPTION => 4, ObjectTableMap::COL_SPORT_ID => 5, ObjectTableMap::COL_SKILL_COUNT => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'fixed' => 3, 'description' => 4, 'sport_id' => 5, 'skill_count' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -157,6 +162,7 @@ class ObjectTableMap extends TableMap
         $this->addColumn('fixed', 'Fixed', 'BOOLEAN', false, 1, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addForeignKey('sport_id', 'SportId', 'INTEGER', 'kk_trixionary_sport', 'id', true, null, null);
+        $this->addColumn('skill_count', 'SkillCount', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -179,6 +185,19 @@ class ObjectTableMap extends TableMap
   ),
 ), null, null, 'Skills', false);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'aggregate_column' => array('name' => 'skill_count', 'expression' => 'COUNT(id)', 'condition' => '', 'foreign_table' => 'skill', 'foreign_schema' => '', ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -327,6 +346,7 @@ class ObjectTableMap extends TableMap
             $criteria->addSelectColumn(ObjectTableMap::COL_FIXED);
             $criteria->addSelectColumn(ObjectTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(ObjectTableMap::COL_SPORT_ID);
+            $criteria->addSelectColumn(ObjectTableMap::COL_SKILL_COUNT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
@@ -334,6 +354,7 @@ class ObjectTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.fixed');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.sport_id');
+            $criteria->addSelectColumn($alias . '.skill_count');
         }
     }
 

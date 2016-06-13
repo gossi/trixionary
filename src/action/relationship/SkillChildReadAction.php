@@ -1,27 +1,26 @@
 <?php
-namespace gossi\trixionary\action\model;
+namespace gossi\trixionary\action\relationship;
 
-use gossi\trixionary\domain\SkillVersionDomain;
+use gossi\trixionary\domain\SkillDomain;
 use keeko\framework\foundation\AbstractAction;
-use keeko\framework\utils\Parameters;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Paginates skill_versions
+ * Reads the relationship of skill to child
  * 
  * This code is automatically created. Modifications will probably be overwritten.
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
-class SkillVersionPaginateAction extends AbstractAction {
+class SkillChildReadAction extends AbstractAction {
 
 	/**
 	 * @param OptionsResolver $resolver
 	 */
 	public function configureParams(OptionsResolver $resolver) {
-		$resolver->setDefaults(['include' => [], 'fields' => [], 'sort' => [], 'filter' => [], 'page' => []]);
+		$resolver->setRequired(['id']);
 	}
 
 	/**
@@ -31,9 +30,9 @@ class SkillVersionPaginateAction extends AbstractAction {
 	 * @return Response
 	 */
 	public function run(Request $request) {
-		$params = new Parameters($request->query->all());
-		$domain = new SkillVersionDomain($this->getServiceContainer());
-		$payload = $domain->paginate($params);
+		$id = $this->getParam('id');
+		$domain = new SkillDomain($this->getServiceContainer());
+		$payload = $domain->read($id);
 		return $this->responder->run($request, $payload);
 	}
 }

@@ -119,7 +119,7 @@ abstract class SkillVersion implements ActiveRecordInterface
 
     /**
      * The value for the is_acyclic field.
-     * Note: this column has a database default value of: true
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_acyclic;
@@ -319,7 +319,7 @@ abstract class SkillVersion implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
-        $this->is_acyclic = true;
+        $this->is_acyclic = false;
         $this->is_cyclic = false;
         $this->version = 0;
         $this->variation_of_id_version = 0;
@@ -1857,7 +1857,7 @@ abstract class SkillVersion implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->is_acyclic !== true) {
+            if ($this->is_acyclic !== false) {
                 return false;
             }
 

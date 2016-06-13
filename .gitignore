@@ -1,5 +1,6 @@
 .buildpath
 .puli/
 composer.phar
+composer.lock
 res/database/schema.mwb.bak
 vendor/

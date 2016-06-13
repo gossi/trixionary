@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes a kstruktur
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class KstrukturDeleteJsonResponder extends AbstractPayloadResponder {
 

@@ -19,7 +19,7 @@ use Tobscure\JsonApi\Resource;
 /**
  * Automatically generated JsonResponder for Updates a kstruktur
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class KstrukturUpdateJsonResponder extends AbstractPayloadResponder {
 

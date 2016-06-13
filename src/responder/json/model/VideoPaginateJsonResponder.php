@@ -15,7 +15,7 @@ use Tobscure\JsonApi\Parameters;
 /**
  * Automatically generated JsonResponder for Paginates videos
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class VideoPaginateJsonResponder extends AbstractPayloadResponder {
 

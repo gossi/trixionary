@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 /**
  * Automatically generated JsonResponder for Deletes a video
  * 
- * @author gossi
+ * @author Thomas Gossmann
  */
 class VideoDeleteJsonResponder extends AbstractPayloadResponder {
 
