@@ -36,6 +36,7 @@ trait PictureDomainTrait {
 		// hydrate
 		$serializer = Picture::getSerializer();
 		$model = $serializer->hydrate(new Picture(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -150,9 +151,7 @@ trait PictureDomainTrait {
 		}
 
 		// update
-		if ($model->getPictureId() !== $relatedId) {
-			$model->setPictureId($relatedId);
-
+		if ($this->doSetFeaturedSkillId($model, $relatedId)) {
 			$event = new PictureEvent($model);
 			$this->dispatch(PictureEvent::PRE_FEATURED_SKILL_UPDATE, $event);
 			$this->dispatch(PictureEvent::PRE_SAVE, $event);
@@ -182,9 +181,7 @@ trait PictureDomainTrait {
 		}
 
 		// update
-		if ($model->getSkillId() !== $relatedId) {
-			$model->setSkillId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new PictureEvent($model);
 			$this->dispatch(PictureEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(PictureEvent::PRE_SAVE, $event);
@@ -216,6 +213,7 @@ trait PictureDomainTrait {
 		// hydrate
 		$serializer = Picture::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -294,6 +292,38 @@ trait PictureDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Internal mechanism to set the FeaturedSkill id
+	 * 
+	 * @param Picture $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetFeaturedSkillId(Picture $model, $relatedId) {
+		if ($model->getPictureId() !== $relatedId) {
+			$model->setPictureId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param Picture $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(Picture $model, $relatedId) {
+		if ($model->getSkillId() !== $relatedId) {
+			$model->setSkillId($relatedId);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

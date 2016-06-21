@@ -82,6 +82,18 @@ class SkillEvent extends Event {
 
 	/**
 	 */
+	const POST_LINEAGES_ADD = 'gossi.trixionary.skill.post_lineages_add';
+
+	/**
+	 */
+	const POST_LINEAGES_REMOVE = 'gossi.trixionary.skill.post_lineages_add';
+
+	/**
+	 */
+	const POST_LINEAGES_UPDATE = 'gossi.trixionary.skill.post_lineages_update';
+
+	/**
+	 */
 	const POST_MULTIPLE_OF_UPDATE = 'gossi.trixionary.skill.post_multiple_of_update';
 
 	/**
@@ -251,6 +263,18 @@ class SkillEvent extends Event {
 	/**
 	 */
 	const PRE_KSTRUKTURS_UPDATE = 'gossi.trixionary.skill.pre_kstrukturs_update';
+
+	/**
+	 */
+	const PRE_LINEAGES_ADD = 'gossi.trixionary.skill.pre_lineages_add';
+
+	/**
+	 */
+	const PRE_LINEAGES_REMOVE = 'gossi.trixionary.skill.pre_lineages_add';
+
+	/**
+	 */
+	const PRE_LINEAGES_UPDATE = 'gossi.trixionary.skill.pre_lineages_update';
 
 	/**
 	 */

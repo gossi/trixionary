@@ -17,6 +17,7 @@ CREATE TABLE `kk_trixionary_sport`
     `athlete_label` VARCHAR(255),
     `object_slug` VARCHAR(255),
     `object_label` VARCHAR(255),
+    `object_plural_label` VARCHAR(255),
     `skill_slug` VARCHAR(255),
     `skill_label` VARCHAR(255),
     `skill_plural_label` VARCHAR(255),
@@ -45,8 +46,10 @@ CREATE TABLE `kk_trixionary_object`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255),
     `slug` VARCHAR(255),
-    `sport_id` INTEGER NOT NULL,
+    `fixed` TINYINT(1),
     `description` TEXT,
+    `sport_id` INTEGER NOT NULL,
+    `skill_count` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `object_fi_sport` (`sport_id`),
     CONSTRAINT `object_fk_sport`
@@ -91,9 +94,10 @@ CREATE TABLE `kk_trixionary_skill`
     `slug` VARCHAR(255),
     `description` TEXT,
     `history` TEXT,
-    `is_translation` TINYINT(1),
-    `is_rotation` TINYINT(1),
-    `is_cyclic` TINYINT(1),
+    `is_translation` TINYINT(1) DEFAULT 0,
+    `is_rotation` TINYINT(1) DEFAULT 0,
+    `is_acyclic` TINYINT(1) DEFAULT 0,
+    `is_cyclic` TINYINT(1) DEFAULT 0,
     `longitudinal_flags` INTEGER,
     `latitudinal_flags` INTEGER,
     `transversal_flags` INTEGER,
@@ -101,16 +105,16 @@ CREATE TABLE `kk_trixionary_skill`
     `variation_of_id` INTEGER COMMENT 'Indicates a variation',
     `start_position_id` INTEGER,
     `end_position_id` INTEGER,
-    `is_composite` TINYINT(1) COMMENT 'This skill is a composite',
-    `is_multiple` TINYINT(1) COMMENT 'This skill is a multiplier',
+    `is_composite` TINYINT(1) DEFAULT 0 COMMENT 'This skill is a composite',
+    `is_multiple` TINYINT(1) DEFAULT 0 COMMENT 'This skill is a multiplier',
     `multiple_of_id` INTEGER,
     `multiplier` INTEGER,
     `generation` INTEGER,
-    `importance` INTEGER,
-    `generation_ids` TEXT,
+    `importance` INTEGER DEFAULT 0,
     `picture_id` INTEGER,
     `kstruktur_id` INTEGER,
     `function_phase_id` INTEGER,
+    `object_id` INTEGER,
     `version` INTEGER DEFAULT 0,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),
@@ -118,6 +122,7 @@ CREATE TABLE `kk_trixionary_skill`
     INDEX `skill_fi_sport` (`sport_id`),
     INDEX `skill_fi_variation` (`variation_of_id`),
     INDEX `skill_fi_multiple` (`multiple_of_id`),
+    INDEX `skill_fi_object` (`object_id`),
     INDEX `skill_fi_start_position` (`start_position_id`),
     INDEX `skill_fi_end_position` (`end_position_id`),
     INDEX `skill_fi_featured_picture` (`picture_id`),
@@ -133,6 +138,9 @@ CREATE TABLE `kk_trixionary_skill`
     CONSTRAINT `skill_fk_multiple`
         FOREIGN KEY (`multiple_of_id`)
         REFERENCES `kk_trixionary_skill` (`id`),
+    CONSTRAINT `skill_fk_object`
+        FOREIGN KEY (`object_id`)
+        REFERENCES `kk_trixionary_object` (`id`),
     CONSTRAINT `skill_fk_start_position`
         FOREIGN KEY (`start_position_id`)
         REFERENCES `kk_trixionary_position` (`id`),
@@ -151,6 +159,30 @@ CREATE TABLE `kk_trixionary_skill`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- kk_trixionary_lineage
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_lineage`;
+
+CREATE TABLE `kk_trixionary_lineage`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `skill_id` INTEGER NOT NULL,
+    `ancestor_id` INTEGER NOT NULL,
+    `position` INTEGER NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `lineage_fi_skill` (`skill_id`),
+    INDEX `lineage_fi_ancestor` (`ancestor_id`),
+    CONSTRAINT `lineage_fk_skill`
+        FOREIGN KEY (`skill_id`)
+        REFERENCES `kk_trixionary_skill` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `lineage_fk_ancestor`
+        FOREIGN KEY (`ancestor_id`)
+        REFERENCES `kk_trixionary_skill` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- kk_trixionary_skill_dependency
 -- ---------------------------------------------------------------------
 
@@ -158,12 +190,12 @@ DROP TABLE IF EXISTS `kk_trixionary_skill_dependency`;
 
 CREATE TABLE `kk_trixionary_skill_dependency`
 (
-    `id` INTEGER NOT NULL,
+    `dependency_id` INTEGER NOT NULL,
     `parent_id` INTEGER NOT NULL,
-    PRIMARY KEY (`id`,`parent_id`),
+    PRIMARY KEY (`dependency_id`,`parent_id`),
     INDEX `skill_dependency_fi_parent` (`parent_id`),
     CONSTRAINT `skill_dependency_fk_skill`
-        FOREIGN KEY (`id`)
+        FOREIGN KEY (`dependency_id`)
         REFERENCES `kk_trixionary_skill` (`id`)
         ON DELETE CASCADE,
     CONSTRAINT `skill_dependency_fk_parent`
@@ -180,12 +212,12 @@ DROP TABLE IF EXISTS `kk_trixionary_skill_part`;
 
 CREATE TABLE `kk_trixionary_skill_part`
 (
-    `id` INTEGER NOT NULL,
+    `part_id` INTEGER NOT NULL,
     `composite_id` INTEGER NOT NULL,
-    PRIMARY KEY (`id`,`composite_id`),
+    PRIMARY KEY (`part_id`,`composite_id`),
     INDEX `skill_part_fi_composite` (`composite_id`),
     CONSTRAINT `skill_part_fk_part`
-        FOREIGN KEY (`id`)
+        FOREIGN KEY (`part_id`)
         REFERENCES `kk_trixionary_skill` (`id`)
         ON DELETE CASCADE,
     CONSTRAINT `skill_part_fk_composite`
@@ -207,6 +239,7 @@ CREATE TABLE `kk_trixionary_group`
     `description` TEXT,
     `slug` VARCHAR(255),
     `sport_id` INTEGER NOT NULL,
+    `skill_count` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `group_fi_sport` (`sport_id`),
     CONSTRAINT `group_fk_sport`
@@ -362,12 +395,12 @@ DROP TABLE IF EXISTS `kk_trixionary_structure_node_parent`;
 
 CREATE TABLE `kk_trixionary_structure_node_parent`
 (
-    `id` INTEGER NOT NULL,
+    `structure_node_id` INTEGER NOT NULL,
     `parent_id` INTEGER NOT NULL,
-    PRIMARY KEY (`id`,`parent_id`),
+    PRIMARY KEY (`structure_node_id`,`parent_id`),
     INDEX `structure_node_parent_fi_parent` (`parent_id`),
     CONSTRAINT `structure_node_parent_fk_node`
-        FOREIGN KEY (`id`)
+        FOREIGN KEY (`structure_node_id`)
         REFERENCES `kk_trixionary_structure_node` (`id`),
     CONSTRAINT `structure_node_parent_fk_parent`
         FOREIGN KEY (`parent_id`)
@@ -438,9 +471,10 @@ CREATE TABLE `kk_trixionary_skill_version`
     `slug` VARCHAR(255),
     `description` TEXT,
     `history` TEXT,
-    `is_translation` TINYINT(1),
-    `is_rotation` TINYINT(1),
-    `is_cyclic` TINYINT(1),
+    `is_translation` TINYINT(1) DEFAULT 0,
+    `is_rotation` TINYINT(1) DEFAULT 0,
+    `is_acyclic` TINYINT(1) DEFAULT 0,
+    `is_cyclic` TINYINT(1) DEFAULT 0,
     `longitudinal_flags` INTEGER,
     `latitudinal_flags` INTEGER,
     `transversal_flags` INTEGER,
@@ -448,16 +482,16 @@ CREATE TABLE `kk_trixionary_skill_version`
     `variation_of_id` INTEGER COMMENT 'Indicates a variation',
     `start_position_id` INTEGER,
     `end_position_id` INTEGER,
-    `is_composite` TINYINT(1) COMMENT 'This skill is a composite',
-    `is_multiple` TINYINT(1) COMMENT 'This skill is a multiplier',
+    `is_composite` TINYINT(1) DEFAULT 0 COMMENT 'This skill is a composite',
+    `is_multiple` TINYINT(1) DEFAULT 0 COMMENT 'This skill is a multiplier',
     `multiple_of_id` INTEGER,
     `multiplier` INTEGER,
     `generation` INTEGER,
-    `importance` INTEGER,
-    `generation_ids` TEXT,
+    `importance` INTEGER DEFAULT 0,
     `picture_id` INTEGER,
     `kstruktur_id` INTEGER,
     `function_phase_id` INTEGER,
+    `object_id` INTEGER,
     `version` INTEGER DEFAULT 0 NOT NULL,
     `version_created_at` DATETIME,
     `version_comment` VARCHAR(255),

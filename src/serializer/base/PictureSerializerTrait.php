@@ -110,7 +110,7 @@ trait PictureSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'skill-id', 'photographer', 'photographer-id', 'movender', 'movender-id', 'uploader-id']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -166,11 +166,4 @@ trait PictureSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

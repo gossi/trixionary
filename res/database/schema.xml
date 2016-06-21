@@ -104,8 +104,7 @@
 		<column name="multiple_of_id" type="INTEGER" required="false"/>
 		<column name="multiplier" type="INTEGER" />
 		<column name="generation" type="INTEGER" />
-		<column name="importance" type="INTEGER" />
-		<column name="generation_ids" type="LONGVARCHAR"/>
+		<column name="importance" type="INTEGER" default="0"/>
 		<column name="picture_id" type="INTEGER" required="false"/>
 		<column name="kstruktur_id" type="INTEGER" required="false"/>
 		<column name="function_phase_id" type="INTEGER" required="false"/>
@@ -144,6 +143,20 @@
 			<parameter name="log_comment" value="true"/>
 			<parameter name="version_table" value="skill_version"/>
 		</behavior>
+	</table>
+	
+	<table name="lineage">
+		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
+		<column name="skill_id" type="INTEGER" required="true" />
+		<column name="ancestor_id" type="INTEGER" required="true" />
+		<column name="position" type="INTEGER" required="true"/>
+		
+		<foreign-key foreignTable="skill" onDelete="cascade" name="lineage_fk_skill" phpName="Skill">
+			<reference local="skill_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="skill" name="lineage_fk_ancestor" phpName="Ancestor">
+			<reference local="ancestor_id" foreign="id" />
+		</foreign-key>
 	</table>
 	
 	<table name="skill_dependency" isCrossRef="true">

@@ -6,8 +6,8 @@ use gossi\trixionary\model\GroupQuery;
 use gossi\trixionary\model\ObjectQuery;
 use gossi\trixionary\model\PositionQuery;
 use gossi\trixionary\model\SkillQuery;
-use gossi\trixionary\model\SportQuery;
 use gossi\trixionary\model\Sport;
+use gossi\trixionary\model\SportQuery;
 use keeko\framework\domain\payload\Created;
 use keeko\framework\domain\payload\Deleted;
 use keeko\framework\domain\payload\Found;
@@ -17,6 +17,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -45,20 +46,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// update
-		$serializer = Sport::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('groups');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Group';
-			}
-			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddGroups($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -91,20 +83,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// update
-		$serializer = Sport::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('objects');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Object';
-			}
-			$related = ObjectQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddObjects($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -137,20 +120,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// update
-		$serializer = Sport::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('positions');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Position';
-			}
-			$related = PositionQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddPositions($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -183,20 +157,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// update
-		$serializer = Sport::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -224,6 +189,7 @@ trait SportDomainTrait {
 		// hydrate
 		$serializer = Sport::getSerializer();
 		$model = $serializer->hydrate(new Sport(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -337,20 +303,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove them
-		$serializer = Sport::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('groups');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Group';
-			}
-			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveGroups($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -383,20 +340,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove them
-		$serializer = Sport::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('objects');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Object';
-			}
-			$related = ObjectQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveObjects($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -429,20 +377,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove them
-		$serializer = Sport::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('positions');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Position';
-			}
-			$related = PositionQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemovePositions($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -475,20 +414,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove them
-		$serializer = Sport::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -524,6 +454,7 @@ trait SportDomainTrait {
 		// hydrate
 		$serializer = Sport::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -565,21 +496,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove all relationships before
-		GroupQuery::create()->filterBySport($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Group';
-			}
-			$related = GroupQuery::create()->findOneById($entry['id']);
-			$model->addGroup($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateGroups($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -612,21 +533,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove all relationships before
-		ObjectQuery::create()->filterBySport($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Object';
-			}
-			$related = ObjectQuery::create()->findOneById($entry['id']);
-			$model->addObject($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateObjects($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -659,21 +570,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove all relationships before
-		PositionQuery::create()->filterBySport($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Position';
-			}
-			$related = PositionQuery::create()->findOneById($entry['id']);
-			$model->addPosition($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdatePositions($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -706,21 +607,11 @@ trait SportDomainTrait {
 			return new NotFound(['message' => 'Sport not found.']);
 		}
 
-		// remove all relationships before
-		SkillQuery::create()->filterBySport($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -790,6 +681,286 @@ trait SportDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add Groups to Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doAddGroups(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Group';
+			} else {
+				$related = GroupQuery::create()->findOneById($entry['id']);
+				$model->addGroup($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to add Objects to Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doAddObjects(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Object';
+			} else {
+				$related = ObjectQuery::create()->findOneById($entry['id']);
+				$model->addObject($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to add Positions to Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doAddPositions(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Position';
+			} else {
+				$related = PositionQuery::create()->findOneById($entry['id']);
+				$model->addPosition($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to add Skills to Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doAddSkills(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Groups from Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveGroups(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Group';
+			} else {
+				$related = GroupQuery::create()->findOneById($entry['id']);
+				$model->removeGroup($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Objects from Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveObjects(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Object';
+			} else {
+				$related = ObjectQuery::create()->findOneById($entry['id']);
+				$model->removeObject($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Positions from Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doRemovePositions(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Position';
+			} else {
+				$related = PositionQuery::create()->findOneById($entry['id']);
+				$model->removePosition($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Skills from Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveSkills(Sport $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal update mechanism of Groups on Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateGroups(Sport $model, $data) {
+		// remove all relationships before
+		GroupQuery::create()->filterBySport($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Group';
+			} else {
+				$related = GroupQuery::create()->findOneById($entry['id']);
+				$model->addGroup($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal update mechanism of Objects on Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateObjects(Sport $model, $data) {
+		// remove all relationships before
+		ObjectQuery::create()->filterBySport($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Object';
+			} else {
+				$related = ObjectQuery::create()->findOneById($entry['id']);
+				$model->addObject($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal update mechanism of Positions on Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doUpdatePositions(Sport $model, $data) {
+		// remove all relationships before
+		PositionQuery::create()->filterBySport($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Position';
+			} else {
+				$related = PositionQuery::create()->findOneById($entry['id']);
+				$model->addPosition($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal update mechanism of Skills on Sport
+	 * 
+	 * @param Sport $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateSkills(Sport $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterBySport($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

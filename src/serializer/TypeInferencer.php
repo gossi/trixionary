@@ -46,6 +46,14 @@ class TypeInferencer implements TypeInferencerInterface {
 			'modelClass' => 'gossi\trixionary\model\Skill',
 			'queryClass' => 'gossi\trixionary\model\SkillQuery'
 		],
+		'gossi.trixionary/lineage' => [
+			'modelClass' => 'gossi\trixionary\model\Lineage',
+			'queryClass' => 'gossi\trixionary\model\LineageQuery'
+		],
+		'gossi.trixionary/lineages' => [
+			'modelClass' => 'gossi\trixionary\model\Lineage',
+			'queryClass' => 'gossi\trixionary\model\LineageQuery'
+		],
 		'gossi.trixionary/group' => [
 			'modelClass' => 'gossi\trixionary\model\Group',
 			'queryClass' => 'gossi\trixionary\model\GroupQuery'

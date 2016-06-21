@@ -106,7 +106,7 @@ trait ReferenceSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'type', 'skill-id', 'title', 'year', 'publisher', 'journal', 'number', 'school', 'author', 'edition', 'volume', 'address', 'editor', 'howpublished', 'note', 'booktitle', 'pages', 'url', 'lastchecked', 'managed']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -172,11 +172,4 @@ trait ReferenceSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

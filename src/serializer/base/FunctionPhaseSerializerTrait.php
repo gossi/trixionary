@@ -88,7 +88,7 @@ trait FunctionPhaseSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'type', 'skill-id', 'title']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -154,11 +154,4 @@ trait FunctionPhaseSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

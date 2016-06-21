@@ -24,6 +24,8 @@ use gossi\trixionary\model\Group as ChildGroup;
 use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
 use gossi\trixionary\model\Kstruktur as ChildKstruktur;
 use gossi\trixionary\model\KstrukturQuery as ChildKstrukturQuery;
+use gossi\trixionary\model\Lineage as ChildLineage;
+use gossi\trixionary\model\LineageQuery as ChildLineageQuery;
 use gossi\trixionary\model\Object as ChildObject;
 use gossi\trixionary\model\ObjectQuery as ChildObjectQuery;
 use gossi\trixionary\model\Picture as ChildPicture;
@@ -136,12 +138,14 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * The value for the is_translation field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_translation;
 
     /**
      * The value for the is_rotation field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_rotation;
@@ -204,12 +208,14 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * The value for the is_composite field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_composite;
 
     /**
      * The value for the is_multiple field.
+     * Note: this column has a database default value of: false
      * @var        boolean
      */
     protected $is_multiple;
@@ -234,15 +240,10 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * The value for the importance field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $importance;
-
-    /**
-     * The value for the generation_ids field.
-     * @var        string
-     */
-    protected $generation_ids;
 
     /**
      * The value for the picture_id field.
@@ -343,6 +344,18 @@ abstract class Skill implements ActiveRecordInterface
      */
     protected $collMultiples;
     protected $collMultiplesPartial;
+
+    /**
+     * @var        ObjectCollection|ChildLineage[] Collection to store aggregation of ChildLineage objects.
+     */
+    protected $collLineagesRelatedBySkillId;
+    protected $collLineagesRelatedBySkillIdPartial;
+
+    /**
+     * @var        ObjectCollection|ChildLineage[] Collection to store aggregation of ChildLineage objects.
+     */
+    protected $collLineagesRelatedByAncestorId;
+    protected $collLineagesRelatedByAncestorIdPartial;
 
     /**
      * @var        ObjectCollection|ChildSkillDependency[] Collection to store aggregation of ChildSkillDependency objects.
@@ -532,6 +545,18 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildLineage[]
+     */
+    protected $lineagesRelatedBySkillIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildLineage[]
+     */
+    protected $lineagesRelatedByAncestorIdScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildSkillDependency[]
      */
     protected $childrenScheduledForDeletion = null;
@@ -610,8 +635,13 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
+        $this->is_translation = false;
+        $this->is_rotation = false;
         $this->is_acyclic = false;
         $this->is_cyclic = false;
+        $this->is_composite = false;
+        $this->is_multiple = false;
+        $this->importance = 0;
         $this->version = 0;
     }
 
@@ -1132,16 +1162,6 @@ abstract class Skill implements ActiveRecordInterface
     public function getImportance()
     {
         return $this->importance;
-    }
-
-    /**
-     * Get the [generation_ids] column value.
-     *
-     * @return string
-     */
-    public function getGenerationIds()
-    {
-        return $this->generation_ids;
     }
 
     /**
@@ -1773,26 +1793,6 @@ abstract class Skill implements ActiveRecordInterface
     } // setImportance()
 
     /**
-     * Set the value of [generation_ids] column.
-     *
-     * @param string $v new value
-     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
-     */
-    public function setGenerationIds($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->generation_ids !== $v) {
-            $this->generation_ids = $v;
-            $this->modifiedColumns[SkillTableMap::COL_GENERATION_IDS] = true;
-        }
-
-        return $this;
-    } // setGenerationIds()
-
-    /**
      * Set the value of [picture_id] column.
      *
      * @param int $v new value
@@ -1958,11 +1958,31 @@ abstract class Skill implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->is_translation !== false) {
+                return false;
+            }
+
+            if ($this->is_rotation !== false) {
+                return false;
+            }
+
             if ($this->is_acyclic !== false) {
                 return false;
             }
 
             if ($this->is_cyclic !== false) {
+                return false;
+            }
+
+            if ($this->is_composite !== false) {
+                return false;
+            }
+
+            if ($this->is_multiple !== false) {
+                return false;
+            }
+
+            if ($this->importance !== 0) {
                 return false;
             }
 
@@ -2068,31 +2088,28 @@ abstract class Skill implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : SkillTableMap::translateFieldName('Importance', TableMap::TYPE_PHPNAME, $indexType)];
             $this->importance = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('GenerationIds', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->generation_ids = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kstruktur_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->function_phase_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->object_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -2102,7 +2119,7 @@ abstract class Skill implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 32; // 32 = SkillTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 31; // 31 = SkillTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Skill'), 0, $e);
@@ -2202,6 +2219,10 @@ abstract class Skill implements ActiveRecordInterface
             $this->collVariations = null;
 
             $this->collMultiples = null;
+
+            $this->collLineagesRelatedBySkillId = null;
+
+            $this->collLineagesRelatedByAncestorId = null;
 
             $this->collChildren = null;
 
@@ -2605,6 +2626,40 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
+            if ($this->lineagesRelatedBySkillIdScheduledForDeletion !== null) {
+                if (!$this->lineagesRelatedBySkillIdScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\LineageQuery::create()
+                        ->filterByPrimaryKeys($this->lineagesRelatedBySkillIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->lineagesRelatedBySkillIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collLineagesRelatedBySkillId !== null) {
+                foreach ($this->collLineagesRelatedBySkillId as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->lineagesRelatedByAncestorIdScheduledForDeletion !== null) {
+                if (!$this->lineagesRelatedByAncestorIdScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\LineageQuery::create()
+                        ->filterByPrimaryKeys($this->lineagesRelatedByAncestorIdScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->lineagesRelatedByAncestorIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collLineagesRelatedByAncestorId !== null) {
+                foreach ($this->collLineagesRelatedByAncestorId as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->childrenScheduledForDeletion !== null) {
                 if (!$this->childrenScheduledForDeletion->isEmpty()) {
                     \gossi\trixionary\model\SkillDependencyQuery::create()
@@ -2907,9 +2962,6 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_IMPORTANCE)) {
             $modifiedColumns[':p' . $index++]  = '`importance`';
         }
-        if ($this->isColumnModified(SkillTableMap::COL_GENERATION_IDS)) {
-            $modifiedColumns[':p' . $index++]  = '`generation_ids`';
-        }
         if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`picture_id`';
         }
@@ -3013,9 +3065,6 @@ abstract class Skill implements ActiveRecordInterface
                         break;
                     case '`importance`':
                         $stmt->bindValue($identifier, $this->importance, PDO::PARAM_INT);
-                        break;
-                    case '`generation_ids`':
-                        $stmt->bindValue($identifier, $this->generation_ids, PDO::PARAM_STR);
                         break;
                     case '`picture_id`':
                         $stmt->bindValue($identifier, $this->picture_id, PDO::PARAM_INT);
@@ -3173,27 +3222,24 @@ abstract class Skill implements ActiveRecordInterface
                 return $this->getImportance();
                 break;
             case 24:
-                return $this->getGenerationIds();
-                break;
-            case 25:
                 return $this->getPictureId();
                 break;
-            case 26:
+            case 25:
                 return $this->getKstrukturId();
                 break;
-            case 27:
+            case 26:
                 return $this->getFunctionPhaseId();
                 break;
-            case 28:
+            case 27:
                 return $this->getObjectId();
                 break;
-            case 29:
+            case 28:
                 return $this->getVersion();
                 break;
-            case 30:
+            case 29:
                 return $this->getVersionCreatedAt();
                 break;
-            case 31:
+            case 30:
                 return $this->getVersionComment();
                 break;
             default:
@@ -3250,21 +3296,20 @@ abstract class Skill implements ActiveRecordInterface
             $keys[21] => $this->getMultiplier(),
             $keys[22] => $this->getGeneration(),
             $keys[23] => $this->getImportance(),
-            $keys[24] => $this->getGenerationIds(),
-            $keys[25] => $this->getPictureId(),
-            $keys[26] => $this->getKstrukturId(),
-            $keys[27] => $this->getFunctionPhaseId(),
-            $keys[28] => $this->getObjectId(),
-            $keys[29] => $this->getVersion(),
-            $keys[30] => $this->getVersionCreatedAt(),
-            $keys[31] => $this->getVersionComment(),
+            $keys[24] => $this->getPictureId(),
+            $keys[25] => $this->getKstrukturId(),
+            $keys[26] => $this->getFunctionPhaseId(),
+            $keys[27] => $this->getObjectId(),
+            $keys[28] => $this->getVersion(),
+            $keys[29] => $this->getVersionCreatedAt(),
+            $keys[30] => $this->getVersionComment(),
         );
 
         $utc = new \DateTimeZone('utc');
-        if ($result[$keys[30]] instanceof \DateTime) {
+        if ($result[$keys[29]] instanceof \DateTime) {
             // When changing timezone we don't want to change existing instances
-            $dateTime = clone $result[$keys[30]];
-            $result[$keys[30]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+            $dateTime = clone $result[$keys[29]];
+            $result[$keys[29]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -3437,6 +3482,36 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collMultiples->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collLineagesRelatedBySkillId) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'lineages';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_lineages';
+                        break;
+                    default:
+                        $key = 'Lineages';
+                }
+
+                $result[$key] = $this->collLineagesRelatedBySkillId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collLineagesRelatedByAncestorId) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'lineages';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_lineages';
+                        break;
+                    default:
+                        $key = 'Lineages';
+                }
+
+                $result[$key] = $this->collLineagesRelatedByAncestorId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collChildren) {
 
@@ -3725,27 +3800,24 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setImportance($value);
                 break;
             case 24:
-                $this->setGenerationIds($value);
-                break;
-            case 25:
                 $this->setPictureId($value);
                 break;
-            case 26:
+            case 25:
                 $this->setKstrukturId($value);
                 break;
-            case 27:
+            case 26:
                 $this->setFunctionPhaseId($value);
                 break;
-            case 28:
+            case 27:
                 $this->setObjectId($value);
                 break;
-            case 29:
+            case 28:
                 $this->setVersion($value);
                 break;
-            case 30:
+            case 29:
                 $this->setVersionCreatedAt($value);
                 break;
-            case 31:
+            case 30:
                 $this->setVersionComment($value);
                 break;
         } // switch()
@@ -3847,28 +3919,25 @@ abstract class Skill implements ActiveRecordInterface
             $this->setImportance($arr[$keys[23]]);
         }
         if (array_key_exists($keys[24], $arr)) {
-            $this->setGenerationIds($arr[$keys[24]]);
+            $this->setPictureId($arr[$keys[24]]);
         }
         if (array_key_exists($keys[25], $arr)) {
-            $this->setPictureId($arr[$keys[25]]);
+            $this->setKstrukturId($arr[$keys[25]]);
         }
         if (array_key_exists($keys[26], $arr)) {
-            $this->setKstrukturId($arr[$keys[26]]);
+            $this->setFunctionPhaseId($arr[$keys[26]]);
         }
         if (array_key_exists($keys[27], $arr)) {
-            $this->setFunctionPhaseId($arr[$keys[27]]);
+            $this->setObjectId($arr[$keys[27]]);
         }
         if (array_key_exists($keys[28], $arr)) {
-            $this->setObjectId($arr[$keys[28]]);
+            $this->setVersion($arr[$keys[28]]);
         }
         if (array_key_exists($keys[29], $arr)) {
-            $this->setVersion($arr[$keys[29]]);
+            $this->setVersionCreatedAt($arr[$keys[29]]);
         }
         if (array_key_exists($keys[30], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[30]]);
-        }
-        if (array_key_exists($keys[31], $arr)) {
-            $this->setVersionComment($arr[$keys[31]]);
+            $this->setVersionComment($arr[$keys[30]]);
         }
     }
 
@@ -3982,9 +4051,6 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillTableMap::COL_IMPORTANCE)) {
             $criteria->add(SkillTableMap::COL_IMPORTANCE, $this->importance);
-        }
-        if ($this->isColumnModified(SkillTableMap::COL_GENERATION_IDS)) {
-            $criteria->add(SkillTableMap::COL_GENERATION_IDS, $this->generation_ids);
         }
         if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
             $criteria->add(SkillTableMap::COL_PICTURE_ID, $this->picture_id);
@@ -4116,7 +4182,6 @@ abstract class Skill implements ActiveRecordInterface
         $copyObj->setMultiplier($this->getMultiplier());
         $copyObj->setGeneration($this->getGeneration());
         $copyObj->setImportance($this->getImportance());
-        $copyObj->setGenerationIds($this->getGenerationIds());
         $copyObj->setPictureId($this->getPictureId());
         $copyObj->setKstrukturId($this->getKstrukturId());
         $copyObj->setFunctionPhaseId($this->getFunctionPhaseId());
@@ -4139,6 +4204,18 @@ abstract class Skill implements ActiveRecordInterface
             foreach ($this->getMultiples() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addMultiple($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getLineagesRelatedBySkillId() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addLineageRelatedBySkillId($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getLineagesRelatedByAncestorId() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addLineageRelatedByAncestorId($relObj->copy($deepCopy));
                 }
             }
 
@@ -4723,6 +4800,12 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ('Multiple' == $relationName) {
             return $this->initMultiples();
+        }
+        if ('LineageRelatedBySkillId' == $relationName) {
+            return $this->initLineagesRelatedBySkillId();
+        }
+        if ('LineageRelatedByAncestorId' == $relationName) {
+            return $this->initLineagesRelatedByAncestorId();
         }
         if ('Child' == $relationName) {
             return $this->initChildren();
@@ -5546,6 +5629,442 @@ abstract class Skill implements ActiveRecordInterface
         $query->joinWith('FunctionPhaseRoot', $joinBehavior);
 
         return $this->getMultiples($query, $con);
+    }
+
+    /**
+     * Clears out the collLineagesRelatedBySkillId collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addLineagesRelatedBySkillId()
+     */
+    public function clearLineagesRelatedBySkillId()
+    {
+        $this->collLineagesRelatedBySkillId = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collLineagesRelatedBySkillId collection loaded partially.
+     */
+    public function resetPartialLineagesRelatedBySkillId($v = true)
+    {
+        $this->collLineagesRelatedBySkillIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collLineagesRelatedBySkillId collection.
+     *
+     * By default this just sets the collLineagesRelatedBySkillId collection to an empty array (like clearcollLineagesRelatedBySkillId());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initLineagesRelatedBySkillId($overrideExisting = true)
+    {
+        if (null !== $this->collLineagesRelatedBySkillId && !$overrideExisting) {
+            return;
+        }
+        $this->collLineagesRelatedBySkillId = new ObjectCollection();
+        $this->collLineagesRelatedBySkillId->setModel('\gossi\trixionary\model\Lineage');
+    }
+
+    /**
+     * Gets an array of ChildLineage objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildLineage[] List of ChildLineage objects
+     * @throws PropelException
+     */
+    public function getLineagesRelatedBySkillId(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collLineagesRelatedBySkillIdPartial && !$this->isNew();
+        if (null === $this->collLineagesRelatedBySkillId || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collLineagesRelatedBySkillId) {
+                // return empty collection
+                $this->initLineagesRelatedBySkillId();
+            } else {
+                $collLineagesRelatedBySkillId = ChildLineageQuery::create(null, $criteria)
+                    ->filterBySkill($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collLineagesRelatedBySkillIdPartial && count($collLineagesRelatedBySkillId)) {
+                        $this->initLineagesRelatedBySkillId(false);
+
+                        foreach ($collLineagesRelatedBySkillId as $obj) {
+                            if (false == $this->collLineagesRelatedBySkillId->contains($obj)) {
+                                $this->collLineagesRelatedBySkillId->append($obj);
+                            }
+                        }
+
+                        $this->collLineagesRelatedBySkillIdPartial = true;
+                    }
+
+                    return $collLineagesRelatedBySkillId;
+                }
+
+                if ($partial && $this->collLineagesRelatedBySkillId) {
+                    foreach ($this->collLineagesRelatedBySkillId as $obj) {
+                        if ($obj->isNew()) {
+                            $collLineagesRelatedBySkillId[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collLineagesRelatedBySkillId = $collLineagesRelatedBySkillId;
+                $this->collLineagesRelatedBySkillIdPartial = false;
+            }
+        }
+
+        return $this->collLineagesRelatedBySkillId;
+    }
+
+    /**
+     * Sets a collection of ChildLineage objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $lineagesRelatedBySkillId A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setLineagesRelatedBySkillId(Collection $lineagesRelatedBySkillId, ConnectionInterface $con = null)
+    {
+        /** @var ChildLineage[] $lineagesRelatedBySkillIdToDelete */
+        $lineagesRelatedBySkillIdToDelete = $this->getLineagesRelatedBySkillId(new Criteria(), $con)->diff($lineagesRelatedBySkillId);
+
+
+        $this->lineagesRelatedBySkillIdScheduledForDeletion = $lineagesRelatedBySkillIdToDelete;
+
+        foreach ($lineagesRelatedBySkillIdToDelete as $lineageRelatedBySkillIdRemoved) {
+            $lineageRelatedBySkillIdRemoved->setSkill(null);
+        }
+
+        $this->collLineagesRelatedBySkillId = null;
+        foreach ($lineagesRelatedBySkillId as $lineageRelatedBySkillId) {
+            $this->addLineageRelatedBySkillId($lineageRelatedBySkillId);
+        }
+
+        $this->collLineagesRelatedBySkillId = $lineagesRelatedBySkillId;
+        $this->collLineagesRelatedBySkillIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Lineage objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Lineage objects.
+     * @throws PropelException
+     */
+    public function countLineagesRelatedBySkillId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collLineagesRelatedBySkillIdPartial && !$this->isNew();
+        if (null === $this->collLineagesRelatedBySkillId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collLineagesRelatedBySkillId) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getLineagesRelatedBySkillId());
+            }
+
+            $query = ChildLineageQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySkill($this)
+                ->count($con);
+        }
+
+        return count($this->collLineagesRelatedBySkillId);
+    }
+
+    /**
+     * Method called to associate a ChildLineage object to this object
+     * through the ChildLineage foreign key attribute.
+     *
+     * @param  ChildLineage $l ChildLineage
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addLineageRelatedBySkillId(ChildLineage $l)
+    {
+        if ($this->collLineagesRelatedBySkillId === null) {
+            $this->initLineagesRelatedBySkillId();
+            $this->collLineagesRelatedBySkillIdPartial = true;
+        }
+
+        if (!$this->collLineagesRelatedBySkillId->contains($l)) {
+            $this->doAddLineageRelatedBySkillId($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildLineage $lineageRelatedBySkillId The ChildLineage object to add.
+     */
+    protected function doAddLineageRelatedBySkillId(ChildLineage $lineageRelatedBySkillId)
+    {
+        $this->collLineagesRelatedBySkillId[]= $lineageRelatedBySkillId;
+        $lineageRelatedBySkillId->setSkill($this);
+    }
+
+    /**
+     * @param  ChildLineage $lineageRelatedBySkillId The ChildLineage object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeLineageRelatedBySkillId(ChildLineage $lineageRelatedBySkillId)
+    {
+        if ($this->getLineagesRelatedBySkillId()->contains($lineageRelatedBySkillId)) {
+            $pos = $this->collLineagesRelatedBySkillId->search($lineageRelatedBySkillId);
+            $this->collLineagesRelatedBySkillId->remove($pos);
+            if (null === $this->lineagesRelatedBySkillIdScheduledForDeletion) {
+                $this->lineagesRelatedBySkillIdScheduledForDeletion = clone $this->collLineagesRelatedBySkillId;
+                $this->lineagesRelatedBySkillIdScheduledForDeletion->clear();
+            }
+            $this->lineagesRelatedBySkillIdScheduledForDeletion[]= clone $lineageRelatedBySkillId;
+            $lineageRelatedBySkillId->setSkill(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collLineagesRelatedByAncestorId collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addLineagesRelatedByAncestorId()
+     */
+    public function clearLineagesRelatedByAncestorId()
+    {
+        $this->collLineagesRelatedByAncestorId = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collLineagesRelatedByAncestorId collection loaded partially.
+     */
+    public function resetPartialLineagesRelatedByAncestorId($v = true)
+    {
+        $this->collLineagesRelatedByAncestorIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collLineagesRelatedByAncestorId collection.
+     *
+     * By default this just sets the collLineagesRelatedByAncestorId collection to an empty array (like clearcollLineagesRelatedByAncestorId());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initLineagesRelatedByAncestorId($overrideExisting = true)
+    {
+        if (null !== $this->collLineagesRelatedByAncestorId && !$overrideExisting) {
+            return;
+        }
+        $this->collLineagesRelatedByAncestorId = new ObjectCollection();
+        $this->collLineagesRelatedByAncestorId->setModel('\gossi\trixionary\model\Lineage');
+    }
+
+    /**
+     * Gets an array of ChildLineage objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildLineage[] List of ChildLineage objects
+     * @throws PropelException
+     */
+    public function getLineagesRelatedByAncestorId(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collLineagesRelatedByAncestorIdPartial && !$this->isNew();
+        if (null === $this->collLineagesRelatedByAncestorId || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collLineagesRelatedByAncestorId) {
+                // return empty collection
+                $this->initLineagesRelatedByAncestorId();
+            } else {
+                $collLineagesRelatedByAncestorId = ChildLineageQuery::create(null, $criteria)
+                    ->filterByAncestor($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collLineagesRelatedByAncestorIdPartial && count($collLineagesRelatedByAncestorId)) {
+                        $this->initLineagesRelatedByAncestorId(false);
+
+                        foreach ($collLineagesRelatedByAncestorId as $obj) {
+                            if (false == $this->collLineagesRelatedByAncestorId->contains($obj)) {
+                                $this->collLineagesRelatedByAncestorId->append($obj);
+                            }
+                        }
+
+                        $this->collLineagesRelatedByAncestorIdPartial = true;
+                    }
+
+                    return $collLineagesRelatedByAncestorId;
+                }
+
+                if ($partial && $this->collLineagesRelatedByAncestorId) {
+                    foreach ($this->collLineagesRelatedByAncestorId as $obj) {
+                        if ($obj->isNew()) {
+                            $collLineagesRelatedByAncestorId[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collLineagesRelatedByAncestorId = $collLineagesRelatedByAncestorId;
+                $this->collLineagesRelatedByAncestorIdPartial = false;
+            }
+        }
+
+        return $this->collLineagesRelatedByAncestorId;
+    }
+
+    /**
+     * Sets a collection of ChildLineage objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $lineagesRelatedByAncestorId A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setLineagesRelatedByAncestorId(Collection $lineagesRelatedByAncestorId, ConnectionInterface $con = null)
+    {
+        /** @var ChildLineage[] $lineagesRelatedByAncestorIdToDelete */
+        $lineagesRelatedByAncestorIdToDelete = $this->getLineagesRelatedByAncestorId(new Criteria(), $con)->diff($lineagesRelatedByAncestorId);
+
+
+        $this->lineagesRelatedByAncestorIdScheduledForDeletion = $lineagesRelatedByAncestorIdToDelete;
+
+        foreach ($lineagesRelatedByAncestorIdToDelete as $lineageRelatedByAncestorIdRemoved) {
+            $lineageRelatedByAncestorIdRemoved->setAncestor(null);
+        }
+
+        $this->collLineagesRelatedByAncestorId = null;
+        foreach ($lineagesRelatedByAncestorId as $lineageRelatedByAncestorId) {
+            $this->addLineageRelatedByAncestorId($lineageRelatedByAncestorId);
+        }
+
+        $this->collLineagesRelatedByAncestorId = $lineagesRelatedByAncestorId;
+        $this->collLineagesRelatedByAncestorIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Lineage objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Lineage objects.
+     * @throws PropelException
+     */
+    public function countLineagesRelatedByAncestorId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collLineagesRelatedByAncestorIdPartial && !$this->isNew();
+        if (null === $this->collLineagesRelatedByAncestorId || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collLineagesRelatedByAncestorId) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getLineagesRelatedByAncestorId());
+            }
+
+            $query = ChildLineageQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByAncestor($this)
+                ->count($con);
+        }
+
+        return count($this->collLineagesRelatedByAncestorId);
+    }
+
+    /**
+     * Method called to associate a ChildLineage object to this object
+     * through the ChildLineage foreign key attribute.
+     *
+     * @param  ChildLineage $l ChildLineage
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function addLineageRelatedByAncestorId(ChildLineage $l)
+    {
+        if ($this->collLineagesRelatedByAncestorId === null) {
+            $this->initLineagesRelatedByAncestorId();
+            $this->collLineagesRelatedByAncestorIdPartial = true;
+        }
+
+        if (!$this->collLineagesRelatedByAncestorId->contains($l)) {
+            $this->doAddLineageRelatedByAncestorId($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildLineage $lineageRelatedByAncestorId The ChildLineage object to add.
+     */
+    protected function doAddLineageRelatedByAncestorId(ChildLineage $lineageRelatedByAncestorId)
+    {
+        $this->collLineagesRelatedByAncestorId[]= $lineageRelatedByAncestorId;
+        $lineageRelatedByAncestorId->setAncestor($this);
+    }
+
+    /**
+     * @param  ChildLineage $lineageRelatedByAncestorId The ChildLineage object to remove.
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function removeLineageRelatedByAncestorId(ChildLineage $lineageRelatedByAncestorId)
+    {
+        if ($this->getLineagesRelatedByAncestorId()->contains($lineageRelatedByAncestorId)) {
+            $pos = $this->collLineagesRelatedByAncestorId->search($lineageRelatedByAncestorId);
+            $this->collLineagesRelatedByAncestorId->remove($pos);
+            if (null === $this->lineagesRelatedByAncestorIdScheduledForDeletion) {
+                $this->lineagesRelatedByAncestorIdScheduledForDeletion = clone $this->collLineagesRelatedByAncestorId;
+                $this->lineagesRelatedByAncestorIdScheduledForDeletion->clear();
+            }
+            $this->lineagesRelatedByAncestorIdScheduledForDeletion[]= clone $lineageRelatedByAncestorId;
+            $lineageRelatedByAncestorId->setAncestor(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -9550,7 +10069,6 @@ abstract class Skill implements ActiveRecordInterface
         $this->multiplier = null;
         $this->generation = null;
         $this->importance = null;
-        $this->generation_ids = null;
         $this->picture_id = null;
         $this->kstruktur_id = null;
         $this->function_phase_id = null;
@@ -9584,6 +10102,16 @@ abstract class Skill implements ActiveRecordInterface
             }
             if ($this->collMultiples) {
                 foreach ($this->collMultiples as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collLineagesRelatedBySkillId) {
+                foreach ($this->collLineagesRelatedBySkillId as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collLineagesRelatedByAncestorId) {
+                foreach ($this->collLineagesRelatedByAncestorId as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -9676,6 +10204,8 @@ abstract class Skill implements ActiveRecordInterface
 
         $this->collVariations = null;
         $this->collMultiples = null;
+        $this->collLineagesRelatedBySkillId = null;
+        $this->collLineagesRelatedByAncestorId = null;
         $this->collChildren = null;
         $this->collParents = null;
         $this->collParts = null;
@@ -9816,7 +10346,6 @@ abstract class Skill implements ActiveRecordInterface
         $version->setMultiplier($this->getMultiplier());
         $version->setGeneration($this->getGeneration());
         $version->setImportance($this->getImportance());
-        $version->setGenerationIds($this->getGenerationIds());
         $version->setPictureId($this->getPictureId());
         $version->setKstrukturId($this->getKstrukturId());
         $version->setFunctionPhaseId($this->getFunctionPhaseId());
@@ -9899,7 +10428,6 @@ abstract class Skill implements ActiveRecordInterface
         $this->setMultiplier($version->getMultiplier());
         $this->setGeneration($version->getGeneration());
         $this->setImportance($version->getImportance());
-        $this->setGenerationIds($version->getGenerationIds());
         $this->setPictureId($version->getPictureId());
         $this->setKstrukturId($version->getKstrukturId());
         $this->setFunctionPhaseId($version->getFunctionPhaseId());

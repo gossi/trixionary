@@ -2,8 +2,8 @@
 namespace gossi\trixionary\domain\base;
 
 use gossi\trixionary\event\GroupEvent;
-use gossi\trixionary\model\Group;
 use gossi\trixionary\model\GroupQuery;
+use gossi\trixionary\model\Group;
 use gossi\trixionary\model\SkillGroupQuery;
 use gossi\trixionary\model\SkillQuery;
 use keeko\framework\domain\payload\Created;
@@ -15,6 +15,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -43,20 +44,11 @@ trait GroupDomainTrait {
 			return new NotFound(['message' => 'Group not found.']);
 		}
 
-		// update
-		$serializer = Group::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -84,6 +76,7 @@ trait GroupDomainTrait {
 		// hydrate
 		$serializer = Group::getSerializer();
 		$model = $serializer->hydrate(new Group(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -197,20 +190,11 @@ trait GroupDomainTrait {
 			return new NotFound(['message' => 'Group not found.']);
 		}
 
-		// remove them
-		$serializer = Group::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -244,9 +228,7 @@ trait GroupDomainTrait {
 		}
 
 		// update
-		if ($model->getSportId() !== $relatedId) {
-			$model->setSportId($relatedId);
-
+		if ($this->doSetSportId($model, $relatedId)) {
 			$event = new GroupEvent($model);
 			$this->dispatch(GroupEvent::PRE_SPORT_UPDATE, $event);
 			$this->dispatch(GroupEvent::PRE_SAVE, $event);
@@ -278,6 +260,7 @@ trait GroupDomainTrait {
 		// hydrate
 		$serializer = Group::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -319,23 +302,11 @@ trait GroupDomainTrait {
 			return new NotFound(['message' => 'Group not found.']);
 		}
 
-		// remove all relationships before
-		SkillGroupQuery::create()->filterByGroup($model)->delete();
-
-		// add them
-		$serializer = Group::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -405,6 +376,92 @@ trait GroupDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add Skills to Group
+	 * 
+	 * @param Group $model
+	 * @param mixed $data
+	 */
+	protected function doAddSkills(Group $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Skills from Group
+	 * 
+	 * @param Group $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveSkills(Group $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal mechanism to set the Sport id
+	 * 
+	 * @param Group $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSportId(Group $model, $relatedId) {
+		if ($model->getSportId() !== $relatedId) {
+			$model->setSportId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal update mechanism of Skills on Group
+	 * 
+	 * @param Group $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateSkills(Group $model, $data) {
+		// remove all relationships before
+		SkillGroupQuery::create()->filterByGroup($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

@@ -1,81 +1,89 @@
 <?php
 namespace gossi\trixionary\calculation;
 
+use gossi\trixionary\model\Lineage;
 use gossi\trixionary\model\Skill;
-use phootwork\collection\ArrayList;
 use phootwork\collection\Queue;
+use phootwork\collection\Set;
 
 class Calculator {
 
 	private static $instance;
+
 	private $processedImportanceSkills;
 	private $processedGenerationSkills;
 	private $queuedImportanceSkills;
-	private $steps = [];
+	private $lineage = [];
+	private $modifiedSkills;
 
-	private function __construct() {
-		$this->processedGenerationSkills = new ArrayList();
-		$this->processedImportanceSkills = new ArrayList();
+	public function __construct() {
+		$this->processedGenerationSkills = new Set();
+		$this->processedImportanceSkills = new Set();
 		$this->queuedImportanceSkills = new Queue();
+		$this->modifiedSkills = new Set();
 	}
 
 	/**
-	 * @return Calculator
+	 * @return Set
 	 */
-	public static function getInstance() {
-		if (static::$instance === null) {
-			static::$instance = new static();
-		}
-
-		return static::$instance;
+	public function getModifiedSkills() {
+		return $this->modifiedSkills;
 	}
 
-	private function addForImportanceUpdate(Skill $skill) {
-		if (!$this->processedImportanceSkills->contains($skill)) {
-			$this->queuedImportanceSkills->enqueue($skill);
-		}
+	/**
+	 * @return Set
+	 */
+	public function getModifiedGenerationSkills() {
+		return $this->processedGenerationSkills;
 	}
 
-	public function updateImportance(Skill $skill) {
+	public function calculate(Skill $skill) {
+		$this->calculateImportance($skill);
+		$this->calculateGeneration($skill);
+	}
+
+	public function calculateImportance(Skill $skill) {
 		if ($this->processedImportanceSkills->contains($skill)) {
-			return false;
+			return;
 		}
 
 		$importanceDump = $skill->getImportance();
-
 		$descendents = $skill->getDescendents();
 		$importance = count($descendents);
 
 		$skill->setImportance($importance);
-		$skill->save();
 
+		$this->modifiedSkills->add($skill);
 		$this->processedImportanceSkills->add($skill);
 
-		if ($importance !== $importanceDump) {
+		if ($importance !== $importanceDump || $importance == 0) {
 			$this->queuedImportanceSkills->enqueueAll($skill->getParents());
 		}
+
+		$this->processImportanceQueue();
 	}
 
-	public function updateOutstandingImportance() {
+	private function processImportanceQueue() {
 		if ($this->queuedImportanceSkills->size() == 0) {
 			return;
 		}
 
-		$skills = $this->queuedImportanceSkills->toArray();
+		$skills = clone $this->queuedImportanceSkills;
 		$this->queuedImportanceSkills->clear();
 
 		foreach ($skills as $skill) {
-			$this->updateImportance($skill);
+			$this->calculateImportance($skill);
 		}
 
-		$this->updateOutstandingImportance();
+		$this->processImportanceQueue();
 	}
 
-	public function updateGeneration(Skill $skill) {
+	public function calculateGeneration(Skill $skill) {
 		if ($this->processedGenerationSkills->contains($skill)) {
-			return false;
+			return;
 		}
-		$this->steps = [];
+
+		$this->lineage = [];
 		$generation = 1;
 		$ancestors = $skill->getAncestors();
 		if (count($ancestors)) {
@@ -87,11 +95,18 @@ class Calculator {
 		}
 
 		$skill->setGeneration($generation);
-		$skill->setGenerationIds(json_encode($this->steps));
-		$skill->save();
-		$this->processedGenerationSkills->add($skill);
 
-		return true;
+		// set generations
+		foreach ($this->lineage as $pos => $ancestor) {
+			$lin = new Lineage();
+			$lin->setSkill($skill);
+			$lin->setAncestor($ancestor);
+			$lin->setPosition($pos);
+		}
+
+		$this->modifiedSkills->add($skill);
+		$this->processedGenerationSkills->add($skill);
+		$this->processGenerationQueue();
 	}
 
 	/**
@@ -102,7 +117,7 @@ class Calculator {
 	 * @param int $steps
 	 */
 	private function nextStep(Skill $skill, Skill $target, array $pool, $steps = 1) {
-		$this->steps[] = $skill->getId();
+		$this->lineage[$steps] = $skill;
 		if ($skill == $target) {
 			return $steps;
 		}
@@ -138,10 +153,10 @@ class Calculator {
 	 * @param Skill[] $ancestors
 	 * @return Skill|null
 	 */
-	private function findRoot(array $ancestors) {
+	private function findRoot($ancestors) {
 		$root = null;
 		foreach ($ancestors as $ancestor) {
-			if (count($ancestor->getAncestors()) == 0) {
+			if (count($ancestor->getParents()) == 0) {
 				$root = $ancestor;
 			}
 		}
@@ -160,11 +175,11 @@ class Calculator {
 		return $descendents;
 	}
 
-	public function updateOutstandingGeneration() {
+	private function processGenerationQueue() {
 		$skills = $this->getDescendentsFromImportanceChangedSkills();
 
 		foreach ($skills as $skill) {
-			$this->updateGeneration($skill);
+			$this->calculateGeneration($skill);
 		}
 	}
 }

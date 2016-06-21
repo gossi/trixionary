@@ -14,6 +14,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -42,20 +43,11 @@ trait ReferenceDomainTrait {
 			return new NotFound(['message' => 'Reference not found.']);
 		}
 
-		// update
-		$serializer = Reference::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('videos');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Video';
-			}
-			$related = VideoQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddVideos($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -83,6 +75,7 @@ trait ReferenceDomainTrait {
 		// hydrate
 		$serializer = Reference::getSerializer();
 		$model = $serializer->hydrate(new Reference(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -196,20 +189,11 @@ trait ReferenceDomainTrait {
 			return new NotFound(['message' => 'Reference not found.']);
 		}
 
-		// remove them
-		$serializer = Reference::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('videos');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Video';
-			}
-			$related = VideoQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveVideos($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -243,9 +227,7 @@ trait ReferenceDomainTrait {
 		}
 
 		// update
-		if ($model->getSkillId() !== $relatedId) {
-			$model->setSkillId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new ReferenceEvent($model);
 			$this->dispatch(ReferenceEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
@@ -277,6 +259,7 @@ trait ReferenceDomainTrait {
 		// hydrate
 		$serializer = Reference::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -318,21 +301,11 @@ trait ReferenceDomainTrait {
 			return new NotFound(['message' => 'Reference not found.']);
 		}
 
-		// remove all relationships before
-		VideoQuery::create()->filterByReference($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Video';
-			}
-			$related = VideoQuery::create()->findOneById($entry['id']);
-			$model->addVideo($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateVideos($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -402,6 +375,92 @@ trait ReferenceDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add Videos to Reference
+	 * 
+	 * @param Reference $model
+	 * @param mixed $data
+	 */
+	protected function doAddVideos(Reference $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Video';
+			} else {
+				$related = VideoQuery::create()->findOneById($entry['id']);
+				$model->addVideo($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Videos from Reference
+	 * 
+	 * @param Reference $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveVideos(Reference $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Video';
+			} else {
+				$related = VideoQuery::create()->findOneById($entry['id']);
+				$model->removeVideo($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param Reference $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(Reference $model, $relatedId) {
+		if ($model->getSkillId() !== $relatedId) {
+			$model->setSkillId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal update mechanism of Videos on Reference
+	 * 
+	 * @param Reference $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateVideos(Reference $model, $data) {
+		// remove all relationships before
+		VideoQuery::create()->filterByReference($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Video';
+			} else {
+				$related = VideoQuery::create()->findOneById($entry['id']);
+				$model->addVideo($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

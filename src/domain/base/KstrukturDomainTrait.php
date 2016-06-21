@@ -14,6 +14,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -42,20 +43,11 @@ trait KstrukturDomainTrait {
 			return new NotFound(['message' => 'Kstruktur not found.']);
 		}
 
-		// update
-		$serializer = Kstruktur::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('root-skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -83,6 +75,7 @@ trait KstrukturDomainTrait {
 		// hydrate
 		$serializer = Kstruktur::getSerializer();
 		$model = $serializer->hydrate(new Kstruktur(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -196,20 +189,11 @@ trait KstrukturDomainTrait {
 			return new NotFound(['message' => 'Kstruktur not found.']);
 		}
 
-		// remove them
-		$serializer = Kstruktur::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('root-skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -243,9 +227,7 @@ trait KstrukturDomainTrait {
 		}
 
 		// update
-		if ($model->getSkillId() !== $relatedId) {
-			$model->setSkillId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new KstrukturEvent($model);
 			$this->dispatch(KstrukturEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(KstrukturEvent::PRE_SAVE, $event);
@@ -277,6 +259,7 @@ trait KstrukturDomainTrait {
 		// hydrate
 		$serializer = Kstruktur::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -318,21 +301,11 @@ trait KstrukturDomainTrait {
 			return new NotFound(['message' => 'Kstruktur not found.']);
 		}
 
-		// remove all relationships before
-		SkillQuery::create()->filterByKstrukturRoot($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addRootSkill($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -402,6 +375,92 @@ trait KstrukturDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add RootSkills to Kstruktur
+	 * 
+	 * @param Kstruktur $model
+	 * @param mixed $data
+	 */
+	protected function doAddRootSkills(Kstruktur $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove RootSkills from Kstruktur
+	 * 
+	 * @param Kstruktur $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveRootSkills(Kstruktur $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param Kstruktur $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(Kstruktur $model, $relatedId) {
+		if ($model->getSkillId() !== $relatedId) {
+			$model->setSkillId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal update mechanism of RootSkills on Kstruktur
+	 * 
+	 * @param Kstruktur $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateRootSkills(Kstruktur $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterByKstrukturRoot($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

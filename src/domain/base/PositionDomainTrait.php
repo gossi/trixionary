@@ -36,6 +36,7 @@ trait PositionDomainTrait {
 		// hydrate
 		$serializer = Position::getSerializer();
 		$model = $serializer->hydrate(new Position(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -150,9 +151,7 @@ trait PositionDomainTrait {
 		}
 
 		// update
-		if ($model->getEndPositionId() !== $relatedId) {
-			$model->setEndPositionId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new PositionEvent($model);
 			$this->dispatch(PositionEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(PositionEvent::PRE_SAVE, $event);
@@ -182,9 +181,7 @@ trait PositionDomainTrait {
 		}
 
 		// update
-		if ($model->getSportId() !== $relatedId) {
-			$model->setSportId($relatedId);
-
+		if ($this->doSetSportId($model, $relatedId)) {
 			$event = new PositionEvent($model);
 			$this->dispatch(PositionEvent::PRE_SPORT_UPDATE, $event);
 			$this->dispatch(PositionEvent::PRE_SAVE, $event);
@@ -216,6 +213,7 @@ trait PositionDomainTrait {
 		// hydrate
 		$serializer = Position::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -294,6 +292,38 @@ trait PositionDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param Position $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(Position $model, $relatedId) {
+		if ($model->getEndPositionId() !== $relatedId) {
+			$model->setEndPositionId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal mechanism to set the Sport id
+	 * 
+	 * @param Position $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSportId(Position $model, $relatedId) {
+		if ($model->getSportId() !== $relatedId) {
+			$model->setSportId($relatedId);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

@@ -91,7 +91,7 @@ trait GroupSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'slug', 'sport-id']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -157,11 +157,4 @@ trait GroupSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

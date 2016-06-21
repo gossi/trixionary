@@ -98,7 +98,7 @@ trait VideoSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'skill-id', 'reference-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -172,11 +172,4 @@ trait VideoSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

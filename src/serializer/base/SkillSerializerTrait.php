@@ -4,6 +4,7 @@ namespace gossi\trixionary\serializer\base;
 use gossi\trixionary\model\FunctionPhase;
 use gossi\trixionary\model\Group;
 use gossi\trixionary\model\Kstruktur;
+use gossi\trixionary\model\Lineage;
 use gossi\trixionary\model\Object;
 use gossi\trixionary\model\Picture;
 use gossi\trixionary\model\Position;
@@ -31,6 +32,7 @@ trait SkillSerializerTrait {
 		'parts' => 'SkillRelatedByPartId',
 		'composites' => 'SkillRelatedByCompositeId',
 		'groups' => 'Group',
+		'lineages' => 'Lineage',
 		'pictures' => 'Picture',
 		'videos' => 'Video',
 		'references' => 'Reference',
@@ -48,6 +50,7 @@ trait SkillSerializerTrait {
 		'parts' => 'SkillsRelatedByPartId',
 		'composites' => 'SkillsRelatedByCompositeId',
 		'groups' => 'Groups',
+		'lineages' => 'Lineages',
 		'pictures' => 'Pictures',
 		'videos' => 'Videos',
 		'references' => 'References',
@@ -163,7 +166,6 @@ trait SkillSerializerTrait {
 			'multiplier' => $model->getMultiplier(),
 			'generation' => $model->getGeneration(),
 			'importance' => $model->getImportance(),
-			'generation-ids' => $model->getGenerationIds(),
 			'version' => $model->getVersion(),
 			'version-created-at' => $model->getVersionCreatedAt(\DateTime::ISO8601),
 			'version-comment' => $model->getVersionComment()
@@ -173,7 +175,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -208,6 +210,7 @@ trait SkillSerializerTrait {
 			'parts' => Skill::getSerializer()->getType(null),
 			'composites' => Skill::getSerializer()->getType(null),
 			'groups' => Group::getSerializer()->getType(null),
+			'lineages' => Lineage::getSerializer()->getType(null),
 			'pictures' => Picture::getSerializer()->getType(null),
 			'videos' => Video::getSerializer()->getType(null),
 			'references' => Reference::getSerializer()->getType(null),
@@ -219,7 +222,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'generation-ids', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -249,10 +252,10 @@ trait SkillSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'generation-ids', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -283,6 +286,16 @@ trait SkillSerializerTrait {
 		$method = 'get' . $this->getCollectionMethodPluralName('kstrukturs');
 		$relationship = new Relationship(new Collection($model->$method(), Kstruktur::getSerializer()));
 		return $this->addRelationshipSelfLink($relationship, $model, 'kstruktur');
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
+	public function lineages($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('lineages');
+		$relationship = new Relationship(new Collection($model->$method(), Lineage::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'lineage');
 	}
 
 	/**
@@ -478,11 +491,4 @@ trait SkillSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }

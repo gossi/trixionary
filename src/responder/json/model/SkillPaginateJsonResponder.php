@@ -4,6 +4,7 @@ namespace gossi\trixionary\responder\json\model;
 use gossi\trixionary\model\FunctionPhase;
 use gossi\trixionary\model\Group;
 use gossi\trixionary\model\Kstruktur;
+use gossi\trixionary\model\Lineage;
 use gossi\trixionary\model\Object;
 use gossi\trixionary\model\Picture;
 use gossi\trixionary\model\Position;
@@ -35,7 +36,7 @@ class SkillPaginateJsonResponder extends AbstractPayloadResponder {
 		$data = $payload->getModel();
 		$serializer = Skill::getSerializer();
 		$resource = new Collection($data, $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'pictures', 'videos', 'references', 'kstrukturs', 'function-phases', 'sport.skills']));
+		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'lineages', 'pictures', 'videos', 'references', 'kstrukturs', 'function-phases', 'sport.skills']));
 		$resource = $resource->fields($params->getFields([
 			'skill' => Skill::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),
@@ -54,6 +55,7 @@ class SkillPaginateJsonResponder extends AbstractPayloadResponder {
 			'part' => Skill::getSerializer()->getFields(),
 			'composite' => Skill::getSerializer()->getFields(),
 			'group' => Group::getSerializer()->getFields(),
+			'lineage' => Lineage::getSerializer()->getFields(),
 			'picture' => Picture::getSerializer()->getFields(),
 			'video' => Video::getSerializer()->getFields(),
 			'reference' => Reference::getSerializer()->getFields(),

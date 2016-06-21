@@ -14,6 +14,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -42,20 +43,11 @@ trait ObjectDomainTrait {
 			return new NotFound(['message' => 'Object not found.']);
 		}
 
-		// update
-		$serializer = Object::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -83,6 +75,7 @@ trait ObjectDomainTrait {
 		// hydrate
 		$serializer = Object::getSerializer();
 		$model = $serializer->hydrate(new Object(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -196,20 +189,11 @@ trait ObjectDomainTrait {
 			return new NotFound(['message' => 'Object not found.']);
 		}
 
-		// remove them
-		$serializer = Object::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -243,9 +227,7 @@ trait ObjectDomainTrait {
 		}
 
 		// update
-		if ($model->getSportId() !== $relatedId) {
-			$model->setSportId($relatedId);
-
+		if ($this->doSetSportId($model, $relatedId)) {
 			$event = new ObjectEvent($model);
 			$this->dispatch(ObjectEvent::PRE_SPORT_UPDATE, $event);
 			$this->dispatch(ObjectEvent::PRE_SAVE, $event);
@@ -277,6 +259,7 @@ trait ObjectDomainTrait {
 		// hydrate
 		$serializer = Object::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -318,21 +301,11 @@ trait ObjectDomainTrait {
 			return new NotFound(['message' => 'Object not found.']);
 		}
 
-		// remove all relationships before
-		SkillQuery::create()->filterByObject($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addSkill($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -402,6 +375,92 @@ trait ObjectDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add Skills to Object
+	 * 
+	 * @param Object $model
+	 * @param mixed $data
+	 */
+	protected function doAddSkills(Object $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove Skills from Object
+	 * 
+	 * @param Object $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveSkills(Object $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal mechanism to set the Sport id
+	 * 
+	 * @param Object $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSportId(Object $model, $relatedId) {
+		if ($model->getSportId() !== $relatedId) {
+			$model->setSportId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal update mechanism of Skills on Object
+	 * 
+	 * @param Object $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateSkills(Object $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterByObject($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

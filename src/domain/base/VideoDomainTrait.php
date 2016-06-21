@@ -36,6 +36,7 @@ trait VideoDomainTrait {
 		// hydrate
 		$serializer = Video::getSerializer();
 		$model = $serializer->hydrate(new Video(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -150,9 +151,7 @@ trait VideoDomainTrait {
 		}
 
 		// update
-		if ($model->getReferenceId() !== $relatedId) {
-			$model->setReferenceId($relatedId);
-
+		if ($this->doSetReferenceId($model, $relatedId)) {
 			$event = new VideoEvent($model);
 			$this->dispatch(VideoEvent::PRE_REFERENCE_UPDATE, $event);
 			$this->dispatch(VideoEvent::PRE_SAVE, $event);
@@ -182,9 +181,7 @@ trait VideoDomainTrait {
 		}
 
 		// update
-		if ($model->getSkillId() !== $relatedId) {
-			$model->setSkillId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new VideoEvent($model);
 			$this->dispatch(VideoEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(VideoEvent::PRE_SAVE, $event);
@@ -216,6 +213,7 @@ trait VideoDomainTrait {
 		// hydrate
 		$serializer = Video::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -294,6 +292,38 @@ trait VideoDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Internal mechanism to set the Reference id
+	 * 
+	 * @param Video $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetReferenceId(Video $model, $relatedId) {
+		if ($model->getReferenceId() !== $relatedId) {
+			$model->setReferenceId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param Video $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(Video $model, $relatedId) {
+		if ($model->getSkillId() !== $relatedId) {
+			$model->setSkillId($relatedId);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

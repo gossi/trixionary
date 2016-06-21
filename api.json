@@ -1560,7 +1560,7 @@
 				}
 			}
 		},
-		"/positions/{id}/relationship/skills": {
+		"/positions/{id}/relationship/skill": {
 			"get": {
 				"description": "Reads the relationship of position to skill",
 				"operationId": "position-to-skill-relationship-read",
@@ -1584,14 +1584,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -1630,10 +1631,7 @@
 							"type": "object",
 							"properties": {
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier"
 								}
 							}
 						}
@@ -1650,14 +1648,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -1696,10 +1695,7 @@
 							"type": "object",
 							"properties": {
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier"
 								}
 							}
 						}
@@ -1716,14 +1712,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -1765,14 +1762,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -3316,238 +3314,6 @@
 				}
 			}
 		},
-		"/skills/{id}/relationship/skills": {
-			"get": {
-				"description": "Reads the relationship of skill to skill",
-				"operationId": "skill-to-skill-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"post": {
-				"description": "Adds skill as relationship to skill",
-				"operationId": "skill-to-skill-relationship-add",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Adds Skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of skill to skill",
-				"operationId": "skill-to-skill-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates Skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"delete": {
-				"description": "Removes skill as relationship to skill",
-				"operationId": "skill-to-skill-relationship-remove",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
 		"/skills/{id}/relationship/groups": {
 			"get": {
 				"description": "Reads the relationship of skill to group",
@@ -4940,238 +4706,6 @@
 				}
 			}
 		},
-		"/skills/{id}/relationship/skill-versions": {
-			"get": {
-				"description": "Reads the relationship of skill to skill_version",
-				"operationId": "skill-to-skill_version-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve SkillVersion from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"post": {
-				"description": "Adds skill_version as relationship to skill",
-				"operationId": "skill-to-skill_version-relationship-add",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Adds SkillVersion",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve SkillVersion from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of skill to skill_version",
-				"operationId": "skill-to-skill_version-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates SkillVersion",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve SkillVersion from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"delete": {
-				"description": "Removes skill_version as relationship to skill",
-				"operationId": "skill-to-skill_version-relationship-remove",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve SkillVersion from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
 		"/groups": {
 			"get": {
 				"description": "Paginates groups",
@@ -5784,7 +5318,7 @@
 				}
 			}
 		},
-		"/pictures/{id}/relationship/featured-skills": {
+		"/pictures/{id}/relationship/featured-skill": {
 			"get": {
 				"description": "Reads the relationship of picture to featured_skill",
 				"operationId": "picture-to-featured_skill-relationship-read",
@@ -5808,14 +5342,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -5854,10 +5389,7 @@
 							"type": "object",
 							"properties": {
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier"
 								}
 							}
 						}
@@ -5874,14 +5406,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -5920,10 +5453,7 @@
 							"type": "object",
 							"properties": {
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier"
 								}
 							}
 						}
@@ -5940,14 +5470,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -5989,14 +5520,15 @@
 									"properties": {
 										"self": {
 											"type": "string"
+										},
+										"related": {
+											"type": "string"
 										}
 									}
 								},
 								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
 								}
 							}
 						}
@@ -8068,582 +7600,6 @@
 				}
 			}
 		},
-		"/skill-versions/{id}/relationship/skill": {
-			"get": {
-				"description": "Reads the relationship of skill_version to skill",
-				"operationId": "skill_version-to-skill-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill_version id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill_version",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill_version found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of skill_version to skill",
-				"operationId": "skill_version-to-skill-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill_version id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates Skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier"
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from skill_version",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill_version found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
-		"/positions/{id}/relationship/skill": {
-			"get": {
-				"description": "Reads the relationship of position to skill",
-				"operationId": "position-to-skill-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The position id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from position",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No position found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"post": {
-				"description": "Adds skill as relationship to position",
-				"operationId": "position-to-skill-relationship-add",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The position id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Adds Skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier"
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from position",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No position found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of position to skill",
-				"operationId": "position-to-skill-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The position id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates Skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier"
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from position",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No position found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"delete": {
-				"description": "Removes skill as relationship to position",
-				"operationId": "position-to-skill-relationship-remove",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The position id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Skill from position",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No position found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
-		"/pictures/{id}/relationship/featured-skill": {
-			"get": {
-				"description": "Reads the relationship of picture to featured_skill",
-				"operationId": "picture-to-featured_skill-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The picture id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve FeaturedSkill from picture",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No picture found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"post": {
-				"description": "Adds featured_skill as relationship to picture",
-				"operationId": "picture-to-featured_skill-relationship-add",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The picture id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Adds FeaturedSkill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier"
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve FeaturedSkill from picture",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No picture found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of picture to featured_skill",
-				"operationId": "picture-to-featured_skill-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The picture id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates FeaturedSkill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier"
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve FeaturedSkill from picture",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No picture found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"delete": {
-				"description": "Removes featured_skill as relationship to picture",
-				"operationId": "picture-to-featured_skill-relationship-remove",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The picture id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve FeaturedSkill from picture",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										},
-										"related": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"$ref": "#/definitions/ResourceIdentifier",
-									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No picture found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
 		"/objects/{id}/relationship/skills": {
 			"get": {
 				"description": "Reads the relationship of object to skill",
@@ -8973,238 +7929,6 @@
 								"data": {
 									"$ref": "#/definitions/ResourceIdentifier",
 									"type": "object"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			}
-		},
-		"/skills/{id}/relationship/descendents": {
-			"get": {
-				"description": "Reads the relationship of skill to descendent",
-				"operationId": "skill-to-descendent-relationship-read",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Descendent from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"post": {
-				"description": "Adds descendent as relationship to skill",
-				"operationId": "skill-to-descendent-relationship-add",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Adds Descendent",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Descendent from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"patch": {
-				"description": "Updates the relationship of skill to descendent",
-				"operationId": "skill-to-descendent-relationship-update",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					},
-					{
-						"name": "body",
-						"in": "body",
-						"required": true,
-						"description": "Updates Descendent",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Descendent from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid ID supplied",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					},
-					"404": {
-						"description": "No skill found",
-						"schema": {
-							"$ref": "#/definitions/Errors"
-						}
-					}
-				}
-			},
-			"delete": {
-				"description": "Removes descendent as relationship to skill",
-				"operationId": "skill-to-descendent-relationship-remove",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"description": "The skill id",
-						"type": "integer"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Retrieve Descendent from skill",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"links": {
-									"type": "object",
-									"properties": {
-										"self": {
-											"type": "string"
-										}
-									}
-								},
-								"data": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/ResourceIdentifier"
-									}
 								}
 							}
 						}
@@ -9687,6 +8411,602 @@
 					}
 				}
 			}
+		},
+		"/skills/{id}/relationship/lineages": {
+			"get": {
+				"description": "Reads the relationship of skill to lineage",
+				"operationId": "skill-to-lineage-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Lineage from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"post": {
+				"description": "Adds lineage as relationship to skill",
+				"operationId": "skill-to-lineage-relationship-add",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Adds Lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Lineage from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of skill to lineage",
+				"operationId": "skill-to-lineage-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates Lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Lineage from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"delete": {
+				"description": "Removes lineage as relationship to skill",
+				"operationId": "skill-to-lineage-relationship-remove",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Lineage from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/lineages": {
+			"get": {
+				"description": "Paginates lineages",
+				"operationId": "lineage-paginate",
+				"responses": {
+					"200": {
+						"description": "Array of lineages",
+						"schema": {
+							"$ref": "#/definitions/PagedLineages"
+						}
+					}
+				}
+			},
+			"post": {
+				"description": "Creates a lineage",
+				"operationId": "lineage-create",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "The new lineage",
+						"schema": {
+							"$ref": "#/definitions/WritableLineage"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "lineage created"
+					}
+				}
+			}
+		},
+		"/lineages/{id}": {
+			"get": {
+				"description": "Reads a lineage",
+				"operationId": "lineage-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "gets the lineage",
+						"schema": {
+							"$ref": "#/definitions/Lineage"
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates a lineage",
+				"operationId": "lineage-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "lineage updated",
+						"schema": {
+							"$ref": "#/definitions/Lineage"
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"delete": {
+				"description": "Deletes a lineage",
+				"operationId": "lineage-delete",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "lineage deleted"
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/lineages/{id}/relationship/skill": {
+			"get": {
+				"description": "Reads the relationship of lineage to skill",
+				"operationId": "lineage-to-skill-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Skill from lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of lineage to skill",
+				"operationId": "lineage-to-skill-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates Skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Skill from lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/lineages/{id}/relationship/ancestor": {
+			"get": {
+				"description": "Reads the relationship of lineage to ancestor",
+				"operationId": "lineage-to-ancestor-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Ancestor from lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of lineage to ancestor",
+				"operationId": "lineage-to-ancestor-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The lineage id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates Ancestor",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve Ancestor from lineage",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No lineage found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
 		}
 	},
 	"definitions": {
@@ -9719,7 +9039,7 @@
 						"attributes": {
 							"type": "object",
 							"properties": {
-								"label": {
+								"title": {
 									"type": "string"
 								},
 								"slug": {
@@ -9732,6 +9052,9 @@
 									"type": "string"
 								},
 								"object_label": {
+									"type": "string"
+								},
+								"object_plural_label": {
 									"type": "string"
 								},
 								"skill_slug": {
@@ -9752,13 +9075,13 @@
 								"group_plural_label": {
 									"type": "string"
 								},
-								"transition_slug": {
-									"type": "string"
-								},
 								"transition_label": {
 									"type": "string"
 								},
 								"transition_plural_label": {
+									"type": "string"
+								},
+								"transitions_slug": {
 									"type": "string"
 								},
 								"position_slug": {
@@ -9770,20 +9093,11 @@
 								"feature_composition": {
 									"type": "boolean"
 								},
-								"is_default": {
-									"type": "boolean"
-								},
-								"title": {
-									"type": "string"
-								},
-								"transitions_slug": {
-									"type": "string"
-								},
 								"feature_tester": {
 									"type": "boolean"
 								},
-								"object_plural_label": {
-									"type": "string"
+								"is_default": {
+									"type": "boolean"
 								}
 							}
 						},
@@ -9863,7 +9177,7 @@
 						"attributes": {
 							"type": "object",
 							"properties": {
-								"label": {
+								"title": {
 									"type": "string"
 								},
 								"slug": {
@@ -9876,6 +9190,9 @@
 									"type": "string"
 								},
 								"object_label": {
+									"type": "string"
+								},
+								"object_plural_label": {
 									"type": "string"
 								},
 								"skill_slug": {
@@ -9896,13 +9213,13 @@
 								"group_plural_label": {
 									"type": "string"
 								},
-								"transition_slug": {
-									"type": "string"
-								},
 								"transition_label": {
 									"type": "string"
 								},
 								"transition_plural_label": {
+									"type": "string"
+								},
+								"transitions_slug": {
 									"type": "string"
 								},
 								"position_slug": {
@@ -9914,20 +9231,11 @@
 								"feature_composition": {
 									"type": "boolean"
 								},
-								"is_default": {
-									"type": "boolean"
-								},
-								"title": {
-									"type": "string"
-								},
-								"transitions_slug": {
-									"type": "string"
-								},
 								"feature_tester": {
 									"type": "boolean"
 								},
-								"object_plural_label": {
-									"type": "string"
+								"is_default": {
+									"type": "boolean"
 								}
 							}
 						},
@@ -10051,14 +9359,14 @@
 								"slug": {
 									"type": "string"
 								},
-								"sport_id": {
-									"type": "integer"
+								"fixed": {
+									"type": "boolean"
 								},
 								"description": {
 									"type": "string"
 								},
-								"fixed": {
-									"type": "boolean"
+								"sport_id": {
+									"type": "integer"
 								}
 							}
 						},
@@ -10127,14 +9435,14 @@
 								"slug": {
 									"type": "string"
 								},
-								"sport_id": {
-									"type": "integer"
+								"fixed": {
+									"type": "boolean"
 								},
 								"description": {
 									"type": "string"
 								},
-								"fixed": {
-									"type": "boolean"
+								"sport_id": {
+									"type": "integer"
 								},
 								"skill_count": {
 									"type": "integer"
@@ -10255,17 +9563,6 @@
 										}
 									}
 								},
-								"skills": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
 								"skill": {
 									"type": "object",
 									"properties": {
@@ -10348,25 +9645,6 @@
 												"type": {
 													"type": "string"
 												}
-											}
-										}
-									}
-								},
-								"skills": {
-									"type": "object",
-									"properties": {
-										"links": {
-											"type": "object",
-											"properties": {
-												"self": {
-													"type": "string"
-												}
-											}
-										},
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
 											}
 										}
 									}
@@ -10454,6 +9732,9 @@
 								"is_rotation": {
 									"type": "boolean"
 								},
+								"is_acyclic": {
+									"type": "boolean"
+								},
 								"is_cyclic": {
 									"type": "boolean"
 								},
@@ -10496,9 +9777,6 @@
 								"importance": {
 									"type": "integer"
 								},
-								"generation_ids": {
-									"type": "string"
-								},
 								"picture_id": {
 									"type": "integer"
 								},
@@ -10506,6 +9784,9 @@
 									"type": "integer"
 								},
 								"function_phase_id": {
+									"type": "integer"
+								},
+								"object_id": {
 									"type": "integer"
 								},
 								"version": {
@@ -10516,12 +9797,6 @@
 								},
 								"version_comment": {
 									"type": "string"
-								},
-								"object_id": {
-									"type": "integer"
-								},
-								"is_acyclic": {
-									"type": "boolean"
 								}
 							}
 						},
@@ -10583,6 +9858,22 @@
 									}
 								},
 								"multiple-of": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								},
+								"object": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -10678,7 +9969,18 @@
 										}
 									}
 								},
-								"skills": {
+								"children": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"parts": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -10690,6 +9992,17 @@
 									}
 								},
 								"groups": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"lineages": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -10745,66 +10058,6 @@
 									}
 								},
 								"function-phases": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"skill-versions": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"object": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "object",
-											"properties": {
-												"id": {
-													"type": "string"
-												},
-												"type": {
-													"type": "string"
-												}
-											}
-										}
-									}
-								},
-								"descendents": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"parts": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"children": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -10868,6 +10121,9 @@
 								"is_rotation": {
 									"type": "boolean"
 								},
+								"is_acyclic": {
+									"type": "boolean"
+								},
 								"is_cyclic": {
 									"type": "boolean"
 								},
@@ -10910,9 +10166,6 @@
 								"importance": {
 									"type": "integer"
 								},
-								"generation_ids": {
-									"type": "string"
-								},
 								"picture_id": {
 									"type": "integer"
 								},
@@ -10920,6 +10173,9 @@
 									"type": "integer"
 								},
 								"function_phase_id": {
+									"type": "integer"
+								},
+								"object_id": {
 									"type": "integer"
 								},
 								"version": {
@@ -10930,12 +10186,6 @@
 								},
 								"version_comment": {
 									"type": "string"
-								},
-								"object_id": {
-									"type": "integer"
-								},
-								"is_acyclic": {
-									"type": "boolean"
 								}
 							}
 						},
@@ -11029,6 +10279,30 @@
 									}
 								},
 								"multiple-of": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								},
+								"object": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11172,7 +10446,26 @@
 										}
 									}
 								},
-								"skills": {
+								"children": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"parts": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11192,6 +10485,25 @@
 									}
 								},
 								"groups": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"lineages": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11304,27 +10616,132 @@
 											}
 										}
 									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"PagedLineages": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Lineage"
+					}
+				},
+				"meta": {
+					"$ref": "#/definitions/PagedMeta"
+				}
+			}
+		},
+		"WritableLineage": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"attributes": {
+							"type": "object",
+							"properties": {
+								"skill_id": {
+									"type": "integer"
 								},
-								"skill-versions": {
+								"ancestor_id": {
+									"type": "integer"
+								},
+								"position": {
+									"type": "integer"
+								}
+							}
+						},
+						"relationships": {
+							"type": "object",
+							"properties": {
+								"skill": {
 									"type": "object",
 									"properties": {
-										"links": {
+										"data": {
 											"type": "object",
 											"properties": {
-												"self": {
+												"id": {
+													"type": "string"
+												},
+												"type": {
 													"type": "string"
 												}
-											}
-										},
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
 											}
 										}
 									}
 								},
-								"object": {
+								"ancestor": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"Lineage": {
+			"type": "object",
+			"properties": {
+				"links": {
+					"type": "object",
+					"properties": {
+						"self": {
+							"type": "string"
+						}
+					}
+				},
+				"data": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"attributes": {
+							"type": "object",
+							"properties": {
+								"skill_id": {
+									"type": "integer"
+								},
+								"ancestor_id": {
+									"type": "integer"
+								},
+								"position": {
+									"type": "integer"
+								}
+							}
+						},
+						"relationships": {
+							"type": "object",
+							"properties": {
+								"skill": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11348,7 +10765,7 @@
 										}
 									}
 								},
-								"descendents": {
+								"ancestor": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11360,47 +10777,14 @@
 											}
 										},
 										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"parts": {
-									"type": "object",
-									"properties": {
-										"links": {
 											"type": "object",
 											"properties": {
-												"self": {
+												"id": {
+													"type": "string"
+												},
+												"type": {
 													"type": "string"
 												}
-											}
-										},
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"children": {
-									"type": "object",
-									"properties": {
-										"links": {
-											"type": "object",
-											"properties": {
-												"self": {
-													"type": "string"
-												}
-											}
-										},
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
 											}
 										}
 									}
@@ -11640,18 +11024,7 @@
 						"relationships": {
 							"type": "object",
 							"properties": {
-								"featured-skills": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"skill": {
+								"featured-skill": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -11667,7 +11040,7 @@
 										}
 									}
 								},
-								"featured-skill": {
+								"skill": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -11741,26 +11114,7 @@
 						"relationships": {
 							"type": "object",
 							"properties": {
-								"featured-skills": {
-									"type": "object",
-									"properties": {
-										"links": {
-											"type": "object",
-											"properties": {
-												"self": {
-													"type": "string"
-												}
-											}
-										},
-										"data": {
-											"type": "array",
-											"items": {
-												"$ref": "#/definitions/ResourceIdentifier"
-											}
-										}
-									}
-								},
-								"skill": {
+								"featured-skill": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11784,7 +11138,7 @@
 										}
 									}
 								},
-								"featured-skill": {
+								"skill": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -12610,318 +11964,6 @@
 										}
 									}
 								},
-								"skill": {
-									"type": "object",
-									"properties": {
-										"links": {
-											"type": "object",
-											"properties": {
-												"self": {
-													"type": "string"
-												}
-											}
-										},
-										"data": {
-											"type": "object",
-											"properties": {
-												"id": {
-													"type": "string"
-												},
-												"type": {
-													"type": "string"
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"PagedSkillVersions": {
-			"type": "object",
-			"properties": {
-				"data": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/SkillVersion"
-					}
-				},
-				"meta": {
-					"$ref": "#/definitions/PagedMeta"
-				}
-			}
-		},
-		"WritableSkillVersion": {
-			"type": "object",
-			"properties": {
-				"data": {
-					"type": "object",
-					"properties": {
-						"id": {
-							"type": "string"
-						},
-						"type": {
-							"type": "string"
-						},
-						"attributes": {
-							"type": "object",
-							"properties": {
-								"sport_id": {
-									"type": "integer"
-								},
-								"name": {
-									"type": "string"
-								},
-								"alternative_name": {
-									"type": "string"
-								},
-								"slug": {
-									"type": "string"
-								},
-								"description": {
-									"type": "string"
-								},
-								"history": {
-									"type": "string"
-								},
-								"is_translation": {
-									"type": "boolean"
-								},
-								"is_rotation": {
-									"type": "boolean"
-								},
-								"is_cyclic": {
-									"type": "boolean"
-								},
-								"longitudinal_flags": {
-									"type": "integer"
-								},
-								"latitudinal_flags": {
-									"type": "integer"
-								},
-								"transversal_flags": {
-									"type": "integer"
-								},
-								"movement_description": {
-									"type": "string"
-								},
-								"variation_of_id": {
-									"type": "integer"
-								},
-								"start_position_id": {
-									"type": "integer"
-								},
-								"end_position_id": {
-									"type": "integer"
-								},
-								"is_composite": {
-									"type": "boolean"
-								},
-								"is_multiple": {
-									"type": "boolean"
-								},
-								"multiple_of_id": {
-									"type": "integer"
-								},
-								"multiplier": {
-									"type": "integer"
-								},
-								"generation": {
-									"type": "integer"
-								},
-								"importance": {
-									"type": "integer"
-								},
-								"generation_ids": {
-									"type": "string"
-								},
-								"picture_id": {
-									"type": "integer"
-								},
-								"kstruktur_id": {
-									"type": "integer"
-								},
-								"function_phase_id": {
-									"type": "integer"
-								},
-								"version": {
-									"type": "integer"
-								},
-								"version_created_at": {
-									"type": "string"
-								},
-								"version_comment": {
-									"type": "string"
-								},
-								"variation_of_id_version": {
-									"type": "integer"
-								},
-								"multiple_of_id_version": {
-									"type": "integer"
-								},
-								"kk_trixionary_skill_ids": {
-									"type": "array"
-								},
-								"kk_trixionary_skill_versions": {
-									"type": "array"
-								}
-							}
-						},
-						"relationships": {
-							"type": "object",
-							"properties": {
-								"skill": {
-									"type": "object",
-									"properties": {
-										"data": {
-											"type": "object",
-											"properties": {
-												"id": {
-													"type": "string"
-												},
-												"type": {
-													"type": "string"
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"SkillVersion": {
-			"type": "object",
-			"properties": {
-				"links": {
-					"type": "object",
-					"properties": {
-						"self": {
-							"type": "string"
-						}
-					}
-				},
-				"data": {
-					"type": "object",
-					"properties": {
-						"id": {
-							"type": "string"
-						},
-						"type": {
-							"type": "string"
-						},
-						"attributes": {
-							"type": "object",
-							"properties": {
-								"sport_id": {
-									"type": "integer"
-								},
-								"name": {
-									"type": "string"
-								},
-								"alternative_name": {
-									"type": "string"
-								},
-								"slug": {
-									"type": "string"
-								},
-								"description": {
-									"type": "string"
-								},
-								"history": {
-									"type": "string"
-								},
-								"is_translation": {
-									"type": "boolean"
-								},
-								"is_rotation": {
-									"type": "boolean"
-								},
-								"is_cyclic": {
-									"type": "boolean"
-								},
-								"longitudinal_flags": {
-									"type": "integer"
-								},
-								"latitudinal_flags": {
-									"type": "integer"
-								},
-								"transversal_flags": {
-									"type": "integer"
-								},
-								"movement_description": {
-									"type": "string"
-								},
-								"variation_of_id": {
-									"type": "integer"
-								},
-								"start_position_id": {
-									"type": "integer"
-								},
-								"end_position_id": {
-									"type": "integer"
-								},
-								"is_composite": {
-									"type": "boolean"
-								},
-								"is_multiple": {
-									"type": "boolean"
-								},
-								"multiple_of_id": {
-									"type": "integer"
-								},
-								"multiplier": {
-									"type": "integer"
-								},
-								"generation": {
-									"type": "integer"
-								},
-								"importance": {
-									"type": "integer"
-								},
-								"generation_ids": {
-									"type": "string"
-								},
-								"picture_id": {
-									"type": "integer"
-								},
-								"kstruktur_id": {
-									"type": "integer"
-								},
-								"function_phase_id": {
-									"type": "integer"
-								},
-								"version": {
-									"type": "integer"
-								},
-								"version_created_at": {
-									"type": "string"
-								},
-								"version_comment": {
-									"type": "string"
-								},
-								"variation_of_id_version": {
-									"type": "integer"
-								},
-								"multiple_of_id_version": {
-									"type": "integer"
-								},
-								"kk_trixionary_skill_ids": {
-									"type": "array"
-								},
-								"kk_trixionary_skill_versions": {
-									"type": "array"
-								}
-							}
-						},
-						"relationships": {
-							"type": "object",
-							"properties": {
 								"skill": {
 									"type": "object",
 									"properties": {

@@ -44,7 +44,6 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery orderByMultiplier($order = Criteria::ASC) Order by the multiplier column
  * @method     ChildSkillQuery orderByGeneration($order = Criteria::ASC) Order by the generation column
  * @method     ChildSkillQuery orderByImportance($order = Criteria::ASC) Order by the importance column
- * @method     ChildSkillQuery orderByGenerationIds($order = Criteria::ASC) Order by the generation_ids column
  * @method     ChildSkillQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
  * @method     ChildSkillQuery orderByKstrukturId($order = Criteria::ASC) Order by the kstruktur_id column
  * @method     ChildSkillQuery orderByFunctionPhaseId($order = Criteria::ASC) Order by the function_phase_id column
@@ -77,7 +76,6 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery groupByMultiplier() Group by the multiplier column
  * @method     ChildSkillQuery groupByGeneration() Group by the generation column
  * @method     ChildSkillQuery groupByImportance() Group by the importance column
- * @method     ChildSkillQuery groupByGenerationIds() Group by the generation_ids column
  * @method     ChildSkillQuery groupByPictureId() Group by the picture_id column
  * @method     ChildSkillQuery groupByKstrukturId() Group by the kstruktur_id column
  * @method     ChildSkillQuery groupByFunctionPhaseId() Group by the function_phase_id column
@@ -134,6 +132,14 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinMultiple($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Multiple relation
  * @method     ChildSkillQuery innerJoinMultiple($relationAlias = null) Adds a INNER JOIN clause to the query using the Multiple relation
  *
+ * @method     ChildSkillQuery leftJoinLineageRelatedBySkillId($relationAlias = null) Adds a LEFT JOIN clause to the query using the LineageRelatedBySkillId relation
+ * @method     ChildSkillQuery rightJoinLineageRelatedBySkillId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LineageRelatedBySkillId relation
+ * @method     ChildSkillQuery innerJoinLineageRelatedBySkillId($relationAlias = null) Adds a INNER JOIN clause to the query using the LineageRelatedBySkillId relation
+ *
+ * @method     ChildSkillQuery leftJoinLineageRelatedByAncestorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the LineageRelatedByAncestorId relation
+ * @method     ChildSkillQuery rightJoinLineageRelatedByAncestorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LineageRelatedByAncestorId relation
+ * @method     ChildSkillQuery innerJoinLineageRelatedByAncestorId($relationAlias = null) Adds a INNER JOIN clause to the query using the LineageRelatedByAncestorId relation
+ *
  * @method     ChildSkillQuery leftJoinChild($relationAlias = null) Adds a LEFT JOIN clause to the query using the Child relation
  * @method     ChildSkillQuery rightJoinChild($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Child relation
  * @method     ChildSkillQuery innerJoinChild($relationAlias = null) Adds a INNER JOIN clause to the query using the Child relation
@@ -182,7 +188,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinSkillVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillVersion relation
  * @method     ChildSkillQuery innerJoinSkillVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillVersion relation
  *
- * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\ReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\LineageQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\ReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSkill findOne(ConnectionInterface $con = null) Return the first ChildSkill matching the query
  * @method     ChildSkill findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkill matching the query, or a new ChildSkill object populated from the query conditions when no match is found
@@ -211,7 +217,6 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill findOneByMultiplier(int $multiplier) Return the first ChildSkill filtered by the multiplier column
  * @method     ChildSkill findOneByGeneration(int $generation) Return the first ChildSkill filtered by the generation column
  * @method     ChildSkill findOneByImportance(int $importance) Return the first ChildSkill filtered by the importance column
- * @method     ChildSkill findOneByGenerationIds(string $generation_ids) Return the first ChildSkill filtered by the generation_ids column
  * @method     ChildSkill findOneByPictureId(int $picture_id) Return the first ChildSkill filtered by the picture_id column
  * @method     ChildSkill findOneByKstrukturId(int $kstruktur_id) Return the first ChildSkill filtered by the kstruktur_id column
  * @method     ChildSkill findOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkill filtered by the function_phase_id column
@@ -247,7 +252,6 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill requireOneByMultiplier(int $multiplier) Return the first ChildSkill filtered by the multiplier column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByGeneration(int $generation) Return the first ChildSkill filtered by the generation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByImportance(int $importance) Return the first ChildSkill filtered by the importance column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildSkill requireOneByGenerationIds(string $generation_ids) Return the first ChildSkill filtered by the generation_ids column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByPictureId(int $picture_id) Return the first ChildSkill filtered by the picture_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByKstrukturId(int $kstruktur_id) Return the first ChildSkill filtered by the kstruktur_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkill filtered by the function_phase_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -281,7 +285,6 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill[]|ObjectCollection findByMultiplier(int $multiplier) Return ChildSkill objects filtered by the multiplier column
  * @method     ChildSkill[]|ObjectCollection findByGeneration(int $generation) Return ChildSkill objects filtered by the generation column
  * @method     ChildSkill[]|ObjectCollection findByImportance(int $importance) Return ChildSkill objects filtered by the importance column
- * @method     ChildSkill[]|ObjectCollection findByGenerationIds(string $generation_ids) Return ChildSkill objects filtered by the generation_ids column
  * @method     ChildSkill[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkill objects filtered by the picture_id column
  * @method     ChildSkill[]|ObjectCollection findByKstrukturId(int $kstruktur_id) Return ChildSkill objects filtered by the kstruktur_id column
  * @method     ChildSkill[]|ObjectCollection findByFunctionPhaseId(int $function_phase_id) Return ChildSkill objects filtered by the function_phase_id column
@@ -388,7 +391,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `generation_ids`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1314,35 +1317,6 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         return $this->addUsingAlias(SkillTableMap::COL_IMPORTANCE, $importance, $comparison);
-    }
-
-    /**
-     * Filter the query on the generation_ids column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByGenerationIds('fooValue');   // WHERE generation_ids = 'fooValue'
-     * $query->filterByGenerationIds('%fooValue%'); // WHERE generation_ids LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $generationIds The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildSkillQuery The current query, for fluid interface
-     */
-    public function filterByGenerationIds($generationIds = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($generationIds)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $generationIds)) {
-                $generationIds = str_replace('*', '%', $generationIds);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(SkillTableMap::COL_GENERATION_IDS, $generationIds, $comparison);
     }
 
     /**
@@ -2467,6 +2441,152 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->joinMultiple($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Multiple', '\gossi\trixionary\model\SkillQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Lineage object
+     *
+     * @param \gossi\trixionary\model\Lineage|ObjectCollection $lineage the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByLineageRelatedBySkillId($lineage, $comparison = null)
+    {
+        if ($lineage instanceof \gossi\trixionary\model\Lineage) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_ID, $lineage->getSkillId(), $comparison);
+        } elseif ($lineage instanceof ObjectCollection) {
+            return $this
+                ->useLineageRelatedBySkillIdQuery()
+                ->filterByPrimaryKeys($lineage->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByLineageRelatedBySkillId() only accepts arguments of type \gossi\trixionary\model\Lineage or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the LineageRelatedBySkillId relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinLineageRelatedBySkillId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('LineageRelatedBySkillId');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'LineageRelatedBySkillId');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the LineageRelatedBySkillId relation Lineage object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\LineageQuery A secondary query class using the current class as primary query
+     */
+    public function useLineageRelatedBySkillIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinLineageRelatedBySkillId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'LineageRelatedBySkillId', '\gossi\trixionary\model\LineageQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Lineage object
+     *
+     * @param \gossi\trixionary\model\Lineage|ObjectCollection $lineage the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByLineageRelatedByAncestorId($lineage, $comparison = null)
+    {
+        if ($lineage instanceof \gossi\trixionary\model\Lineage) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_ID, $lineage->getAncestorId(), $comparison);
+        } elseif ($lineage instanceof ObjectCollection) {
+            return $this
+                ->useLineageRelatedByAncestorIdQuery()
+                ->filterByPrimaryKeys($lineage->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByLineageRelatedByAncestorId() only accepts arguments of type \gossi\trixionary\model\Lineage or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the LineageRelatedByAncestorId relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinLineageRelatedByAncestorId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('LineageRelatedByAncestorId');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'LineageRelatedByAncestorId');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the LineageRelatedByAncestorId relation Lineage object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\LineageQuery A secondary query class using the current class as primary query
+     */
+    public function useLineageRelatedByAncestorIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinLineageRelatedByAncestorId($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'LineageRelatedByAncestorId', '\gossi\trixionary\model\LineageQuery');
     }
 
     /**

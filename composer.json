@@ -27,7 +27,8 @@
 		"puli/composer-plugin": "@beta",
 		"puli/twig-extension": "@beta",
 		"puli/url-generator": "@beta",
-		"puli/discovery": "@beta"
+		"puli/discovery": "@beta",
+		"phpunit/phpunit": "~4|~5"
 	},
 	"extra": {
 		"keeko": {
@@ -1924,9 +1925,144 @@
 						"responder": {
 							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
 						}
+					},
+					"skill-to-lineage-relationship-read": {
+						"title": "Reads the relationship of skill to lineage",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						}
+					},
+					"skill-to-lineage-relationship-update": {
+						"title": "Updates the relationship of skill to lineage",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						}
+					},
+					"skill-to-lineage-relationship-add": {
+						"title": "Adds lineage as relationship to skill",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageAddAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						}
+					},
+					"skill-to-lineage-relationship-remove": {
+						"title": "Removes lineage as relationship to skill",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageRemoveAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						}
+					},
+					"lineage-paginate": {
+						"title": "Paginates lineages",
+						"class": "gossi\\trixionary\\action\\model\\LineagePaginateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\model\\LineagePaginateJsonResponder"
+						}
+					},
+					"lineage-create": {
+						"title": "Creates a lineage",
+						"class": "gossi\\trixionary\\action\\model\\LineageCreateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\model\\LineageCreateJsonResponder"
+						}
+					},
+					"lineage-read": {
+						"title": "Reads a lineage",
+						"class": "gossi\\trixionary\\action\\model\\LineageReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\model\\LineageReadJsonResponder"
+						}
+					},
+					"lineage-update": {
+						"title": "Updates a lineage",
+						"class": "gossi\\trixionary\\action\\model\\LineageUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\model\\LineageUpdateJsonResponder"
+						}
+					},
+					"lineage-delete": {
+						"title": "Deletes a lineage",
+						"class": "gossi\\trixionary\\action\\model\\LineageDeleteAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\model\\LineageDeleteJsonResponder"
+						}
+					},
+					"lineage-to-skill-relationship-read": {
+						"title": "Reads the relationship of lineage to skill",
+						"class": "gossi\\trixionary\\action\\relationship\\LineageSkillReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
+						}
+					},
+					"lineage-to-skill-relationship-update": {
+						"title": "Updates the relationship of lineage to skill",
+						"class": "gossi\\trixionary\\action\\relationship\\LineageSkillUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
+						}
+					},
+					"lineage-to-ancestor-relationship-read": {
+						"title": "Reads the relationship of lineage to ancestor",
+						"class": "gossi\\trixionary\\action\\relationship\\LineageAncestorReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
+						}
+					},
+					"lineage-to-ancestor-relationship-update": {
+						"title": "Updates the relationship of lineage to ancestor",
+						"class": "gossi\\trixionary\\action\\relationship\\LineageAncestorUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
+						}
 					}
 				}
 			}
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"gossi\\trixionary\\tests\\": "tests"
 		}
 	}
 }

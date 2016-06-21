@@ -14,6 +14,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -42,20 +43,11 @@ trait FunctionPhaseDomainTrait {
 			return new NotFound(['message' => 'FunctionPhase not found.']);
 		}
 
-		// update
-		$serializer = FunctionPhase::getSerializer();
-		$method = 'add' . $serializer->getCollectionMethodName('root-skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass add to internal logic
+		try {
+			$this->doAddRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -83,6 +75,7 @@ trait FunctionPhaseDomainTrait {
 		// hydrate
 		$serializer = FunctionPhase::getSerializer();
 		$model = $serializer->hydrate(new FunctionPhase(), $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -196,20 +189,11 @@ trait FunctionPhaseDomainTrait {
 			return new NotFound(['message' => 'FunctionPhase not found.']);
 		}
 
-		// remove them
-		$serializer = FunctionPhase::getSerializer();
-		$method = 'remove' . $serializer->getCollectionMethodName('root-skills');
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->$method($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass remove to internal logic
+		try {
+			$this->doRemoveRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -243,9 +227,7 @@ trait FunctionPhaseDomainTrait {
 		}
 
 		// update
-		if ($model->getSkillId() !== $relatedId) {
-			$model->setSkillId($relatedId);
-
+		if ($this->doSetSkillId($model, $relatedId)) {
 			$event = new FunctionPhaseEvent($model);
 			$this->dispatch(FunctionPhaseEvent::PRE_SKILL_UPDATE, $event);
 			$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
@@ -277,6 +259,7 @@ trait FunctionPhaseDomainTrait {
 		// hydrate
 		$serializer = FunctionPhase::getSerializer();
 		$model = $serializer->hydrate($model, $data);
+		$this->hydrateRelationships($model, $data);
 
 		// validate
 		$validator = $this->getValidator();
@@ -318,21 +301,11 @@ trait FunctionPhaseDomainTrait {
 			return new NotFound(['message' => 'FunctionPhase not found.']);
 		}
 
-		// remove all relationships before
-		SkillQuery::create()->filterByFunctionPhaseRoot($model)->delete();
-
-		// add them
-		$errors = [];
-		foreach ($data as $entry) {
-			if (!isset($entry['id'])) {
-				$errors[] = 'Missing id for Skill';
-			}
-			$related = SkillQuery::create()->findOneById($entry['id']);
-			$model->addRootSkill($related);
-		}
-
-		if (count($errors) > 0) {
-			return new NotValid(['errors' => $errors]);
+		// pass update to internal logic
+		try {
+			$this->doUpdateRootSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
 		}
 
 		// save and dispatch events
@@ -402,6 +375,92 @@ trait FunctionPhaseDomainTrait {
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
 		$dispatcher->dispatch($type, $event);
+	}
+
+	/**
+	 * Interal mechanism to add RootSkills to FunctionPhase
+	 * 
+	 * @param FunctionPhase $model
+	 * @param mixed $data
+	 */
+	protected function doAddRootSkills(FunctionPhase $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove RootSkills from FunctionPhase
+	 * 
+	 * @param FunctionPhase $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveRootSkills(FunctionPhase $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal mechanism to set the Skill id
+	 * 
+	 * @param FunctionPhase $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetSkillId(FunctionPhase $model, $relatedId) {
+		if ($model->getSkillId() !== $relatedId) {
+			$model->setSkillId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal update mechanism of RootSkills on FunctionPhase
+	 * 
+	 * @param FunctionPhase $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateRootSkills(FunctionPhase $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterByFunctionPhaseRoot($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addRootSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

@@ -126,7 +126,7 @@ trait SportSerializerTrait {
 		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default']);
 
 		// relationships
-		$this->hydrateRelationships($model, $data);
+		//$this->hydrateRelationships($model, $data);
 
 		return $model;
 	}
@@ -194,11 +194,4 @@ trait SportSerializerTrait {
 	protected function getTypeInferencer() {
 		return TypeInferencer::getInstance();
 	}
-
-	/**
-	 * @param mixed $model
-	 * @param mixed $data
-	 * @return void
-	 */
-	abstract protected function hydrateRelationships($model, $data);
 }
