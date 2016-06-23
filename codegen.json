@@ -2,7 +2,7 @@
 	"models": {
 	    "sport": {
 	        "includes": [
-				"skills.parents","skills.lineages","skills.lineages.ancestor","skills.lineages.skill"
+				"skills.variationOf", "skills.parents", "skills.lineages", "skills.lineages.ancestor", "skills.lineages.skill"
 			]
 		},
 		"skill": {

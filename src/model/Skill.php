@@ -50,15 +50,7 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 
 	/**
 	 */
-	private $ancestors = null;
-
-	/**
-	 */
 	private $authors = null;
-
-	/**
-	 */
-	private $descendents = null;
 
 	/**
 	 */
@@ -76,18 +68,6 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 	}
 
 	/**
-	 */
-	public function clearAncestors() {
-		$this->ancestors = null;
-	}
-
-	/**
-	 */
-	public function clearDescendents() {
-		$this->descendents = null;
-	}
-
-	/**
 	 * @return User[]
 	 */
 	public function getAllAuthors() {
@@ -102,23 +82,22 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 	 * @return Skill[]
 	 */
 	public function getAncestors() {
-		if ($this->ancestors === null) {
-		    $this->ancestors = new Map();
-		    $add = function (Skill $skill) {
-		        if (!$skill->isTransition()) {
-		            $this->ancestors->set($skill->getId(), $skill);
-		            $this->ancestors->setAll($skill->getAncestors());
-		        }
-		    };
-		    foreach ($this->getParents() as $parent) {
-		        $add($parent);
+		$ancestors = new Map();
+		$add = function (Skill $skill) use($ancestors) {
+		    if ($skill->isMultiple() || $skill->isTransition()) {
+		        return;
 		    }
-		    $variationOf = $this->getVariationOf();
-		    if ($variationOf !== null) {
-		        $add($variationOf);
-		    }
+		    $ancestors->set($skill->getId(), $skill);
+		    $ancestors->setAll($skill->getAncestors());
+		};
+		foreach ($this->getParents() as $parent) {
+		    $add($parent);
 		}
-		return $this->ancestors->toArray();
+		$variationOf = $this->getVariationOf();
+		if ($variationOf !== null) {
+		    $add($variationOf);
+		}
+		return $ancestors->toArray();
 	}
 
 	/**
@@ -166,22 +145,21 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 	 * @return Skill[]
 	 */
 	public function getDescendents() {
-		if ($this->descendents === null) {
-		    $this->descendents = new Map();
-		    $add = function (Skill $skill) {
-		        if (!$skill->isTransition()) {
-		            $this->descendents->set($skill->getId(), $skill);
-		            $this->descendents->setAll($skill->getDescendents());
-		        }
-		    };
-		    foreach ($this->getVariations() as $variation) {
-		        $add($variation);
+		$descendents = new Map();
+		$add = function (Skill $skill) use($descendents) {
+		    if ($skill->isMultiple() || $skill->isTransition()) {
+		        return;
 		    }
-		    foreach ($this->getChildren() as $child) {
-		        $add($child);
-		    }
+		    $descendents->set($skill->getId(), $skill);
+		    $descendents->setAll($skill->getDescendents());
+		};
+		foreach ($this->getVariations() as $variation) {
+		    $add($variation);
 		}
-		return $this->descendents->toArray();
+		foreach ($this->getChildren() as $child) {
+		    $add($child);
+		}
+		return $descendents->toArray();
 	}
 
 	/**

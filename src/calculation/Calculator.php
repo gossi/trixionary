@@ -5,22 +5,49 @@ use gossi\trixionary\model\Lineage;
 use gossi\trixionary\model\Skill;
 use phootwork\collection\Queue;
 use phootwork\collection\Set;
+use phootwork\collection\Map;
 
 class Calculator {
 
 	private static $instance;
 
+	/** @var Set */
 	private $processedImportanceSkills;
+
+	/** @var Set */
 	private $processedGenerationSkills;
+
+	/** @var Queue */
 	private $queuedImportanceSkills;
+
+	/** @var array */
 	private $lineage = [];
+
+	/** @var Set */
 	private $modifiedSkills;
+
+	/** @var Map */
+	private $ancestors;
+
+	/** @var Map */
+	private $descendents;
 
 	public function __construct() {
 		$this->processedGenerationSkills = new Set();
 		$this->processedImportanceSkills = new Set();
 		$this->queuedImportanceSkills = new Queue();
 		$this->modifiedSkills = new Set();
+		$this->ancestors = new Map();
+		$this->descendents = new Map();
+	}
+
+	public function reset() {
+		$this->processedGenerationSkills->clear();
+		$this->processedImportanceSkills->clear();
+		$this->queuedImportanceSkills->clear();
+		$this->modifiedSkills->clear();
+		$this->ancestors->clear();
+		$this->descendents->clear();
 	}
 
 	/**
@@ -37,6 +64,30 @@ class Calculator {
 		return $this->processedGenerationSkills;
 	}
 
+	/**
+	 * @param Skill $skill
+	 * @return Skill[]
+	 */
+	private function getAncestors(Skill $skill) {
+		if (!$this->ancestors->has($skill->getId())) {
+			$this->ancestors->set($skill->getId(), $skill->getAncestors());
+		}
+
+		return $this->ancestors->get($skill->getId());
+	}
+
+	/**
+	 * @param Skill $skill
+	 * @return Skill[]
+	 */
+	private function getDescendents(Skill $skill) {
+		if (!$this->descendents->has($skill->getId())) {
+			$this->descendents->set($skill->getId(), $skill->getDescendents());
+		}
+
+		return $this->descendents->get($skill->getId());
+	}
+
 	public function calculate(Skill $skill) {
 		$this->calculateImportance($skill);
 		$this->calculateGeneration($skill);
@@ -47,8 +98,8 @@ class Calculator {
 			return;
 		}
 
-		$importanceDump = $skill->getImportance();
-		$descendents = $skill->getDescendents();
+// 		$importanceDump = $skill->getImportance();
+		$descendents = $this->getDescendents($skill);
 		$importance = count($descendents);
 
 		$skill->setImportance($importance);
@@ -56,9 +107,10 @@ class Calculator {
 		$this->modifiedSkills->add($skill);
 		$this->processedImportanceSkills->add($skill);
 
-		if ($importance !== $importanceDump || $importance == 0) {
-			$this->queuedImportanceSkills->enqueueAll($skill->getParents());
-		}
+// 		if ($importance !== $importanceDump || $importance == 0) {
+// 			$this->queuedImportanceSkills->enqueueAll($skill->getParents());
+// 		}
+		$this->queuedImportanceSkills->enqueueAll($skill->getParents());
 
 		$this->processImportanceQueue();
 	}
@@ -85,7 +137,7 @@ class Calculator {
 
 		$this->lineage = [];
 		$generation = 1;
-		$ancestors = $skill->getAncestors();
+		$ancestors = $this->getAncestors($skill);
 		if (count($ancestors)) {
 			$root = $this->findRoot($ancestors);
 
@@ -95,6 +147,7 @@ class Calculator {
 		}
 
 		$skill->setGeneration($generation);
+		$skill->clearLineagesRelatedBySkillId();
 
 		// set generations
 		foreach ($this->lineage as $pos => $ancestor) {
@@ -126,12 +179,35 @@ class Calculator {
 		$next = null;
 		$steps++;
 
+		// check if target is a child
+		$isChild = false;
+		foreach ($children as $child) {
+			if ($child == $target) {
+				$isChild = true;
+			}
+		}
+
+		// check if siblings have a connection to target
+		if ($isChild) {
+			$connectedSiblings = [];
+			foreach ($children as $child) {
+				$ids = array_keys($this->getDescendents($child));
+				if (in_array($target->getId(), $ids)) {
+					$connectedSiblings[] = $child;
+				}
+			}
+
+			// make siblings the new children
+			if (count($connectedSiblings) > 0) {
+				$children = $connectedSiblings;
+			} else {
+				return $steps;
+			}
+		}
+
 		// filter children to get only available skills from the pool
 		// find the one with the highest importance ...
 		foreach ($children as $child) {
-			if ($child == $target) {
-				return $steps;
-			}
 			if (in_array($child, $pool)) {
 				$importance = $child->getImportance();
 				if ($importance > $max) {
@@ -167,7 +243,7 @@ class Calculator {
 		$descendents = [];
 		foreach ($this->processedImportanceSkills as $skill) {
 			$descendents[$skill->getId()] = $skill;
-			foreach ($skill->getDescendents() as $descendent) {
+			foreach ($this->getDescendents($skill) as $descendent) {
 				$descendents[$descendent->getId()] = $descendent;
 			}
 		}
