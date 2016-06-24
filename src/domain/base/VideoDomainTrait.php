@@ -38,6 +38,10 @@ trait VideoDomainTrait {
 		$model = $serializer->hydrate(new Video(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(VideoEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -46,13 +50,11 @@ trait VideoDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new VideoEvent($model);
-		$this->dispatch(VideoEvent::PRE_CREATE, $event);
-		$this->dispatch(VideoEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(VideoEvent::POST_CREATE, $event);
-		$this->dispatch(VideoEvent::POST_SAVE, $event);
+		$this->dispatch(VideoEvent::POST_CREATE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -71,12 +73,11 @@ trait VideoDomainTrait {
 		}
 
 		// delete
-		$event = new VideoEvent($model);
-		$this->dispatch(VideoEvent::PRE_DELETE, $event);
+		$this->dispatch(VideoEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(VideoEvent::POST_DELETE, $event);
+			$this->dispatch(VideoEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -152,12 +153,11 @@ trait VideoDomainTrait {
 
 		// update
 		if ($this->doSetReferenceId($model, $relatedId)) {
-			$event = new VideoEvent($model);
-			$this->dispatch(VideoEvent::PRE_REFERENCE_UPDATE, $event);
-			$this->dispatch(VideoEvent::PRE_SAVE, $event);
+			$this->dispatch(VideoEvent::PRE_REFERENCE_UPDATE, $model);
+			$this->dispatch(VideoEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(VideoEvent::POST_REFERENCE_UPDATE, $event);
-			$this->dispatch(VideoEvent::POST_SAVE, $event);
+			$this->dispatch(VideoEvent::POST_REFERENCE_UPDATE, $model);
+			$this->dispatch(VideoEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -182,12 +182,11 @@ trait VideoDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new VideoEvent($model);
-			$this->dispatch(VideoEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(VideoEvent::PRE_SAVE, $event);
+			$this->dispatch(VideoEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(VideoEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(VideoEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(VideoEvent::POST_SAVE, $event);
+			$this->dispatch(VideoEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(VideoEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -215,6 +214,10 @@ trait VideoDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(VideoEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -223,13 +226,10 @@ trait VideoDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new VideoEvent($model);
-		$this->dispatch(VideoEvent::PRE_UPDATE, $event);
-		$this->dispatch(VideoEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(VideoEvent::POST_UPDATE, $event);
-		$this->dispatch(VideoEvent::POST_SAVE, $event);
+		$this->dispatch(VideoEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -268,10 +268,10 @@ trait VideoDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param VideoEvent $event
+	 * @param Video $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, VideoEvent $event) {
-		$model = $event->getVideo();
+	protected function dispatch($type, Video $model, array $data = []) {
 		$methods = [
 			VideoEvent::PRE_CREATE => 'preCreate',
 			VideoEvent::POST_CREATE => 'postCreate',
@@ -286,12 +286,12 @@ trait VideoDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new VideoEvent($model));
 	}
 
 	/**

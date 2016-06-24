@@ -47,6 +47,7 @@ trait SportSerializerTrait {
 			'skill-slug' => $model->getSkillSlug(),
 			'skill-label' => $model->getSkillLabel(),
 			'skill-plural-label' => $model->getSkillPluralLabel(),
+			'skill-picture-url' => $model->getSkillPictureUrl(),
 			'group-slug' => $model->getGroupSlug(),
 			'group-label' => $model->getGroupLabel(),
 			'group-plural-label' => $model->getGroupPluralLabel(),
@@ -64,7 +65,7 @@ trait SportSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default'];
+		return ['title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'skill-picture-url', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default'];
 	}
 
 	/**
@@ -93,7 +94,7 @@ trait SportSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default'];
+		return ['title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'skill-picture-url', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default'];
 	}
 
 	/**
@@ -123,7 +124,7 @@ trait SportSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'slug', 'athlete-label', 'object-slug', 'object-label', 'object-plural-label', 'skill-slug', 'skill-label', 'skill-plural-label', 'skill-picture-url', 'group-slug', 'group-label', 'group-plural-label', 'transition-label', 'transition-plural-label', 'transitions-slug', 'position-slug', 'position-label', 'feature-composition', 'feature-tester', 'is-default']);
 
 		// relationships
 		//$this->hydrateRelationships($model, $data);

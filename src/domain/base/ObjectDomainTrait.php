@@ -51,12 +51,11 @@ trait ObjectDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_SKILLS_ADD, $event);
-		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_ADD, $model, $data);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ObjectEvent::POST_SKILLS_ADD, $event);
-		$this->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_ADD, $model, $data);
+		$this->dispatch(ObjectEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -77,6 +76,10 @@ trait ObjectDomainTrait {
 		$model = $serializer->hydrate(new Object(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(ObjectEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -85,13 +88,11 @@ trait ObjectDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_CREATE, $event);
-		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(ObjectEvent::POST_CREATE, $event);
-		$this->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_CREATE, $model, $data);
+		$this->dispatch(ObjectEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -110,12 +111,11 @@ trait ObjectDomainTrait {
 		}
 
 		// delete
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_DELETE, $event);
+		$this->dispatch(ObjectEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(ObjectEvent::POST_DELETE, $event);
+			$this->dispatch(ObjectEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -197,12 +197,11 @@ trait ObjectDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_SKILLS_REMOVE, $event);
-		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ObjectEvent::POST_SKILLS_REMOVE, $event);
-		$this->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(ObjectEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -228,12 +227,11 @@ trait ObjectDomainTrait {
 
 		// update
 		if ($this->doSetSportId($model, $relatedId)) {
-			$event = new ObjectEvent($model);
-			$this->dispatch(ObjectEvent::PRE_SPORT_UPDATE, $event);
-			$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+			$this->dispatch(ObjectEvent::PRE_SPORT_UPDATE, $model);
+			$this->dispatch(ObjectEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(ObjectEvent::POST_SPORT_UPDATE, $event);
-			$this->dispatch(ObjectEvent::POST_SAVE, $event);
+			$this->dispatch(ObjectEvent::POST_SPORT_UPDATE, $model);
+			$this->dispatch(ObjectEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -261,6 +259,10 @@ trait ObjectDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(ObjectEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -269,13 +271,10 @@ trait ObjectDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_UPDATE, $event);
-		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(ObjectEvent::POST_UPDATE, $event);
-		$this->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(ObjectEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -309,12 +308,11 @@ trait ObjectDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ObjectEvent($model);
-		$this->dispatch(ObjectEvent::PRE_SKILLS_UPDATE, $event);
-		$this->dispatch(ObjectEvent::PRE_SAVE, $event);
+		$this->dispatch(ObjectEvent::PRE_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(ObjectEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ObjectEvent::POST_SKILLS_UPDATE, $event);
-		$this->dispatch(ObjectEvent::POST_SAVE, $event);
+		$this->dispatch(ObjectEvent::POST_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(ObjectEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -351,10 +349,10 @@ trait ObjectDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param ObjectEvent $event
+	 * @param Object $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, ObjectEvent $event) {
-		$model = $event->getObject();
+	protected function dispatch($type, Object $model, array $data = []) {
 		$methods = [
 			ObjectEvent::PRE_CREATE => 'preCreate',
 			ObjectEvent::POST_CREATE => 'postCreate',
@@ -369,12 +367,12 @@ trait ObjectDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new ObjectEvent($model));
 	}
 
 	/**

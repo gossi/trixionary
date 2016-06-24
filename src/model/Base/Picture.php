@@ -82,6 +82,12 @@ abstract class Picture implements ActiveRecordInterface
     protected $description;
 
     /**
+     * The value for the url field.
+     * @var        string
+     */
+    protected $url;
+
+    /**
      * The value for the skill_id field.
      * @var        int
      */
@@ -390,6 +396,16 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
+     * Get the [url] column value.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Get the [skill_id] column value.
      *
      * @return int
@@ -508,6 +524,26 @@ abstract class Picture implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [url] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Picture The current object (for fluent API support)
+     */
+    public function setUrl($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->url !== $v) {
+            $this->url = $v;
+            $this->modifiedColumns[PictureTableMap::COL_URL] = true;
+        }
+
+        return $this;
+    } // setUrl()
 
     /**
      * Set the value of [skill_id] column.
@@ -678,22 +714,25 @@ abstract class Picture implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PictureTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PictureTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PictureTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->url = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('Photographer', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PictureTableMap::translateFieldName('Photographer', TableMap::TYPE_PHPNAME, $indexType)];
             $this->photographer = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PictureTableMap::translateFieldName('PhotographerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PictureTableMap::translateFieldName('PhotographerId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->photographer_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PictureTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PictureTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movender = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PictureTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PictureTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movender_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PictureTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PictureTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->uploader_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -703,7 +742,7 @@ abstract class Picture implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = PictureTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PictureTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Picture'), 0, $e);
@@ -945,6 +984,9 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(PictureTableMap::COL_URL)) {
+            $modifiedColumns[':p' . $index++]  = '`url`';
+        }
         if ($this->isColumnModified(PictureTableMap::COL_SKILL_ID)) {
             $modifiedColumns[':p' . $index++]  = '`skill_id`';
         }
@@ -982,6 +1024,9 @@ abstract class Picture implements ActiveRecordInterface
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`url`':
+                        $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
                     case '`skill_id`':
                         $stmt->bindValue($identifier, $this->skill_id, PDO::PARAM_INT);
@@ -1073,21 +1118,24 @@ abstract class Picture implements ActiveRecordInterface
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getSkillId();
+                return $this->getUrl();
                 break;
             case 4:
-                return $this->getPhotographer();
+                return $this->getSkillId();
                 break;
             case 5:
-                return $this->getPhotographerId();
+                return $this->getPhotographer();
                 break;
             case 6:
-                return $this->getMovender();
+                return $this->getPhotographerId();
                 break;
             case 7:
-                return $this->getMovenderId();
+                return $this->getMovender();
                 break;
             case 8:
+                return $this->getMovenderId();
+                break;
+            case 9:
                 return $this->getUploaderId();
                 break;
             default:
@@ -1123,12 +1171,13 @@ abstract class Picture implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getSkillId(),
-            $keys[4] => $this->getPhotographer(),
-            $keys[5] => $this->getPhotographerId(),
-            $keys[6] => $this->getMovender(),
-            $keys[7] => $this->getMovenderId(),
-            $keys[8] => $this->getUploaderId(),
+            $keys[3] => $this->getUrl(),
+            $keys[4] => $this->getSkillId(),
+            $keys[5] => $this->getPhotographer(),
+            $keys[6] => $this->getPhotographerId(),
+            $keys[7] => $this->getMovender(),
+            $keys[8] => $this->getMovenderId(),
+            $keys[9] => $this->getUploaderId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1210,21 +1259,24 @@ abstract class Picture implements ActiveRecordInterface
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setSkillId($value);
+                $this->setUrl($value);
                 break;
             case 4:
-                $this->setPhotographer($value);
+                $this->setSkillId($value);
                 break;
             case 5:
-                $this->setPhotographerId($value);
+                $this->setPhotographer($value);
                 break;
             case 6:
-                $this->setMovender($value);
+                $this->setPhotographerId($value);
                 break;
             case 7:
-                $this->setMovenderId($value);
+                $this->setMovender($value);
                 break;
             case 8:
+                $this->setMovenderId($value);
+                break;
+            case 9:
                 $this->setUploaderId($value);
                 break;
         } // switch()
@@ -1263,22 +1315,25 @@ abstract class Picture implements ActiveRecordInterface
             $this->setDescription($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setSkillId($arr[$keys[3]]);
+            $this->setUrl($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setPhotographer($arr[$keys[4]]);
+            $this->setSkillId($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPhotographerId($arr[$keys[5]]);
+            $this->setPhotographer($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setMovender($arr[$keys[6]]);
+            $this->setPhotographerId($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setMovenderId($arr[$keys[7]]);
+            $this->setMovender($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setUploaderId($arr[$keys[8]]);
+            $this->setMovenderId($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setUploaderId($arr[$keys[9]]);
         }
     }
 
@@ -1329,6 +1384,9 @@ abstract class Picture implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PictureTableMap::COL_DESCRIPTION)) {
             $criteria->add(PictureTableMap::COL_DESCRIPTION, $this->description);
+        }
+        if ($this->isColumnModified(PictureTableMap::COL_URL)) {
+            $criteria->add(PictureTableMap::COL_URL, $this->url);
         }
         if ($this->isColumnModified(PictureTableMap::COL_SKILL_ID)) {
             $criteria->add(PictureTableMap::COL_SKILL_ID, $this->skill_id);
@@ -1436,6 +1494,7 @@ abstract class Picture implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setUrl($this->getUrl());
         $copyObj->setSkillId($this->getSkillId());
         $copyObj->setPhotographer($this->getPhotographer());
         $copyObj->setPhotographerId($this->getPhotographerId());
@@ -1982,6 +2041,7 @@ abstract class Picture implements ActiveRecordInterface
         $this->id = null;
         $this->title = null;
         $this->description = null;
+        $this->url = null;
         $this->skill_id = null;
         $this->photographer = null;
         $this->photographer_id = null;

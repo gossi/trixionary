@@ -6,6 +6,8 @@ use keeko\framework\foundation\AbstractAction;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use keeko\framework\domain\payload\Failed;
+use keeko\framework\domain\payload\Success;
 
 /**
  * Upload media
@@ -21,61 +23,40 @@ class UploadAction extends AbstractAction {
 	 * @return Response
 	 */
 	public function run(Request $request) {
-		// uncomment the following to pass data to your response
-		$error = null;
 		$file = $request->files->get('file');
-		$fileName = $file->getClientOriginalName();
-		if ($file->isValid()) {
-			try {
-				// user validations
-				$mimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/quicktime'];
-				$mimeTypesMatch = false;
-				foreach ($mimeTypes as $mimeType) {
-					if ($file->getClientMimeType() == $mimeType) {
-						$mimeTypesMatch = true;
-					}
-				}
 
-				if (!$mimeTypesMatch) {
-					throw new FileException('No matching mime type');
-				}
-
-				$exts = ['png', 'jpg', 'jpeg', 'mov', 'mp4'];
-				$extMatch = false;
-				foreach ($exts as $ext) {
-					if (strtolower($file->getClientOriginalExtension()) == $ext) {
-						$extMatch = true;
-					}
-				}
-
-				if (!$extMatch) {
-					throw new FileException('No matching extension');
-				}
-
-				$slugifier = new Slugify();
-				$fileName = str_replace('.' . $file->getClientOriginalExtension(), '', $fileName);
-				$fileName = $slugifier->slugify($fileName) . '.' . $file->getClientOriginalExtension();
-				$file->move($this->getModule()->getUploadPath(), $fileName);
-			} catch (FileException $e) {
-				$error = $e->getMessage();
+		try {
+			// validate: upload progress
+			if (!$file->isValid()) {
+				throw new FileException($file->getErrorMessage());
 			}
-		} else {
-			$error = $file->getErrorMessage();
-		}
-		$json = [
-			'name' => $fileName,
-			'size' => $file->getClientSize()
-		];
 
-		if ($error !== null) {
-			$json['error'] = $error;
-		} else {
-			$json['url'] = $this->getModule()->getUploadUrl() . '/' . urlencode($fileName);
-			$json['deleteUrl'] = $this->getServiceContainer()->getPreferenceLoader()->getSystemPreferences()->getApiUrl() . 'gossi.trixionary/upload/' . $fileName;
-			$json['deleteType'] = 'DELETE';
+			// validate: mime type
+			$mimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/quicktime'];
+			if (!in_array($file->getClientMimeType(), $mimeTypes)) {
+				throw new FileException('No matching mime type');
+			}
+
+			// validate: extension
+			$exts = ['png', 'jpg', 'jpeg', 'mp4', 'mov'];
+			if (!in_array($file->getClientOriginalExtension(), $exts)) {
+				throw new FileException('No matching extension');
+			}
+
+			// move uploaded file
+			$slugifier = new Slugify();
+			$fileName = $file->getClientOriginalName();
+			$fileName = str_replace('.' . $file->getClientOriginalExtension(), '', $fileName);
+			$fileName = $slugifier->slugify($fileName) . '.' . $file->getClientOriginalExtension();
+			$file->move($this->getModule()->getUploadPath()->toString(), $fileName);
+			$payload = new Success([
+				'filename' => $fileName,
+				'url' => $this->getModule()->getUploadUrl() . '/' . urlencode($fileName)
+			]);
+		} catch (FileException $e) {
+			$payload = new Failed(['error' => $e->getMessage()]);
 		}
 
-		$this->response->setData(['files' => [$json]]);
-		return $this->response->run($request);
+		return $this->responder->run($request, $payload);
 	}
 }

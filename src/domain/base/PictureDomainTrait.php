@@ -38,6 +38,10 @@ trait PictureDomainTrait {
 		$model = $serializer->hydrate(new Picture(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(PictureEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(PictureEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -46,13 +50,11 @@ trait PictureDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new PictureEvent($model);
-		$this->dispatch(PictureEvent::PRE_CREATE, $event);
-		$this->dispatch(PictureEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(PictureEvent::POST_CREATE, $event);
-		$this->dispatch(PictureEvent::POST_SAVE, $event);
+		$this->dispatch(PictureEvent::POST_CREATE, $model, $data);
+		$this->dispatch(PictureEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -71,12 +73,11 @@ trait PictureDomainTrait {
 		}
 
 		// delete
-		$event = new PictureEvent($model);
-		$this->dispatch(PictureEvent::PRE_DELETE, $event);
+		$this->dispatch(PictureEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(PictureEvent::POST_DELETE, $event);
+			$this->dispatch(PictureEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -152,12 +153,11 @@ trait PictureDomainTrait {
 
 		// update
 		if ($this->doSetFeaturedSkillId($model, $relatedId)) {
-			$event = new PictureEvent($model);
-			$this->dispatch(PictureEvent::PRE_FEATURED_SKILL_UPDATE, $event);
-			$this->dispatch(PictureEvent::PRE_SAVE, $event);
+			$this->dispatch(PictureEvent::PRE_FEATURED_SKILL_UPDATE, $model);
+			$this->dispatch(PictureEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(PictureEvent::POST_FEATURED_SKILL_UPDATE, $event);
-			$this->dispatch(PictureEvent::POST_SAVE, $event);
+			$this->dispatch(PictureEvent::POST_FEATURED_SKILL_UPDATE, $model);
+			$this->dispatch(PictureEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -182,12 +182,11 @@ trait PictureDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new PictureEvent($model);
-			$this->dispatch(PictureEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(PictureEvent::PRE_SAVE, $event);
+			$this->dispatch(PictureEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(PictureEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(PictureEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(PictureEvent::POST_SAVE, $event);
+			$this->dispatch(PictureEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(PictureEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -215,6 +214,10 @@ trait PictureDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(PictureEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(PictureEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -223,13 +226,10 @@ trait PictureDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new PictureEvent($model);
-		$this->dispatch(PictureEvent::PRE_UPDATE, $event);
-		$this->dispatch(PictureEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(PictureEvent::POST_UPDATE, $event);
-		$this->dispatch(PictureEvent::POST_SAVE, $event);
+		$this->dispatch(PictureEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(PictureEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -268,10 +268,10 @@ trait PictureDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param PictureEvent $event
+	 * @param Picture $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, PictureEvent $event) {
-		$model = $event->getPicture();
+	protected function dispatch($type, Picture $model, array $data = []) {
 		$methods = [
 			PictureEvent::PRE_CREATE => 'preCreate',
 			PictureEvent::POST_CREATE => 'postCreate',
@@ -286,12 +286,12 @@ trait PictureDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new PictureEvent($model));
 	}
 
 	/**

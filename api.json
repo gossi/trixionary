@@ -4,6 +4,39 @@
 		"title": "Trixionary API"
 	},
 	"paths": {
+		"/upload": {
+			"post": {
+				"description": "Upload media",
+				"operationId": "upload",
+				"responses": {
+					"200": {
+						"description": "Successful upload",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"filename": {
+									"type": "string"
+								},
+								"url": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/upload/{filename}": {
+			"delete": {
+				"description": "Delete uploaded media",
+				"operationId": "upload-delete",
+				"responses": {
+					"204": {
+						"description": "Successful delete"
+					}
+				}
+			}
+		},
 		"/sports": {
 			"get": {
 				"description": "Paginates sports",
@@ -9098,6 +9131,9 @@
 								},
 								"is_default": {
 									"type": "boolean"
+								},
+								"skill_picture_url": {
+									"type": "string"
 								}
 							}
 						},
@@ -9236,6 +9272,9 @@
 								},
 								"is_default": {
 									"type": "boolean"
+								},
+								"skill_picture_url": {
+									"type": "string"
 								}
 							}
 						},
@@ -9797,6 +9836,9 @@
 								},
 								"version_comment": {
 									"type": "string"
+								},
+								"sequence_picture_url": {
+									"type": "string"
 								}
 							}
 						},
@@ -10185,6 +10227,9 @@
 									"type": "string"
 								},
 								"version_comment": {
+									"type": "string"
+								},
+								"sequence_picture_url": {
 									"type": "string"
 								}
 							}
@@ -11018,6 +11063,9 @@
 								},
 								"uploader_id": {
 									"type": "integer"
+								},
+								"url": {
+									"type": "string"
 								}
 							}
 						},
@@ -11108,6 +11156,9 @@
 								},
 								"uploader_id": {
 									"type": "integer"
+								},
+								"url": {
+									"type": "string"
 								}
 							}
 						},
@@ -11238,6 +11289,9 @@
 								},
 								"height": {
 									"type": "integer"
+								},
+								"url": {
+									"type": "string"
 								}
 							}
 						},
@@ -11346,6 +11400,9 @@
 								},
 								"height": {
 									"type": "integer"
+								},
+								"url": {
+									"type": "string"
 								}
 							}
 						},

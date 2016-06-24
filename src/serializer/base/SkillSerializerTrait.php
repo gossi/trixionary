@@ -161,6 +161,7 @@ trait SkillSerializerTrait {
 			'latitudinal-flags' => $model->getLatitudinalFlags(),
 			'transversal-flags' => $model->getTransversalFlags(),
 			'movement-description' => $model->getMovementDescription(),
+			'sequence-picture-url' => $model->getSequencePictureUrl(),
 			'is-composite' => $model->getIsComposite(),
 			'is-multiple' => $model->getIsMultiple(),
 			'multiplier' => $model->getMultiplier(),
@@ -175,7 +176,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'sequence-picture-url', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -222,7 +223,7 @@ trait SkillSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
+		return ['name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'sequence-picture-url', 'is-composite', 'is-multiple', 'multiplier', 'generation', 'importance', 'version', 'version-created-at', 'version-comment'];
 	}
 
 	/**
@@ -252,7 +253,7 @@ trait SkillSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'sequence-picture-url', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
 
 		// relationships
 		//$this->hydrateRelationships($model, $data);

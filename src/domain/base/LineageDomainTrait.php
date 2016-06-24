@@ -38,6 +38,10 @@ trait LineageDomainTrait {
 		$model = $serializer->hydrate(new Lineage(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(LineageEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(LineageEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -46,13 +50,11 @@ trait LineageDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new LineageEvent($model);
-		$this->dispatch(LineageEvent::PRE_CREATE, $event);
-		$this->dispatch(LineageEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(LineageEvent::POST_CREATE, $event);
-		$this->dispatch(LineageEvent::POST_SAVE, $event);
+		$this->dispatch(LineageEvent::POST_CREATE, $model, $data);
+		$this->dispatch(LineageEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -71,12 +73,11 @@ trait LineageDomainTrait {
 		}
 
 		// delete
-		$event = new LineageEvent($model);
-		$this->dispatch(LineageEvent::PRE_DELETE, $event);
+		$this->dispatch(LineageEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(LineageEvent::POST_DELETE, $event);
+			$this->dispatch(LineageEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -152,12 +153,11 @@ trait LineageDomainTrait {
 
 		// update
 		if ($this->doSetAncestorId($model, $relatedId)) {
-			$event = new LineageEvent($model);
-			$this->dispatch(LineageEvent::PRE_ANCESTOR_UPDATE, $event);
-			$this->dispatch(LineageEvent::PRE_SAVE, $event);
+			$this->dispatch(LineageEvent::PRE_ANCESTOR_UPDATE, $model);
+			$this->dispatch(LineageEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(LineageEvent::POST_ANCESTOR_UPDATE, $event);
-			$this->dispatch(LineageEvent::POST_SAVE, $event);
+			$this->dispatch(LineageEvent::POST_ANCESTOR_UPDATE, $model);
+			$this->dispatch(LineageEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -182,12 +182,11 @@ trait LineageDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new LineageEvent($model);
-			$this->dispatch(LineageEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(LineageEvent::PRE_SAVE, $event);
+			$this->dispatch(LineageEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(LineageEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(LineageEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(LineageEvent::POST_SAVE, $event);
+			$this->dispatch(LineageEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(LineageEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -215,6 +214,10 @@ trait LineageDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(LineageEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(LineageEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -223,13 +226,10 @@ trait LineageDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new LineageEvent($model);
-		$this->dispatch(LineageEvent::PRE_UPDATE, $event);
-		$this->dispatch(LineageEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(LineageEvent::POST_UPDATE, $event);
-		$this->dispatch(LineageEvent::POST_SAVE, $event);
+		$this->dispatch(LineageEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(LineageEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -268,10 +268,10 @@ trait LineageDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param LineageEvent $event
+	 * @param Lineage $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, LineageEvent $event) {
-		$model = $event->getLineage();
+	protected function dispatch($type, Lineage $model, array $data = []) {
 		$methods = [
 			LineageEvent::PRE_CREATE => 'preCreate',
 			LineageEvent::POST_CREATE => 'postCreate',
@@ -286,12 +286,12 @@ trait LineageDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new LineageEvent($model));
 	}
 
 	/**

@@ -51,12 +51,11 @@ trait ReferenceDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_VIDEOS_ADD, $event);
-		$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+		$this->dispatch(ReferenceEvent::PRE_VIDEOS_ADD, $model, $data);
+		$this->dispatch(ReferenceEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ReferenceEvent::POST_VIDEOS_ADD, $event);
-		$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+		$this->dispatch(ReferenceEvent::POST_VIDEOS_ADD, $model, $data);
+		$this->dispatch(ReferenceEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -77,6 +76,10 @@ trait ReferenceDomainTrait {
 		$model = $serializer->hydrate(new Reference(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(ReferenceEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(ReferenceEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -85,13 +88,11 @@ trait ReferenceDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_CREATE, $event);
-		$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(ReferenceEvent::POST_CREATE, $event);
-		$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+		$this->dispatch(ReferenceEvent::POST_CREATE, $model, $data);
+		$this->dispatch(ReferenceEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -110,12 +111,11 @@ trait ReferenceDomainTrait {
 		}
 
 		// delete
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_DELETE, $event);
+		$this->dispatch(ReferenceEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(ReferenceEvent::POST_DELETE, $event);
+			$this->dispatch(ReferenceEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -197,12 +197,11 @@ trait ReferenceDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_VIDEOS_REMOVE, $event);
-		$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+		$this->dispatch(ReferenceEvent::PRE_VIDEOS_REMOVE, $model, $data);
+		$this->dispatch(ReferenceEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ReferenceEvent::POST_VIDEOS_REMOVE, $event);
-		$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+		$this->dispatch(ReferenceEvent::POST_VIDEOS_REMOVE, $model, $data);
+		$this->dispatch(ReferenceEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -228,12 +227,11 @@ trait ReferenceDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new ReferenceEvent($model);
-			$this->dispatch(ReferenceEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+			$this->dispatch(ReferenceEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(ReferenceEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(ReferenceEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+			$this->dispatch(ReferenceEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(ReferenceEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -261,6 +259,10 @@ trait ReferenceDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(ReferenceEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(ReferenceEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -269,13 +271,10 @@ trait ReferenceDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_UPDATE, $event);
-		$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(ReferenceEvent::POST_UPDATE, $event);
-		$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+		$this->dispatch(ReferenceEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(ReferenceEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -309,12 +308,11 @@ trait ReferenceDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new ReferenceEvent($model);
-		$this->dispatch(ReferenceEvent::PRE_VIDEOS_UPDATE, $event);
-		$this->dispatch(ReferenceEvent::PRE_SAVE, $event);
+		$this->dispatch(ReferenceEvent::PRE_VIDEOS_UPDATE, $model, $data);
+		$this->dispatch(ReferenceEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(ReferenceEvent::POST_VIDEOS_UPDATE, $event);
-		$this->dispatch(ReferenceEvent::POST_SAVE, $event);
+		$this->dispatch(ReferenceEvent::POST_VIDEOS_UPDATE, $model, $data);
+		$this->dispatch(ReferenceEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -351,10 +349,10 @@ trait ReferenceDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param ReferenceEvent $event
+	 * @param Reference $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, ReferenceEvent $event) {
-		$model = $event->getReference();
+	protected function dispatch($type, Reference $model, array $data = []) {
 		$methods = [
 			ReferenceEvent::PRE_CREATE => 'preCreate',
 			ReferenceEvent::POST_CREATE => 'postCreate',
@@ -369,12 +367,12 @@ trait ReferenceDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new ReferenceEvent($model));
 	}
 
 	/**

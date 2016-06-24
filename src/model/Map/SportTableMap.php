@@ -59,7 +59,7 @@ class SportTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 21;
+    const NUM_COLUMNS = 22;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class SportTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 21;
+    const NUM_HYDRATE_COLUMNS = 22;
 
     /**
      * the column name for the id field
@@ -120,6 +120,11 @@ class SportTableMap extends TableMap
      * the column name for the skill_plural_label field
      */
     const COL_SKILL_PLURAL_LABEL = 'kk_trixionary_sport.skill_plural_label';
+
+    /**
+     * the column name for the skill_picture_url field
+     */
+    const COL_SKILL_PICTURE_URL = 'kk_trixionary_sport.skill_picture_url';
 
     /**
      * the column name for the group_slug field
@@ -188,11 +193,11 @@ class SportTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Slug', 'AthleteLabel', 'ObjectSlug', 'ObjectLabel', 'ObjectPluralLabel', 'SkillSlug', 'SkillLabel', 'SkillPluralLabel', 'GroupSlug', 'GroupLabel', 'GroupPluralLabel', 'TransitionLabel', 'TransitionPluralLabel', 'TransitionsSlug', 'PositionSlug', 'PositionLabel', 'FeatureComposition', 'FeatureTester', 'IsDefault', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'slug', 'athleteLabel', 'objectSlug', 'objectLabel', 'objectPluralLabel', 'skillSlug', 'skillLabel', 'skillPluralLabel', 'groupSlug', 'groupLabel', 'groupPluralLabel', 'transitionLabel', 'transitionPluralLabel', 'transitionsSlug', 'positionSlug', 'positionLabel', 'featureComposition', 'featureTester', 'isDefault', ),
-        self::TYPE_COLNAME       => array(SportTableMap::COL_ID, SportTableMap::COL_TITLE, SportTableMap::COL_SLUG, SportTableMap::COL_ATHLETE_LABEL, SportTableMap::COL_OBJECT_SLUG, SportTableMap::COL_OBJECT_LABEL, SportTableMap::COL_OBJECT_PLURAL_LABEL, SportTableMap::COL_SKILL_SLUG, SportTableMap::COL_SKILL_LABEL, SportTableMap::COL_SKILL_PLURAL_LABEL, SportTableMap::COL_GROUP_SLUG, SportTableMap::COL_GROUP_LABEL, SportTableMap::COL_GROUP_PLURAL_LABEL, SportTableMap::COL_TRANSITION_LABEL, SportTableMap::COL_TRANSITION_PLURAL_LABEL, SportTableMap::COL_TRANSITIONS_SLUG, SportTableMap::COL_POSITION_SLUG, SportTableMap::COL_POSITION_LABEL, SportTableMap::COL_FEATURE_COMPOSITION, SportTableMap::COL_FEATURE_TESTER, SportTableMap::COL_IS_DEFAULT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'slug', 'athlete_label', 'object_slug', 'object_label', 'object_plural_label', 'skill_slug', 'skill_label', 'skill_plural_label', 'group_slug', 'group_label', 'group_plural_label', 'transition_label', 'transition_plural_label', 'transitions_slug', 'position_slug', 'position_label', 'feature_composition', 'feature_tester', 'is_default', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Slug', 'AthleteLabel', 'ObjectSlug', 'ObjectLabel', 'ObjectPluralLabel', 'SkillSlug', 'SkillLabel', 'SkillPluralLabel', 'SkillPictureUrl', 'GroupSlug', 'GroupLabel', 'GroupPluralLabel', 'TransitionLabel', 'TransitionPluralLabel', 'TransitionsSlug', 'PositionSlug', 'PositionLabel', 'FeatureComposition', 'FeatureTester', 'IsDefault', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'slug', 'athleteLabel', 'objectSlug', 'objectLabel', 'objectPluralLabel', 'skillSlug', 'skillLabel', 'skillPluralLabel', 'skillPictureUrl', 'groupSlug', 'groupLabel', 'groupPluralLabel', 'transitionLabel', 'transitionPluralLabel', 'transitionsSlug', 'positionSlug', 'positionLabel', 'featureComposition', 'featureTester', 'isDefault', ),
+        self::TYPE_COLNAME       => array(SportTableMap::COL_ID, SportTableMap::COL_TITLE, SportTableMap::COL_SLUG, SportTableMap::COL_ATHLETE_LABEL, SportTableMap::COL_OBJECT_SLUG, SportTableMap::COL_OBJECT_LABEL, SportTableMap::COL_OBJECT_PLURAL_LABEL, SportTableMap::COL_SKILL_SLUG, SportTableMap::COL_SKILL_LABEL, SportTableMap::COL_SKILL_PLURAL_LABEL, SportTableMap::COL_SKILL_PICTURE_URL, SportTableMap::COL_GROUP_SLUG, SportTableMap::COL_GROUP_LABEL, SportTableMap::COL_GROUP_PLURAL_LABEL, SportTableMap::COL_TRANSITION_LABEL, SportTableMap::COL_TRANSITION_PLURAL_LABEL, SportTableMap::COL_TRANSITIONS_SLUG, SportTableMap::COL_POSITION_SLUG, SportTableMap::COL_POSITION_LABEL, SportTableMap::COL_FEATURE_COMPOSITION, SportTableMap::COL_FEATURE_TESTER, SportTableMap::COL_IS_DEFAULT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'slug', 'athlete_label', 'object_slug', 'object_label', 'object_plural_label', 'skill_slug', 'skill_label', 'skill_plural_label', 'skill_picture_url', 'group_slug', 'group_label', 'group_plural_label', 'transition_label', 'transition_plural_label', 'transitions_slug', 'position_slug', 'position_label', 'feature_composition', 'feature_tester', 'is_default', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -202,11 +207,11 @@ class SportTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Slug' => 2, 'AthleteLabel' => 3, 'ObjectSlug' => 4, 'ObjectLabel' => 5, 'ObjectPluralLabel' => 6, 'SkillSlug' => 7, 'SkillLabel' => 8, 'SkillPluralLabel' => 9, 'GroupSlug' => 10, 'GroupLabel' => 11, 'GroupPluralLabel' => 12, 'TransitionLabel' => 13, 'TransitionPluralLabel' => 14, 'TransitionsSlug' => 15, 'PositionSlug' => 16, 'PositionLabel' => 17, 'FeatureComposition' => 18, 'FeatureTester' => 19, 'IsDefault' => 20, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'athleteLabel' => 3, 'objectSlug' => 4, 'objectLabel' => 5, 'objectPluralLabel' => 6, 'skillSlug' => 7, 'skillLabel' => 8, 'skillPluralLabel' => 9, 'groupSlug' => 10, 'groupLabel' => 11, 'groupPluralLabel' => 12, 'transitionLabel' => 13, 'transitionPluralLabel' => 14, 'transitionsSlug' => 15, 'positionSlug' => 16, 'positionLabel' => 17, 'featureComposition' => 18, 'featureTester' => 19, 'isDefault' => 20, ),
-        self::TYPE_COLNAME       => array(SportTableMap::COL_ID => 0, SportTableMap::COL_TITLE => 1, SportTableMap::COL_SLUG => 2, SportTableMap::COL_ATHLETE_LABEL => 3, SportTableMap::COL_OBJECT_SLUG => 4, SportTableMap::COL_OBJECT_LABEL => 5, SportTableMap::COL_OBJECT_PLURAL_LABEL => 6, SportTableMap::COL_SKILL_SLUG => 7, SportTableMap::COL_SKILL_LABEL => 8, SportTableMap::COL_SKILL_PLURAL_LABEL => 9, SportTableMap::COL_GROUP_SLUG => 10, SportTableMap::COL_GROUP_LABEL => 11, SportTableMap::COL_GROUP_PLURAL_LABEL => 12, SportTableMap::COL_TRANSITION_LABEL => 13, SportTableMap::COL_TRANSITION_PLURAL_LABEL => 14, SportTableMap::COL_TRANSITIONS_SLUG => 15, SportTableMap::COL_POSITION_SLUG => 16, SportTableMap::COL_POSITION_LABEL => 17, SportTableMap::COL_FEATURE_COMPOSITION => 18, SportTableMap::COL_FEATURE_TESTER => 19, SportTableMap::COL_IS_DEFAULT => 20, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'athlete_label' => 3, 'object_slug' => 4, 'object_label' => 5, 'object_plural_label' => 6, 'skill_slug' => 7, 'skill_label' => 8, 'skill_plural_label' => 9, 'group_slug' => 10, 'group_label' => 11, 'group_plural_label' => 12, 'transition_label' => 13, 'transition_plural_label' => 14, 'transitions_slug' => 15, 'position_slug' => 16, 'position_label' => 17, 'feature_composition' => 18, 'feature_tester' => 19, 'is_default' => 20, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Slug' => 2, 'AthleteLabel' => 3, 'ObjectSlug' => 4, 'ObjectLabel' => 5, 'ObjectPluralLabel' => 6, 'SkillSlug' => 7, 'SkillLabel' => 8, 'SkillPluralLabel' => 9, 'SkillPictureUrl' => 10, 'GroupSlug' => 11, 'GroupLabel' => 12, 'GroupPluralLabel' => 13, 'TransitionLabel' => 14, 'TransitionPluralLabel' => 15, 'TransitionsSlug' => 16, 'PositionSlug' => 17, 'PositionLabel' => 18, 'FeatureComposition' => 19, 'FeatureTester' => 20, 'IsDefault' => 21, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'athleteLabel' => 3, 'objectSlug' => 4, 'objectLabel' => 5, 'objectPluralLabel' => 6, 'skillSlug' => 7, 'skillLabel' => 8, 'skillPluralLabel' => 9, 'skillPictureUrl' => 10, 'groupSlug' => 11, 'groupLabel' => 12, 'groupPluralLabel' => 13, 'transitionLabel' => 14, 'transitionPluralLabel' => 15, 'transitionsSlug' => 16, 'positionSlug' => 17, 'positionLabel' => 18, 'featureComposition' => 19, 'featureTester' => 20, 'isDefault' => 21, ),
+        self::TYPE_COLNAME       => array(SportTableMap::COL_ID => 0, SportTableMap::COL_TITLE => 1, SportTableMap::COL_SLUG => 2, SportTableMap::COL_ATHLETE_LABEL => 3, SportTableMap::COL_OBJECT_SLUG => 4, SportTableMap::COL_OBJECT_LABEL => 5, SportTableMap::COL_OBJECT_PLURAL_LABEL => 6, SportTableMap::COL_SKILL_SLUG => 7, SportTableMap::COL_SKILL_LABEL => 8, SportTableMap::COL_SKILL_PLURAL_LABEL => 9, SportTableMap::COL_SKILL_PICTURE_URL => 10, SportTableMap::COL_GROUP_SLUG => 11, SportTableMap::COL_GROUP_LABEL => 12, SportTableMap::COL_GROUP_PLURAL_LABEL => 13, SportTableMap::COL_TRANSITION_LABEL => 14, SportTableMap::COL_TRANSITION_PLURAL_LABEL => 15, SportTableMap::COL_TRANSITIONS_SLUG => 16, SportTableMap::COL_POSITION_SLUG => 17, SportTableMap::COL_POSITION_LABEL => 18, SportTableMap::COL_FEATURE_COMPOSITION => 19, SportTableMap::COL_FEATURE_TESTER => 20, SportTableMap::COL_IS_DEFAULT => 21, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'slug' => 2, 'athlete_label' => 3, 'object_slug' => 4, 'object_label' => 5, 'object_plural_label' => 6, 'skill_slug' => 7, 'skill_label' => 8, 'skill_plural_label' => 9, 'skill_picture_url' => 10, 'group_slug' => 11, 'group_label' => 12, 'group_plural_label' => 13, 'transition_label' => 14, 'transition_plural_label' => 15, 'transitions_slug' => 16, 'position_slug' => 17, 'position_label' => 18, 'feature_composition' => 19, 'feature_tester' => 20, 'is_default' => 21, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -236,6 +241,7 @@ class SportTableMap extends TableMap
         $this->addColumn('skill_slug', 'SkillSlug', 'VARCHAR', false, 255, null);
         $this->addColumn('skill_label', 'SkillLabel', 'VARCHAR', false, 255, null);
         $this->addColumn('skill_plural_label', 'SkillPluralLabel', 'VARCHAR', false, 255, null);
+        $this->addColumn('skill_picture_url', 'SkillPictureUrl', 'VARCHAR', false, 255, null);
         $this->addColumn('group_slug', 'GroupSlug', 'VARCHAR', false, 255, null);
         $this->addColumn('group_label', 'GroupLabel', 'VARCHAR', false, 255, null);
         $this->addColumn('group_plural_label', 'GroupPluralLabel', 'VARCHAR', false, 255, null);
@@ -447,6 +453,7 @@ class SportTableMap extends TableMap
             $criteria->addSelectColumn(SportTableMap::COL_SKILL_SLUG);
             $criteria->addSelectColumn(SportTableMap::COL_SKILL_LABEL);
             $criteria->addSelectColumn(SportTableMap::COL_SKILL_PLURAL_LABEL);
+            $criteria->addSelectColumn(SportTableMap::COL_SKILL_PICTURE_URL);
             $criteria->addSelectColumn(SportTableMap::COL_GROUP_SLUG);
             $criteria->addSelectColumn(SportTableMap::COL_GROUP_LABEL);
             $criteria->addSelectColumn(SportTableMap::COL_GROUP_PLURAL_LABEL);
@@ -469,6 +476,7 @@ class SportTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.skill_slug');
             $criteria->addSelectColumn($alias . '.skill_label');
             $criteria->addSelectColumn($alias . '.skill_plural_label');
+            $criteria->addSelectColumn($alias . '.skill_picture_url');
             $criteria->addSelectColumn($alias . '.group_slug');
             $criteria->addSelectColumn($alias . '.group_label');
             $criteria->addSelectColumn($alias . '.group_plural_label');

@@ -35,6 +35,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery orderByLatitudinalFlags($order = Criteria::ASC) Order by the latitudinal_flags column
  * @method     ChildSkillQuery orderByTransversalFlags($order = Criteria::ASC) Order by the transversal_flags column
  * @method     ChildSkillQuery orderByMovementDescription($order = Criteria::ASC) Order by the movement_description column
+ * @method     ChildSkillQuery orderBySequencePictureUrl($order = Criteria::ASC) Order by the sequence_picture_url column
  * @method     ChildSkillQuery orderByVariationOfId($order = Criteria::ASC) Order by the variation_of_id column
  * @method     ChildSkillQuery orderByStartPositionId($order = Criteria::ASC) Order by the start_position_id column
  * @method     ChildSkillQuery orderByEndPositionId($order = Criteria::ASC) Order by the end_position_id column
@@ -67,6 +68,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery groupByLatitudinalFlags() Group by the latitudinal_flags column
  * @method     ChildSkillQuery groupByTransversalFlags() Group by the transversal_flags column
  * @method     ChildSkillQuery groupByMovementDescription() Group by the movement_description column
+ * @method     ChildSkillQuery groupBySequencePictureUrl() Group by the sequence_picture_url column
  * @method     ChildSkillQuery groupByVariationOfId() Group by the variation_of_id column
  * @method     ChildSkillQuery groupByStartPositionId() Group by the start_position_id column
  * @method     ChildSkillQuery groupByEndPositionId() Group by the end_position_id column
@@ -208,6 +210,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill findOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkill filtered by the latitudinal_flags column
  * @method     ChildSkill findOneByTransversalFlags(int $transversal_flags) Return the first ChildSkill filtered by the transversal_flags column
  * @method     ChildSkill findOneByMovementDescription(string $movement_description) Return the first ChildSkill filtered by the movement_description column
+ * @method     ChildSkill findOneBySequencePictureUrl(string $sequence_picture_url) Return the first ChildSkill filtered by the sequence_picture_url column
  * @method     ChildSkill findOneByVariationOfId(int $variation_of_id) Return the first ChildSkill filtered by the variation_of_id column
  * @method     ChildSkill findOneByStartPositionId(int $start_position_id) Return the first ChildSkill filtered by the start_position_id column
  * @method     ChildSkill findOneByEndPositionId(int $end_position_id) Return the first ChildSkill filtered by the end_position_id column
@@ -243,6 +246,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill requireOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkill filtered by the latitudinal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByTransversalFlags(int $transversal_flags) Return the first ChildSkill filtered by the transversal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByMovementDescription(string $movement_description) Return the first ChildSkill filtered by the movement_description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkill requireOneBySequencePictureUrl(string $sequence_picture_url) Return the first ChildSkill filtered by the sequence_picture_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByVariationOfId(int $variation_of_id) Return the first ChildSkill filtered by the variation_of_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByStartPositionId(int $start_position_id) Return the first ChildSkill filtered by the start_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByEndPositionId(int $end_position_id) Return the first ChildSkill filtered by the end_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -276,6 +280,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill[]|ObjectCollection findByLatitudinalFlags(int $latitudinal_flags) Return ChildSkill objects filtered by the latitudinal_flags column
  * @method     ChildSkill[]|ObjectCollection findByTransversalFlags(int $transversal_flags) Return ChildSkill objects filtered by the transversal_flags column
  * @method     ChildSkill[]|ObjectCollection findByMovementDescription(string $movement_description) Return ChildSkill objects filtered by the movement_description column
+ * @method     ChildSkill[]|ObjectCollection findBySequencePictureUrl(string $sequence_picture_url) Return ChildSkill objects filtered by the sequence_picture_url column
  * @method     ChildSkill[]|ObjectCollection findByVariationOfId(int $variation_of_id) Return ChildSkill objects filtered by the variation_of_id column
  * @method     ChildSkill[]|ObjectCollection findByStartPositionId(int $start_position_id) Return ChildSkill objects filtered by the start_position_id column
  * @method     ChildSkill[]|ObjectCollection findByEndPositionId(int $end_position_id) Return ChildSkill objects filtered by the end_position_id column
@@ -391,7 +396,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -968,6 +973,35 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         }
 
         return $this->addUsingAlias(SkillTableMap::COL_MOVEMENT_DESCRIPTION, $movementDescription, $comparison);
+    }
+
+    /**
+     * Filter the query on the sequence_picture_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySequencePictureUrl('fooValue');   // WHERE sequence_picture_url = 'fooValue'
+     * $query->filterBySequencePictureUrl('%fooValue%'); // WHERE sequence_picture_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $sequencePictureUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterBySequencePictureUrl($sequencePictureUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($sequencePictureUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $sequencePictureUrl)) {
+                $sequencePictureUrl = str_replace('*', '%', $sequencePictureUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SkillTableMap::COL_SEQUENCE_PICTURE_URL, $sequencePictureUrl, $comparison);
     }
 
     /**

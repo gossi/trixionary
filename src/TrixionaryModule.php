@@ -6,6 +6,7 @@ use gossi\trixionary\model\Skill;
 use gossi\trixionary\model\Sport;
 use keeko\framework\foundation\AbstractModule;
 use Propel\Runtime\Propel;
+use phootwork\file\Path;
 
 /**
  * Trixionary API
@@ -61,10 +62,10 @@ class TrixionaryModule extends AbstractModule {
 
 	/**
 	 * Returns the upload path
-	 * @return string
+	 * @return Path
 	 */
 	public function getUploadPath() {
-		return $this->getManagedFilesPath() . '/' . $this->getUploadSegment();
+		return $this->getFilesPath()->append($this->getUploadSegment());
 	}
 
 	/**
@@ -72,7 +73,7 @@ class TrixionaryModule extends AbstractModule {
 	 * @return string
 	 */
 	public function getUploadUrl() {
-		return $this->getManagedFilesUrl() . '/' . $this->getUploadSegment();
+		return $this->getFilesUrl($this->getUploadSegment());
 	}
 
 	/**
@@ -88,10 +89,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the path for the given sport
 	 * @param Sport $sport
-	 * @return string
+	 * @return Path
 	 */
 	public function getSportPath(Sport $sport) {
-		return $this->getManagedFilesPath() . '/' . $this->getSportSegment($sport);
+		return $this->getFilesPath()->append($this->getSportSegment($sport));
 	}
 
 	/**
@@ -100,7 +101,7 @@ class TrixionaryModule extends AbstractModule {
 	 * @return string
 	 */
 	public function getSportUrl(Sport $sport) {
-		return $this->getManagedFilesUrl() . '/' . $this->getSportSegment($sport);
+		return $this->getFilesUrl($this->getSportSegment($sport));
 	}
 
 	/**
@@ -114,10 +115,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the path for the default skill preview image
 	 * @param Sport $sport
-	 * @return string
+	 * @return Path
 	 */
 	public function getSkillPreviewPath(Sport $sport) {
-		return $this->getSportPath($sport) . '/' . $this->getSkillPreviewSegment();
+		return $this->getSportPath($sport)->append($this->getSkillPreviewSegment());
 	}
 
 	/**
@@ -143,10 +144,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the path for skills for the given sport
 	 * @param Sport $sport
-	 * @return string
+	 * @return Path
 	 */
 	public function getSkillsPath(Sport $sport) {
-		return $this->getSportPath($sport) . '/' . $this->getSkillsSegment($sport);
+		return $this->getSportPath($sport)->append($this->getSkillsSegment($sport));
 	}
 
 	/**
@@ -171,10 +172,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the path for the given skill
 	 * @param Skill $skill
-	 * @return string
+	 * @return Path
 	 */
 	public function getSkillPath(Skill $skill) {
-		return $this->getSkillsPath($skill->getSport()) . '/' . $this->getSkillSegment($skill);
+		return $this->getSkillsPath($skill->getSport())->append($this->getSkillSegment($skill));
 	}
 
 	/**
@@ -197,10 +198,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the pictures path for the given skill
 	 * @param Skill $skill
-	 * @return string
+	 * @return Path
 	 */
 	public function getPicturesPath(Skill $skill) {
-		return $this->getSkillPath($skill) . '/' . $this->getPicturesSegment();
+		return $this->getSkillPath($skill)->append($this->getPicturesSegment());
 	}
 
 	/**
@@ -223,10 +224,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the videos path for the given skill
 	 * @param Skill $skill
-	 * @return string
+	 * @return Path
 	 */
 	public function getVideosPath(Skill $skill) {
-		return $this->getSkillPath($skill) . '/' . $this->getVideosSegment();
+		return $this->getSkillPath($skill)->append($this->getVideosSegment());
 	}
 
 	/**
@@ -249,10 +250,10 @@ class TrixionaryModule extends AbstractModule {
 	/**
 	 * Returns the sequence path for the given skill
 	 * @param Skill $skill
-	 * @return string
+	 * @return Path
 	 */
 	public function getSequencePath(Skill $skill) {
-		return $this->getSkillPath($skill) . '/' . $this->getSequenceSegment();
+		return $this->getSkillPath($skill)->append($this->getSequenceSegment());
 	}
 
 	/**

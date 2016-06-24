@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1466422966.
- * Generated on 2016-06-20 13:42:46 by thomas
+ * up to version 1466808286.
+ * Generated on 2016-06-25 00:44:46 by thomas
  */
-class PropelMigration_1466422966
+class PropelMigration_1466808286
 {
     public $comment = '';
 
@@ -43,15 +43,25 @@ class PropelMigration_1466422966
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `kk_trixionary_lineage`
+ALTER TABLE `kk_trixionary_picture`
 
-  DROP PRIMARY KEY,
+  ADD `url` VARCHAR(255) AFTER `description`;
 
-  ADD `id` INTEGER NOT NULL AUTO_INCREMENT FIRST,
+ALTER TABLE `kk_trixionary_skill`
 
-  ADD PRIMARY KEY (`id`);
+  ADD `sequence_picture_url` VARCHAR(255) AFTER `movement_description`;
 
-CREATE INDEX `lineage_fi_skill` ON `kk_trixionary_lineage` (`skill_id`);
+ALTER TABLE `kk_trixionary_skill_version`
+
+  ADD `sequence_picture_url` VARCHAR(255) AFTER `movement_description`;
+
+ALTER TABLE `kk_trixionary_sport`
+
+  ADD `skill_picture_url` VARCHAR(255) AFTER `skill_plural_label`;
+
+ALTER TABLE `kk_trixionary_video`
+
+  ADD `url` VARCHAR(255) AFTER `description`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -73,15 +83,25 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP INDEX `lineage_fi_skill` ON `kk_trixionary_lineage`;
+ALTER TABLE `kk_trixionary_picture`
 
-ALTER TABLE `kk_trixionary_lineage`
+  DROP `url`;
 
-  DROP PRIMARY KEY,
+ALTER TABLE `kk_trixionary_skill`
 
-  DROP `id`,
+  DROP `sequence_picture_url`;
 
-  ADD PRIMARY KEY (`skill_id`,`ancestor_id`);
+ALTER TABLE `kk_trixionary_skill_version`
+
+  DROP `sequence_picture_url`;
+
+ALTER TABLE `kk_trixionary_sport`
+
+  DROP `skill_picture_url`;
+
+ALTER TABLE `kk_trixionary_video`
+
+  DROP `url`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

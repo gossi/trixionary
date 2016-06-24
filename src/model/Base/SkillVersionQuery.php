@@ -35,6 +35,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery orderByLatitudinalFlags($order = Criteria::ASC) Order by the latitudinal_flags column
  * @method     ChildSkillVersionQuery orderByTransversalFlags($order = Criteria::ASC) Order by the transversal_flags column
  * @method     ChildSkillVersionQuery orderByMovementDescription($order = Criteria::ASC) Order by the movement_description column
+ * @method     ChildSkillVersionQuery orderBySequencePictureUrl($order = Criteria::ASC) Order by the sequence_picture_url column
  * @method     ChildSkillVersionQuery orderByVariationOfId($order = Criteria::ASC) Order by the variation_of_id column
  * @method     ChildSkillVersionQuery orderByStartPositionId($order = Criteria::ASC) Order by the start_position_id column
  * @method     ChildSkillVersionQuery orderByEndPositionId($order = Criteria::ASC) Order by the end_position_id column
@@ -71,6 +72,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery groupByLatitudinalFlags() Group by the latitudinal_flags column
  * @method     ChildSkillVersionQuery groupByTransversalFlags() Group by the transversal_flags column
  * @method     ChildSkillVersionQuery groupByMovementDescription() Group by the movement_description column
+ * @method     ChildSkillVersionQuery groupBySequencePictureUrl() Group by the sequence_picture_url column
  * @method     ChildSkillVersionQuery groupByVariationOfId() Group by the variation_of_id column
  * @method     ChildSkillVersionQuery groupByStartPositionId() Group by the start_position_id column
  * @method     ChildSkillVersionQuery groupByEndPositionId() Group by the end_position_id column
@@ -120,6 +122,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion findOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkillVersion filtered by the latitudinal_flags column
  * @method     ChildSkillVersion findOneByTransversalFlags(int $transversal_flags) Return the first ChildSkillVersion filtered by the transversal_flags column
  * @method     ChildSkillVersion findOneByMovementDescription(string $movement_description) Return the first ChildSkillVersion filtered by the movement_description column
+ * @method     ChildSkillVersion findOneBySequencePictureUrl(string $sequence_picture_url) Return the first ChildSkillVersion filtered by the sequence_picture_url column
  * @method     ChildSkillVersion findOneByVariationOfId(int $variation_of_id) Return the first ChildSkillVersion filtered by the variation_of_id column
  * @method     ChildSkillVersion findOneByStartPositionId(int $start_position_id) Return the first ChildSkillVersion filtered by the start_position_id column
  * @method     ChildSkillVersion findOneByEndPositionId(int $end_position_id) Return the first ChildSkillVersion filtered by the end_position_id column
@@ -159,6 +162,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion requireOneByLatitudinalFlags(int $latitudinal_flags) Return the first ChildSkillVersion filtered by the latitudinal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByTransversalFlags(int $transversal_flags) Return the first ChildSkillVersion filtered by the transversal_flags column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByMovementDescription(string $movement_description) Return the first ChildSkillVersion filtered by the movement_description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneBySequencePictureUrl(string $sequence_picture_url) Return the first ChildSkillVersion filtered by the sequence_picture_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByVariationOfId(int $variation_of_id) Return the first ChildSkillVersion filtered by the variation_of_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByStartPositionId(int $start_position_id) Return the first ChildSkillVersion filtered by the start_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByEndPositionId(int $end_position_id) Return the first ChildSkillVersion filtered by the end_position_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -196,6 +200,7 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion[]|ObjectCollection findByLatitudinalFlags(int $latitudinal_flags) Return ChildSkillVersion objects filtered by the latitudinal_flags column
  * @method     ChildSkillVersion[]|ObjectCollection findByTransversalFlags(int $transversal_flags) Return ChildSkillVersion objects filtered by the transversal_flags column
  * @method     ChildSkillVersion[]|ObjectCollection findByMovementDescription(string $movement_description) Return ChildSkillVersion objects filtered by the movement_description column
+ * @method     ChildSkillVersion[]|ObjectCollection findBySequencePictureUrl(string $sequence_picture_url) Return ChildSkillVersion objects filtered by the sequence_picture_url column
  * @method     ChildSkillVersion[]|ObjectCollection findByVariationOfId(int $variation_of_id) Return ChildSkillVersion objects filtered by the variation_of_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByStartPositionId(int $start_position_id) Return ChildSkillVersion objects filtered by the start_position_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByEndPositionId(int $end_position_id) Return ChildSkillVersion objects filtered by the end_position_id column
@@ -308,7 +313,7 @@ abstract class SkillVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -897,6 +902,35 @@ abstract class SkillVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SkillVersionTableMap::COL_MOVEMENT_DESCRIPTION, $movementDescription, $comparison);
+    }
+
+    /**
+     * Filter the query on the sequence_picture_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySequencePictureUrl('fooValue');   // WHERE sequence_picture_url = 'fooValue'
+     * $query->filterBySequencePictureUrl('%fooValue%'); // WHERE sequence_picture_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $sequencePictureUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterBySequencePictureUrl($sequencePictureUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($sequencePictureUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $sequencePictureUrl)) {
+                $sequencePictureUrl = str_replace('*', '%', $sequencePictureUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_SEQUENCE_PICTURE_URL, $sequencePictureUrl, $comparison);
     }
 
     /**

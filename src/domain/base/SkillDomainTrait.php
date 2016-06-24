@@ -60,12 +60,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -97,12 +96,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -134,12 +132,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -171,12 +168,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_GROUPS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_GROUPS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -208,12 +204,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_KSTRUKTURS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -245,12 +240,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_LINEAGES_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_LINEAGES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_LINEAGES_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_LINEAGES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -282,12 +276,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_MULTIPLES_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_MULTIPLES_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -319,12 +312,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -356,12 +348,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -393,12 +384,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PICTURES_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PICTURES_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -430,12 +420,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_REFERENCES_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_REFERENCES_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -467,12 +456,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VARIATIONS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VARIATIONS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -504,12 +492,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VIDEOS_ADD, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VIDEOS_ADD, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_ADD, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -530,6 +517,10 @@ trait SkillDomainTrait {
 		$model = $serializer->hydrate(new Skill(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(SkillEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -538,13 +529,11 @@ trait SkillDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CREATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(SkillEvent::POST_CREATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CREATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -563,12 +552,11 @@ trait SkillDomainTrait {
 		}
 
 		// delete
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_DELETE, $event);
+		$this->dispatch(SkillEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(SkillEvent::POST_DELETE, $event);
+			$this->dispatch(SkillEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -650,12 +638,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -687,12 +674,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -724,12 +710,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -761,12 +746,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_GROUPS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_GROUPS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -798,12 +782,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_KSTRUKTURS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -835,12 +818,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_LINEAGES_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_LINEAGES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_LINEAGES_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_LINEAGES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -872,12 +854,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_MULTIPLES_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_MULTIPLES_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -909,12 +890,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -946,12 +926,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -983,12 +962,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PICTURES_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PICTURES_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1020,12 +998,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_REFERENCES_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_REFERENCES_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1057,12 +1034,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VARIATIONS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VARIATIONS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1094,12 +1070,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VIDEOS_REMOVE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VIDEOS_REMOVE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_REMOVE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1125,12 +1100,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetEndPositionId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_END_POSITION_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_END_POSITION_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_END_POSITION_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_END_POSITION_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1155,12 +1129,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetFeaturedPictureId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_FEATURED_PICTURE_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_FEATURED_PICTURE_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_FEATURED_PICTURE_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_FEATURED_PICTURE_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1185,12 +1158,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetFunctionPhaseRootId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_FUNCTION_PHASE_ROOT_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_FUNCTION_PHASE_ROOT_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_FUNCTION_PHASE_ROOT_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_FUNCTION_PHASE_ROOT_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1215,12 +1187,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetKstrukturRootId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_KSTRUKTUR_ROOT_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_KSTRUKTUR_ROOT_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_KSTRUKTUR_ROOT_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_KSTRUKTUR_ROOT_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1245,12 +1216,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetMultipleOfId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_MULTIPLE_OF_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_MULTIPLE_OF_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_MULTIPLE_OF_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_MULTIPLE_OF_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1275,12 +1245,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetObjectId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_OBJECT_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_OBJECT_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_OBJECT_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_OBJECT_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1305,12 +1274,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetSportId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_SPORT_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_SPORT_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_SPORT_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_SPORT_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1335,12 +1303,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetStartPositionId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_START_POSITION_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_START_POSITION_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_START_POSITION_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_START_POSITION_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1365,12 +1332,11 @@ trait SkillDomainTrait {
 
 		// update
 		if ($this->doSetVariationOfId($model, $relatedId)) {
-			$event = new SkillEvent($model);
-			$this->dispatch(SkillEvent::PRE_VARIATION_OF_UPDATE, $event);
-			$this->dispatch(SkillEvent::PRE_SAVE, $event);
+			$this->dispatch(SkillEvent::PRE_VARIATION_OF_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(SkillEvent::POST_VARIATION_OF_UPDATE, $event);
-			$this->dispatch(SkillEvent::POST_SAVE, $event);
+			$this->dispatch(SkillEvent::POST_VARIATION_OF_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -1398,6 +1364,10 @@ trait SkillDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(SkillEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -1406,13 +1376,10 @@ trait SkillDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -1446,12 +1413,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1483,12 +1449,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1520,12 +1485,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_FUNCTION_PHASES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_FUNCTION_PHASES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1557,12 +1521,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_GROUPS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_GROUPS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_GROUPS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_GROUPS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1594,12 +1557,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_KSTRUKTURS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_KSTRUKTURS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_KSTRUKTURS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1631,12 +1593,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_LINEAGES_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_LINEAGES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_LINEAGES_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_LINEAGES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1668,12 +1629,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_MULTIPLES_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_MULTIPLES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_MULTIPLES_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_MULTIPLES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1705,12 +1665,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_CHILDREN_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_CHILDREN_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_CHILDREN_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_CHILDREN_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1742,12 +1701,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PARTS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PARTS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PARTS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PARTS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1779,12 +1737,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_PICTURES_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_PICTURES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_PICTURES_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_PICTURES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1816,12 +1773,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_REFERENCES_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_REFERENCES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_REFERENCES_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_REFERENCES_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1853,12 +1809,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VARIATIONS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VARIATIONS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VARIATIONS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VARIATIONS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1890,12 +1845,11 @@ trait SkillDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SkillEvent($model);
-		$this->dispatch(SkillEvent::PRE_VIDEOS_UPDATE, $event);
-		$this->dispatch(SkillEvent::PRE_SAVE, $event);
+		$this->dispatch(SkillEvent::PRE_VIDEOS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SkillEvent::POST_VIDEOS_UPDATE, $event);
-		$this->dispatch(SkillEvent::POST_SAVE, $event);
+		$this->dispatch(SkillEvent::POST_VIDEOS_UPDATE, $model, $data);
+		$this->dispatch(SkillEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -1932,10 +1886,10 @@ trait SkillDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param SkillEvent $event
+	 * @param Skill $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, SkillEvent $event) {
-		$model = $event->getSkill();
+	protected function dispatch($type, Skill $model, array $data = []) {
 		$methods = [
 			SkillEvent::PRE_CREATE => 'preCreate',
 			SkillEvent::POST_CREATE => 'postCreate',
@@ -1950,12 +1904,12 @@ trait SkillDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new SkillEvent($model));
 	}
 
 	/**

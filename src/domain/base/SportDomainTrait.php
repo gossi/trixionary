@@ -54,12 +54,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_GROUPS_ADD, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_ADD, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_GROUPS_ADD, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_ADD, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -91,12 +90,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_OBJECTS_ADD, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_ADD, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_OBJECTS_ADD, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_ADD, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -128,12 +126,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_POSITIONS_ADD, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_ADD, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_POSITIONS_ADD, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_ADD, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -165,12 +162,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_SKILLS_ADD, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_ADD, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_SKILLS_ADD, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_ADD, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -191,6 +187,10 @@ trait SportDomainTrait {
 		$model = $serializer->hydrate(new Sport(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(SportEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -199,13 +199,11 @@ trait SportDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_CREATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(SportEvent::POST_CREATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_CREATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -224,12 +222,11 @@ trait SportDomainTrait {
 		}
 
 		// delete
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_DELETE, $event);
+		$this->dispatch(SportEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(SportEvent::POST_DELETE, $event);
+			$this->dispatch(SportEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -311,12 +308,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_GROUPS_REMOVE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_GROUPS_REMOVE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -348,12 +344,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_OBJECTS_REMOVE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_OBJECTS_REMOVE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -385,12 +380,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_POSITIONS_REMOVE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_POSITIONS_REMOVE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -422,12 +416,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_SKILLS_REMOVE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_SKILLS_REMOVE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -456,6 +449,10 @@ trait SportDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(SportEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -464,13 +461,10 @@ trait SportDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_UPDATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_UPDATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -504,12 +498,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_GROUPS_UPDATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_GROUPS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_GROUPS_UPDATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_GROUPS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -541,12 +534,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_OBJECTS_UPDATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_OBJECTS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_OBJECTS_UPDATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_OBJECTS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -578,12 +570,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_POSITIONS_UPDATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_POSITIONS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_POSITIONS_UPDATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_POSITIONS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -615,12 +606,11 @@ trait SportDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new SportEvent($model);
-		$this->dispatch(SportEvent::PRE_SKILLS_UPDATE, $event);
-		$this->dispatch(SportEvent::PRE_SAVE, $event);
+		$this->dispatch(SportEvent::PRE_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(SportEvent::POST_SKILLS_UPDATE, $event);
-		$this->dispatch(SportEvent::POST_SAVE, $event);
+		$this->dispatch(SportEvent::POST_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(SportEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -657,10 +647,10 @@ trait SportDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param SportEvent $event
+	 * @param Sport $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, SportEvent $event) {
-		$model = $event->getSport();
+	protected function dispatch($type, Sport $model, array $data = []) {
 		$methods = [
 			SportEvent::PRE_CREATE => 'preCreate',
 			SportEvent::POST_CREATE => 'postCreate',
@@ -675,12 +665,12 @@ trait SportDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new SportEvent($model));
 	}
 
 	/**

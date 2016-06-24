@@ -30,6 +30,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSportQuery orderBySkillSlug($order = Criteria::ASC) Order by the skill_slug column
  * @method     ChildSportQuery orderBySkillLabel($order = Criteria::ASC) Order by the skill_label column
  * @method     ChildSportQuery orderBySkillPluralLabel($order = Criteria::ASC) Order by the skill_plural_label column
+ * @method     ChildSportQuery orderBySkillPictureUrl($order = Criteria::ASC) Order by the skill_picture_url column
  * @method     ChildSportQuery orderByGroupSlug($order = Criteria::ASC) Order by the group_slug column
  * @method     ChildSportQuery orderByGroupLabel($order = Criteria::ASC) Order by the group_label column
  * @method     ChildSportQuery orderByGroupPluralLabel($order = Criteria::ASC) Order by the group_plural_label column
@@ -52,6 +53,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSportQuery groupBySkillSlug() Group by the skill_slug column
  * @method     ChildSportQuery groupBySkillLabel() Group by the skill_label column
  * @method     ChildSportQuery groupBySkillPluralLabel() Group by the skill_plural_label column
+ * @method     ChildSportQuery groupBySkillPictureUrl() Group by the skill_picture_url column
  * @method     ChildSportQuery groupByGroupSlug() Group by the group_slug column
  * @method     ChildSportQuery groupByGroupLabel() Group by the group_label column
  * @method     ChildSportQuery groupByGroupPluralLabel() Group by the group_plural_label column
@@ -99,6 +101,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSport findOneBySkillSlug(string $skill_slug) Return the first ChildSport filtered by the skill_slug column
  * @method     ChildSport findOneBySkillLabel(string $skill_label) Return the first ChildSport filtered by the skill_label column
  * @method     ChildSport findOneBySkillPluralLabel(string $skill_plural_label) Return the first ChildSport filtered by the skill_plural_label column
+ * @method     ChildSport findOneBySkillPictureUrl(string $skill_picture_url) Return the first ChildSport filtered by the skill_picture_url column
  * @method     ChildSport findOneByGroupSlug(string $group_slug) Return the first ChildSport filtered by the group_slug column
  * @method     ChildSport findOneByGroupLabel(string $group_label) Return the first ChildSport filtered by the group_label column
  * @method     ChildSport findOneByGroupPluralLabel(string $group_plural_label) Return the first ChildSport filtered by the group_plural_label column
@@ -124,6 +127,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSport requireOneBySkillSlug(string $skill_slug) Return the first ChildSport filtered by the skill_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSport requireOneBySkillLabel(string $skill_label) Return the first ChildSport filtered by the skill_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSport requireOneBySkillPluralLabel(string $skill_plural_label) Return the first ChildSport filtered by the skill_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSport requireOneBySkillPictureUrl(string $skill_picture_url) Return the first ChildSport filtered by the skill_picture_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSport requireOneByGroupSlug(string $group_slug) Return the first ChildSport filtered by the group_slug column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSport requireOneByGroupLabel(string $group_label) Return the first ChildSport filtered by the group_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSport requireOneByGroupPluralLabel(string $group_plural_label) Return the first ChildSport filtered by the group_plural_label column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -147,6 +151,7 @@ use gossi\trixionary\model\Map\SportTableMap;
  * @method     ChildSport[]|ObjectCollection findBySkillSlug(string $skill_slug) Return ChildSport objects filtered by the skill_slug column
  * @method     ChildSport[]|ObjectCollection findBySkillLabel(string $skill_label) Return ChildSport objects filtered by the skill_label column
  * @method     ChildSport[]|ObjectCollection findBySkillPluralLabel(string $skill_plural_label) Return ChildSport objects filtered by the skill_plural_label column
+ * @method     ChildSport[]|ObjectCollection findBySkillPictureUrl(string $skill_picture_url) Return ChildSport objects filtered by the skill_picture_url column
  * @method     ChildSport[]|ObjectCollection findByGroupSlug(string $group_slug) Return ChildSport objects filtered by the group_slug column
  * @method     ChildSport[]|ObjectCollection findByGroupLabel(string $group_label) Return ChildSport objects filtered by the group_label column
  * @method     ChildSport[]|ObjectCollection findByGroupPluralLabel(string $group_plural_label) Return ChildSport objects filtered by the group_plural_label column
@@ -250,7 +255,7 @@ abstract class SportQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `slug`, `athlete_label`, `object_slug`, `object_label`, `object_plural_label`, `skill_slug`, `skill_label`, `skill_plural_label`, `group_slug`, `group_label`, `group_plural_label`, `transition_label`, `transition_plural_label`, `transitions_slug`, `position_slug`, `position_label`, `feature_composition`, `feature_tester`, `is_default` FROM `kk_trixionary_sport` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `slug`, `athlete_label`, `object_slug`, `object_label`, `object_plural_label`, `skill_slug`, `skill_label`, `skill_plural_label`, `skill_picture_url`, `group_slug`, `group_label`, `group_plural_label`, `transition_label`, `transition_plural_label`, `transitions_slug`, `position_slug`, `position_label`, `feature_composition`, `feature_tester`, `is_default` FROM `kk_trixionary_sport` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -640,6 +645,35 @@ abstract class SportQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SportTableMap::COL_SKILL_PLURAL_LABEL, $skillPluralLabel, $comparison);
+    }
+
+    /**
+     * Filter the query on the skill_picture_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySkillPictureUrl('fooValue');   // WHERE skill_picture_url = 'fooValue'
+     * $query->filterBySkillPictureUrl('%fooValue%'); // WHERE skill_picture_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $skillPictureUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSportQuery The current query, for fluid interface
+     */
+    public function filterBySkillPictureUrl($skillPictureUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($skillPictureUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $skillPictureUrl)) {
+                $skillPictureUrl = str_replace('*', '%', $skillPictureUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SportTableMap::COL_SKILL_PICTURE_URL, $skillPictureUrl, $comparison);
     }
 
     /**

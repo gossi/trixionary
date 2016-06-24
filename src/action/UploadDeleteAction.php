@@ -1,10 +1,12 @@
 <?php
 namespace gossi\trixionary\action;
 
+use keeko\framework\domain\payload\Success;
 use keeko\framework\foundation\AbstractAction;
+use phootwork\file\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
@@ -14,6 +16,10 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class UploadDeleteAction extends AbstractAction {
 
+	protected function configureParams(OptionsResolver $resolver) {
+		$resolver->setRequired(['filename']);
+	}
+
 	/**
 	 * Automatically generated run method
 	 *
@@ -21,21 +27,16 @@ class UploadDeleteAction extends AbstractAction {
 	 * @return Response
 	 */
 	public function run(Request $request) {
-		// uncomment the following to pass data to your response
-		$file = $this->params['file'];
-		$fileName = $this->getModule()->getUploadPath() . '/' . $file;
+		$fileName = $this->getParam('filename');
+		$file = new File($this->getModule()->getUploadPath()->append($fileName));
 
-		if (!file_exists($fileName)) {
-			throw new ResourceNotFoundException(sprintf('File %s does not exist', $file));
+		if (!$file->exists()) {
+			throw new ResourceNotFoundException(sprintf('File %s does not exist', $fileName));
 		}
 
-		$success = unlink($fileName);
-
-		$this->response->setData(['files' => [[$file => $success]]]);
-		return $this->response->run($request);
+		$file->delete();
+		return $this->responder->run($request, new Success());
 	}
 
-	protected function setDefaultParams(OptionsResolverInterface $resolver) {
-		$resolver->setRequired(['file']);
-	}
+
 }

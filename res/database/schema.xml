@@ -18,6 +18,7 @@
 		<column name="skill_slug" type="VARCHAR" size="255"/>
 		<column name="skill_label" type="VARCHAR" size="255"/>
 		<column name="skill_plural_label" type="VARCHAR" size="255"/>
+		<column name="skill_picture_url" type="VARCHAR" size="255"/>
 		<column name="group_slug" type="VARCHAR" size="255"/>
 		<column name="group_label" type="VARCHAR" size="255"/>
 		<column name="group_plural_label" type="VARCHAR" size="255"/>
@@ -96,6 +97,7 @@
 		<column name="latitudinal_flags" type="INTEGER"/>
 		<column name="transversal_flags" type="INTEGER"/>
 		<column name="movement_description" type="LONGVARCHAR"/>
+		<column name="sequence_picture_url" type="VARCHAR" size="255"/>
 		<column name="variation_of_id" type="INTEGER" required="false" description="Indicates a variation"/>
 		<column name="start_position_id"  type="INTEGER" required="false" />
 		<column name="end_position_id"  type="INTEGER" required="false" />
@@ -219,6 +221,7 @@
 		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
 		<column name="title" type="VARCHAR" size="255"/>
 		<column name="description" type="LONGVARCHAR"/>
+		<column name="url" type="VARCHAR" size="255"/>
 		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="photographer" type="VARCHAR" required="false"/>
 		<column name="photographer_id" type="INTEGER" required="false"/>
@@ -235,6 +238,7 @@
 		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
 		<column name="title" type="VARCHAR" size="255"/>
 		<column name="description" type="LONGVARCHAR"/>
+		<column name="url" type="VARCHAR" size="255"/>
 		<column name="is_tutorial" type="BOOLEAN"/>
 		<column name="movender" type="VARCHAR" required="false"/>
 		<column name="movender_id" type="INTEGER" required="false"/>

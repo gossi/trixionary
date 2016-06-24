@@ -23,6 +23,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPictureQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPictureQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildPictureQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildPictureQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method     ChildPictureQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildPictureQuery orderByPhotographer($order = Criteria::ASC) Order by the photographer column
  * @method     ChildPictureQuery orderByPhotographerId($order = Criteria::ASC) Order by the photographer_id column
@@ -33,6 +34,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPictureQuery groupById() Group by the id column
  * @method     ChildPictureQuery groupByTitle() Group by the title column
  * @method     ChildPictureQuery groupByDescription() Group by the description column
+ * @method     ChildPictureQuery groupByUrl() Group by the url column
  * @method     ChildPictureQuery groupBySkillId() Group by the skill_id column
  * @method     ChildPictureQuery groupByPhotographer() Group by the photographer column
  * @method     ChildPictureQuery groupByPhotographerId() Group by the photographer_id column
@@ -60,6 +62,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture findOneById(int $id) Return the first ChildPicture filtered by the id column
  * @method     ChildPicture findOneByTitle(string $title) Return the first ChildPicture filtered by the title column
  * @method     ChildPicture findOneByDescription(string $description) Return the first ChildPicture filtered by the description column
+ * @method     ChildPicture findOneByUrl(string $url) Return the first ChildPicture filtered by the url column
  * @method     ChildPicture findOneBySkillId(int $skill_id) Return the first ChildPicture filtered by the skill_id column
  * @method     ChildPicture findOneByPhotographer(string $photographer) Return the first ChildPicture filtered by the photographer column
  * @method     ChildPicture findOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column
@@ -73,6 +76,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture requireOneById(int $id) Return the first ChildPicture filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByTitle(string $title) Return the first ChildPicture filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByDescription(string $description) Return the first ChildPicture filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByUrl(string $url) Return the first ChildPicture filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneBySkillId(int $skill_id) Return the first ChildPicture filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByPhotographer(string $photographer) Return the first ChildPicture filtered by the photographer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -84,6 +88,7 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture[]|ObjectCollection findById(int $id) Return ChildPicture objects filtered by the id column
  * @method     ChildPicture[]|ObjectCollection findByTitle(string $title) Return ChildPicture objects filtered by the title column
  * @method     ChildPicture[]|ObjectCollection findByDescription(string $description) Return ChildPicture objects filtered by the description column
+ * @method     ChildPicture[]|ObjectCollection findByUrl(string $url) Return ChildPicture objects filtered by the url column
  * @method     ChildPicture[]|ObjectCollection findBySkillId(int $skill_id) Return ChildPicture objects filtered by the skill_id column
  * @method     ChildPicture[]|ObjectCollection findByPhotographer(string $photographer) Return ChildPicture objects filtered by the photographer column
  * @method     ChildPicture[]|ObjectCollection findByPhotographerId(int $photographer_id) Return ChildPicture objects filtered by the photographer_id column
@@ -182,7 +187,7 @@ abstract class PictureQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `skill_id`, `photographer`, `photographer_id`, `movender`, `movender_id`, `uploader_id` FROM `kk_trixionary_picture` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `url`, `skill_id`, `photographer`, `photographer_id`, `movender`, `movender_id`, `uploader_id` FROM `kk_trixionary_picture` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -369,6 +374,35 @@ abstract class PictureQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PictureTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
+     * $query->filterByUrl('%fooValue%'); // WHERE url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $url The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPictureQuery The current query, for fluid interface
+     */
+    public function filterByUrl($url = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($url)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $url)) {
+                $url = str_replace('*', '%', $url);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PictureTableMap::COL_URL, $url, $comparison);
     }
 
     /**

@@ -38,6 +38,10 @@ trait PositionDomainTrait {
 		$model = $serializer->hydrate(new Position(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(PositionEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(PositionEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -46,13 +50,11 @@ trait PositionDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new PositionEvent($model);
-		$this->dispatch(PositionEvent::PRE_CREATE, $event);
-		$this->dispatch(PositionEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(PositionEvent::POST_CREATE, $event);
-		$this->dispatch(PositionEvent::POST_SAVE, $event);
+		$this->dispatch(PositionEvent::POST_CREATE, $model, $data);
+		$this->dispatch(PositionEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -71,12 +73,11 @@ trait PositionDomainTrait {
 		}
 
 		// delete
-		$event = new PositionEvent($model);
-		$this->dispatch(PositionEvent::PRE_DELETE, $event);
+		$this->dispatch(PositionEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(PositionEvent::POST_DELETE, $event);
+			$this->dispatch(PositionEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -152,12 +153,11 @@ trait PositionDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new PositionEvent($model);
-			$this->dispatch(PositionEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(PositionEvent::PRE_SAVE, $event);
+			$this->dispatch(PositionEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(PositionEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(PositionEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(PositionEvent::POST_SAVE, $event);
+			$this->dispatch(PositionEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(PositionEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -182,12 +182,11 @@ trait PositionDomainTrait {
 
 		// update
 		if ($this->doSetSportId($model, $relatedId)) {
-			$event = new PositionEvent($model);
-			$this->dispatch(PositionEvent::PRE_SPORT_UPDATE, $event);
-			$this->dispatch(PositionEvent::PRE_SAVE, $event);
+			$this->dispatch(PositionEvent::PRE_SPORT_UPDATE, $model);
+			$this->dispatch(PositionEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(PositionEvent::POST_SPORT_UPDATE, $event);
-			$this->dispatch(PositionEvent::POST_SAVE, $event);
+			$this->dispatch(PositionEvent::POST_SPORT_UPDATE, $model);
+			$this->dispatch(PositionEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -215,6 +214,10 @@ trait PositionDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(PositionEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(PositionEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -223,13 +226,10 @@ trait PositionDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new PositionEvent($model);
-		$this->dispatch(PositionEvent::PRE_UPDATE, $event);
-		$this->dispatch(PositionEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(PositionEvent::POST_UPDATE, $event);
-		$this->dispatch(PositionEvent::POST_SAVE, $event);
+		$this->dispatch(PositionEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(PositionEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -268,10 +268,10 @@ trait PositionDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param PositionEvent $event
+	 * @param Position $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, PositionEvent $event) {
-		$model = $event->getPosition();
+	protected function dispatch($type, Position $model, array $data = []) {
 		$methods = [
 			PositionEvent::PRE_CREATE => 'preCreate',
 			PositionEvent::POST_CREATE => 'postCreate',
@@ -286,12 +286,12 @@ trait PositionDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new PositionEvent($model));
 	}
 
 	/**

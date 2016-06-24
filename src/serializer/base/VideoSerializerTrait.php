@@ -32,6 +32,7 @@ trait VideoSerializerTrait {
 		return [
 			'title' => $model->getTitle(),
 			'description' => $model->getDescription(),
+			'url' => $model->getUrl(),
 			'is-tutorial' => $model->getIsTutorial(),
 			'movender' => $model->getMovender(),
 			'movender-id' => $model->getMovenderId(),
@@ -48,7 +49,7 @@ trait VideoSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['title', 'description', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height'];
+		return ['title', 'description', 'url', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height'];
 	}
 
 	/**
@@ -75,7 +76,7 @@ trait VideoSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['title', 'description', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height'];
+		return ['title', 'description', 'url', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height'];
 	}
 
 	/**
@@ -95,7 +96,7 @@ trait VideoSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'skill-id', 'reference-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'url', 'is-tutorial', 'movender', 'movender-id', 'uploader-id', 'skill-id', 'reference-id', 'poster-url', 'provider', 'provider-id', 'player-url', 'width', 'height']);
 
 		// relationships
 		//$this->hydrateRelationships($model, $data);

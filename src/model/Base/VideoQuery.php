@@ -23,6 +23,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildVideoQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildVideoQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildVideoQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method     ChildVideoQuery orderByIsTutorial($order = Criteria::ASC) Order by the is_tutorial column
  * @method     ChildVideoQuery orderByMovender($order = Criteria::ASC) Order by the movender column
  * @method     ChildVideoQuery orderByMovenderId($order = Criteria::ASC) Order by the movender_id column
@@ -39,6 +40,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery groupById() Group by the id column
  * @method     ChildVideoQuery groupByTitle() Group by the title column
  * @method     ChildVideoQuery groupByDescription() Group by the description column
+ * @method     ChildVideoQuery groupByUrl() Group by the url column
  * @method     ChildVideoQuery groupByIsTutorial() Group by the is_tutorial column
  * @method     ChildVideoQuery groupByMovender() Group by the movender column
  * @method     ChildVideoQuery groupByMovenderId() Group by the movender_id column
@@ -72,6 +74,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo findOneById(int $id) Return the first ChildVideo filtered by the id column
  * @method     ChildVideo findOneByTitle(string $title) Return the first ChildVideo filtered by the title column
  * @method     ChildVideo findOneByDescription(string $description) Return the first ChildVideo filtered by the description column
+ * @method     ChildVideo findOneByUrl(string $url) Return the first ChildVideo filtered by the url column
  * @method     ChildVideo findOneByIsTutorial(boolean $is_tutorial) Return the first ChildVideo filtered by the is_tutorial column
  * @method     ChildVideo findOneByMovender(string $movender) Return the first ChildVideo filtered by the movender column
  * @method     ChildVideo findOneByMovenderId(int $movender_id) Return the first ChildVideo filtered by the movender_id column
@@ -91,6 +94,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo requireOneById(int $id) Return the first ChildVideo filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByTitle(string $title) Return the first ChildVideo filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByDescription(string $description) Return the first ChildVideo filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByUrl(string $url) Return the first ChildVideo filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByIsTutorial(boolean $is_tutorial) Return the first ChildVideo filtered by the is_tutorial column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByMovender(string $movender) Return the first ChildVideo filtered by the movender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByMovenderId(int $movender_id) Return the first ChildVideo filtered by the movender_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -108,6 +112,7 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo[]|ObjectCollection findById(int $id) Return ChildVideo objects filtered by the id column
  * @method     ChildVideo[]|ObjectCollection findByTitle(string $title) Return ChildVideo objects filtered by the title column
  * @method     ChildVideo[]|ObjectCollection findByDescription(string $description) Return ChildVideo objects filtered by the description column
+ * @method     ChildVideo[]|ObjectCollection findByUrl(string $url) Return ChildVideo objects filtered by the url column
  * @method     ChildVideo[]|ObjectCollection findByIsTutorial(boolean $is_tutorial) Return ChildVideo objects filtered by the is_tutorial column
  * @method     ChildVideo[]|ObjectCollection findByMovender(string $movender) Return ChildVideo objects filtered by the movender column
  * @method     ChildVideo[]|ObjectCollection findByMovenderId(int $movender_id) Return ChildVideo objects filtered by the movender_id column
@@ -212,7 +217,7 @@ abstract class VideoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `is_tutorial`, `movender`, `movender_id`, `uploader_id`, `skill_id`, `reference_id`, `poster_url`, `provider`, `provider_id`, `player_url`, `width`, `height` FROM `kk_trixionary_video` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `url`, `is_tutorial`, `movender`, `movender_id`, `uploader_id`, `skill_id`, `reference_id`, `poster_url`, `provider`, `provider_id`, `player_url`, `width`, `height` FROM `kk_trixionary_video` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -399,6 +404,35 @@ abstract class VideoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VideoTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
+     * $query->filterByUrl('%fooValue%'); // WHERE url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $url The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByUrl($url = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($url)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $url)) {
+                $url = str_replace('*', '%', $url);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VideoTableMap::COL_URL, $url, $comparison);
     }
 
     /**

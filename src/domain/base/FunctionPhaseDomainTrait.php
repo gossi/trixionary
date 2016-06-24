@@ -51,12 +51,11 @@ trait FunctionPhaseDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_ADD, $event);
-		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_ADD, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_ADD, $event);
-		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_ADD, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -77,6 +76,10 @@ trait FunctionPhaseDomainTrait {
 		$model = $serializer->hydrate(new FunctionPhase(), $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(FunctionPhaseEvent::PRE_CREATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -85,13 +88,11 @@ trait FunctionPhaseDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_CREATE, $event);
-		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+		// save and dispatch post save hooks
 		$model->save();
-		$this->dispatch(FunctionPhaseEvent::POST_CREATE, $event);
-		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::POST_CREATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model, $data);
+
 		return new Created(['model' => $model]);
 	}
 
@@ -110,12 +111,11 @@ trait FunctionPhaseDomainTrait {
 		}
 
 		// delete
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_DELETE, $event);
+		$this->dispatch(FunctionPhaseEvent::PRE_DELETE, $model);
 		$model->delete();
 
 		if ($model->isDeleted()) {
-			$this->dispatch(FunctionPhaseEvent::POST_DELETE, $event);
+			$this->dispatch(FunctionPhaseEvent::POST_DELETE, $model);
 			return new Deleted(['model' => $model]);
 		}
 
@@ -197,12 +197,11 @@ trait FunctionPhaseDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_REMOVE, $event);
-		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_REMOVE, $event);
-		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -228,12 +227,11 @@ trait FunctionPhaseDomainTrait {
 
 		// update
 		if ($this->doSetSkillId($model, $relatedId)) {
-			$event = new FunctionPhaseEvent($model);
-			$this->dispatch(FunctionPhaseEvent::PRE_SKILL_UPDATE, $event);
-			$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+			$this->dispatch(FunctionPhaseEvent::PRE_SKILL_UPDATE, $model);
+			$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model);
 			$model->save();
-			$this->dispatch(FunctionPhaseEvent::POST_SKILL_UPDATE, $event);
-			$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+			$this->dispatch(FunctionPhaseEvent::POST_SKILL_UPDATE, $model);
+			$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
 		}
@@ -261,6 +259,10 @@ trait FunctionPhaseDomainTrait {
 		$model = $serializer->hydrate($model, $data);
 		$this->hydrateRelationships($model, $data);
 
+		// dispatch pre save hooks
+		$this->dispatch(FunctionPhaseEvent::PRE_UPDATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model, $data);
+
 		// validate
 		$validator = $this->getValidator();
 		if ($validator !== null && !$validator->validate($model)) {
@@ -269,13 +271,10 @@ trait FunctionPhaseDomainTrait {
 			]);
 		}
 
-		// dispatch
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_UPDATE, $event);
-		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+		// save and dispath post save hooks
 		$rows = $model->save();
-		$this->dispatch(FunctionPhaseEvent::POST_UPDATE, $event);
-		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::POST_UPDATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model, $data);
 
 		$payload = ['model' => $model];
 
@@ -309,12 +308,11 @@ trait FunctionPhaseDomainTrait {
 		}
 
 		// save and dispatch events
-		$event = new FunctionPhaseEvent($model);
-		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_UPDATE, $event);
-		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::PRE_ROOT_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::PRE_SAVE, $model, $data);
 		$rows = $model->save();
-		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_UPDATE, $event);
-		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $event);
+		$this->dispatch(FunctionPhaseEvent::POST_ROOT_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(FunctionPhaseEvent::POST_SAVE, $model, $data);
 
 		if ($rows > 0) {
 			return Updated(['model' => $model]);
@@ -351,10 +349,10 @@ trait FunctionPhaseDomainTrait {
 
 	/**
 	 * @param string $type
-	 * @param FunctionPhaseEvent $event
+	 * @param FunctionPhase $model
+	 * @param array $data
 	 */
-	protected function dispatch($type, FunctionPhaseEvent $event) {
-		$model = $event->getFunctionPhase();
+	protected function dispatch($type, FunctionPhase $model, array $data = []) {
 		$methods = [
 			FunctionPhaseEvent::PRE_CREATE => 'preCreate',
 			FunctionPhaseEvent::POST_CREATE => 'postCreate',
@@ -369,12 +367,12 @@ trait FunctionPhaseDomainTrait {
 		if (isset($methods[$type])) {
 			$method = $methods[$type];
 			if (method_exists($this, $method)) {
-				$this->$method($model);
+				$this->$method($model, $data);
 			}
 		}
 
 		$dispatcher = $this->getServiceContainer()->getDispatcher();
-		$dispatcher->dispatch($type, $event);
+		$dispatcher->dispatch($type, new FunctionPhaseEvent($model));
 	}
 
 	/**

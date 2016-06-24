@@ -82,6 +82,12 @@ abstract class Video implements ActiveRecordInterface
     protected $description;
 
     /**
+     * The value for the url field.
+     * @var        string
+     */
+    protected $url;
+
+    /**
      * The value for the is_tutorial field.
      * @var        boolean
      */
@@ -419,6 +425,16 @@ abstract class Video implements ActiveRecordInterface
     }
 
     /**
+     * Get the [url] column value.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Get the [is_tutorial] column value.
      *
      * @return boolean
@@ -607,6 +623,26 @@ abstract class Video implements ActiveRecordInterface
 
         return $this;
     } // setDescription()
+
+    /**
+     * Set the value of [url] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
+     */
+    public function setUrl($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->url !== $v) {
+            $this->url = $v;
+            $this->modifiedColumns[VideoTableMap::COL_URL] = true;
+        }
+
+        return $this;
+    } // setUrl()
 
     /**
      * Sets the value of the [is_tutorial] column.
@@ -909,40 +945,43 @@ abstract class Video implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : VideoTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : VideoTableMap::translateFieldName('IsTutorial', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : VideoTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->url = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : VideoTableMap::translateFieldName('IsTutorial', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_tutorial = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : VideoTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : VideoTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movender = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : VideoTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : VideoTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->movender_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : VideoTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : VideoTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->uploader_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : VideoTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : VideoTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : VideoTableMap::translateFieldName('ReferenceId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : VideoTableMap::translateFieldName('ReferenceId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->reference_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : VideoTableMap::translateFieldName('PosterUrl', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : VideoTableMap::translateFieldName('PosterUrl', TableMap::TYPE_PHPNAME, $indexType)];
             $this->poster_url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : VideoTableMap::translateFieldName('Provider', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : VideoTableMap::translateFieldName('Provider', TableMap::TYPE_PHPNAME, $indexType)];
             $this->provider = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : VideoTableMap::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : VideoTableMap::translateFieldName('ProviderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->provider_id = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : VideoTableMap::translateFieldName('PlayerUrl', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : VideoTableMap::translateFieldName('PlayerUrl', TableMap::TYPE_PHPNAME, $indexType)];
             $this->player_url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : VideoTableMap::translateFieldName('Width', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : VideoTableMap::translateFieldName('Width', TableMap::TYPE_PHPNAME, $indexType)];
             $this->width = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : VideoTableMap::translateFieldName('Height', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : VideoTableMap::translateFieldName('Height', TableMap::TYPE_PHPNAME, $indexType)];
             $this->height = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -952,7 +991,7 @@ abstract class Video implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = VideoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = VideoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Video'), 0, $e);
@@ -1185,6 +1224,9 @@ abstract class Video implements ActiveRecordInterface
         if ($this->isColumnModified(VideoTableMap::COL_DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
         }
+        if ($this->isColumnModified(VideoTableMap::COL_URL)) {
+            $modifiedColumns[':p' . $index++]  = '`url`';
+        }
         if ($this->isColumnModified(VideoTableMap::COL_IS_TUTORIAL)) {
             $modifiedColumns[':p' . $index++]  = '`is_tutorial`';
         }
@@ -1240,6 +1282,9 @@ abstract class Video implements ActiveRecordInterface
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`url`':
+                        $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
                     case '`is_tutorial`':
                         $stmt->bindValue($identifier, (int) $this->is_tutorial, PDO::PARAM_INT);
@@ -1349,39 +1394,42 @@ abstract class Video implements ActiveRecordInterface
                 return $this->getDescription();
                 break;
             case 3:
-                return $this->getIsTutorial();
+                return $this->getUrl();
                 break;
             case 4:
-                return $this->getMovender();
+                return $this->getIsTutorial();
                 break;
             case 5:
-                return $this->getMovenderId();
+                return $this->getMovender();
                 break;
             case 6:
-                return $this->getUploaderId();
+                return $this->getMovenderId();
                 break;
             case 7:
-                return $this->getSkillId();
+                return $this->getUploaderId();
                 break;
             case 8:
-                return $this->getReferenceId();
+                return $this->getSkillId();
                 break;
             case 9:
-                return $this->getPosterUrl();
+                return $this->getReferenceId();
                 break;
             case 10:
-                return $this->getProvider();
+                return $this->getPosterUrl();
                 break;
             case 11:
-                return $this->getProviderId();
+                return $this->getProvider();
                 break;
             case 12:
-                return $this->getPlayerUrl();
+                return $this->getProviderId();
                 break;
             case 13:
-                return $this->getWidth();
+                return $this->getPlayerUrl();
                 break;
             case 14:
+                return $this->getWidth();
+                break;
+            case 15:
                 return $this->getHeight();
                 break;
             default:
@@ -1417,18 +1465,19 @@ abstract class Video implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
-            $keys[3] => $this->getIsTutorial(),
-            $keys[4] => $this->getMovender(),
-            $keys[5] => $this->getMovenderId(),
-            $keys[6] => $this->getUploaderId(),
-            $keys[7] => $this->getSkillId(),
-            $keys[8] => $this->getReferenceId(),
-            $keys[9] => $this->getPosterUrl(),
-            $keys[10] => $this->getProvider(),
-            $keys[11] => $this->getProviderId(),
-            $keys[12] => $this->getPlayerUrl(),
-            $keys[13] => $this->getWidth(),
-            $keys[14] => $this->getHeight(),
+            $keys[3] => $this->getUrl(),
+            $keys[4] => $this->getIsTutorial(),
+            $keys[5] => $this->getMovender(),
+            $keys[6] => $this->getMovenderId(),
+            $keys[7] => $this->getUploaderId(),
+            $keys[8] => $this->getSkillId(),
+            $keys[9] => $this->getReferenceId(),
+            $keys[10] => $this->getPosterUrl(),
+            $keys[11] => $this->getProvider(),
+            $keys[12] => $this->getProviderId(),
+            $keys[13] => $this->getPlayerUrl(),
+            $keys[14] => $this->getWidth(),
+            $keys[15] => $this->getHeight(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1510,39 +1559,42 @@ abstract class Video implements ActiveRecordInterface
                 $this->setDescription($value);
                 break;
             case 3:
-                $this->setIsTutorial($value);
+                $this->setUrl($value);
                 break;
             case 4:
-                $this->setMovender($value);
+                $this->setIsTutorial($value);
                 break;
             case 5:
-                $this->setMovenderId($value);
+                $this->setMovender($value);
                 break;
             case 6:
-                $this->setUploaderId($value);
+                $this->setMovenderId($value);
                 break;
             case 7:
-                $this->setSkillId($value);
+                $this->setUploaderId($value);
                 break;
             case 8:
-                $this->setReferenceId($value);
+                $this->setSkillId($value);
                 break;
             case 9:
-                $this->setPosterUrl($value);
+                $this->setReferenceId($value);
                 break;
             case 10:
-                $this->setProvider($value);
+                $this->setPosterUrl($value);
                 break;
             case 11:
-                $this->setProviderId($value);
+                $this->setProvider($value);
                 break;
             case 12:
-                $this->setPlayerUrl($value);
+                $this->setProviderId($value);
                 break;
             case 13:
-                $this->setWidth($value);
+                $this->setPlayerUrl($value);
                 break;
             case 14:
+                $this->setWidth($value);
+                break;
+            case 15:
                 $this->setHeight($value);
                 break;
         } // switch()
@@ -1581,40 +1633,43 @@ abstract class Video implements ActiveRecordInterface
             $this->setDescription($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setIsTutorial($arr[$keys[3]]);
+            $this->setUrl($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setMovender($arr[$keys[4]]);
+            $this->setIsTutorial($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setMovenderId($arr[$keys[5]]);
+            $this->setMovender($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setUploaderId($arr[$keys[6]]);
+            $this->setMovenderId($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setSkillId($arr[$keys[7]]);
+            $this->setUploaderId($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setReferenceId($arr[$keys[8]]);
+            $this->setSkillId($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setPosterUrl($arr[$keys[9]]);
+            $this->setReferenceId($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setProvider($arr[$keys[10]]);
+            $this->setPosterUrl($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setProviderId($arr[$keys[11]]);
+            $this->setProvider($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setPlayerUrl($arr[$keys[12]]);
+            $this->setProviderId($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setWidth($arr[$keys[13]]);
+            $this->setPlayerUrl($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setHeight($arr[$keys[14]]);
+            $this->setWidth($arr[$keys[14]]);
+        }
+        if (array_key_exists($keys[15], $arr)) {
+            $this->setHeight($arr[$keys[15]]);
         }
     }
 
@@ -1665,6 +1720,9 @@ abstract class Video implements ActiveRecordInterface
         }
         if ($this->isColumnModified(VideoTableMap::COL_DESCRIPTION)) {
             $criteria->add(VideoTableMap::COL_DESCRIPTION, $this->description);
+        }
+        if ($this->isColumnModified(VideoTableMap::COL_URL)) {
+            $criteria->add(VideoTableMap::COL_URL, $this->url);
         }
         if ($this->isColumnModified(VideoTableMap::COL_IS_TUTORIAL)) {
             $criteria->add(VideoTableMap::COL_IS_TUTORIAL, $this->is_tutorial);
@@ -1790,6 +1848,7 @@ abstract class Video implements ActiveRecordInterface
     {
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setUrl($this->getUrl());
         $copyObj->setIsTutorial($this->getIsTutorial());
         $copyObj->setMovender($this->getMovender());
         $copyObj->setMovenderId($this->getMovenderId());
@@ -1948,6 +2007,7 @@ abstract class Video implements ActiveRecordInterface
         $this->id = null;
         $this->title = null;
         $this->description = null;
+        $this->url = null;
         $this->is_tutorial = null;
         $this->movender = null;
         $this->movender_id = null;
