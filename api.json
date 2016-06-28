@@ -11066,6 +11066,15 @@
 								},
 								"url": {
 									"type": "string"
+								},
+								"athlete": {
+									"type": "string"
+								},
+								"athlete_id": {
+									"type": "integer"
+								},
+								"thumb_url": {
+									"type": "string"
 								}
 							}
 						},
@@ -11158,6 +11167,15 @@
 									"type": "integer"
 								},
 								"url": {
+									"type": "string"
+								},
+								"athlete": {
+									"type": "string"
+								},
+								"athlete_id": {
+									"type": "integer"
+								},
+								"thumb_url": {
 									"type": "string"
 								}
 							}
@@ -11292,6 +11310,12 @@
 								},
 								"url": {
 									"type": "string"
+								},
+								"athlete": {
+									"type": "string"
+								},
+								"athlete_id": {
+									"type": "integer"
 								}
 							}
 						},
@@ -11403,6 +11427,12 @@
 								},
 								"url": {
 									"type": "string"
+								},
+								"athlete": {
+									"type": "string"
+								},
+								"athlete_id": {
+									"type": "integer"
 								}
 							}
 						},

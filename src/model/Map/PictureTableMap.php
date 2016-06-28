@@ -59,7 +59,7 @@ class PictureTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PictureTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /**
      * the column name for the id field
@@ -92,6 +92,11 @@ class PictureTableMap extends TableMap
     const COL_URL = 'kk_trixionary_picture.url';
 
     /**
+     * the column name for the thumb_url field
+     */
+    const COL_THUMB_URL = 'kk_trixionary_picture.thumb_url';
+
+    /**
      * the column name for the skill_id field
      */
     const COL_SKILL_ID = 'kk_trixionary_picture.skill_id';
@@ -107,14 +112,14 @@ class PictureTableMap extends TableMap
     const COL_PHOTOGRAPHER_ID = 'kk_trixionary_picture.photographer_id';
 
     /**
-     * the column name for the movender field
+     * the column name for the athlete field
      */
-    const COL_MOVENDER = 'kk_trixionary_picture.movender';
+    const COL_ATHLETE = 'kk_trixionary_picture.athlete';
 
     /**
-     * the column name for the movender_id field
+     * the column name for the athlete_id field
      */
-    const COL_MOVENDER_ID = 'kk_trixionary_picture.movender_id';
+    const COL_ATHLETE_ID = 'kk_trixionary_picture.athlete_id';
 
     /**
      * the column name for the uploader_id field
@@ -133,11 +138,11 @@ class PictureTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Url', 'SkillId', 'Photographer', 'PhotographerId', 'Movender', 'MovenderId', 'UploaderId', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'url', 'skillId', 'photographer', 'photographerId', 'movender', 'movenderId', 'uploaderId', ),
-        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID, PictureTableMap::COL_TITLE, PictureTableMap::COL_DESCRIPTION, PictureTableMap::COL_URL, PictureTableMap::COL_SKILL_ID, PictureTableMap::COL_PHOTOGRAPHER, PictureTableMap::COL_PHOTOGRAPHER_ID, PictureTableMap::COL_MOVENDER, PictureTableMap::COL_MOVENDER_ID, PictureTableMap::COL_UPLOADER_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'url', 'skill_id', 'photographer', 'photographer_id', 'movender', 'movender_id', 'uploader_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Url', 'ThumbUrl', 'SkillId', 'Photographer', 'PhotographerId', 'Athlete', 'AthleteId', 'UploaderId', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'url', 'thumbUrl', 'skillId', 'photographer', 'photographerId', 'athlete', 'athleteId', 'uploaderId', ),
+        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID, PictureTableMap::COL_TITLE, PictureTableMap::COL_DESCRIPTION, PictureTableMap::COL_URL, PictureTableMap::COL_THUMB_URL, PictureTableMap::COL_SKILL_ID, PictureTableMap::COL_PHOTOGRAPHER, PictureTableMap::COL_PHOTOGRAPHER_ID, PictureTableMap::COL_ATHLETE, PictureTableMap::COL_ATHLETE_ID, PictureTableMap::COL_UPLOADER_ID, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'url', 'thumb_url', 'skill_id', 'photographer', 'photographer_id', 'athlete', 'athlete_id', 'uploader_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -147,11 +152,11 @@ class PictureTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Url' => 3, 'SkillId' => 4, 'Photographer' => 5, 'PhotographerId' => 6, 'Movender' => 7, 'MovenderId' => 8, 'UploaderId' => 9, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'skillId' => 4, 'photographer' => 5, 'photographerId' => 6, 'movender' => 7, 'movenderId' => 8, 'uploaderId' => 9, ),
-        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID => 0, PictureTableMap::COL_TITLE => 1, PictureTableMap::COL_DESCRIPTION => 2, PictureTableMap::COL_URL => 3, PictureTableMap::COL_SKILL_ID => 4, PictureTableMap::COL_PHOTOGRAPHER => 5, PictureTableMap::COL_PHOTOGRAPHER_ID => 6, PictureTableMap::COL_MOVENDER => 7, PictureTableMap::COL_MOVENDER_ID => 8, PictureTableMap::COL_UPLOADER_ID => 9, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'skill_id' => 4, 'photographer' => 5, 'photographer_id' => 6, 'movender' => 7, 'movender_id' => 8, 'uploader_id' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Url' => 3, 'ThumbUrl' => 4, 'SkillId' => 5, 'Photographer' => 6, 'PhotographerId' => 7, 'Athlete' => 8, 'AthleteId' => 9, 'UploaderId' => 10, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'thumbUrl' => 4, 'skillId' => 5, 'photographer' => 6, 'photographerId' => 7, 'athlete' => 8, 'athleteId' => 9, 'uploaderId' => 10, ),
+        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID => 0, PictureTableMap::COL_TITLE => 1, PictureTableMap::COL_DESCRIPTION => 2, PictureTableMap::COL_URL => 3, PictureTableMap::COL_THUMB_URL => 4, PictureTableMap::COL_SKILL_ID => 5, PictureTableMap::COL_PHOTOGRAPHER => 6, PictureTableMap::COL_PHOTOGRAPHER_ID => 7, PictureTableMap::COL_ATHLETE => 8, PictureTableMap::COL_ATHLETE_ID => 9, PictureTableMap::COL_UPLOADER_ID => 10, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'thumb_url' => 4, 'skill_id' => 5, 'photographer' => 6, 'photographer_id' => 7, 'athlete' => 8, 'athlete_id' => 9, 'uploader_id' => 10, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -175,11 +180,12 @@ class PictureTableMap extends TableMap
         $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 255, null);
+        $this->addColumn('thumb_url', 'ThumbUrl', 'VARCHAR', false, 255, null);
         $this->addForeignKey('skill_id', 'SkillId', 'INTEGER', 'kk_trixionary_skill', 'id', true, null, null);
         $this->addColumn('photographer', 'Photographer', 'VARCHAR', false, 255, null);
         $this->addColumn('photographer_id', 'PhotographerId', 'INTEGER', false, null, null);
-        $this->addColumn('movender', 'Movender', 'VARCHAR', false, 255, null);
-        $this->addColumn('movender_id', 'MovenderId', 'INTEGER', false, null, null);
+        $this->addColumn('athlete', 'Athlete', 'VARCHAR', false, 255, null);
+        $this->addColumn('athlete_id', 'AthleteId', 'INTEGER', false, null, null);
         $this->addColumn('uploader_id', 'UploaderId', 'INTEGER', false, null, null);
     } // initialize()
 
@@ -349,22 +355,24 @@ class PictureTableMap extends TableMap
             $criteria->addSelectColumn(PictureTableMap::COL_TITLE);
             $criteria->addSelectColumn(PictureTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(PictureTableMap::COL_URL);
+            $criteria->addSelectColumn(PictureTableMap::COL_THUMB_URL);
             $criteria->addSelectColumn(PictureTableMap::COL_SKILL_ID);
             $criteria->addSelectColumn(PictureTableMap::COL_PHOTOGRAPHER);
             $criteria->addSelectColumn(PictureTableMap::COL_PHOTOGRAPHER_ID);
-            $criteria->addSelectColumn(PictureTableMap::COL_MOVENDER);
-            $criteria->addSelectColumn(PictureTableMap::COL_MOVENDER_ID);
+            $criteria->addSelectColumn(PictureTableMap::COL_ATHLETE);
+            $criteria->addSelectColumn(PictureTableMap::COL_ATHLETE_ID);
             $criteria->addSelectColumn(PictureTableMap::COL_UPLOADER_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.url');
+            $criteria->addSelectColumn($alias . '.thumb_url');
             $criteria->addSelectColumn($alias . '.skill_id');
             $criteria->addSelectColumn($alias . '.photographer');
             $criteria->addSelectColumn($alias . '.photographer_id');
-            $criteria->addSelectColumn($alias . '.movender');
-            $criteria->addSelectColumn($alias . '.movender_id');
+            $criteria->addSelectColumn($alias . '.athlete');
+            $criteria->addSelectColumn($alias . '.athlete_id');
             $criteria->addSelectColumn($alias . '.uploader_id');
         }
     }

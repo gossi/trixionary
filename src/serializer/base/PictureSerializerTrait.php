@@ -50,10 +50,11 @@ trait PictureSerializerTrait {
 			'title' => $model->getTitle(),
 			'description' => $model->getDescription(),
 			'url' => $model->getUrl(),
+			'thumb-url' => $model->getThumbUrl(),
 			'photographer' => $model->getPhotographer(),
 			'photographer-id' => $model->getPhotographerId(),
-			'movender' => $model->getMovender(),
-			'movender-id' => $model->getMovenderId(),
+			'athlete' => $model->getAthlete(),
+			'athlete-id' => $model->getAthleteId(),
 			'uploader-id' => $model->getUploaderId()
 		];
 	}
@@ -61,7 +62,7 @@ trait PictureSerializerTrait {
 	/**
 	 */
 	public function getFields() {
-		return ['title', 'description', 'url', 'photographer', 'photographer-id', 'movender', 'movender-id', 'uploader-id'];
+		return ['title', 'description', 'url', 'thumb-url', 'photographer', 'photographer-id', 'athlete', 'athlete-id', 'uploader-id'];
 	}
 
 	/**
@@ -88,7 +89,7 @@ trait PictureSerializerTrait {
 	/**
 	 */
 	public function getSortFields() {
-		return ['title', 'description', 'url', 'photographer', 'photographer-id', 'movender', 'movender-id', 'uploader-id'];
+		return ['title', 'description', 'url', 'thumb-url', 'photographer', 'photographer-id', 'athlete', 'athlete-id', 'uploader-id'];
 	}
 
 	/**
@@ -108,7 +109,7 @@ trait PictureSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'url', 'skill-id', 'photographer', 'photographer-id', 'movender', 'movender-id', 'uploader-id']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'title', 'description', 'url', 'thumb-url', 'skill-id', 'photographer', 'photographer-id', 'athlete', 'athlete-id', 'uploader-id']);
 
 		// relationships
 		//$this->hydrateRelationships($model, $data);

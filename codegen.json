@@ -2,7 +2,12 @@
 	"models": {
 	    "sport": {
 	        "includes": [
-				"skills.variationOf", "skills.parents", "skills.lineages", "skills.lineages.ancestor", "skills.lineages.skill"
+				"skills.variationOf", 
+				"skills.parents", 
+				"skills.lineages", 
+				"skills.lineages.ancestor", 
+				"skills.lineages.skill",
+				"skills.featured-picture"
 			]
 		},
 		"skill": {
@@ -13,7 +18,10 @@
 			},
 			"includes": [
 				"sport.skills"
-			]
+			],
+			"filter": {
+				"write": ["sequence_picture_url"]
+			}
 		},
 		"group": {
 			"includes": [
@@ -24,6 +32,16 @@
 			"includes": [
 				"skills.variations", "skills.variationOf", "skills.multiples", "sport.objects"
 			]
+		},
+		"picture": {
+			"filter": {
+				"write": ["url", "thumb_url"]
+			}
+		},
+		"video": {
+			"filter": {
+				"write": ["url", "poster_url", "width", "height"]
+			}
 		}
 	}
 }

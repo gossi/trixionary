@@ -31,7 +31,7 @@ class SportReadJsonResponder extends AbstractPayloadResponder {
 		$params = new Parameters($request->query->all());
 		$serializer = Sport::getSerializer();
 		$resource = new Resource($payload->getModel(), $serializer);
-		$resource = $resource->with($params->getInclude(['objects', 'positions', 'skills', 'groups', 'skills.variationOf', 'skills.parents', 'skills.lineages', 'skills.lineages.ancestor', 'skills.lineages.skill']));
+		$resource = $resource->with($params->getInclude(['objects', 'positions', 'skills', 'groups', 'skills.variationOf', 'skills.parents', 'skills.lineages', 'skills.lineages.ancestor', 'skills.lineages.skill', 'skills.featured-picture']));
 		$resource = $resource->fields($params->getFields([
 			'sport' => Sport::getSerializer()->getFields(),
 			'object' => Object::getSerializer()->getFields(),

@@ -94,16 +94,16 @@ abstract class Video implements ActiveRecordInterface
     protected $is_tutorial;
 
     /**
-     * The value for the movender field.
+     * The value for the athlete field.
      * @var        string
      */
-    protected $movender;
+    protected $athlete;
 
     /**
-     * The value for the movender_id field.
+     * The value for the athlete_id field.
      * @var        int
      */
-    protected $movender_id;
+    protected $athlete_id;
 
     /**
      * The value for the uploader_id field.
@@ -455,23 +455,23 @@ abstract class Video implements ActiveRecordInterface
     }
 
     /**
-     * Get the [movender] column value.
+     * Get the [athlete] column value.
      *
      * @return string
      */
-    public function getMovender()
+    public function getAthlete()
     {
-        return $this->movender;
+        return $this->athlete;
     }
 
     /**
-     * Get the [movender_id] column value.
+     * Get the [athlete_id] column value.
      *
      * @return int
      */
-    public function getMovenderId()
+    public function getAthleteId()
     {
-        return $this->movender_id;
+        return $this->athlete_id;
     }
 
     /**
@@ -673,44 +673,44 @@ abstract class Video implements ActiveRecordInterface
     } // setIsTutorial()
 
     /**
-     * Set the value of [movender] column.
+     * Set the value of [athlete] column.
      *
      * @param string $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
-    public function setMovender($v)
+    public function setAthlete($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->movender !== $v) {
-            $this->movender = $v;
-            $this->modifiedColumns[VideoTableMap::COL_MOVENDER] = true;
+        if ($this->athlete !== $v) {
+            $this->athlete = $v;
+            $this->modifiedColumns[VideoTableMap::COL_ATHLETE] = true;
         }
 
         return $this;
-    } // setMovender()
+    } // setAthlete()
 
     /**
-     * Set the value of [movender_id] column.
+     * Set the value of [athlete_id] column.
      *
      * @param int $v new value
      * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
      */
-    public function setMovenderId($v)
+    public function setAthleteId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->movender_id !== $v) {
-            $this->movender_id = $v;
-            $this->modifiedColumns[VideoTableMap::COL_MOVENDER_ID] = true;
+        if ($this->athlete_id !== $v) {
+            $this->athlete_id = $v;
+            $this->modifiedColumns[VideoTableMap::COL_ATHLETE_ID] = true;
         }
 
         return $this;
-    } // setMovenderId()
+    } // setAthleteId()
 
     /**
      * Set the value of [uploader_id] column.
@@ -951,11 +951,11 @@ abstract class Video implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : VideoTableMap::translateFieldName('IsTutorial', TableMap::TYPE_PHPNAME, $indexType)];
             $this->is_tutorial = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : VideoTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movender = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : VideoTableMap::translateFieldName('Athlete', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->athlete = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : VideoTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movender_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : VideoTableMap::translateFieldName('AthleteId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->athlete_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : VideoTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->uploader_id = (null !== $col) ? (int) $col : null;
@@ -1230,11 +1230,11 @@ abstract class Video implements ActiveRecordInterface
         if ($this->isColumnModified(VideoTableMap::COL_IS_TUTORIAL)) {
             $modifiedColumns[':p' . $index++]  = '`is_tutorial`';
         }
-        if ($this->isColumnModified(VideoTableMap::COL_MOVENDER)) {
-            $modifiedColumns[':p' . $index++]  = '`movender`';
+        if ($this->isColumnModified(VideoTableMap::COL_ATHLETE)) {
+            $modifiedColumns[':p' . $index++]  = '`athlete`';
         }
-        if ($this->isColumnModified(VideoTableMap::COL_MOVENDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`movender_id`';
+        if ($this->isColumnModified(VideoTableMap::COL_ATHLETE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`athlete_id`';
         }
         if ($this->isColumnModified(VideoTableMap::COL_UPLOADER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`uploader_id`';
@@ -1289,11 +1289,11 @@ abstract class Video implements ActiveRecordInterface
                     case '`is_tutorial`':
                         $stmt->bindValue($identifier, (int) $this->is_tutorial, PDO::PARAM_INT);
                         break;
-                    case '`movender`':
-                        $stmt->bindValue($identifier, $this->movender, PDO::PARAM_STR);
+                    case '`athlete`':
+                        $stmt->bindValue($identifier, $this->athlete, PDO::PARAM_STR);
                         break;
-                    case '`movender_id`':
-                        $stmt->bindValue($identifier, $this->movender_id, PDO::PARAM_INT);
+                    case '`athlete_id`':
+                        $stmt->bindValue($identifier, $this->athlete_id, PDO::PARAM_INT);
                         break;
                     case '`uploader_id`':
                         $stmt->bindValue($identifier, $this->uploader_id, PDO::PARAM_INT);
@@ -1400,10 +1400,10 @@ abstract class Video implements ActiveRecordInterface
                 return $this->getIsTutorial();
                 break;
             case 5:
-                return $this->getMovender();
+                return $this->getAthlete();
                 break;
             case 6:
-                return $this->getMovenderId();
+                return $this->getAthleteId();
                 break;
             case 7:
                 return $this->getUploaderId();
@@ -1467,8 +1467,8 @@ abstract class Video implements ActiveRecordInterface
             $keys[2] => $this->getDescription(),
             $keys[3] => $this->getUrl(),
             $keys[4] => $this->getIsTutorial(),
-            $keys[5] => $this->getMovender(),
-            $keys[6] => $this->getMovenderId(),
+            $keys[5] => $this->getAthlete(),
+            $keys[6] => $this->getAthleteId(),
             $keys[7] => $this->getUploaderId(),
             $keys[8] => $this->getSkillId(),
             $keys[9] => $this->getReferenceId(),
@@ -1565,10 +1565,10 @@ abstract class Video implements ActiveRecordInterface
                 $this->setIsTutorial($value);
                 break;
             case 5:
-                $this->setMovender($value);
+                $this->setAthlete($value);
                 break;
             case 6:
-                $this->setMovenderId($value);
+                $this->setAthleteId($value);
                 break;
             case 7:
                 $this->setUploaderId($value);
@@ -1639,10 +1639,10 @@ abstract class Video implements ActiveRecordInterface
             $this->setIsTutorial($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setMovender($arr[$keys[5]]);
+            $this->setAthlete($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setMovenderId($arr[$keys[6]]);
+            $this->setAthleteId($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
             $this->setUploaderId($arr[$keys[7]]);
@@ -1727,11 +1727,11 @@ abstract class Video implements ActiveRecordInterface
         if ($this->isColumnModified(VideoTableMap::COL_IS_TUTORIAL)) {
             $criteria->add(VideoTableMap::COL_IS_TUTORIAL, $this->is_tutorial);
         }
-        if ($this->isColumnModified(VideoTableMap::COL_MOVENDER)) {
-            $criteria->add(VideoTableMap::COL_MOVENDER, $this->movender);
+        if ($this->isColumnModified(VideoTableMap::COL_ATHLETE)) {
+            $criteria->add(VideoTableMap::COL_ATHLETE, $this->athlete);
         }
-        if ($this->isColumnModified(VideoTableMap::COL_MOVENDER_ID)) {
-            $criteria->add(VideoTableMap::COL_MOVENDER_ID, $this->movender_id);
+        if ($this->isColumnModified(VideoTableMap::COL_ATHLETE_ID)) {
+            $criteria->add(VideoTableMap::COL_ATHLETE_ID, $this->athlete_id);
         }
         if ($this->isColumnModified(VideoTableMap::COL_UPLOADER_ID)) {
             $criteria->add(VideoTableMap::COL_UPLOADER_ID, $this->uploader_id);
@@ -1850,8 +1850,8 @@ abstract class Video implements ActiveRecordInterface
         $copyObj->setDescription($this->getDescription());
         $copyObj->setUrl($this->getUrl());
         $copyObj->setIsTutorial($this->getIsTutorial());
-        $copyObj->setMovender($this->getMovender());
-        $copyObj->setMovenderId($this->getMovenderId());
+        $copyObj->setAthlete($this->getAthlete());
+        $copyObj->setAthleteId($this->getAthleteId());
         $copyObj->setUploaderId($this->getUploaderId());
         $copyObj->setSkillId($this->getSkillId());
         $copyObj->setReferenceId($this->getReferenceId());
@@ -2009,8 +2009,8 @@ abstract class Video implements ActiveRecordInterface
         $this->description = null;
         $this->url = null;
         $this->is_tutorial = null;
-        $this->movender = null;
-        $this->movender_id = null;
+        $this->athlete = null;
+        $this->athlete_id = null;
         $this->uploader_id = null;
         $this->skill_id = null;
         $this->reference_id = null;

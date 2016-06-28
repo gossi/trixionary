@@ -25,8 +25,8 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildVideoQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method     ChildVideoQuery orderByIsTutorial($order = Criteria::ASC) Order by the is_tutorial column
- * @method     ChildVideoQuery orderByMovender($order = Criteria::ASC) Order by the movender column
- * @method     ChildVideoQuery orderByMovenderId($order = Criteria::ASC) Order by the movender_id column
+ * @method     ChildVideoQuery orderByAthlete($order = Criteria::ASC) Order by the athlete column
+ * @method     ChildVideoQuery orderByAthleteId($order = Criteria::ASC) Order by the athlete_id column
  * @method     ChildVideoQuery orderByUploaderId($order = Criteria::ASC) Order by the uploader_id column
  * @method     ChildVideoQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildVideoQuery orderByReferenceId($order = Criteria::ASC) Order by the reference_id column
@@ -42,8 +42,8 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery groupByDescription() Group by the description column
  * @method     ChildVideoQuery groupByUrl() Group by the url column
  * @method     ChildVideoQuery groupByIsTutorial() Group by the is_tutorial column
- * @method     ChildVideoQuery groupByMovender() Group by the movender column
- * @method     ChildVideoQuery groupByMovenderId() Group by the movender_id column
+ * @method     ChildVideoQuery groupByAthlete() Group by the athlete column
+ * @method     ChildVideoQuery groupByAthleteId() Group by the athlete_id column
  * @method     ChildVideoQuery groupByUploaderId() Group by the uploader_id column
  * @method     ChildVideoQuery groupBySkillId() Group by the skill_id column
  * @method     ChildVideoQuery groupByReferenceId() Group by the reference_id column
@@ -76,8 +76,8 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo findOneByDescription(string $description) Return the first ChildVideo filtered by the description column
  * @method     ChildVideo findOneByUrl(string $url) Return the first ChildVideo filtered by the url column
  * @method     ChildVideo findOneByIsTutorial(boolean $is_tutorial) Return the first ChildVideo filtered by the is_tutorial column
- * @method     ChildVideo findOneByMovender(string $movender) Return the first ChildVideo filtered by the movender column
- * @method     ChildVideo findOneByMovenderId(int $movender_id) Return the first ChildVideo filtered by the movender_id column
+ * @method     ChildVideo findOneByAthlete(string $athlete) Return the first ChildVideo filtered by the athlete column
+ * @method     ChildVideo findOneByAthleteId(int $athlete_id) Return the first ChildVideo filtered by the athlete_id column
  * @method     ChildVideo findOneByUploaderId(int $uploader_id) Return the first ChildVideo filtered by the uploader_id column
  * @method     ChildVideo findOneBySkillId(int $skill_id) Return the first ChildVideo filtered by the skill_id column
  * @method     ChildVideo findOneByReferenceId(int $reference_id) Return the first ChildVideo filtered by the reference_id column
@@ -96,8 +96,8 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo requireOneByDescription(string $description) Return the first ChildVideo filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByUrl(string $url) Return the first ChildVideo filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByIsTutorial(boolean $is_tutorial) Return the first ChildVideo filtered by the is_tutorial column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildVideo requireOneByMovender(string $movender) Return the first ChildVideo filtered by the movender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildVideo requireOneByMovenderId(int $movender_id) Return the first ChildVideo filtered by the movender_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByAthlete(string $athlete) Return the first ChildVideo filtered by the athlete column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildVideo requireOneByAthleteId(int $athlete_id) Return the first ChildVideo filtered by the athlete_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByUploaderId(int $uploader_id) Return the first ChildVideo filtered by the uploader_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneBySkillId(int $skill_id) Return the first ChildVideo filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildVideo requireOneByReferenceId(int $reference_id) Return the first ChildVideo filtered by the reference_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -114,8 +114,8 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideo[]|ObjectCollection findByDescription(string $description) Return ChildVideo objects filtered by the description column
  * @method     ChildVideo[]|ObjectCollection findByUrl(string $url) Return ChildVideo objects filtered by the url column
  * @method     ChildVideo[]|ObjectCollection findByIsTutorial(boolean $is_tutorial) Return ChildVideo objects filtered by the is_tutorial column
- * @method     ChildVideo[]|ObjectCollection findByMovender(string $movender) Return ChildVideo objects filtered by the movender column
- * @method     ChildVideo[]|ObjectCollection findByMovenderId(int $movender_id) Return ChildVideo objects filtered by the movender_id column
+ * @method     ChildVideo[]|ObjectCollection findByAthlete(string $athlete) Return ChildVideo objects filtered by the athlete column
+ * @method     ChildVideo[]|ObjectCollection findByAthleteId(int $athlete_id) Return ChildVideo objects filtered by the athlete_id column
  * @method     ChildVideo[]|ObjectCollection findByUploaderId(int $uploader_id) Return ChildVideo objects filtered by the uploader_id column
  * @method     ChildVideo[]|ObjectCollection findBySkillId(int $skill_id) Return ChildVideo objects filtered by the skill_id column
  * @method     ChildVideo[]|ObjectCollection findByReferenceId(int $reference_id) Return ChildVideo objects filtered by the reference_id column
@@ -217,7 +217,7 @@ abstract class VideoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `url`, `is_tutorial`, `movender`, `movender_id`, `uploader_id`, `skill_id`, `reference_id`, `poster_url`, `provider`, `provider_id`, `player_url`, `width`, `height` FROM `kk_trixionary_video` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `url`, `is_tutorial`, `athlete`, `athlete_id`, `uploader_id`, `skill_id`, `reference_id`, `poster_url`, `provider`, `provider_id`, `player_url`, `width`, `height` FROM `kk_trixionary_video` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -463,45 +463,45 @@ abstract class VideoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the movender column
+     * Filter the query on the athlete column
      *
      * Example usage:
      * <code>
-     * $query->filterByMovender('fooValue');   // WHERE movender = 'fooValue'
-     * $query->filterByMovender('%fooValue%'); // WHERE movender LIKE '%fooValue%'
+     * $query->filterByAthlete('fooValue');   // WHERE athlete = 'fooValue'
+     * $query->filterByAthlete('%fooValue%'); // WHERE athlete LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $movender The value to use as filter.
+     * @param     string $athlete The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildVideoQuery The current query, for fluid interface
      */
-    public function filterByMovender($movender = null, $comparison = null)
+    public function filterByAthlete($athlete = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($movender)) {
+            if (is_array($athlete)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $movender)) {
-                $movender = str_replace('*', '%', $movender);
+            } elseif (preg_match('/[\%\*]/', $athlete)) {
+                $athlete = str_replace('*', '%', $athlete);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(VideoTableMap::COL_MOVENDER, $movender, $comparison);
+        return $this->addUsingAlias(VideoTableMap::COL_ATHLETE, $athlete, $comparison);
     }
 
     /**
-     * Filter the query on the movender_id column
+     * Filter the query on the athlete_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByMovenderId(1234); // WHERE movender_id = 1234
-     * $query->filterByMovenderId(array(12, 34)); // WHERE movender_id IN (12, 34)
-     * $query->filterByMovenderId(array('min' => 12)); // WHERE movender_id > 12
+     * $query->filterByAthleteId(1234); // WHERE athlete_id = 1234
+     * $query->filterByAthleteId(array(12, 34)); // WHERE athlete_id IN (12, 34)
+     * $query->filterByAthleteId(array('min' => 12)); // WHERE athlete_id > 12
      * </code>
      *
-     * @param     mixed $movenderId The value to use as filter.
+     * @param     mixed $athleteId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -509,16 +509,16 @@ abstract class VideoQuery extends ModelCriteria
      *
      * @return $this|ChildVideoQuery The current query, for fluid interface
      */
-    public function filterByMovenderId($movenderId = null, $comparison = null)
+    public function filterByAthleteId($athleteId = null, $comparison = null)
     {
-        if (is_array($movenderId)) {
+        if (is_array($athleteId)) {
             $useMinMax = false;
-            if (isset($movenderId['min'])) {
-                $this->addUsingAlias(VideoTableMap::COL_MOVENDER_ID, $movenderId['min'], Criteria::GREATER_EQUAL);
+            if (isset($athleteId['min'])) {
+                $this->addUsingAlias(VideoTableMap::COL_ATHLETE_ID, $athleteId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($movenderId['max'])) {
-                $this->addUsingAlias(VideoTableMap::COL_MOVENDER_ID, $movenderId['max'], Criteria::LESS_EQUAL);
+            if (isset($athleteId['max'])) {
+                $this->addUsingAlias(VideoTableMap::COL_ATHLETE_ID, $athleteId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -529,7 +529,7 @@ abstract class VideoQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(VideoTableMap::COL_MOVENDER_ID, $movenderId, $comparison);
+        return $this->addUsingAlias(VideoTableMap::COL_ATHLETE_ID, $athleteId, $comparison);
     }
 
     /**

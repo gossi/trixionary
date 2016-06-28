@@ -88,6 +88,12 @@ abstract class Picture implements ActiveRecordInterface
     protected $url;
 
     /**
+     * The value for the thumb_url field.
+     * @var        string
+     */
+    protected $thumb_url;
+
+    /**
      * The value for the skill_id field.
      * @var        int
      */
@@ -106,16 +112,16 @@ abstract class Picture implements ActiveRecordInterface
     protected $photographer_id;
 
     /**
-     * The value for the movender field.
+     * The value for the athlete field.
      * @var        string
      */
-    protected $movender;
+    protected $athlete;
 
     /**
-     * The value for the movender_id field.
+     * The value for the athlete_id field.
      * @var        int
      */
-    protected $movender_id;
+    protected $athlete_id;
 
     /**
      * The value for the uploader_id field.
@@ -406,6 +412,16 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
+     * Get the [thumb_url] column value.
+     *
+     * @return string
+     */
+    public function getThumbUrl()
+    {
+        return $this->thumb_url;
+    }
+
+    /**
      * Get the [skill_id] column value.
      *
      * @return int
@@ -436,23 +452,23 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
-     * Get the [movender] column value.
+     * Get the [athlete] column value.
      *
      * @return string
      */
-    public function getMovender()
+    public function getAthlete()
     {
-        return $this->movender;
+        return $this->athlete;
     }
 
     /**
-     * Get the [movender_id] column value.
+     * Get the [athlete_id] column value.
      *
      * @return int
      */
-    public function getMovenderId()
+    public function getAthleteId()
     {
-        return $this->movender_id;
+        return $this->athlete_id;
     }
 
     /**
@@ -546,6 +562,26 @@ abstract class Picture implements ActiveRecordInterface
     } // setUrl()
 
     /**
+     * Set the value of [thumb_url] column.
+     *
+     * @param string $v new value
+     * @return $this|\gossi\trixionary\model\Picture The current object (for fluent API support)
+     */
+    public function setThumbUrl($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->thumb_url !== $v) {
+            $this->thumb_url = $v;
+            $this->modifiedColumns[PictureTableMap::COL_THUMB_URL] = true;
+        }
+
+        return $this;
+    } // setThumbUrl()
+
+    /**
      * Set the value of [skill_id] column.
      *
      * @param int $v new value
@@ -610,44 +646,44 @@ abstract class Picture implements ActiveRecordInterface
     } // setPhotographerId()
 
     /**
-     * Set the value of [movender] column.
+     * Set the value of [athlete] column.
      *
      * @param string $v new value
      * @return $this|\gossi\trixionary\model\Picture The current object (for fluent API support)
      */
-    public function setMovender($v)
+    public function setAthlete($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->movender !== $v) {
-            $this->movender = $v;
-            $this->modifiedColumns[PictureTableMap::COL_MOVENDER] = true;
+        if ($this->athlete !== $v) {
+            $this->athlete = $v;
+            $this->modifiedColumns[PictureTableMap::COL_ATHLETE] = true;
         }
 
         return $this;
-    } // setMovender()
+    } // setAthlete()
 
     /**
-     * Set the value of [movender_id] column.
+     * Set the value of [athlete_id] column.
      *
      * @param int $v new value
      * @return $this|\gossi\trixionary\model\Picture The current object (for fluent API support)
      */
-    public function setMovenderId($v)
+    public function setAthleteId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->movender_id !== $v) {
-            $this->movender_id = $v;
-            $this->modifiedColumns[PictureTableMap::COL_MOVENDER_ID] = true;
+        if ($this->athlete_id !== $v) {
+            $this->athlete_id = $v;
+            $this->modifiedColumns[PictureTableMap::COL_ATHLETE_ID] = true;
         }
 
         return $this;
-    } // setMovenderId()
+    } // setAthleteId()
 
     /**
      * Set the value of [uploader_id] column.
@@ -717,22 +753,25 @@ abstract class Picture implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PictureTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
             $this->url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('ThumbUrl', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->thumb_url = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PictureTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->skill_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PictureTableMap::translateFieldName('Photographer', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PictureTableMap::translateFieldName('Photographer', TableMap::TYPE_PHPNAME, $indexType)];
             $this->photographer = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PictureTableMap::translateFieldName('PhotographerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PictureTableMap::translateFieldName('PhotographerId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->photographer_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PictureTableMap::translateFieldName('Movender', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movender = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PictureTableMap::translateFieldName('Athlete', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->athlete = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PictureTableMap::translateFieldName('MovenderId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->movender_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PictureTableMap::translateFieldName('AthleteId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->athlete_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PictureTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : PictureTableMap::translateFieldName('UploaderId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->uploader_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -742,7 +781,7 @@ abstract class Picture implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = PictureTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = PictureTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Picture'), 0, $e);
@@ -987,6 +1026,9 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_URL)) {
             $modifiedColumns[':p' . $index++]  = '`url`';
         }
+        if ($this->isColumnModified(PictureTableMap::COL_THUMB_URL)) {
+            $modifiedColumns[':p' . $index++]  = '`thumb_url`';
+        }
         if ($this->isColumnModified(PictureTableMap::COL_SKILL_ID)) {
             $modifiedColumns[':p' . $index++]  = '`skill_id`';
         }
@@ -996,11 +1038,11 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_PHOTOGRAPHER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`photographer_id`';
         }
-        if ($this->isColumnModified(PictureTableMap::COL_MOVENDER)) {
-            $modifiedColumns[':p' . $index++]  = '`movender`';
+        if ($this->isColumnModified(PictureTableMap::COL_ATHLETE)) {
+            $modifiedColumns[':p' . $index++]  = '`athlete`';
         }
-        if ($this->isColumnModified(PictureTableMap::COL_MOVENDER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`movender_id`';
+        if ($this->isColumnModified(PictureTableMap::COL_ATHLETE_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`athlete_id`';
         }
         if ($this->isColumnModified(PictureTableMap::COL_UPLOADER_ID)) {
             $modifiedColumns[':p' . $index++]  = '`uploader_id`';
@@ -1028,6 +1070,9 @@ abstract class Picture implements ActiveRecordInterface
                     case '`url`':
                         $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
+                    case '`thumb_url`':
+                        $stmt->bindValue($identifier, $this->thumb_url, PDO::PARAM_STR);
+                        break;
                     case '`skill_id`':
                         $stmt->bindValue($identifier, $this->skill_id, PDO::PARAM_INT);
                         break;
@@ -1037,11 +1082,11 @@ abstract class Picture implements ActiveRecordInterface
                     case '`photographer_id`':
                         $stmt->bindValue($identifier, $this->photographer_id, PDO::PARAM_INT);
                         break;
-                    case '`movender`':
-                        $stmt->bindValue($identifier, $this->movender, PDO::PARAM_STR);
+                    case '`athlete`':
+                        $stmt->bindValue($identifier, $this->athlete, PDO::PARAM_STR);
                         break;
-                    case '`movender_id`':
-                        $stmt->bindValue($identifier, $this->movender_id, PDO::PARAM_INT);
+                    case '`athlete_id`':
+                        $stmt->bindValue($identifier, $this->athlete_id, PDO::PARAM_INT);
                         break;
                     case '`uploader_id`':
                         $stmt->bindValue($identifier, $this->uploader_id, PDO::PARAM_INT);
@@ -1121,21 +1166,24 @@ abstract class Picture implements ActiveRecordInterface
                 return $this->getUrl();
                 break;
             case 4:
-                return $this->getSkillId();
+                return $this->getThumbUrl();
                 break;
             case 5:
-                return $this->getPhotographer();
+                return $this->getSkillId();
                 break;
             case 6:
-                return $this->getPhotographerId();
+                return $this->getPhotographer();
                 break;
             case 7:
-                return $this->getMovender();
+                return $this->getPhotographerId();
                 break;
             case 8:
-                return $this->getMovenderId();
+                return $this->getAthlete();
                 break;
             case 9:
+                return $this->getAthleteId();
+                break;
+            case 10:
                 return $this->getUploaderId();
                 break;
             default:
@@ -1172,12 +1220,13 @@ abstract class Picture implements ActiveRecordInterface
             $keys[1] => $this->getTitle(),
             $keys[2] => $this->getDescription(),
             $keys[3] => $this->getUrl(),
-            $keys[4] => $this->getSkillId(),
-            $keys[5] => $this->getPhotographer(),
-            $keys[6] => $this->getPhotographerId(),
-            $keys[7] => $this->getMovender(),
-            $keys[8] => $this->getMovenderId(),
-            $keys[9] => $this->getUploaderId(),
+            $keys[4] => $this->getThumbUrl(),
+            $keys[5] => $this->getSkillId(),
+            $keys[6] => $this->getPhotographer(),
+            $keys[7] => $this->getPhotographerId(),
+            $keys[8] => $this->getAthlete(),
+            $keys[9] => $this->getAthleteId(),
+            $keys[10] => $this->getUploaderId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1262,21 +1311,24 @@ abstract class Picture implements ActiveRecordInterface
                 $this->setUrl($value);
                 break;
             case 4:
-                $this->setSkillId($value);
+                $this->setThumbUrl($value);
                 break;
             case 5:
-                $this->setPhotographer($value);
+                $this->setSkillId($value);
                 break;
             case 6:
-                $this->setPhotographerId($value);
+                $this->setPhotographer($value);
                 break;
             case 7:
-                $this->setMovender($value);
+                $this->setPhotographerId($value);
                 break;
             case 8:
-                $this->setMovenderId($value);
+                $this->setAthlete($value);
                 break;
             case 9:
+                $this->setAthleteId($value);
+                break;
+            case 10:
                 $this->setUploaderId($value);
                 break;
         } // switch()
@@ -1318,22 +1370,25 @@ abstract class Picture implements ActiveRecordInterface
             $this->setUrl($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setSkillId($arr[$keys[4]]);
+            $this->setThumbUrl($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPhotographer($arr[$keys[5]]);
+            $this->setSkillId($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setPhotographerId($arr[$keys[6]]);
+            $this->setPhotographer($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setMovender($arr[$keys[7]]);
+            $this->setPhotographerId($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setMovenderId($arr[$keys[8]]);
+            $this->setAthlete($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setUploaderId($arr[$keys[9]]);
+            $this->setAthleteId($arr[$keys[9]]);
+        }
+        if (array_key_exists($keys[10], $arr)) {
+            $this->setUploaderId($arr[$keys[10]]);
         }
     }
 
@@ -1388,6 +1443,9 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_URL)) {
             $criteria->add(PictureTableMap::COL_URL, $this->url);
         }
+        if ($this->isColumnModified(PictureTableMap::COL_THUMB_URL)) {
+            $criteria->add(PictureTableMap::COL_THUMB_URL, $this->thumb_url);
+        }
         if ($this->isColumnModified(PictureTableMap::COL_SKILL_ID)) {
             $criteria->add(PictureTableMap::COL_SKILL_ID, $this->skill_id);
         }
@@ -1397,11 +1455,11 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_PHOTOGRAPHER_ID)) {
             $criteria->add(PictureTableMap::COL_PHOTOGRAPHER_ID, $this->photographer_id);
         }
-        if ($this->isColumnModified(PictureTableMap::COL_MOVENDER)) {
-            $criteria->add(PictureTableMap::COL_MOVENDER, $this->movender);
+        if ($this->isColumnModified(PictureTableMap::COL_ATHLETE)) {
+            $criteria->add(PictureTableMap::COL_ATHLETE, $this->athlete);
         }
-        if ($this->isColumnModified(PictureTableMap::COL_MOVENDER_ID)) {
-            $criteria->add(PictureTableMap::COL_MOVENDER_ID, $this->movender_id);
+        if ($this->isColumnModified(PictureTableMap::COL_ATHLETE_ID)) {
+            $criteria->add(PictureTableMap::COL_ATHLETE_ID, $this->athlete_id);
         }
         if ($this->isColumnModified(PictureTableMap::COL_UPLOADER_ID)) {
             $criteria->add(PictureTableMap::COL_UPLOADER_ID, $this->uploader_id);
@@ -1495,11 +1553,12 @@ abstract class Picture implements ActiveRecordInterface
         $copyObj->setTitle($this->getTitle());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setUrl($this->getUrl());
+        $copyObj->setThumbUrl($this->getThumbUrl());
         $copyObj->setSkillId($this->getSkillId());
         $copyObj->setPhotographer($this->getPhotographer());
         $copyObj->setPhotographerId($this->getPhotographerId());
-        $copyObj->setMovender($this->getMovender());
-        $copyObj->setMovenderId($this->getMovenderId());
+        $copyObj->setAthlete($this->getAthlete());
+        $copyObj->setAthleteId($this->getAthleteId());
         $copyObj->setUploaderId($this->getUploaderId());
 
         if ($deepCopy) {
@@ -2042,11 +2101,12 @@ abstract class Picture implements ActiveRecordInterface
         $this->title = null;
         $this->description = null;
         $this->url = null;
+        $this->thumb_url = null;
         $this->skill_id = null;
         $this->photographer = null;
         $this->photographer_id = null;
-        $this->movender = null;
-        $this->movender_id = null;
+        $this->athlete = null;
+        $this->athlete_id = null;
         $this->uploader_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();

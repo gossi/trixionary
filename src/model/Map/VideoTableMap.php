@@ -97,14 +97,14 @@ class VideoTableMap extends TableMap
     const COL_IS_TUTORIAL = 'kk_trixionary_video.is_tutorial';
 
     /**
-     * the column name for the movender field
+     * the column name for the athlete field
      */
-    const COL_MOVENDER = 'kk_trixionary_video.movender';
+    const COL_ATHLETE = 'kk_trixionary_video.athlete';
 
     /**
-     * the column name for the movender_id field
+     * the column name for the athlete_id field
      */
-    const COL_MOVENDER_ID = 'kk_trixionary_video.movender_id';
+    const COL_ATHLETE_ID = 'kk_trixionary_video.athlete_id';
 
     /**
      * the column name for the uploader_id field
@@ -163,10 +163,10 @@ class VideoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Url', 'IsTutorial', 'Movender', 'MovenderId', 'UploaderId', 'SkillId', 'ReferenceId', 'PosterUrl', 'Provider', 'ProviderId', 'PlayerUrl', 'Width', 'Height', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'url', 'isTutorial', 'movender', 'movenderId', 'uploaderId', 'skillId', 'referenceId', 'posterUrl', 'provider', 'providerId', 'playerUrl', 'width', 'height', ),
-        self::TYPE_COLNAME       => array(VideoTableMap::COL_ID, VideoTableMap::COL_TITLE, VideoTableMap::COL_DESCRIPTION, VideoTableMap::COL_URL, VideoTableMap::COL_IS_TUTORIAL, VideoTableMap::COL_MOVENDER, VideoTableMap::COL_MOVENDER_ID, VideoTableMap::COL_UPLOADER_ID, VideoTableMap::COL_SKILL_ID, VideoTableMap::COL_REFERENCE_ID, VideoTableMap::COL_POSTER_URL, VideoTableMap::COL_PROVIDER, VideoTableMap::COL_PROVIDER_ID, VideoTableMap::COL_PLAYER_URL, VideoTableMap::COL_WIDTH, VideoTableMap::COL_HEIGHT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'url', 'is_tutorial', 'movender', 'movender_id', 'uploader_id', 'skill_id', 'reference_id', 'poster_url', 'provider', 'provider_id', 'player_url', 'width', 'height', ),
+        self::TYPE_PHPNAME       => array('Id', 'Title', 'Description', 'Url', 'IsTutorial', 'Athlete', 'AthleteId', 'UploaderId', 'SkillId', 'ReferenceId', 'PosterUrl', 'Provider', 'ProviderId', 'PlayerUrl', 'Width', 'Height', ),
+        self::TYPE_CAMELNAME     => array('id', 'title', 'description', 'url', 'isTutorial', 'athlete', 'athleteId', 'uploaderId', 'skillId', 'referenceId', 'posterUrl', 'provider', 'providerId', 'playerUrl', 'width', 'height', ),
+        self::TYPE_COLNAME       => array(VideoTableMap::COL_ID, VideoTableMap::COL_TITLE, VideoTableMap::COL_DESCRIPTION, VideoTableMap::COL_URL, VideoTableMap::COL_IS_TUTORIAL, VideoTableMap::COL_ATHLETE, VideoTableMap::COL_ATHLETE_ID, VideoTableMap::COL_UPLOADER_ID, VideoTableMap::COL_SKILL_ID, VideoTableMap::COL_REFERENCE_ID, VideoTableMap::COL_POSTER_URL, VideoTableMap::COL_PROVIDER, VideoTableMap::COL_PROVIDER_ID, VideoTableMap::COL_PLAYER_URL, VideoTableMap::COL_WIDTH, VideoTableMap::COL_HEIGHT, ),
+        self::TYPE_FIELDNAME     => array('id', 'title', 'description', 'url', 'is_tutorial', 'athlete', 'athlete_id', 'uploader_id', 'skill_id', 'reference_id', 'poster_url', 'provider', 'provider_id', 'player_url', 'width', 'height', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
@@ -177,10 +177,10 @@ class VideoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Url' => 3, 'IsTutorial' => 4, 'Movender' => 5, 'MovenderId' => 6, 'UploaderId' => 7, 'SkillId' => 8, 'ReferenceId' => 9, 'PosterUrl' => 10, 'Provider' => 11, 'ProviderId' => 12, 'PlayerUrl' => 13, 'Width' => 14, 'Height' => 15, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'isTutorial' => 4, 'movender' => 5, 'movenderId' => 6, 'uploaderId' => 7, 'skillId' => 8, 'referenceId' => 9, 'posterUrl' => 10, 'provider' => 11, 'providerId' => 12, 'playerUrl' => 13, 'width' => 14, 'height' => 15, ),
-        self::TYPE_COLNAME       => array(VideoTableMap::COL_ID => 0, VideoTableMap::COL_TITLE => 1, VideoTableMap::COL_DESCRIPTION => 2, VideoTableMap::COL_URL => 3, VideoTableMap::COL_IS_TUTORIAL => 4, VideoTableMap::COL_MOVENDER => 5, VideoTableMap::COL_MOVENDER_ID => 6, VideoTableMap::COL_UPLOADER_ID => 7, VideoTableMap::COL_SKILL_ID => 8, VideoTableMap::COL_REFERENCE_ID => 9, VideoTableMap::COL_POSTER_URL => 10, VideoTableMap::COL_PROVIDER => 11, VideoTableMap::COL_PROVIDER_ID => 12, VideoTableMap::COL_PLAYER_URL => 13, VideoTableMap::COL_WIDTH => 14, VideoTableMap::COL_HEIGHT => 15, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'is_tutorial' => 4, 'movender' => 5, 'movender_id' => 6, 'uploader_id' => 7, 'skill_id' => 8, 'reference_id' => 9, 'poster_url' => 10, 'provider' => 11, 'provider_id' => 12, 'player_url' => 13, 'width' => 14, 'height' => 15, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Description' => 2, 'Url' => 3, 'IsTutorial' => 4, 'Athlete' => 5, 'AthleteId' => 6, 'UploaderId' => 7, 'SkillId' => 8, 'ReferenceId' => 9, 'PosterUrl' => 10, 'Provider' => 11, 'ProviderId' => 12, 'PlayerUrl' => 13, 'Width' => 14, 'Height' => 15, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'isTutorial' => 4, 'athlete' => 5, 'athleteId' => 6, 'uploaderId' => 7, 'skillId' => 8, 'referenceId' => 9, 'posterUrl' => 10, 'provider' => 11, 'providerId' => 12, 'playerUrl' => 13, 'width' => 14, 'height' => 15, ),
+        self::TYPE_COLNAME       => array(VideoTableMap::COL_ID => 0, VideoTableMap::COL_TITLE => 1, VideoTableMap::COL_DESCRIPTION => 2, VideoTableMap::COL_URL => 3, VideoTableMap::COL_IS_TUTORIAL => 4, VideoTableMap::COL_ATHLETE => 5, VideoTableMap::COL_ATHLETE_ID => 6, VideoTableMap::COL_UPLOADER_ID => 7, VideoTableMap::COL_SKILL_ID => 8, VideoTableMap::COL_REFERENCE_ID => 9, VideoTableMap::COL_POSTER_URL => 10, VideoTableMap::COL_PROVIDER => 11, VideoTableMap::COL_PROVIDER_ID => 12, VideoTableMap::COL_PLAYER_URL => 13, VideoTableMap::COL_WIDTH => 14, VideoTableMap::COL_HEIGHT => 15, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'description' => 2, 'url' => 3, 'is_tutorial' => 4, 'athlete' => 5, 'athlete_id' => 6, 'uploader_id' => 7, 'skill_id' => 8, 'reference_id' => 9, 'poster_url' => 10, 'provider' => 11, 'provider_id' => 12, 'player_url' => 13, 'width' => 14, 'height' => 15, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
@@ -206,8 +206,8 @@ class VideoTableMap extends TableMap
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('url', 'Url', 'VARCHAR', false, 255, null);
         $this->addColumn('is_tutorial', 'IsTutorial', 'BOOLEAN', false, 1, null);
-        $this->addColumn('movender', 'Movender', 'VARCHAR', false, 255, null);
-        $this->addColumn('movender_id', 'MovenderId', 'INTEGER', false, null, null);
+        $this->addColumn('athlete', 'Athlete', 'VARCHAR', false, 255, null);
+        $this->addColumn('athlete_id', 'AthleteId', 'INTEGER', false, null, null);
         $this->addColumn('uploader_id', 'UploaderId', 'INTEGER', false, null, null);
         $this->addForeignKey('skill_id', 'SkillId', 'INTEGER', 'kk_trixionary_skill', 'id', true, null, null);
         $this->addForeignKey('reference_id', 'ReferenceId', 'INTEGER', 'kk_trixionary_reference', 'id', false, null, null);
@@ -386,8 +386,8 @@ class VideoTableMap extends TableMap
             $criteria->addSelectColumn(VideoTableMap::COL_DESCRIPTION);
             $criteria->addSelectColumn(VideoTableMap::COL_URL);
             $criteria->addSelectColumn(VideoTableMap::COL_IS_TUTORIAL);
-            $criteria->addSelectColumn(VideoTableMap::COL_MOVENDER);
-            $criteria->addSelectColumn(VideoTableMap::COL_MOVENDER_ID);
+            $criteria->addSelectColumn(VideoTableMap::COL_ATHLETE);
+            $criteria->addSelectColumn(VideoTableMap::COL_ATHLETE_ID);
             $criteria->addSelectColumn(VideoTableMap::COL_UPLOADER_ID);
             $criteria->addSelectColumn(VideoTableMap::COL_SKILL_ID);
             $criteria->addSelectColumn(VideoTableMap::COL_REFERENCE_ID);
@@ -403,8 +403,8 @@ class VideoTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.description');
             $criteria->addSelectColumn($alias . '.url');
             $criteria->addSelectColumn($alias . '.is_tutorial');
-            $criteria->addSelectColumn($alias . '.movender');
-            $criteria->addSelectColumn($alias . '.movender_id');
+            $criteria->addSelectColumn($alias . '.athlete');
+            $criteria->addSelectColumn($alias . '.athlete_id');
             $criteria->addSelectColumn($alias . '.uploader_id');
             $criteria->addSelectColumn($alias . '.skill_id');
             $criteria->addSelectColumn($alias . '.reference_id');

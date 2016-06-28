@@ -222,11 +222,12 @@
 		<column name="title" type="VARCHAR" size="255"/>
 		<column name="description" type="LONGVARCHAR"/>
 		<column name="url" type="VARCHAR" size="255"/>
+		<column name="thumb_url" type="VARCHAR" size="255"/>
 		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="photographer" type="VARCHAR" required="false"/>
 		<column name="photographer_id" type="INTEGER" required="false"/>
-		<column name="movender" type="VARCHAR" required="false"/>
-		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="athlete" type="VARCHAR" required="false"/>
+		<column name="athlete_id" type="INTEGER" required="false"/>
 		<column name="uploader_id" type="INTEGER"/>
 
 		<foreign-key foreignTable="skill" refPhpName="Picture" phpName="Skill" onDelete="CASCADE" name="picture_fk_skill">
@@ -240,8 +241,8 @@
 		<column name="description" type="LONGVARCHAR"/>
 		<column name="url" type="VARCHAR" size="255"/>
 		<column name="is_tutorial" type="BOOLEAN"/>
-		<column name="movender" type="VARCHAR" required="false"/>
-		<column name="movender_id" type="INTEGER" required="false"/>
+		<column name="athlete" type="VARCHAR" required="false"/>
+		<column name="athlete_id" type="INTEGER" required="false"/>
 		<column name="uploader_id" type="INTEGER"/>
 		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="reference_id" type="INTEGER" required="false"/>

@@ -24,22 +24,24 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPictureQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildPictureQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     ChildPictureQuery orderByUrl($order = Criteria::ASC) Order by the url column
+ * @method     ChildPictureQuery orderByThumbUrl($order = Criteria::ASC) Order by the thumb_url column
  * @method     ChildPictureQuery orderBySkillId($order = Criteria::ASC) Order by the skill_id column
  * @method     ChildPictureQuery orderByPhotographer($order = Criteria::ASC) Order by the photographer column
  * @method     ChildPictureQuery orderByPhotographerId($order = Criteria::ASC) Order by the photographer_id column
- * @method     ChildPictureQuery orderByMovender($order = Criteria::ASC) Order by the movender column
- * @method     ChildPictureQuery orderByMovenderId($order = Criteria::ASC) Order by the movender_id column
+ * @method     ChildPictureQuery orderByAthlete($order = Criteria::ASC) Order by the athlete column
+ * @method     ChildPictureQuery orderByAthleteId($order = Criteria::ASC) Order by the athlete_id column
  * @method     ChildPictureQuery orderByUploaderId($order = Criteria::ASC) Order by the uploader_id column
  *
  * @method     ChildPictureQuery groupById() Group by the id column
  * @method     ChildPictureQuery groupByTitle() Group by the title column
  * @method     ChildPictureQuery groupByDescription() Group by the description column
  * @method     ChildPictureQuery groupByUrl() Group by the url column
+ * @method     ChildPictureQuery groupByThumbUrl() Group by the thumb_url column
  * @method     ChildPictureQuery groupBySkillId() Group by the skill_id column
  * @method     ChildPictureQuery groupByPhotographer() Group by the photographer column
  * @method     ChildPictureQuery groupByPhotographerId() Group by the photographer_id column
- * @method     ChildPictureQuery groupByMovender() Group by the movender column
- * @method     ChildPictureQuery groupByMovenderId() Group by the movender_id column
+ * @method     ChildPictureQuery groupByAthlete() Group by the athlete column
+ * @method     ChildPictureQuery groupByAthleteId() Group by the athlete_id column
  * @method     ChildPictureQuery groupByUploaderId() Group by the uploader_id column
  *
  * @method     ChildPictureQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -63,11 +65,12 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture findOneByTitle(string $title) Return the first ChildPicture filtered by the title column
  * @method     ChildPicture findOneByDescription(string $description) Return the first ChildPicture filtered by the description column
  * @method     ChildPicture findOneByUrl(string $url) Return the first ChildPicture filtered by the url column
+ * @method     ChildPicture findOneByThumbUrl(string $thumb_url) Return the first ChildPicture filtered by the thumb_url column
  * @method     ChildPicture findOneBySkillId(int $skill_id) Return the first ChildPicture filtered by the skill_id column
  * @method     ChildPicture findOneByPhotographer(string $photographer) Return the first ChildPicture filtered by the photographer column
  * @method     ChildPicture findOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column
- * @method     ChildPicture findOneByMovender(string $movender) Return the first ChildPicture filtered by the movender column
- * @method     ChildPicture findOneByMovenderId(int $movender_id) Return the first ChildPicture filtered by the movender_id column
+ * @method     ChildPicture findOneByAthlete(string $athlete) Return the first ChildPicture filtered by the athlete column
+ * @method     ChildPicture findOneByAthleteId(int $athlete_id) Return the first ChildPicture filtered by the athlete_id column
  * @method     ChildPicture findOneByUploaderId(int $uploader_id) Return the first ChildPicture filtered by the uploader_id column *
 
  * @method     ChildPicture requirePk($key, ConnectionInterface $con = null) Return the ChildPicture by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -77,11 +80,12 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture requireOneByTitle(string $title) Return the first ChildPicture filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByDescription(string $description) Return the first ChildPicture filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByUrl(string $url) Return the first ChildPicture filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByThumbUrl(string $thumb_url) Return the first ChildPicture filtered by the thumb_url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneBySkillId(int $skill_id) Return the first ChildPicture filtered by the skill_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByPhotographer(string $photographer) Return the first ChildPicture filtered by the photographer column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByPhotographerId(int $photographer_id) Return the first ChildPicture filtered by the photographer_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByMovender(string $movender) Return the first ChildPicture filtered by the movender column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByMovenderId(int $movender_id) Return the first ChildPicture filtered by the movender_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByAthlete(string $athlete) Return the first ChildPicture filtered by the athlete column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByAthleteId(int $athlete_id) Return the first ChildPicture filtered by the athlete_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOneByUploaderId(int $uploader_id) Return the first ChildPicture filtered by the uploader_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPicture[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPicture objects based on current ModelCriteria
@@ -89,11 +93,12 @@ use gossi\trixionary\model\Map\PictureTableMap;
  * @method     ChildPicture[]|ObjectCollection findByTitle(string $title) Return ChildPicture objects filtered by the title column
  * @method     ChildPicture[]|ObjectCollection findByDescription(string $description) Return ChildPicture objects filtered by the description column
  * @method     ChildPicture[]|ObjectCollection findByUrl(string $url) Return ChildPicture objects filtered by the url column
+ * @method     ChildPicture[]|ObjectCollection findByThumbUrl(string $thumb_url) Return ChildPicture objects filtered by the thumb_url column
  * @method     ChildPicture[]|ObjectCollection findBySkillId(int $skill_id) Return ChildPicture objects filtered by the skill_id column
  * @method     ChildPicture[]|ObjectCollection findByPhotographer(string $photographer) Return ChildPicture objects filtered by the photographer column
  * @method     ChildPicture[]|ObjectCollection findByPhotographerId(int $photographer_id) Return ChildPicture objects filtered by the photographer_id column
- * @method     ChildPicture[]|ObjectCollection findByMovender(string $movender) Return ChildPicture objects filtered by the movender column
- * @method     ChildPicture[]|ObjectCollection findByMovenderId(int $movender_id) Return ChildPicture objects filtered by the movender_id column
+ * @method     ChildPicture[]|ObjectCollection findByAthlete(string $athlete) Return ChildPicture objects filtered by the athlete column
+ * @method     ChildPicture[]|ObjectCollection findByAthleteId(int $athlete_id) Return ChildPicture objects filtered by the athlete_id column
  * @method     ChildPicture[]|ObjectCollection findByUploaderId(int $uploader_id) Return ChildPicture objects filtered by the uploader_id column
  * @method     ChildPicture[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -187,7 +192,7 @@ abstract class PictureQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `title`, `description`, `url`, `skill_id`, `photographer`, `photographer_id`, `movender`, `movender_id`, `uploader_id` FROM `kk_trixionary_picture` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `description`, `url`, `thumb_url`, `skill_id`, `photographer`, `photographer_id`, `athlete`, `athlete_id`, `uploader_id` FROM `kk_trixionary_picture` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -406,6 +411,35 @@ abstract class PictureQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the thumb_url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByThumbUrl('fooValue');   // WHERE thumb_url = 'fooValue'
+     * $query->filterByThumbUrl('%fooValue%'); // WHERE thumb_url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $thumbUrl The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPictureQuery The current query, for fluid interface
+     */
+    public function filterByThumbUrl($thumbUrl = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($thumbUrl)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $thumbUrl)) {
+                $thumbUrl = str_replace('*', '%', $thumbUrl);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PictureTableMap::COL_THUMB_URL, $thumbUrl, $comparison);
+    }
+
+    /**
      * Filter the query on the skill_id column
      *
      * Example usage:
@@ -519,45 +553,45 @@ abstract class PictureQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the movender column
+     * Filter the query on the athlete column
      *
      * Example usage:
      * <code>
-     * $query->filterByMovender('fooValue');   // WHERE movender = 'fooValue'
-     * $query->filterByMovender('%fooValue%'); // WHERE movender LIKE '%fooValue%'
+     * $query->filterByAthlete('fooValue');   // WHERE athlete = 'fooValue'
+     * $query->filterByAthlete('%fooValue%'); // WHERE athlete LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $movender The value to use as filter.
+     * @param     string $athlete The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildPictureQuery The current query, for fluid interface
      */
-    public function filterByMovender($movender = null, $comparison = null)
+    public function filterByAthlete($athlete = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($movender)) {
+            if (is_array($athlete)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $movender)) {
-                $movender = str_replace('*', '%', $movender);
+            } elseif (preg_match('/[\%\*]/', $athlete)) {
+                $athlete = str_replace('*', '%', $athlete);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(PictureTableMap::COL_MOVENDER, $movender, $comparison);
+        return $this->addUsingAlias(PictureTableMap::COL_ATHLETE, $athlete, $comparison);
     }
 
     /**
-     * Filter the query on the movender_id column
+     * Filter the query on the athlete_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByMovenderId(1234); // WHERE movender_id = 1234
-     * $query->filterByMovenderId(array(12, 34)); // WHERE movender_id IN (12, 34)
-     * $query->filterByMovenderId(array('min' => 12)); // WHERE movender_id > 12
+     * $query->filterByAthleteId(1234); // WHERE athlete_id = 1234
+     * $query->filterByAthleteId(array(12, 34)); // WHERE athlete_id IN (12, 34)
+     * $query->filterByAthleteId(array('min' => 12)); // WHERE athlete_id > 12
      * </code>
      *
-     * @param     mixed $movenderId The value to use as filter.
+     * @param     mixed $athleteId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -565,16 +599,16 @@ abstract class PictureQuery extends ModelCriteria
      *
      * @return $this|ChildPictureQuery The current query, for fluid interface
      */
-    public function filterByMovenderId($movenderId = null, $comparison = null)
+    public function filterByAthleteId($athleteId = null, $comparison = null)
     {
-        if (is_array($movenderId)) {
+        if (is_array($athleteId)) {
             $useMinMax = false;
-            if (isset($movenderId['min'])) {
-                $this->addUsingAlias(PictureTableMap::COL_MOVENDER_ID, $movenderId['min'], Criteria::GREATER_EQUAL);
+            if (isset($athleteId['min'])) {
+                $this->addUsingAlias(PictureTableMap::COL_ATHLETE_ID, $athleteId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($movenderId['max'])) {
-                $this->addUsingAlias(PictureTableMap::COL_MOVENDER_ID, $movenderId['max'], Criteria::LESS_EQUAL);
+            if (isset($athleteId['max'])) {
+                $this->addUsingAlias(PictureTableMap::COL_ATHLETE_ID, $athleteId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -585,7 +619,7 @@ abstract class PictureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PictureTableMap::COL_MOVENDER_ID, $movenderId, $comparison);
+        return $this->addUsingAlias(PictureTableMap::COL_ATHLETE_ID, $athleteId, $comparison);
     }
 
     /**
