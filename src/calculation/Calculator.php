@@ -3,9 +3,9 @@ namespace gossi\trixionary\calculation;
 
 use gossi\trixionary\model\Lineage;
 use gossi\trixionary\model\Skill;
+use phootwork\collection\Map;
 use phootwork\collection\Queue;
 use phootwork\collection\Set;
-use phootwork\collection\Map;
 
 class Calculator {
 

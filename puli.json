@@ -42,6 +42,10 @@
             "installer": "composer",
             "env": "dev"
         },
+        "embed/embed": {
+            "install-path": "vendor/embed/embed",
+            "installer": "composer"
+        },
         "flow/jsonpath": {
             "install-path": "vendor/flow/jsonpath",
             "installer": "composer",
@@ -61,6 +65,10 @@
             "install-path": "vendor/igorw/get-in",
             "installer": "composer",
             "env": "dev"
+        },
+        "imagine/imagine": {
+            "install-path": "vendor/imagine/imagine",
+            "installer": "composer"
         },
         "justinrainbow/json-schema": {
             "install-path": "vendor/justinrainbow/json-schema",

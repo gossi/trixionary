@@ -284,11 +284,12 @@ CREATE TABLE `kk_trixionary_picture`
     `title` VARCHAR(255),
     `description` TEXT,
     `url` VARCHAR(255),
+    `thumb_url` VARCHAR(255),
     `skill_id` INTEGER NOT NULL,
     `photographer` VARCHAR(255),
     `photographer_id` INTEGER,
-    `movender` VARCHAR(255),
-    `movender_id` INTEGER,
+    `athlete` VARCHAR(255),
+    `athlete_id` INTEGER,
     `uploader_id` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `picture_fi_skill` (`skill_id`),
@@ -311,8 +312,8 @@ CREATE TABLE `kk_trixionary_video`
     `description` TEXT,
     `url` VARCHAR(255),
     `is_tutorial` TINYINT(1),
-    `movender` VARCHAR(255),
-    `movender_id` INTEGER,
+    `athlete` VARCHAR(255),
+    `athlete_id` INTEGER,
     `uploader_id` INTEGER,
     `skill_id` INTEGER NOT NULL,
     `reference_id` INTEGER,
@@ -344,7 +345,6 @@ CREATE TABLE `kk_trixionary_reference`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(255),
-    `skill_id` INTEGER NOT NULL,
     `title` VARCHAR(255),
     `year` INTEGER,
     `publisher` VARCHAR(255),
@@ -363,11 +363,29 @@ CREATE TABLE `kk_trixionary_reference`
     `url` VARCHAR(255),
     `lastchecked` DATE,
     `managed` TINYINT(1) DEFAULT 0,
-    PRIMARY KEY (`id`),
-    INDEX `reference_fi_skill` (`skill_id`),
-    CONSTRAINT `reference_fk_skill`
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- kk_trixionary_skill_reference
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `kk_trixionary_skill_reference`;
+
+CREATE TABLE `kk_trixionary_skill_reference`
+(
+    `skill_id` INTEGER NOT NULL,
+    `reference_id` INTEGER NOT NULL,
+    PRIMARY KEY (`skill_id`,`reference_id`),
+    INDEX `skill_reference_fi_reference` (`reference_id`),
+    CONSTRAINT `skill_reference_fk_skill`
         FOREIGN KEY (`skill_id`)
         REFERENCES `kk_trixionary_skill` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `skill_reference_fk_reference`
+        FOREIGN KEY (`reference_id`)
+        REFERENCES `kk_trixionary_reference` (`id`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

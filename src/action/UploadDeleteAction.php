@@ -38,5 +38,4 @@ class UploadDeleteAction extends AbstractAction {
 		return $this->responder->run($request, new Success());
 	}
 
-
 }

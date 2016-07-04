@@ -22,6 +22,8 @@ use gossi\trixionary\model\Reference as ChildReference;
 use gossi\trixionary\model\ReferenceQuery as ChildReferenceQuery;
 use gossi\trixionary\model\Skill as ChildSkill;
 use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
+use gossi\trixionary\model\SkillReference as ChildSkillReference;
+use gossi\trixionary\model\SkillReferenceQuery as ChildSkillReferenceQuery;
 use gossi\trixionary\model\Video as ChildVideo;
 use gossi\trixionary\model\VideoQuery as ChildVideoQuery;
 use gossi\trixionary\model\Map\ReferenceTableMap;
@@ -78,12 +80,6 @@ abstract class Reference implements ActiveRecordInterface
      * @var        string
      */
     protected $type;
-
-    /**
-     * The value for the skill_id field.
-     * @var        int
-     */
-    protected $skill_id;
 
     /**
      * The value for the title field.
@@ -195,15 +191,26 @@ abstract class Reference implements ActiveRecordInterface
     protected $managed;
 
     /**
-     * @var        ChildSkill
-     */
-    protected $aSkill;
-
-    /**
      * @var        ObjectCollection|ChildVideo[] Collection to store aggregation of ChildVideo objects.
      */
     protected $collVideos;
     protected $collVideosPartial;
+
+    /**
+     * @var        ObjectCollection|ChildSkillReference[] Collection to store aggregation of ChildSkillReference objects.
+     */
+    protected $collSkillReferences;
+    protected $collSkillReferencesPartial;
+
+    /**
+     * @var        ObjectCollection|ChildSkill[] Cross Collection to store aggregation of ChildSkill objects.
+     */
+    protected $collSkills;
+
+    /**
+     * @var bool
+     */
+    protected $collSkillsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -215,9 +222,21 @@ abstract class Reference implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSkill[]
+     */
+    protected $skillsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildVideo[]
      */
     protected $videosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSkillReference[]
+     */
+    protected $skillReferencesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -470,16 +489,6 @@ abstract class Reference implements ActiveRecordInterface
     }
 
     /**
-     * Get the [skill_id] column value.
-     *
-     * @return int
-     */
-    public function getSkillId()
-    {
-        return $this->skill_id;
-    }
-
-    /**
      * Get the [title] column value.
      *
      * @return string
@@ -718,30 +727,6 @@ abstract class Reference implements ActiveRecordInterface
 
         return $this;
     } // setType()
-
-    /**
-     * Set the value of [skill_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
-     */
-    public function setSkillId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->skill_id !== $v) {
-            $this->skill_id = $v;
-            $this->modifiedColumns[ReferenceTableMap::COL_SKILL_ID] = true;
-        }
-
-        if ($this->aSkill !== null && $this->aSkill->getId() !== $v) {
-            $this->aSkill = null;
-        }
-
-        return $this;
-    } // setSkillId()
 
     /**
      * Set the value of [title] column.
@@ -1157,64 +1142,61 @@ abstract class Reference implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ReferenceTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
             $this->type = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ReferenceTableMap::translateFieldName('SkillId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->skill_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ReferenceTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ReferenceTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ReferenceTableMap::translateFieldName('Year', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ReferenceTableMap::translateFieldName('Year', TableMap::TYPE_PHPNAME, $indexType)];
             $this->year = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ReferenceTableMap::translateFieldName('Publisher', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ReferenceTableMap::translateFieldName('Publisher', TableMap::TYPE_PHPNAME, $indexType)];
             $this->publisher = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ReferenceTableMap::translateFieldName('Journal', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ReferenceTableMap::translateFieldName('Journal', TableMap::TYPE_PHPNAME, $indexType)];
             $this->journal = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ReferenceTableMap::translateFieldName('Number', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ReferenceTableMap::translateFieldName('Number', TableMap::TYPE_PHPNAME, $indexType)];
             $this->number = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : ReferenceTableMap::translateFieldName('School', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ReferenceTableMap::translateFieldName('School', TableMap::TYPE_PHPNAME, $indexType)];
             $this->school = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : ReferenceTableMap::translateFieldName('Author', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : ReferenceTableMap::translateFieldName('Author', TableMap::TYPE_PHPNAME, $indexType)];
             $this->author = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : ReferenceTableMap::translateFieldName('Edition', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : ReferenceTableMap::translateFieldName('Edition', TableMap::TYPE_PHPNAME, $indexType)];
             $this->edition = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : ReferenceTableMap::translateFieldName('Volume', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : ReferenceTableMap::translateFieldName('Volume', TableMap::TYPE_PHPNAME, $indexType)];
             $this->volume = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : ReferenceTableMap::translateFieldName('Address', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : ReferenceTableMap::translateFieldName('Address', TableMap::TYPE_PHPNAME, $indexType)];
             $this->address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : ReferenceTableMap::translateFieldName('Editor', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : ReferenceTableMap::translateFieldName('Editor', TableMap::TYPE_PHPNAME, $indexType)];
             $this->editor = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : ReferenceTableMap::translateFieldName('Howpublished', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : ReferenceTableMap::translateFieldName('Howpublished', TableMap::TYPE_PHPNAME, $indexType)];
             $this->howpublished = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : ReferenceTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : ReferenceTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
             $this->note = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : ReferenceTableMap::translateFieldName('Booktitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : ReferenceTableMap::translateFieldName('Booktitle', TableMap::TYPE_PHPNAME, $indexType)];
             $this->booktitle = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : ReferenceTableMap::translateFieldName('Pages', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : ReferenceTableMap::translateFieldName('Pages', TableMap::TYPE_PHPNAME, $indexType)];
             $this->pages = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : ReferenceTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : ReferenceTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
             $this->url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : ReferenceTableMap::translateFieldName('Lastchecked', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : ReferenceTableMap::translateFieldName('Lastchecked', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->lastchecked = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ReferenceTableMap::translateFieldName('Managed', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : ReferenceTableMap::translateFieldName('Managed', TableMap::TYPE_PHPNAME, $indexType)];
             $this->managed = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
@@ -1224,7 +1206,7 @@ abstract class Reference implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 21; // 21 = ReferenceTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 20; // 20 = ReferenceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Reference'), 0, $e);
@@ -1246,9 +1228,6 @@ abstract class Reference implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aSkill !== null && $this->skill_id !== $this->aSkill->getId()) {
-            $this->aSkill = null;
-        }
     } // ensureConsistency
 
     /**
@@ -1288,9 +1267,11 @@ abstract class Reference implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aSkill = null;
             $this->collVideos = null;
 
+            $this->collSkillReferences = null;
+
+            $this->collSkills = null;
         } // if (deep)
     }
 
@@ -1390,18 +1371,6 @@ abstract class Reference implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aSkill !== null) {
-                if ($this->aSkill->isModified() || $this->aSkill->isNew()) {
-                    $affectedRows += $this->aSkill->save($con);
-                }
-                $this->setSkill($this->aSkill);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1412,6 +1381,35 @@ abstract class Reference implements ActiveRecordInterface
                 }
                 $this->resetModified();
             }
+
+            if ($this->skillsScheduledForDeletion !== null) {
+                if (!$this->skillsScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    foreach ($this->skillsScheduledForDeletion as $entry) {
+                        $entryPk = [];
+
+                        $entryPk[1] = $this->getId();
+                        $entryPk[0] = $entry->getId();
+                        $pks[] = $entryPk;
+                    }
+
+                    \gossi\trixionary\model\SkillReferenceQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+
+                    $this->skillsScheduledForDeletion = null;
+                }
+
+            }
+
+            if ($this->collSkills) {
+                foreach ($this->collSkills as $skill) {
+                    if (!$skill->isDeleted() && ($skill->isNew() || $skill->isModified())) {
+                        $skill->save($con);
+                    }
+                }
+            }
+
 
             if ($this->videosScheduledForDeletion !== null) {
                 if (!$this->videosScheduledForDeletion->isEmpty()) {
@@ -1425,6 +1423,23 @@ abstract class Reference implements ActiveRecordInterface
 
             if ($this->collVideos !== null) {
                 foreach ($this->collVideos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->skillReferencesScheduledForDeletion !== null) {
+                if (!$this->skillReferencesScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\SkillReferenceQuery::create()
+                        ->filterByPrimaryKeys($this->skillReferencesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->skillReferencesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collSkillReferences !== null) {
+                foreach ($this->collSkillReferences as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1462,9 +1477,6 @@ abstract class Reference implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ReferenceTableMap::COL_TYPE)) {
             $modifiedColumns[':p' . $index++]  = '`type`';
-        }
-        if ($this->isColumnModified(ReferenceTableMap::COL_SKILL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`skill_id`';
         }
         if ($this->isColumnModified(ReferenceTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = '`title`';
@@ -1536,9 +1548,6 @@ abstract class Reference implements ActiveRecordInterface
                         break;
                     case '`type`':
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
-                        break;
-                    case '`skill_id`':
-                        $stmt->bindValue($identifier, $this->skill_id, PDO::PARAM_INT);
                         break;
                     case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1663,60 +1672,57 @@ abstract class Reference implements ActiveRecordInterface
                 return $this->getType();
                 break;
             case 2:
-                return $this->getSkillId();
-                break;
-            case 3:
                 return $this->getTitle();
                 break;
-            case 4:
+            case 3:
                 return $this->getYear();
                 break;
-            case 5:
+            case 4:
                 return $this->getPublisher();
                 break;
-            case 6:
+            case 5:
                 return $this->getJournal();
                 break;
-            case 7:
+            case 6:
                 return $this->getNumber();
                 break;
-            case 8:
+            case 7:
                 return $this->getSchool();
                 break;
-            case 9:
+            case 8:
                 return $this->getAuthor();
                 break;
-            case 10:
+            case 9:
                 return $this->getEdition();
                 break;
-            case 11:
+            case 10:
                 return $this->getVolume();
                 break;
-            case 12:
+            case 11:
                 return $this->getAddress();
                 break;
-            case 13:
+            case 12:
                 return $this->getEditor();
                 break;
-            case 14:
+            case 13:
                 return $this->getHowpublished();
                 break;
-            case 15:
+            case 14:
                 return $this->getNote();
                 break;
-            case 16:
+            case 15:
                 return $this->getBooktitle();
                 break;
-            case 17:
+            case 16:
                 return $this->getPages();
                 break;
-            case 18:
+            case 17:
                 return $this->getUrl();
                 break;
-            case 19:
+            case 18:
                 return $this->getLastchecked();
                 break;
-            case 20:
+            case 19:
                 return $this->getManaged();
                 break;
             default:
@@ -1751,32 +1757,31 @@ abstract class Reference implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getType(),
-            $keys[2] => $this->getSkillId(),
-            $keys[3] => $this->getTitle(),
-            $keys[4] => $this->getYear(),
-            $keys[5] => $this->getPublisher(),
-            $keys[6] => $this->getJournal(),
-            $keys[7] => $this->getNumber(),
-            $keys[8] => $this->getSchool(),
-            $keys[9] => $this->getAuthor(),
-            $keys[10] => $this->getEdition(),
-            $keys[11] => $this->getVolume(),
-            $keys[12] => $this->getAddress(),
-            $keys[13] => $this->getEditor(),
-            $keys[14] => $this->getHowpublished(),
-            $keys[15] => $this->getNote(),
-            $keys[16] => $this->getBooktitle(),
-            $keys[17] => $this->getPages(),
-            $keys[18] => $this->getUrl(),
-            $keys[19] => $this->getLastchecked(),
-            $keys[20] => $this->getManaged(),
+            $keys[2] => $this->getTitle(),
+            $keys[3] => $this->getYear(),
+            $keys[4] => $this->getPublisher(),
+            $keys[5] => $this->getJournal(),
+            $keys[6] => $this->getNumber(),
+            $keys[7] => $this->getSchool(),
+            $keys[8] => $this->getAuthor(),
+            $keys[9] => $this->getEdition(),
+            $keys[10] => $this->getVolume(),
+            $keys[11] => $this->getAddress(),
+            $keys[12] => $this->getEditor(),
+            $keys[13] => $this->getHowpublished(),
+            $keys[14] => $this->getNote(),
+            $keys[15] => $this->getBooktitle(),
+            $keys[16] => $this->getPages(),
+            $keys[17] => $this->getUrl(),
+            $keys[18] => $this->getLastchecked(),
+            $keys[19] => $this->getManaged(),
         );
 
         $utc = new \DateTimeZone('utc');
-        if ($result[$keys[19]] instanceof \DateTime) {
+        if ($result[$keys[18]] instanceof \DateTime) {
             // When changing timezone we don't want to change existing instances
-            $dateTime = clone $result[$keys[19]];
-            $result[$keys[19]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+            $dateTime = clone $result[$keys[18]];
+            $result[$keys[18]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1785,21 +1790,6 @@ abstract class Reference implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aSkill) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'skill';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'kk_trixionary_skill';
-                        break;
-                    default:
-                        $key = 'Skill';
-                }
-
-                $result[$key] = $this->aSkill->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->collVideos) {
 
                 switch ($keyType) {
@@ -1814,6 +1804,21 @@ abstract class Reference implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collVideos->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collSkillReferences) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'skillReferences';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_skill_references';
+                        break;
+                    default:
+                        $key = 'SkillReferences';
+                }
+
+                $result[$key] = $this->collSkillReferences->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1856,60 +1861,57 @@ abstract class Reference implements ActiveRecordInterface
                 $this->setType($value);
                 break;
             case 2:
-                $this->setSkillId($value);
-                break;
-            case 3:
                 $this->setTitle($value);
                 break;
-            case 4:
+            case 3:
                 $this->setYear($value);
                 break;
-            case 5:
+            case 4:
                 $this->setPublisher($value);
                 break;
-            case 6:
+            case 5:
                 $this->setJournal($value);
                 break;
-            case 7:
+            case 6:
                 $this->setNumber($value);
                 break;
-            case 8:
+            case 7:
                 $this->setSchool($value);
                 break;
-            case 9:
+            case 8:
                 $this->setAuthor($value);
                 break;
-            case 10:
+            case 9:
                 $this->setEdition($value);
                 break;
-            case 11:
+            case 10:
                 $this->setVolume($value);
                 break;
-            case 12:
+            case 11:
                 $this->setAddress($value);
                 break;
-            case 13:
+            case 12:
                 $this->setEditor($value);
                 break;
-            case 14:
+            case 13:
                 $this->setHowpublished($value);
                 break;
-            case 15:
+            case 14:
                 $this->setNote($value);
                 break;
-            case 16:
+            case 15:
                 $this->setBooktitle($value);
                 break;
-            case 17:
+            case 16:
                 $this->setPages($value);
                 break;
-            case 18:
+            case 17:
                 $this->setUrl($value);
                 break;
-            case 19:
+            case 18:
                 $this->setLastchecked($value);
                 break;
-            case 20:
+            case 19:
                 $this->setManaged($value);
                 break;
         } // switch()
@@ -1945,61 +1947,58 @@ abstract class Reference implements ActiveRecordInterface
             $this->setType($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setSkillId($arr[$keys[2]]);
+            $this->setTitle($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setTitle($arr[$keys[3]]);
+            $this->setYear($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setYear($arr[$keys[4]]);
+            $this->setPublisher($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setPublisher($arr[$keys[5]]);
+            $this->setJournal($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setJournal($arr[$keys[6]]);
+            $this->setNumber($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setNumber($arr[$keys[7]]);
+            $this->setSchool($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setSchool($arr[$keys[8]]);
+            $this->setAuthor($arr[$keys[8]]);
         }
         if (array_key_exists($keys[9], $arr)) {
-            $this->setAuthor($arr[$keys[9]]);
+            $this->setEdition($arr[$keys[9]]);
         }
         if (array_key_exists($keys[10], $arr)) {
-            $this->setEdition($arr[$keys[10]]);
+            $this->setVolume($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setVolume($arr[$keys[11]]);
+            $this->setAddress($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setAddress($arr[$keys[12]]);
+            $this->setEditor($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setEditor($arr[$keys[13]]);
+            $this->setHowpublished($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setHowpublished($arr[$keys[14]]);
+            $this->setNote($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setNote($arr[$keys[15]]);
+            $this->setBooktitle($arr[$keys[15]]);
         }
         if (array_key_exists($keys[16], $arr)) {
-            $this->setBooktitle($arr[$keys[16]]);
+            $this->setPages($arr[$keys[16]]);
         }
         if (array_key_exists($keys[17], $arr)) {
-            $this->setPages($arr[$keys[17]]);
+            $this->setUrl($arr[$keys[17]]);
         }
         if (array_key_exists($keys[18], $arr)) {
-            $this->setUrl($arr[$keys[18]]);
+            $this->setLastchecked($arr[$keys[18]]);
         }
         if (array_key_exists($keys[19], $arr)) {
-            $this->setLastchecked($arr[$keys[19]]);
-        }
-        if (array_key_exists($keys[20], $arr)) {
-            $this->setManaged($arr[$keys[20]]);
+            $this->setManaged($arr[$keys[19]]);
         }
     }
 
@@ -2047,9 +2046,6 @@ abstract class Reference implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ReferenceTableMap::COL_TYPE)) {
             $criteria->add(ReferenceTableMap::COL_TYPE, $this->type);
-        }
-        if ($this->isColumnModified(ReferenceTableMap::COL_SKILL_ID)) {
-            $criteria->add(ReferenceTableMap::COL_SKILL_ID, $this->skill_id);
         }
         if ($this->isColumnModified(ReferenceTableMap::COL_TITLE)) {
             $criteria->add(ReferenceTableMap::COL_TITLE, $this->title);
@@ -2192,7 +2188,6 @@ abstract class Reference implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setType($this->getType());
-        $copyObj->setSkillId($this->getSkillId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setYear($this->getYear());
         $copyObj->setPublisher($this->getPublisher());
@@ -2220,6 +2215,12 @@ abstract class Reference implements ActiveRecordInterface
             foreach ($this->getVideos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addVideo($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getSkillReferences() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSkillReference($relObj->copy($deepCopy));
                 }
             }
 
@@ -2253,57 +2254,6 @@ abstract class Reference implements ActiveRecordInterface
         return $copyObj;
     }
 
-    /**
-     * Declares an association between this object and a ChildSkill object.
-     *
-     * @param  ChildSkill $v
-     * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setSkill(ChildSkill $v = null)
-    {
-        if ($v === null) {
-            $this->setSkillId(NULL);
-        } else {
-            $this->setSkillId($v->getId());
-        }
-
-        $this->aSkill = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildSkill object, it will not be re-added.
-        if ($v !== null) {
-            $v->addReference($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildSkill object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildSkill The associated ChildSkill object.
-     * @throws PropelException
-     */
-    public function getSkill(ConnectionInterface $con = null)
-    {
-        if ($this->aSkill === null && ($this->skill_id !== null)) {
-            $this->aSkill = ChildSkillQuery::create()->findPk($this->skill_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aSkill->addReferences($this);
-             */
-        }
-
-        return $this->aSkill;
-    }
-
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -2317,6 +2267,9 @@ abstract class Reference implements ActiveRecordInterface
     {
         if ('Video' == $relationName) {
             return $this->initVideos();
+        }
+        if ('SkillReference' == $relationName) {
+            return $this->initSkillReferences();
         }
     }
 
@@ -2564,18 +2517,502 @@ abstract class Reference implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collSkillReferences collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSkillReferences()
+     */
+    public function clearSkillReferences()
+    {
+        $this->collSkillReferences = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collSkillReferences collection loaded partially.
+     */
+    public function resetPartialSkillReferences($v = true)
+    {
+        $this->collSkillReferencesPartial = $v;
+    }
+
+    /**
+     * Initializes the collSkillReferences collection.
+     *
+     * By default this just sets the collSkillReferences collection to an empty array (like clearcollSkillReferences());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSkillReferences($overrideExisting = true)
+    {
+        if (null !== $this->collSkillReferences && !$overrideExisting) {
+            return;
+        }
+        $this->collSkillReferences = new ObjectCollection();
+        $this->collSkillReferences->setModel('\gossi\trixionary\model\SkillReference');
+    }
+
+    /**
+     * Gets an array of ChildSkillReference objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildReference is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildSkillReference[] List of ChildSkillReference objects
+     * @throws PropelException
+     */
+    public function getSkillReferences(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSkillReferencesPartial && !$this->isNew();
+        if (null === $this->collSkillReferences || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSkillReferences) {
+                // return empty collection
+                $this->initSkillReferences();
+            } else {
+                $collSkillReferences = ChildSkillReferenceQuery::create(null, $criteria)
+                    ->filterByReference($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collSkillReferencesPartial && count($collSkillReferences)) {
+                        $this->initSkillReferences(false);
+
+                        foreach ($collSkillReferences as $obj) {
+                            if (false == $this->collSkillReferences->contains($obj)) {
+                                $this->collSkillReferences->append($obj);
+                            }
+                        }
+
+                        $this->collSkillReferencesPartial = true;
+                    }
+
+                    return $collSkillReferences;
+                }
+
+                if ($partial && $this->collSkillReferences) {
+                    foreach ($this->collSkillReferences as $obj) {
+                        if ($obj->isNew()) {
+                            $collSkillReferences[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSkillReferences = $collSkillReferences;
+                $this->collSkillReferencesPartial = false;
+            }
+        }
+
+        return $this->collSkillReferences;
+    }
+
+    /**
+     * Sets a collection of ChildSkillReference objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $skillReferences A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildReference The current object (for fluent API support)
+     */
+    public function setSkillReferences(Collection $skillReferences, ConnectionInterface $con = null)
+    {
+        /** @var ChildSkillReference[] $skillReferencesToDelete */
+        $skillReferencesToDelete = $this->getSkillReferences(new Criteria(), $con)->diff($skillReferences);
+
+
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->skillReferencesScheduledForDeletion = clone $skillReferencesToDelete;
+
+        foreach ($skillReferencesToDelete as $skillReferenceRemoved) {
+            $skillReferenceRemoved->setReference(null);
+        }
+
+        $this->collSkillReferences = null;
+        foreach ($skillReferences as $skillReference) {
+            $this->addSkillReference($skillReference);
+        }
+
+        $this->collSkillReferences = $skillReferences;
+        $this->collSkillReferencesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related SkillReference objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related SkillReference objects.
+     * @throws PropelException
+     */
+    public function countSkillReferences(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSkillReferencesPartial && !$this->isNew();
+        if (null === $this->collSkillReferences || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSkillReferences) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSkillReferences());
+            }
+
+            $query = ChildSkillReferenceQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByReference($this)
+                ->count($con);
+        }
+
+        return count($this->collSkillReferences);
+    }
+
+    /**
+     * Method called to associate a ChildSkillReference object to this object
+     * through the ChildSkillReference foreign key attribute.
+     *
+     * @param  ChildSkillReference $l ChildSkillReference
+     * @return $this|\gossi\trixionary\model\Reference The current object (for fluent API support)
+     */
+    public function addSkillReference(ChildSkillReference $l)
+    {
+        if ($this->collSkillReferences === null) {
+            $this->initSkillReferences();
+            $this->collSkillReferencesPartial = true;
+        }
+
+        if (!$this->collSkillReferences->contains($l)) {
+            $this->doAddSkillReference($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildSkillReference $skillReference The ChildSkillReference object to add.
+     */
+    protected function doAddSkillReference(ChildSkillReference $skillReference)
+    {
+        $this->collSkillReferences[]= $skillReference;
+        $skillReference->setReference($this);
+    }
+
+    /**
+     * @param  ChildSkillReference $skillReference The ChildSkillReference object to remove.
+     * @return $this|ChildReference The current object (for fluent API support)
+     */
+    public function removeSkillReference(ChildSkillReference $skillReference)
+    {
+        if ($this->getSkillReferences()->contains($skillReference)) {
+            $pos = $this->collSkillReferences->search($skillReference);
+            $this->collSkillReferences->remove($pos);
+            if (null === $this->skillReferencesScheduledForDeletion) {
+                $this->skillReferencesScheduledForDeletion = clone $this->collSkillReferences;
+                $this->skillReferencesScheduledForDeletion->clear();
+            }
+            $this->skillReferencesScheduledForDeletion[]= clone $skillReference;
+            $skillReference->setReference(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Reference is new, it will return
+     * an empty collection; or if this Reference has previously
+     * been saved, it will retrieve related SkillReferences from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Reference.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkillReference[] List of ChildSkillReference objects
+     */
+    public function getSkillReferencesJoinSkill(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillReferenceQuery::create(null, $criteria);
+        $query->joinWith('Skill', $joinBehavior);
+
+        return $this->getSkillReferences($query, $con);
+    }
+
+    /**
+     * Clears out the collSkills collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSkills()
+     */
+    public function clearSkills()
+    {
+        $this->collSkills = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Initializes the collSkills crossRef collection.
+     *
+     * By default this just sets the collSkills collection to an empty collection (like clearSkills());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initSkills()
+    {
+        $this->collSkills = new ObjectCollection();
+        $this->collSkillsPartial = true;
+
+        $this->collSkills->setModel('\gossi\trixionary\model\Skill');
+    }
+
+    /**
+     * Checks if the collSkills collection is loaded.
+     *
+     * @return bool
+     */
+    public function isSkillsLoaded()
+    {
+        return null !== $this->collSkills;
+    }
+
+    /**
+     * Gets a collection of ChildSkill objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildReference is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getSkills(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSkillsPartial && !$this->isNew();
+        if (null === $this->collSkills || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collSkills) {
+                    $this->initSkills();
+                }
+            } else {
+
+                $query = ChildSkillQuery::create(null, $criteria)
+                    ->filterByReference($this);
+                $collSkills = $query->find($con);
+                if (null !== $criteria) {
+                    return $collSkills;
+                }
+
+                if ($partial && $this->collSkills) {
+                    //make sure that already added objects gets added to the list of the database.
+                    foreach ($this->collSkills as $obj) {
+                        if (!$collSkills->contains($obj)) {
+                            $collSkills[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSkills = $collSkills;
+                $this->collSkillsPartial = false;
+            }
+        }
+
+        return $this->collSkills;
+    }
+
+    /**
+     * Sets a collection of Skill objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param  Collection $skills A Propel collection.
+     * @param  ConnectionInterface $con Optional connection object
+     * @return $this|ChildReference The current object (for fluent API support)
+     */
+    public function setSkills(Collection $skills, ConnectionInterface $con = null)
+    {
+        $this->clearSkills();
+        $currentSkills = $this->getSkills();
+
+        $skillsScheduledForDeletion = $currentSkills->diff($skills);
+
+        foreach ($skillsScheduledForDeletion as $toDelete) {
+            $this->removeSkill($toDelete);
+        }
+
+        foreach ($skills as $skill) {
+            if (!$currentSkills->contains($skill)) {
+                $this->doAddSkill($skill);
+            }
+        }
+
+        $this->collSkillsPartial = false;
+        $this->collSkills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Skill objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      boolean $distinct Set to true to force count distinct
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return int the number of related Skill objects
+     */
+    public function countSkills(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSkillsPartial && !$this->isNew();
+        if (null === $this->collSkills || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSkills) {
+                return 0;
+            } else {
+
+                if ($partial && !$criteria) {
+                    return count($this->getSkills());
+                }
+
+                $query = ChildSkillQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByReference($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collSkills);
+        }
+    }
+
+    /**
+     * Associate a ChildSkill to this object
+     * through the kk_trixionary_skill_reference cross reference table.
+     *
+     * @param ChildSkill $skill
+     * @return ChildReference The current object (for fluent API support)
+     */
+    public function addSkill(ChildSkill $skill)
+    {
+        if ($this->collSkills === null) {
+            $this->initSkills();
+        }
+
+        if (!$this->getSkills()->contains($skill)) {
+            // only add it if the **same** object is not already associated
+            $this->collSkills->push($skill);
+            $this->doAddSkill($skill);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param ChildSkill $skill
+     */
+    protected function doAddSkill(ChildSkill $skill)
+    {
+        $skillReference = new ChildSkillReference();
+
+        $skillReference->setSkill($skill);
+
+        $skillReference->setReference($this);
+
+        $this->addSkillReference($skillReference);
+
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$skill->isReferencesLoaded()) {
+            $skill->initReferences();
+            $skill->getReferences()->push($this);
+        } elseif (!$skill->getReferences()->contains($this)) {
+            $skill->getReferences()->push($this);
+        }
+
+    }
+
+    /**
+     * Remove skill of this object
+     * through the kk_trixionary_skill_reference cross reference table.
+     *
+     * @param ChildSkill $skill
+     * @return ChildReference The current object (for fluent API support)
+     */
+    public function removeSkill(ChildSkill $skill)
+    {
+        if ($this->getSkills()->contains($skill)) { $skillReference = new ChildSkillReference();
+
+            $skillReference->setSkill($skill);
+            if ($skill->isReferencesLoaded()) {
+                //remove the back reference if available
+                $skill->getReferences()->removeObject($this);
+            }
+
+            $skillReference->setReference($this);
+            $this->removeSkillReference(clone $skillReference);
+            $skillReference->clear();
+
+            $this->collSkills->remove($this->collSkills->search($skill));
+
+            if (null === $this->skillsScheduledForDeletion) {
+                $this->skillsScheduledForDeletion = clone $this->collSkills;
+                $this->skillsScheduledForDeletion->clear();
+            }
+
+            $this->skillsScheduledForDeletion->push($skill);
+        }
+
+
+        return $this;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aSkill) {
-            $this->aSkill->removeReference($this);
-        }
         $this->id = null;
         $this->type = null;
-        $this->skill_id = null;
         $this->title = null;
         $this->year = null;
         $this->publisher = null;
@@ -2618,10 +3055,21 @@ abstract class Reference implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collSkillReferences) {
+                foreach ($this->collSkillReferences as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collSkills) {
+                foreach ($this->collSkills as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collVideos = null;
-        $this->aSkill = null;
+        $this->collSkillReferences = null;
+        $this->collSkills = null;
     }
 
     /**

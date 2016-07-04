@@ -460,13 +460,13 @@ class SkillTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, 'Videos', false);
-        $this->addRelation('Reference', '\\gossi\\trixionary\\model\\Reference', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('SkillReference', '\\gossi\\trixionary\\model\\SkillReference', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':skill_id',
     1 => ':id',
   ),
-), null, null, 'References', false);
+), 'CASCADE', null, 'SkillReferences', false);
         $this->addRelation('StructureNode', '\\gossi\\trixionary\\model\\StructureNode', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -500,6 +500,7 @@ class SkillTableMap extends TableMap
         $this->addRelation('SkillRelatedByCompositeId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedByCompositeId');
         $this->addRelation('SkillRelatedByPartId', '\\gossi\\trixionary\\model\\Skill', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'SkillsRelatedByPartId');
         $this->addRelation('Group', '\\gossi\\trixionary\\model\\Group', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Groups');
+        $this->addRelation('Reference', '\\gossi\\trixionary\\model\\Reference', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'References');
     } // buildRelations()
 
     /**
@@ -528,6 +529,7 @@ class SkillTableMap extends TableMap
         SkillGroupTableMap::clearInstancePool();
         PictureTableMap::clearInstancePool();
         VideoTableMap::clearInstancePool();
+        SkillReferenceTableMap::clearInstancePool();
         StructureNodeTableMap::clearInstancePool();
         KstrukturTableMap::clearInstancePool();
         FunctionPhaseTableMap::clearInstancePool();

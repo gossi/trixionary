@@ -170,9 +170,9 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinVideo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Video relation
  * @method     ChildSkillQuery innerJoinVideo($relationAlias = null) Adds a INNER JOIN clause to the query using the Video relation
  *
- * @method     ChildSkillQuery leftJoinReference($relationAlias = null) Adds a LEFT JOIN clause to the query using the Reference relation
- * @method     ChildSkillQuery rightJoinReference($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Reference relation
- * @method     ChildSkillQuery innerJoinReference($relationAlias = null) Adds a INNER JOIN clause to the query using the Reference relation
+ * @method     ChildSkillQuery leftJoinSkillReference($relationAlias = null) Adds a LEFT JOIN clause to the query using the SkillReference relation
+ * @method     ChildSkillQuery rightJoinSkillReference($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillReference relation
+ * @method     ChildSkillQuery innerJoinSkillReference($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillReference relation
  *
  * @method     ChildSkillQuery leftJoinStructureNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the StructureNode relation
  * @method     ChildSkillQuery rightJoinStructureNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the StructureNode relation
@@ -190,7 +190,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinSkillVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillVersion relation
  * @method     ChildSkillQuery innerJoinSkillVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillVersion relation
  *
- * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\LineageQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\ReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\LineageQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\SkillReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSkill findOne(ConnectionInterface $con = null) Return the first ChildSkill matching the query
  * @method     ChildSkill findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkill matching the query, or a new ChildSkill object populated from the query conditions when no match is found
@@ -3135,40 +3135,40 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
-     * Filter the query by a related \gossi\trixionary\model\Reference object
+     * Filter the query by a related \gossi\trixionary\model\SkillReference object
      *
-     * @param \gossi\trixionary\model\Reference|ObjectCollection $reference the related object to use as filter
+     * @param \gossi\trixionary\model\SkillReference|ObjectCollection $skillReference the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSkillQuery The current query, for fluid interface
      */
-    public function filterByReference($reference, $comparison = null)
+    public function filterBySkillReference($skillReference, $comparison = null)
     {
-        if ($reference instanceof \gossi\trixionary\model\Reference) {
+        if ($skillReference instanceof \gossi\trixionary\model\SkillReference) {
             return $this
-                ->addUsingAlias(SkillTableMap::COL_ID, $reference->getSkillId(), $comparison);
-        } elseif ($reference instanceof ObjectCollection) {
+                ->addUsingAlias(SkillTableMap::COL_ID, $skillReference->getSkillId(), $comparison);
+        } elseif ($skillReference instanceof ObjectCollection) {
             return $this
-                ->useReferenceQuery()
-                ->filterByPrimaryKeys($reference->getPrimaryKeys())
+                ->useSkillReferenceQuery()
+                ->filterByPrimaryKeys($skillReference->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByReference() only accepts arguments of type \gossi\trixionary\model\Reference or Collection');
+            throw new PropelException('filterBySkillReference() only accepts arguments of type \gossi\trixionary\model\SkillReference or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Reference relation
+     * Adds a JOIN clause to the query using the SkillReference relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildSkillQuery The current query, for fluid interface
      */
-    public function joinReference($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSkillReference($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Reference');
+        $relationMap = $tableMap->getRelation('SkillReference');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -3183,14 +3183,14 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Reference');
+            $this->addJoinObject($join, 'SkillReference');
         }
 
         return $this;
     }
 
     /**
-     * Use the Reference relation Reference object
+     * Use the SkillReference relation SkillReference object
      *
      * @see useQuery()
      *
@@ -3198,13 +3198,13 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \gossi\trixionary\model\ReferenceQuery A secondary query class using the current class as primary query
+     * @return \gossi\trixionary\model\SkillReferenceQuery A secondary query class using the current class as primary query
      */
-    public function useReferenceQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSkillReferenceQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinReference($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Reference', '\gossi\trixionary\model\ReferenceQuery');
+            ->joinSkillReference($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SkillReference', '\gossi\trixionary\model\SkillReferenceQuery');
     }
 
     /**
@@ -3581,6 +3581,23 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->useSkillGroupQuery()
             ->filterByGroup($group, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Reference object
+     * using the kk_trixionary_skill_reference table as cross reference
+     *
+     * @param Reference $reference the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByReference($reference, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useSkillReferenceQuery()
+            ->filterByReference($reference, $comparison)
             ->endUse();
     }
 

@@ -2,12 +2,12 @@
 namespace gossi\trixionary\action;
 
 use Cocur\Slugify\Slugify;
+use keeko\framework\domain\payload\Failed;
+use keeko\framework\domain\payload\Success;
 use keeko\framework\foundation\AbstractAction;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use keeko\framework\domain\payload\Failed;
-use keeko\framework\domain\payload\Success;
 
 /**
  * Upload media

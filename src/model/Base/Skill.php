@@ -42,6 +42,8 @@ use gossi\trixionary\model\SkillGroupQuery as ChildSkillGroupQuery;
 use gossi\trixionary\model\SkillPart as ChildSkillPart;
 use gossi\trixionary\model\SkillPartQuery as ChildSkillPartQuery;
 use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
+use gossi\trixionary\model\SkillReference as ChildSkillReference;
+use gossi\trixionary\model\SkillReferenceQuery as ChildSkillReferenceQuery;
 use gossi\trixionary\model\SkillVersion as ChildSkillVersion;
 use gossi\trixionary\model\SkillVersionQuery as ChildSkillVersionQuery;
 use gossi\trixionary\model\Sport as ChildSport;
@@ -406,10 +408,10 @@ abstract class Skill implements ActiveRecordInterface
     protected $collVideosPartial;
 
     /**
-     * @var        ObjectCollection|ChildReference[] Collection to store aggregation of ChildReference objects.
+     * @var        ObjectCollection|ChildSkillReference[] Collection to store aggregation of ChildSkillReference objects.
      */
-    protected $collReferences;
-    protected $collReferencesPartial;
+    protected $collSkillReferences;
+    protected $collSkillReferencesPartial;
 
     /**
      * @var        ObjectCollection|ChildStructureNode[] Collection to store aggregation of ChildStructureNode objects.
@@ -486,6 +488,16 @@ abstract class Skill implements ActiveRecordInterface
     protected $collGroupsPartial;
 
     /**
+     * @var        ObjectCollection|ChildReference[] Cross Collection to store aggregation of ChildReference objects.
+     */
+    protected $collReferences;
+
+    /**
+     * @var bool
+     */
+    protected $collReferencesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -536,6 +548,12 @@ abstract class Skill implements ActiveRecordInterface
      * @var ObjectCollection|ChildGroup[]
      */
     protected $groupsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildReference[]
+     */
+    protected $referencesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -605,9 +623,9 @@ abstract class Skill implements ActiveRecordInterface
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildReference[]
+     * @var ObjectCollection|ChildSkillReference[]
      */
-    protected $referencesScheduledForDeletion = null;
+    protected $skillReferencesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -2277,7 +2295,7 @@ abstract class Skill implements ActiveRecordInterface
 
             $this->collVideos = null;
 
-            $this->collReferences = null;
+            $this->collSkillReferences = null;
 
             $this->collStructureNodes = null;
 
@@ -2292,6 +2310,7 @@ abstract class Skill implements ActiveRecordInterface
             $this->collSkillsRelatedByCompositeId = null;
             $this->collSkillsRelatedByPartId = null;
             $this->collGroups = null;
+            $this->collReferences = null;
         } // if (deep)
     }
 
@@ -2629,6 +2648,35 @@ abstract class Skill implements ActiveRecordInterface
             }
 
 
+            if ($this->referencesScheduledForDeletion !== null) {
+                if (!$this->referencesScheduledForDeletion->isEmpty()) {
+                    $pks = array();
+                    foreach ($this->referencesScheduledForDeletion as $entry) {
+                        $entryPk = [];
+
+                        $entryPk[0] = $this->getId();
+                        $entryPk[1] = $entry->getId();
+                        $pks[] = $entryPk;
+                    }
+
+                    \gossi\trixionary\model\SkillReferenceQuery::create()
+                        ->filterByPrimaryKeys($pks)
+                        ->delete($con);
+
+                    $this->referencesScheduledForDeletion = null;
+                }
+
+            }
+
+            if ($this->collReferences) {
+                foreach ($this->collReferences as $reference) {
+                    if (!$reference->isDeleted() && ($reference->isNew() || $reference->isModified())) {
+                        $reference->save($con);
+                    }
+                }
+            }
+
+
             if ($this->variationsScheduledForDeletion !== null) {
                 if (!$this->variationsScheduledForDeletion->isEmpty()) {
                     foreach ($this->variationsScheduledForDeletion as $variation) {
@@ -2818,17 +2866,17 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            if ($this->referencesScheduledForDeletion !== null) {
-                if (!$this->referencesScheduledForDeletion->isEmpty()) {
-                    \gossi\trixionary\model\ReferenceQuery::create()
-                        ->filterByPrimaryKeys($this->referencesScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->skillReferencesScheduledForDeletion !== null) {
+                if (!$this->skillReferencesScheduledForDeletion->isEmpty()) {
+                    \gossi\trixionary\model\SkillReferenceQuery::create()
+                        ->filterByPrimaryKeys($this->skillReferencesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->referencesScheduledForDeletion = null;
+                    $this->skillReferencesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collReferences !== null) {
-                foreach ($this->collReferences as $referrerFK) {
+            if ($this->collSkillReferences !== null) {
+                foreach ($this->collSkillReferences as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3667,20 +3715,20 @@ abstract class Skill implements ActiveRecordInterface
 
                 $result[$key] = $this->collVideos->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collReferences) {
+            if (null !== $this->collSkillReferences) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'references';
+                        $key = 'skillReferences';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'kk_trixionary_references';
+                        $key = 'kk_trixionary_skill_references';
                         break;
                     default:
-                        $key = 'References';
+                        $key = 'SkillReferences';
                 }
 
-                $result[$key] = $this->collReferences->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collSkillReferences->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collStructureNodes) {
 
@@ -4320,9 +4368,9 @@ abstract class Skill implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getReferences() as $relObj) {
+            foreach ($this->getSkillReferences() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addReference($relObj->copy($deepCopy));
+                    $copyObj->addSkillReference($relObj->copy($deepCopy));
                 }
             }
 
@@ -4887,8 +4935,8 @@ abstract class Skill implements ActiveRecordInterface
         if ('Video' == $relationName) {
             return $this->initVideos();
         }
-        if ('Reference' == $relationName) {
-            return $this->initReferences();
+        if ('SkillReference' == $relationName) {
+            return $this->initSkillReferences();
         }
         if ('StructureNode' == $relationName) {
             return $this->initStructureNodes();
@@ -7718,31 +7766,31 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collReferences collection
+     * Clears out the collSkillReferences collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addReferences()
+     * @see        addSkillReferences()
      */
-    public function clearReferences()
+    public function clearSkillReferences()
     {
-        $this->collReferences = null; // important to set this to NULL since that means it is uninitialized
+        $this->collSkillReferences = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collReferences collection loaded partially.
+     * Reset is the collSkillReferences collection loaded partially.
      */
-    public function resetPartialReferences($v = true)
+    public function resetPartialSkillReferences($v = true)
     {
-        $this->collReferencesPartial = $v;
+        $this->collSkillReferencesPartial = $v;
     }
 
     /**
-     * Initializes the collReferences collection.
+     * Initializes the collSkillReferences collection.
      *
-     * By default this just sets the collReferences collection to an empty array (like clearcollReferences());
+     * By default this just sets the collSkillReferences collection to an empty array (like clearcollSkillReferences());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -7751,17 +7799,17 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initReferences($overrideExisting = true)
+    public function initSkillReferences($overrideExisting = true)
     {
-        if (null !== $this->collReferences && !$overrideExisting) {
+        if (null !== $this->collSkillReferences && !$overrideExisting) {
             return;
         }
-        $this->collReferences = new ObjectCollection();
-        $this->collReferences->setModel('\gossi\trixionary\model\Reference');
+        $this->collSkillReferences = new ObjectCollection();
+        $this->collSkillReferences->setModel('\gossi\trixionary\model\SkillReference');
     }
 
     /**
-     * Gets an array of ChildReference objects which contain a foreign key that references this object.
+     * Gets an array of ChildSkillReference objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -7771,108 +7819,111 @@ abstract class Skill implements ActiveRecordInterface
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildReference[] List of ChildReference objects
+     * @return ObjectCollection|ChildSkillReference[] List of ChildSkillReference objects
      * @throws PropelException
      */
-    public function getReferences(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getSkillReferences(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collReferencesPartial && !$this->isNew();
-        if (null === $this->collReferences || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collReferences) {
+        $partial = $this->collSkillReferencesPartial && !$this->isNew();
+        if (null === $this->collSkillReferences || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSkillReferences) {
                 // return empty collection
-                $this->initReferences();
+                $this->initSkillReferences();
             } else {
-                $collReferences = ChildReferenceQuery::create(null, $criteria)
+                $collSkillReferences = ChildSkillReferenceQuery::create(null, $criteria)
                     ->filterBySkill($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collReferencesPartial && count($collReferences)) {
-                        $this->initReferences(false);
+                    if (false !== $this->collSkillReferencesPartial && count($collSkillReferences)) {
+                        $this->initSkillReferences(false);
 
-                        foreach ($collReferences as $obj) {
-                            if (false == $this->collReferences->contains($obj)) {
-                                $this->collReferences->append($obj);
+                        foreach ($collSkillReferences as $obj) {
+                            if (false == $this->collSkillReferences->contains($obj)) {
+                                $this->collSkillReferences->append($obj);
                             }
                         }
 
-                        $this->collReferencesPartial = true;
+                        $this->collSkillReferencesPartial = true;
                     }
 
-                    return $collReferences;
+                    return $collSkillReferences;
                 }
 
-                if ($partial && $this->collReferences) {
-                    foreach ($this->collReferences as $obj) {
+                if ($partial && $this->collSkillReferences) {
+                    foreach ($this->collSkillReferences as $obj) {
                         if ($obj->isNew()) {
-                            $collReferences[] = $obj;
+                            $collSkillReferences[] = $obj;
                         }
                     }
                 }
 
-                $this->collReferences = $collReferences;
-                $this->collReferencesPartial = false;
+                $this->collSkillReferences = $collSkillReferences;
+                $this->collSkillReferencesPartial = false;
             }
         }
 
-        return $this->collReferences;
+        return $this->collSkillReferences;
     }
 
     /**
-     * Sets a collection of ChildReference objects related by a one-to-many relationship
+     * Sets a collection of ChildSkillReference objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $references A Propel collection.
+     * @param      Collection $skillReferences A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function setReferences(Collection $references, ConnectionInterface $con = null)
+    public function setSkillReferences(Collection $skillReferences, ConnectionInterface $con = null)
     {
-        /** @var ChildReference[] $referencesToDelete */
-        $referencesToDelete = $this->getReferences(new Criteria(), $con)->diff($references);
+        /** @var ChildSkillReference[] $skillReferencesToDelete */
+        $skillReferencesToDelete = $this->getSkillReferences(new Criteria(), $con)->diff($skillReferences);
 
 
-        $this->referencesScheduledForDeletion = $referencesToDelete;
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->skillReferencesScheduledForDeletion = clone $skillReferencesToDelete;
 
-        foreach ($referencesToDelete as $referenceRemoved) {
-            $referenceRemoved->setSkill(null);
+        foreach ($skillReferencesToDelete as $skillReferenceRemoved) {
+            $skillReferenceRemoved->setSkill(null);
         }
 
-        $this->collReferences = null;
-        foreach ($references as $reference) {
-            $this->addReference($reference);
+        $this->collSkillReferences = null;
+        foreach ($skillReferences as $skillReference) {
+            $this->addSkillReference($skillReference);
         }
 
-        $this->collReferences = $references;
-        $this->collReferencesPartial = false;
+        $this->collSkillReferences = $skillReferences;
+        $this->collSkillReferencesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Reference objects.
+     * Returns the number of related SkillReference objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related Reference objects.
+     * @return int             Count of related SkillReference objects.
      * @throws PropelException
      */
-    public function countReferences(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countSkillReferences(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collReferencesPartial && !$this->isNew();
-        if (null === $this->collReferences || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collReferences) {
+        $partial = $this->collSkillReferencesPartial && !$this->isNew();
+        if (null === $this->collSkillReferences || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSkillReferences) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getReferences());
+                return count($this->getSkillReferences());
             }
 
-            $query = ChildReferenceQuery::create(null, $criteria);
+            $query = ChildSkillReferenceQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -7882,57 +7933,82 @@ abstract class Skill implements ActiveRecordInterface
                 ->count($con);
         }
 
-        return count($this->collReferences);
+        return count($this->collSkillReferences);
     }
 
     /**
-     * Method called to associate a ChildReference object to this object
-     * through the ChildReference foreign key attribute.
+     * Method called to associate a ChildSkillReference object to this object
+     * through the ChildSkillReference foreign key attribute.
      *
-     * @param  ChildReference $l ChildReference
+     * @param  ChildSkillReference $l ChildSkillReference
      * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
      */
-    public function addReference(ChildReference $l)
+    public function addSkillReference(ChildSkillReference $l)
     {
-        if ($this->collReferences === null) {
-            $this->initReferences();
-            $this->collReferencesPartial = true;
+        if ($this->collSkillReferences === null) {
+            $this->initSkillReferences();
+            $this->collSkillReferencesPartial = true;
         }
 
-        if (!$this->collReferences->contains($l)) {
-            $this->doAddReference($l);
+        if (!$this->collSkillReferences->contains($l)) {
+            $this->doAddSkillReference($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ChildReference $reference The ChildReference object to add.
+     * @param ChildSkillReference $skillReference The ChildSkillReference object to add.
      */
-    protected function doAddReference(ChildReference $reference)
+    protected function doAddSkillReference(ChildSkillReference $skillReference)
     {
-        $this->collReferences[]= $reference;
-        $reference->setSkill($this);
+        $this->collSkillReferences[]= $skillReference;
+        $skillReference->setSkill($this);
     }
 
     /**
-     * @param  ChildReference $reference The ChildReference object to remove.
+     * @param  ChildSkillReference $skillReference The ChildSkillReference object to remove.
      * @return $this|ChildSkill The current object (for fluent API support)
      */
-    public function removeReference(ChildReference $reference)
+    public function removeSkillReference(ChildSkillReference $skillReference)
     {
-        if ($this->getReferences()->contains($reference)) {
-            $pos = $this->collReferences->search($reference);
-            $this->collReferences->remove($pos);
-            if (null === $this->referencesScheduledForDeletion) {
-                $this->referencesScheduledForDeletion = clone $this->collReferences;
-                $this->referencesScheduledForDeletion->clear();
+        if ($this->getSkillReferences()->contains($skillReference)) {
+            $pos = $this->collSkillReferences->search($skillReference);
+            $this->collSkillReferences->remove($pos);
+            if (null === $this->skillReferencesScheduledForDeletion) {
+                $this->skillReferencesScheduledForDeletion = clone $this->collSkillReferences;
+                $this->skillReferencesScheduledForDeletion->clear();
             }
-            $this->referencesScheduledForDeletion[]= clone $reference;
-            $reference->setSkill(null);
+            $this->skillReferencesScheduledForDeletion[]= clone $skillReference;
+            $skillReference->setSkill(null);
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related SkillReferences from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkillReference[] List of ChildSkillReference objects
+     */
+    public function getSkillReferencesJoinReference(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillReferenceQuery::create(null, $criteria);
+        $query->joinWith('Reference', $joinBehavior);
+
+        return $this->getSkillReferences($query, $con);
     }
 
     /**
@@ -10071,6 +10147,248 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collReferences collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addReferences()
+     */
+    public function clearReferences()
+    {
+        $this->collReferences = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Initializes the collReferences crossRef collection.
+     *
+     * By default this just sets the collReferences collection to an empty collection (like clearReferences());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @return void
+     */
+    public function initReferences()
+    {
+        $this->collReferences = new ObjectCollection();
+        $this->collReferencesPartial = true;
+
+        $this->collReferences->setModel('\gossi\trixionary\model\Reference');
+    }
+
+    /**
+     * Checks if the collReferences collection is loaded.
+     *
+     * @return bool
+     */
+    public function isReferencesLoaded()
+    {
+        return null !== $this->collReferences;
+    }
+
+    /**
+     * Gets a collection of ChildReference objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSkill is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return ObjectCollection|ChildReference[] List of ChildReference objects
+     */
+    public function getReferences(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collReferencesPartial && !$this->isNew();
+        if (null === $this->collReferences || null !== $criteria || $partial) {
+            if ($this->isNew()) {
+                // return empty collection
+                if (null === $this->collReferences) {
+                    $this->initReferences();
+                }
+            } else {
+
+                $query = ChildReferenceQuery::create(null, $criteria)
+                    ->filterBySkill($this);
+                $collReferences = $query->find($con);
+                if (null !== $criteria) {
+                    return $collReferences;
+                }
+
+                if ($partial && $this->collReferences) {
+                    //make sure that already added objects gets added to the list of the database.
+                    foreach ($this->collReferences as $obj) {
+                        if (!$collReferences->contains($obj)) {
+                            $collReferences[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collReferences = $collReferences;
+                $this->collReferencesPartial = false;
+            }
+        }
+
+        return $this->collReferences;
+    }
+
+    /**
+     * Sets a collection of Reference objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param  Collection $references A Propel collection.
+     * @param  ConnectionInterface $con Optional connection object
+     * @return $this|ChildSkill The current object (for fluent API support)
+     */
+    public function setReferences(Collection $references, ConnectionInterface $con = null)
+    {
+        $this->clearReferences();
+        $currentReferences = $this->getReferences();
+
+        $referencesScheduledForDeletion = $currentReferences->diff($references);
+
+        foreach ($referencesScheduledForDeletion as $toDelete) {
+            $this->removeReference($toDelete);
+        }
+
+        foreach ($references as $reference) {
+            if (!$currentReferences->contains($reference)) {
+                $this->doAddReference($reference);
+            }
+        }
+
+        $this->collReferencesPartial = false;
+        $this->collReferences = $references;
+
+        return $this;
+    }
+
+    /**
+     * Gets the number of Reference objects related by a many-to-many relationship
+     * to the current object by way of the kk_trixionary_skill_reference cross-reference table.
+     *
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      boolean $distinct Set to true to force count distinct
+     * @param      ConnectionInterface $con Optional connection object
+     *
+     * @return int the number of related Reference objects
+     */
+    public function countReferences(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collReferencesPartial && !$this->isNew();
+        if (null === $this->collReferences || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collReferences) {
+                return 0;
+            } else {
+
+                if ($partial && !$criteria) {
+                    return count($this->getReferences());
+                }
+
+                $query = ChildReferenceQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterBySkill($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collReferences);
+        }
+    }
+
+    /**
+     * Associate a ChildReference to this object
+     * through the kk_trixionary_skill_reference cross reference table.
+     *
+     * @param ChildReference $reference
+     * @return ChildSkill The current object (for fluent API support)
+     */
+    public function addReference(ChildReference $reference)
+    {
+        if ($this->collReferences === null) {
+            $this->initReferences();
+        }
+
+        if (!$this->getReferences()->contains($reference)) {
+            // only add it if the **same** object is not already associated
+            $this->collReferences->push($reference);
+            $this->doAddReference($reference);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * @param ChildReference $reference
+     */
+    protected function doAddReference(ChildReference $reference)
+    {
+        $skillReference = new ChildSkillReference();
+
+        $skillReference->setReference($reference);
+
+        $skillReference->setSkill($this);
+
+        $this->addSkillReference($skillReference);
+
+        // set the back reference to this object directly as using provided method either results
+        // in endless loop or in multiple relations
+        if (!$reference->isSkillsLoaded()) {
+            $reference->initSkills();
+            $reference->getSkills()->push($this);
+        } elseif (!$reference->getSkills()->contains($this)) {
+            $reference->getSkills()->push($this);
+        }
+
+    }
+
+    /**
+     * Remove reference of this object
+     * through the kk_trixionary_skill_reference cross reference table.
+     *
+     * @param ChildReference $reference
+     * @return ChildSkill The current object (for fluent API support)
+     */
+    public function removeReference(ChildReference $reference)
+    {
+        if ($this->getReferences()->contains($reference)) { $skillReference = new ChildSkillReference();
+
+            $skillReference->setReference($reference);
+            if ($reference->isSkillsLoaded()) {
+                //remove the back reference if available
+                $reference->getSkills()->removeObject($this);
+            }
+
+            $skillReference->setSkill($this);
+            $this->removeSkillReference(clone $skillReference);
+            $skillReference->clear();
+
+            $this->collReferences->remove($this->collReferences->search($reference));
+
+            if (null === $this->referencesScheduledForDeletion) {
+                $this->referencesScheduledForDeletion = clone $this->collReferences;
+                $this->referencesScheduledForDeletion->clear();
+            }
+
+            $this->referencesScheduledForDeletion->push($reference);
+        }
+
+
+        return $this;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -10210,8 +10528,8 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collReferences) {
-                foreach ($this->collReferences as $o) {
+            if ($this->collSkillReferences) {
+                foreach ($this->collSkillReferences as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -10260,6 +10578,11 @@ abstract class Skill implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collReferences) {
+                foreach ($this->collReferences as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collVariations = null;
@@ -10273,7 +10596,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->collSkillGroups = null;
         $this->collPictures = null;
         $this->collVideos = null;
-        $this->collReferences = null;
+        $this->collSkillReferences = null;
         $this->collStructureNodes = null;
         $this->collKstruktursRelatedBySkillId = null;
         $this->collFunctionPhasesRelatedBySkillId = null;
@@ -10283,6 +10606,7 @@ abstract class Skill implements ActiveRecordInterface
         $this->collSkillsRelatedByCompositeId = null;
         $this->collSkillsRelatedByPartId = null;
         $this->collGroups = null;
+        $this->collReferences = null;
         $this->aSport = null;
         $this->aVariationOf = null;
         $this->aMultipleOf = null;

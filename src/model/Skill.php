@@ -17,7 +17,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'kk_trixionary_skill' table.
- * 
+ *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
@@ -26,27 +26,27 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 
 	/**
 	 */
-	const FLAG_ATHLETE = 'null';
+	const FLAG_ATHLETE = 1;
 
 	/**
 	 */
-	const FLAG_ISOLATED = 'null';
+	const FLAG_ISOLATED = 8;
 
 	/**
 	 */
-	const FLAG_OBJECT = 'null';
+	const FLAG_OBJECT = 2;
 
 	/**
 	 */
-	const FLAG_OPPOSITE = 'null';
+	const FLAG_OPPOSITE = 32;
 
 	/**
 	 */
-	const FLAG_SAME = 'null';
+	const FLAG_SAME = 16;
 
 	/**
 	 */
-	const FLAG_SIMULTANEOUS = 'null';
+	const FLAG_SIMULTANEOUS = 4;
 
 	/**
 	 */
@@ -111,7 +111,7 @@ class Skill extends BaseSkill implements ApiModelInterface, ActivityObjectInterf
 		if (isset($this->authors[$version])) {
 		    return $this->authors[$version];
 		}
-		$authors = array();
+		$authors = [];
 		$ao = $this->getActivityObject();
 		if ($ao) {
 		    $activities = ActivityQuery::create()->filterByObject($ao)->joinActor()->find();

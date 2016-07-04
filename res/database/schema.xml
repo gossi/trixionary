@@ -265,7 +265,6 @@
 	<table name="reference">
 		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
 		<column name="type" type="VARCHAR"/>
-		<column name="skill_id" type="INTEGER" required="true"/>
 		<column name="title" type="VARCHAR"/>
 		<column name="year" type="INTEGER"/>
 		<column name="publisher" type="VARCHAR"/>
@@ -284,9 +283,17 @@
 		<column name="url" type="VARCHAR"/>
 		<column name="lastchecked" type="DATE"/>
 		<column name="managed" type="BOOLEAN" default="false"/>
-
-		<foreign-key foreignTable="skill" name="reference_fk_skill">
-			<reference local="skill_id" foreign="id"/>
+	</table>
+	
+	<table name="skill_reference" isCrossRef="true">
+		<column name="skill_id" type="INTEGER" primaryKey="true" required="true" />
+		<column name="reference_id" type="INTEGER" primaryKey="true" required="true" />
+		
+		<foreign-key foreignTable="skill" onDelete="cascade" name="skill_reference_fk_skill">
+			<reference local="skill_id" foreign="id" />
+		</foreign-key>
+		<foreign-key foreignTable="reference" onDelete="cascade" name="skill_reference_fk_reference">
+			<reference local="reference_id" foreign="id" />
 		</foreign-key>
 	</table>
 	

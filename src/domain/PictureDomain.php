@@ -9,6 +9,7 @@ use phootwork\file\File;
 use Cocur\Slugify\Slugify;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use keeko\core\model\ActivityObject;
 
 /**
  */
@@ -19,6 +20,21 @@ class PictureDomain extends AbstractDomain {
 	/**
 	 */
 	const THUMB_MAX_SIZE = 300;
+
+	/**
+	 * @param Picture $picture
+	 */
+	protected function postDelete(Picture $picture) {
+		$module = $this->getServiceContainer()->getModuleManager()->load('gossi/trixionary');
+		$file = new File($picture->getUrl());
+		$slugifier = new Slugify();
+		$filename = sprintf('%s-%u.%s', $slugifier->slugify($picture->getAthlete()), $picture->getId(), $file->getExtension());
+		$picturePath = $module->getPicturesPath($picture->getSkill());
+		$image = new File($picturePath->append($filename));
+		$image->delete();
+		$thumb = new File($picturePath->append('thumbs')->append($filename));
+		$thumb->delete();
+	}
 
 	/**
 	 * @param Picture $picture
@@ -52,6 +68,14 @@ class PictureDomain extends AbstractDomain {
 		    $picture->setThumbUrl($module->getPicturesUrl($picture->getSkill()) . '/thumbs/' . $filename);
 		    $picture->save();
 		}
+
+		// activity
+		$user = $this->getServiceContainer()->getAuthManager()->getUser();
+		$user->newActivity([
+			'verb' => $picture->isNew() ? ActivityObject::VERB_UPLOAD : ActivityObject::VERB_EDIT,
+			'object' => $picture,
+			'target' => $picture->getSkill()
+		]);
 	}
 
 	/**
