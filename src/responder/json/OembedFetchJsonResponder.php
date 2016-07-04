@@ -23,6 +23,18 @@ class OembedFetchJsonResponder extends AbstractResponder {
 	public function run(Request $request, PayloadInterface $payload = null) {
 		$info = $payload->get('info');
 
+		$playerUrl = null;
+		$twittercards = $info->getProvider('twittercards');
+		if ($twittercards) {
+			$playerUrl = $twittercards->bag->get('player');
+		}
+
+		if (empty($playerUrl)) {
+			$matches = [];
+			preg_match('/src="([^"]+)"/', $info->code, $matches);
+			$playerUrl = $matches[1];
+		}
+
 		return new JsonResponse([
 			'title' => $info->title,
 			'description' => $info->description,
@@ -34,6 +46,7 @@ class OembedFetchJsonResponder extends AbstractResponder {
 			'image-width' => $info->imageWidth,
 			'image-height' => $info->imageHeight,
 			'code' => $info->code,
+			'player-url' => $playerUrl,
 			'width' => $info->width,
 			'height' => $info->height,
 			'aspect-ratio' => $info->aspectRatio,
