@@ -29,9 +29,11 @@ class VideoReadJsonResponder extends AbstractPayloadResponder {
 		$params = new Parameters($request->query->all());
 		$serializer = Video::getSerializer();
 		$resource = new Resource($payload->getModel(), $serializer);
-		$resource = $resource->with($params->getInclude(['skill', 'reference']));
+		$resource = $resource->with($params->getInclude(['featured-skills', 'featured-tutorial-skills', 'skill', 'reference']));
 		$resource = $resource->fields($params->getFields([
 			'video' => Video::getSerializer()->getFields(),
+			'featured-skill' => Skill::getSerializer()->getFields(),
+			'featured-tutorial-skill' => Skill::getSerializer()->getFields(),
 			'skill' => Skill::getSerializer()->getFields(),
 			'reference' => Reference::getSerializer()->getFields()
 		]));

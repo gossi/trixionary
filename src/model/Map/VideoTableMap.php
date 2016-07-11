@@ -238,6 +238,20 @@ class VideoTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
+        $this->addRelation('FeaturedSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':video_id',
+    1 => ':id',
+  ),
+), null, null, 'FeaturedSkills', false);
+        $this->addRelation('FeaturedTutorialSkill', '\\gossi\\trixionary\\model\\Skill', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':tutorial_id',
+    1 => ':id',
+  ),
+), null, null, 'FeaturedTutorialSkills', false);
     } // buildRelations()
 
     /**

@@ -14,11 +14,11 @@ use gossi\trixionary\model\Sport;
 use gossi\trixionary\model\Video;
 use keeko\framework\domain\payload\Found;
 use keeko\framework\foundation\AbstractPayloadResponder;
+use keeko\framework\utils\Parameters;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tobscure\JsonApi\Collection;
 use Tobscure\JsonApi\Document;
-use Tobscure\JsonApi\Parameters;
 
 /**
  * Automatically generated JsonResponder for Paginates skills
@@ -36,7 +36,7 @@ class SkillPaginateJsonResponder extends AbstractPayloadResponder {
 		$data = $payload->getModel();
 		$serializer = Skill::getSerializer();
 		$resource = new Collection($data, $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'references', 'lineages', 'pictures', 'videos', 'kstrukturs', 'function-phases', 'sport.skills']));
+		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'featured-video', 'featured-tutorial', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'references', 'lineages', 'pictures', 'videos', 'kstrukturs', 'function-phases', 'sport.skills']));
 		$resource = $resource->fields($params->getFields([
 			'skill' => Skill::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),
@@ -48,6 +48,8 @@ class SkillPaginateJsonResponder extends AbstractPayloadResponder {
 			'start-position' => Position::getSerializer()->getFields(),
 			'end-position' => Position::getSerializer()->getFields(),
 			'featured-picture' => Picture::getSerializer()->getFields(),
+			'featured-video' => Video::getSerializer()->getFields(),
+			'featured-tutorial' => Video::getSerializer()->getFields(),
 			'kstruktur-root' => Kstruktur::getSerializer()->getFields(),
 			'function-phase-root' => FunctionPhase::getSerializer()->getFields(),
 			'child' => Skill::getSerializer()->getFields(),
@@ -67,7 +69,7 @@ class SkillPaginateJsonResponder extends AbstractPayloadResponder {
 		// meta
 		$document->setMeta([
 			'total' => $data->getNbResults(),
-			'first' => $data->getFirstPage(),
+			'first' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getFirstPage()]]),
 			'next' => $data->getNextPage(),
 			'previous' => $data->getPreviousPage(),
 			'last' => $data->getLastPage()

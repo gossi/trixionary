@@ -118,6 +118,42 @@ trait SkillSerializerTrait {
 	 * @param mixed $model
 	 * @return Relationship
 	 */
+	public function featuredTutorial($model) {
+		$serializer = Video::getSerializer();
+		$id = $serializer->getId($model->getFeaturedTutorial());
+		if ($id !== null) {
+			$relationship = new Relationship(new Resource($model->getFeaturedTutorial(), $serializer));
+			$relationship->setLinks([
+				'related' => '%apiurl%' . $serializer->getType(null) . '/' . $id 
+			]);
+			return $this->addRelationshipSelfLink($relationship, $model, 'featured-tutorial');
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
+	public function featuredVideo($model) {
+		$serializer = Video::getSerializer();
+		$id = $serializer->getId($model->getFeaturedVideo());
+		if ($id !== null) {
+			$relationship = new Relationship(new Resource($model->getFeaturedVideo(), $serializer));
+			$relationship->setLinks([
+				'related' => '%apiurl%' . $serializer->getType(null) . '/' . $id 
+			]);
+			return $this->addRelationshipSelfLink($relationship, $model, 'featured-video');
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
 	public function functionPhaseRoot($model) {
 		$serializer = FunctionPhase::getSerializer();
 		$id = $serializer->getId($model->getFunctionPhaseRoot());
@@ -204,6 +240,8 @@ trait SkillSerializerTrait {
 			'start-position' => Position::getSerializer()->getType(null),
 			'end-position' => Position::getSerializer()->getType(null),
 			'featured-picture' => Picture::getSerializer()->getType(null),
+			'featured-video' => Video::getSerializer()->getType(null),
+			'featured-tutorial' => Video::getSerializer()->getType(null),
 			'kstruktur-root' => Kstruktur::getSerializer()->getType(null),
 			'function-phase-root' => FunctionPhase::getSerializer()->getType(null),
 			'children' => Skill::getSerializer()->getType(null),
@@ -253,7 +291,7 @@ trait SkillSerializerTrait {
 		// attributes
 		$attribs = isset($data['attributes']) ? $data['attributes'] : [];
 
-		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'sequence-picture-url', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'picture-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
+		$model = HydrateUtils::hydrate($attribs, $model, ['id', 'sport-id', 'name', 'alternative-name', 'slug', 'description', 'history', 'is-translation', 'is-rotation', 'is-acyclic', 'is-cyclic', 'longitudinal-flags', 'latitudinal-flags', 'transversal-flags', 'movement-description', 'sequence-picture-url', 'variation-of-id', 'start-position-id', 'end-position-id', 'is-composite', 'is-multiple', 'multiple-of-id', 'multiplier', 'generation', 'importance', 'picture-id', 'video-id', 'tutorial-id', 'kstruktur-id', 'function-phase-id', 'object-id', 'version', 'version-created-at', 'version-comment']);
 
 		// relationships
 		//$this->hydrateRelationships($model, $data);

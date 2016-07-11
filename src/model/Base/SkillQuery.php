@@ -46,6 +46,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery orderByGeneration($order = Criteria::ASC) Order by the generation column
  * @method     ChildSkillQuery orderByImportance($order = Criteria::ASC) Order by the importance column
  * @method     ChildSkillQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
+ * @method     ChildSkillQuery orderByVideoId($order = Criteria::ASC) Order by the video_id column
+ * @method     ChildSkillQuery orderByTutorialId($order = Criteria::ASC) Order by the tutorial_id column
  * @method     ChildSkillQuery orderByKstrukturId($order = Criteria::ASC) Order by the kstruktur_id column
  * @method     ChildSkillQuery orderByFunctionPhaseId($order = Criteria::ASC) Order by the function_phase_id column
  * @method     ChildSkillQuery orderByObjectId($order = Criteria::ASC) Order by the object_id column
@@ -79,6 +81,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery groupByGeneration() Group by the generation column
  * @method     ChildSkillQuery groupByImportance() Group by the importance column
  * @method     ChildSkillQuery groupByPictureId() Group by the picture_id column
+ * @method     ChildSkillQuery groupByVideoId() Group by the video_id column
+ * @method     ChildSkillQuery groupByTutorialId() Group by the tutorial_id column
  * @method     ChildSkillQuery groupByKstrukturId() Group by the kstruktur_id column
  * @method     ChildSkillQuery groupByFunctionPhaseId() Group by the function_phase_id column
  * @method     ChildSkillQuery groupByObjectId() Group by the object_id column
@@ -117,6 +121,14 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery leftJoinFeaturedPicture($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedPicture relation
  * @method     ChildSkillQuery rightJoinFeaturedPicture($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedPicture relation
  * @method     ChildSkillQuery innerJoinFeaturedPicture($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedPicture relation
+ *
+ * @method     ChildSkillQuery leftJoinFeaturedVideo($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedVideo relation
+ * @method     ChildSkillQuery rightJoinFeaturedVideo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedVideo relation
+ * @method     ChildSkillQuery innerJoinFeaturedVideo($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedVideo relation
+ *
+ * @method     ChildSkillQuery leftJoinFeaturedTutorial($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedTutorial relation
+ * @method     ChildSkillQuery rightJoinFeaturedTutorial($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedTutorial relation
+ * @method     ChildSkillQuery innerJoinFeaturedTutorial($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedTutorial relation
  *
  * @method     ChildSkillQuery leftJoinKstrukturRoot($relationAlias = null) Adds a LEFT JOIN clause to the query using the KstrukturRoot relation
  * @method     ChildSkillQuery rightJoinKstrukturRoot($relationAlias = null) Adds a RIGHT JOIN clause to the query using the KstrukturRoot relation
@@ -190,7 +202,7 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkillQuery rightJoinSkillVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SkillVersion relation
  * @method     ChildSkillQuery innerJoinSkillVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the SkillVersion relation
  *
- * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\LineageQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\SkillReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \gossi\trixionary\model\SportQuery|\gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ObjectQuery|\gossi\trixionary\model\PositionQuery|\gossi\trixionary\model\PictureQuery|\gossi\trixionary\model\VideoQuery|\gossi\trixionary\model\KstrukturQuery|\gossi\trixionary\model\FunctionPhaseQuery|\gossi\trixionary\model\LineageQuery|\gossi\trixionary\model\SkillDependencyQuery|\gossi\trixionary\model\SkillPartQuery|\gossi\trixionary\model\SkillGroupQuery|\gossi\trixionary\model\SkillReferenceQuery|\gossi\trixionary\model\StructureNodeQuery|\gossi\trixionary\model\SkillVersionQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSkill findOne(ConnectionInterface $con = null) Return the first ChildSkill matching the query
  * @method     ChildSkill findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSkill matching the query, or a new ChildSkill object populated from the query conditions when no match is found
@@ -221,6 +233,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill findOneByGeneration(int $generation) Return the first ChildSkill filtered by the generation column
  * @method     ChildSkill findOneByImportance(int $importance) Return the first ChildSkill filtered by the importance column
  * @method     ChildSkill findOneByPictureId(int $picture_id) Return the first ChildSkill filtered by the picture_id column
+ * @method     ChildSkill findOneByVideoId(int $video_id) Return the first ChildSkill filtered by the video_id column
+ * @method     ChildSkill findOneByTutorialId(int $tutorial_id) Return the first ChildSkill filtered by the tutorial_id column
  * @method     ChildSkill findOneByKstrukturId(int $kstruktur_id) Return the first ChildSkill filtered by the kstruktur_id column
  * @method     ChildSkill findOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkill filtered by the function_phase_id column
  * @method     ChildSkill findOneByObjectId(int $object_id) Return the first ChildSkill filtered by the object_id column
@@ -257,6 +271,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill requireOneByGeneration(int $generation) Return the first ChildSkill filtered by the generation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByImportance(int $importance) Return the first ChildSkill filtered by the importance column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByPictureId(int $picture_id) Return the first ChildSkill filtered by the picture_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkill requireOneByVideoId(int $video_id) Return the first ChildSkill filtered by the video_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkill requireOneByTutorialId(int $tutorial_id) Return the first ChildSkill filtered by the tutorial_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByKstrukturId(int $kstruktur_id) Return the first ChildSkill filtered by the kstruktur_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkill filtered by the function_phase_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkill requireOneByObjectId(int $object_id) Return the first ChildSkill filtered by the object_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -291,6 +307,8 @@ use gossi\trixionary\model\Map\SkillTableMap;
  * @method     ChildSkill[]|ObjectCollection findByGeneration(int $generation) Return ChildSkill objects filtered by the generation column
  * @method     ChildSkill[]|ObjectCollection findByImportance(int $importance) Return ChildSkill objects filtered by the importance column
  * @method     ChildSkill[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkill objects filtered by the picture_id column
+ * @method     ChildSkill[]|ObjectCollection findByVideoId(int $video_id) Return ChildSkill objects filtered by the video_id column
+ * @method     ChildSkill[]|ObjectCollection findByTutorialId(int $tutorial_id) Return ChildSkill objects filtered by the tutorial_id column
  * @method     ChildSkill[]|ObjectCollection findByKstrukturId(int $kstruktur_id) Return ChildSkill objects filtered by the kstruktur_id column
  * @method     ChildSkill[]|ObjectCollection findByFunctionPhaseId(int $function_phase_id) Return ChildSkill objects filtered by the function_phase_id column
  * @method     ChildSkill[]|ObjectCollection findByObjectId(int $object_id) Return ChildSkill objects filtered by the object_id column
@@ -396,7 +414,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `video_id`, `tutorial_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment` FROM `kk_trixionary_skill` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1397,6 +1415,92 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
+     * Filter the query on the video_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVideoId(1234); // WHERE video_id = 1234
+     * $query->filterByVideoId(array(12, 34)); // WHERE video_id IN (12, 34)
+     * $query->filterByVideoId(array('min' => 12)); // WHERE video_id > 12
+     * </code>
+     *
+     * @see       filterByFeaturedVideo()
+     *
+     * @param     mixed $videoId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByVideoId($videoId = null, $comparison = null)
+    {
+        if (is_array($videoId)) {
+            $useMinMax = false;
+            if (isset($videoId['min'])) {
+                $this->addUsingAlias(SkillTableMap::COL_VIDEO_ID, $videoId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($videoId['max'])) {
+                $this->addUsingAlias(SkillTableMap::COL_VIDEO_ID, $videoId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillTableMap::COL_VIDEO_ID, $videoId, $comparison);
+    }
+
+    /**
+     * Filter the query on the tutorial_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTutorialId(1234); // WHERE tutorial_id = 1234
+     * $query->filterByTutorialId(array(12, 34)); // WHERE tutorial_id IN (12, 34)
+     * $query->filterByTutorialId(array('min' => 12)); // WHERE tutorial_id > 12
+     * </code>
+     *
+     * @see       filterByFeaturedTutorial()
+     *
+     * @param     mixed $tutorialId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByTutorialId($tutorialId = null, $comparison = null)
+    {
+        if (is_array($tutorialId)) {
+            $useMinMax = false;
+            if (isset($tutorialId['min'])) {
+                $this->addUsingAlias(SkillTableMap::COL_TUTORIAL_ID, $tutorialId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($tutorialId['max'])) {
+                $this->addUsingAlias(SkillTableMap::COL_TUTORIAL_ID, $tutorialId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillTableMap::COL_TUTORIAL_ID, $tutorialId, $comparison);
+    }
+
+    /**
      * Filter the query on the kstruktur_id column
      *
      * Example usage:
@@ -2175,6 +2279,160 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
         return $this
             ->joinFeaturedPicture($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'FeaturedPicture', '\gossi\trixionary\model\PictureQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Video object
+     *
+     * @param \gossi\trixionary\model\Video|ObjectCollection $video The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByFeaturedVideo($video, $comparison = null)
+    {
+        if ($video instanceof \gossi\trixionary\model\Video) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_VIDEO_ID, $video->getId(), $comparison);
+        } elseif ($video instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_VIDEO_ID, $video->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByFeaturedVideo() only accepts arguments of type \gossi\trixionary\model\Video or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FeaturedVideo relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinFeaturedVideo($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FeaturedVideo');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FeaturedVideo');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FeaturedVideo relation Video object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\VideoQuery A secondary query class using the current class as primary query
+     */
+    public function useFeaturedVideoQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFeaturedVideo($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FeaturedVideo', '\gossi\trixionary\model\VideoQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Video object
+     *
+     * @param \gossi\trixionary\model\Video|ObjectCollection $video The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildSkillQuery The current query, for fluid interface
+     */
+    public function filterByFeaturedTutorial($video, $comparison = null)
+    {
+        if ($video instanceof \gossi\trixionary\model\Video) {
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_TUTORIAL_ID, $video->getId(), $comparison);
+        } elseif ($video instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(SkillTableMap::COL_TUTORIAL_ID, $video->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByFeaturedTutorial() only accepts arguments of type \gossi\trixionary\model\Video or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FeaturedTutorial relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildSkillQuery The current query, for fluid interface
+     */
+    public function joinFeaturedTutorial($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FeaturedTutorial');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FeaturedTutorial');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FeaturedTutorial relation Video object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\VideoQuery A secondary query class using the current class as primary query
+     */
+    public function useFeaturedTutorialQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFeaturedTutorial($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FeaturedTutorial', '\gossi\trixionary\model\VideoQuery');
     }
 
     /**

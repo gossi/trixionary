@@ -112,7 +112,11 @@ trait PictureDomainTrait {
 		}
 
 		// paginate
-		$model = $query->paginate($page, $size);
+		if ($size == -1) {
+			$model = $query->findAll();
+		} else {
+			$model = $query->paginate($page, $size);
+		}
 
 		// run response
 		return new Found(['model' => $model]);

@@ -3,13 +3,13 @@ namespace gossi\trixionary\domain;
 
 use gossi\trixionary\domain\base\PictureDomainTrait;
 use gossi\trixionary\model\Picture;
+use keeko\core\model\Activity;
 use keeko\framework\foundation\AbstractDomain;
 use phootwork\file\Directory;
 use phootwork\file\File;
 use Cocur\Slugify\Slugify;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use keeko\core\model\ActivityObject;
 
 /**
  */
@@ -20,6 +20,10 @@ class PictureDomain extends AbstractDomain {
 	/**
 	 */
 	const THUMB_MAX_SIZE = 300;
+
+	/**
+	 */
+	private $isNew;
 
 	/**
 	 * @param Picture $picture
@@ -68,14 +72,9 @@ class PictureDomain extends AbstractDomain {
 		    $picture->setThumbUrl($module->getPicturesUrl($picture->getSkill()) . '/thumbs/' . $filename);
 		    $picture->save();
 		}
-
 		// activity
 		$user = $this->getServiceContainer()->getAuthManager()->getUser();
-		$user->newActivity([
-			'verb' => $picture->isNew() ? ActivityObject::VERB_UPLOAD : ActivityObject::VERB_EDIT,
-			'object' => $picture,
-			'target' => $picture->getSkill()
-		]);
+		$user->newActivity(array('verb' => $this->isNew ? Activity::VERB_UPLOAD : Activity::VERB_EDIT, 'object' => $picture, 'target' => $picture->getSkill()));
 	}
 
 	/**
@@ -86,5 +85,6 @@ class PictureDomain extends AbstractDomain {
 		// set uploader
 		$user = $this->getServiceContainer()->getAuthManager()->getUser();
 		$picture->setUploaderId($user->getId());
+		$this->isNew = $picture->isNew();
 	}
 }

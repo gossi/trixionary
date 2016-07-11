@@ -8764,6 +8764,702 @@
 				}
 			}
 		},
+		"/skills/{id}/relationship/featured-video": {
+			"get": {
+				"description": "Reads the relationship of skill to featured_video",
+				"operationId": "skill-to-featured_video-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedVideo from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of skill to featured_video",
+				"operationId": "skill-to-featured_video-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates FeaturedVideo",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedVideo from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/skills/{id}/relationship/featured-tutorial": {
+			"get": {
+				"description": "Reads the relationship of skill to featured_tutorial",
+				"operationId": "skill-to-featured_tutorial-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorial from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of skill to featured_tutorial",
+				"operationId": "skill-to-featured_tutorial-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The skill id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates FeaturedTutorial",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorial from skill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										},
+										"related": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"$ref": "#/definitions/ResourceIdentifier",
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No skill found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/videos/{id}/relationship/featured-skills": {
+			"get": {
+				"description": "Reads the relationship of video to featured_skill",
+				"operationId": "video-to-featured_skill-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of video to featured_skill",
+				"operationId": "video-to-featured_skill-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates FeaturedSkill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"post": {
+				"description": "Adds featured_skill as relationship to video",
+				"operationId": "video-to-featured_skill-relationship-add",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Adds FeaturedSkill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"delete": {
+				"description": "Removes featured_skill as relationship to video",
+				"operationId": "video-to-featured_skill-relationship-remove",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
+		"/videos/{id}/relationship/featured-tutorial-skills": {
+			"get": {
+				"description": "Reads the relationship of video to featured_tutorial_skill",
+				"operationId": "video-to-featured_tutorial_skill-relationship-read",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorialSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"patch": {
+				"description": "Updates the relationship of video to featured_tutorial_skill",
+				"operationId": "video-to-featured_tutorial_skill-relationship-update",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Updates FeaturedTutorialSkill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorialSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"post": {
+				"description": "Adds featured_tutorial_skill as relationship to video",
+				"operationId": "video-to-featured_tutorial_skill-relationship-add",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"description": "Adds FeaturedTutorialSkill",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorialSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			},
+			"delete": {
+				"description": "Removes featured_tutorial_skill as relationship to video",
+				"operationId": "video-to-featured_tutorial_skill-relationship-remove",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "The video id",
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Retrieve FeaturedTutorialSkill from video",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"links": {
+									"type": "object",
+									"properties": {
+										"self": {
+											"type": "string"
+										}
+									}
+								},
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/definitions/ResourceIdentifier"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid ID supplied",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					},
+					"404": {
+						"description": "No video found",
+						"schema": {
+							"$ref": "#/definitions/Errors"
+						}
+					}
+				}
+			}
+		},
 		"/upload": {
 			"post": {
 				"description": "Upload media",
@@ -8806,14 +9502,44 @@
 				}
 			}
 		},
-		"/oembed-fetch/{url}": {
+		"/statistics/{id}": {
+			"get": {
+				"description": "Statistics for a sport",
+				"operationId": "statistics",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "sport id",
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"skills": {
+									"type": "number"
+								},
+								"groups": {
+									"type": "number"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/oembed-fetch": {
 			"get": {
 				"description": "Fetch oEmbed from url",
 				"operationId": "oembed-fetch",
 				"parameters": [
 					{
 						"name": "url",
-						"in": "path",
+						"in": "query",
 						"required": true,
 						"description": "The url to fetch",
 						"type": "string"
@@ -9663,6 +10389,12 @@
 								"picture_id": {
 									"type": "integer"
 								},
+								"video_id": {
+									"type": "integer"
+								},
+								"tutorial_id": {
+									"type": "integer"
+								},
 								"kstruktur_id": {
 									"type": "integer"
 								},
@@ -9793,6 +10525,34 @@
 									}
 								},
 								"featured-picture": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object"
+										},
+										"id": {
+											"type": "string"
+										},
+										"type": {
+											"type": "string"
+										}
+									}
+								},
+								"featured-video": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object"
+										},
+										"id": {
+											"type": "string"
+										},
+										"type": {
+											"type": "string"
+										}
+									}
+								},
+								"featured-tutorial": {
 									"type": "object",
 									"properties": {
 										"data": {
@@ -10037,6 +10797,12 @@
 								"picture_id": {
 									"type": "integer"
 								},
+								"video_id": {
+									"type": "integer"
+								},
+								"tutorial_id": {
+									"type": "integer"
+								},
 								"kstruktur_id": {
 									"type": "integer"
 								},
@@ -10231,6 +10997,50 @@
 									}
 								},
 								"featured-picture": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "object"
+										},
+										"id": {
+											"type": "string"
+										},
+										"type": {
+											"type": "string"
+										}
+									}
+								},
+								"featured-video": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "object"
+										},
+										"id": {
+											"type": "string"
+										},
+										"type": {
+											"type": "string"
+										}
+									}
+								},
+								"featured-tutorial": {
 									"type": "object",
 									"properties": {
 										"links": {
@@ -11089,6 +11899,28 @@
 						"relationships": {
 							"type": "object",
 							"properties": {
+								"featured-skills": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"featured-tutorial-skills": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
 								"skill": {
 									"type": "object",
 									"properties": {
@@ -11196,6 +12028,44 @@
 						"relationships": {
 							"type": "object",
 							"properties": {
+								"featured-skills": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
+								"featured-tutorial-skills": {
+									"type": "object",
+									"properties": {
+										"links": {
+											"type": "object",
+											"properties": {
+												"self": {
+													"type": "string"
+												}
+											}
+										},
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/definitions/ResourceIdentifier"
+											}
+										}
+									}
+								},
 								"skill": {
 									"type": "object",
 									"properties": {
@@ -11852,16 +12722,16 @@
 					"type": "integer"
 				},
 				"first": {
-					"type": "integer"
+					"type": "string"
 				},
 				"next": {
-					"type": "integer"
+					"type": "string"
 				},
 				"previous": {
-					"type": "integer"
+					"type": "string"
 				},
 				"last": {
-					"type": "integer"
+					"type": "string"
 				}
 			}
 		},

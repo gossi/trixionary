@@ -108,6 +108,8 @@
 		<column name="generation" type="INTEGER" />
 		<column name="importance" type="INTEGER" default="0"/>
 		<column name="picture_id" type="INTEGER" required="false"/>
+		<column name="video_id" type="INTEGER" required="false"/>
+		<column name="tutorial_id" type="INTEGER" required="false"/>
 		<column name="kstruktur_id" type="INTEGER" required="false"/>
 		<column name="function_phase_id" type="INTEGER" required="false"/>
 		<column name="object_id" type="INTEGER" required="false"/>
@@ -130,8 +132,14 @@
 		<foreign-key foreignTable="position" phpName="EndPosition" name="skill_fk_end_position">
 			<reference local="end_position_id" foreign="id"/>
 		</foreign-key>
-		<foreign-key foreignTable="picture" phpName="FeaturedPicture" refPhpName="FeaturedSkill" name="skill_fk_featured_picture">
+		<foreign-key foreignTable="picture" phpName="FeaturedPicture" refPhpName="FeaturedSkill" name="skill_fk_featured_picture" onDelete="SETNULL">
 			<reference local="picture_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="video" phpName="FeaturedVideo" refPhpName="FeaturedSkill" name="skill_fk_featured_video" onDelete="SETNULL">
+			<reference local="video_id" foreign="id"/>
+		</foreign-key>
+		<foreign-key foreignTable="video" phpName="FeaturedTutorial" refPhpName="FeaturedTutorialSkill" name="skill_fk_featured_tutorial" onDelete="SETNULL">
+			<reference local="tutorial_id" foreign="id"/>
 		</foreign-key>
 		<foreign-key foreignTable="kstruktur" phpName="KstrukturRoot" refPhpName="RootSkill" name="skill_fk_kstruktur">
 			<reference local="kstruktur_id" foreign="id"/>
@@ -253,7 +261,7 @@
 		<column name="width" type="INTEGER"/>
 		<column name="height" type="INTEGER"/>
 
-		<foreign-key foreignTable="skill" onDelete="cascade" name="video_fk_skill">
+		<foreign-key foreignTable="skill" onDelete="cascade" name="video_fk_skill" phpName="Skill" refPhpName="Video">
 			<reference local="skill_id" foreign="id"/>
 		</foreign-key>
 

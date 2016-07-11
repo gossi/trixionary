@@ -4,19 +4,24 @@ namespace gossi\trixionary\domain;
 use gossi\trixionary\calculation\Calculator;
 use gossi\trixionary\domain\base\SkillDomainTrait;
 use gossi\trixionary\model\LineageQuery;
-use gossi\trixionary\model\Skill;
 use gossi\trixionary\model\SkillQuery;
+use gossi\trixionary\model\Skill;
+use keeko\core\model\Activity;
 use keeko\framework\foundation\AbstractDomain;
 use phootwork\file\File;
 use phootwork\lang\Text;
 use Cocur\Slugify\Slugify;
-use keeko\core\model\ActivityObject;
+use phootwork\file\Directory;
 
 /**
  */
 class SkillDomain extends AbstractDomain {
 
 	use SkillDomainTrait;
+
+	/**
+	 */
+	private $isNew;
 
 	/**
 	 * @param Skill $skill
@@ -47,14 +52,16 @@ class SkillDomain extends AbstractDomain {
 		    $skill->save();
 		}
 		SkillQuery::enableVersioning();
-
-		// save activity
+		// activity
 		$user = $this->getServiceContainer()->getAuthManager()->getUser();
-		$user->newActivity([
-			'verb' => $skill->isNew() ? ActivityObject::VERB_CREATE : ActivityObject::VERB_EDIT,
-			'object' => $skill,
-			'target' => $skill->getSport()
-		]);
+		$user->newActivity(array('verb' => $this->isNew ? Activity::VERB_CREATE : Activity::VERB_AUTHOR, 'object' => $skill, 'target' => $skill->getSport()));
+	}
+
+	/**
+	 * @param Skill $skill
+	 */
+	protected function preCreate(Skill $skill) {
+		$skill->setVersionComment('Created');
 	}
 
 	/**
@@ -68,9 +75,13 @@ class SkillDomain extends AbstractDomain {
 		    $slugifier = new Slugify();
 		    $skill->setSlug($slugifier->slugify($name));
 		}
+		$this->isNew = $skill->isNew();
 	}
 
-	protected function preCreate(Skill $skill) {
-		$skill->setVersionComment('Created');
+	protected function postDelete(Skill $skill) {
+		// delete folder
+		$module = $this->getServiceContainer()->getModuleManager()->load('gossi/trixionary');
+		$dir = new Directory($module->getSkillPath($skill));
+		$dir->delete();
 	}
 }

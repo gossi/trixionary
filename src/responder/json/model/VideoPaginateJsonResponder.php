@@ -6,11 +6,11 @@ use gossi\trixionary\model\Skill;
 use gossi\trixionary\model\Video;
 use keeko\framework\domain\payload\Found;
 use keeko\framework\foundation\AbstractPayloadResponder;
+use keeko\framework\utils\Parameters;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tobscure\JsonApi\Collection;
 use Tobscure\JsonApi\Document;
-use Tobscure\JsonApi\Parameters;
 
 /**
  * Automatically generated JsonResponder for Paginates videos
@@ -28,9 +28,11 @@ class VideoPaginateJsonResponder extends AbstractPayloadResponder {
 		$data = $payload->getModel();
 		$serializer = Video::getSerializer();
 		$resource = new Collection($data, $serializer);
-		$resource = $resource->with($params->getInclude(['skill', 'reference']));
+		$resource = $resource->with($params->getInclude(['featured-skills', 'featured-tutorial-skills', 'skill', 'reference']));
 		$resource = $resource->fields($params->getFields([
 			'video' => Video::getSerializer()->getFields(),
+			'featured-skill' => Skill::getSerializer()->getFields(),
+			'featured-tutorial-skill' => Skill::getSerializer()->getFields(),
 			'skill' => Skill::getSerializer()->getFields(),
 			'reference' => Reference::getSerializer()->getFields()
 		]));
@@ -39,7 +41,7 @@ class VideoPaginateJsonResponder extends AbstractPayloadResponder {
 		// meta
 		$document->setMeta([
 			'total' => $data->getNbResults(),
-			'first' => $data->getFirstPage(),
+			'first' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getFirstPage()]]),
 			'next' => $data->getNextPage(),
 			'previous' => $data->getPreviousPage(),
 			'last' => $data->getLastPage()

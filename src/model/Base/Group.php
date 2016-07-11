@@ -4,7 +4,15 @@ namespace gossi\trixionary\model\Base;
 
 use \Exception;
 use \PDO;
-use Propel\Runtime\Propel;
+use gossi\trixionary\model\Group as ChildGroup;
+use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
+use gossi\trixionary\model\Map\GroupTableMap;
+use gossi\trixionary\model\Skill as ChildSkill;
+use gossi\trixionary\model\SkillGroup as ChildSkillGroup;
+use gossi\trixionary\model\SkillGroupQuery as ChildSkillGroupQuery;
+use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
+use gossi\trixionary\model\Sport as ChildSport;
+use gossi\trixionary\model\SportQuery as ChildSportQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
@@ -16,15 +24,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use gossi\trixionary\model\Group as ChildGroup;
-use gossi\trixionary\model\GroupQuery as ChildGroupQuery;
-use gossi\trixionary\model\Skill as ChildSkill;
-use gossi\trixionary\model\SkillGroup as ChildSkillGroup;
-use gossi\trixionary\model\SkillGroupQuery as ChildSkillGroupQuery;
-use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
-use gossi\trixionary\model\Sport as ChildSport;
-use gossi\trixionary\model\SportQuery as ChildSportQuery;
-use gossi\trixionary\model\Map\GroupTableMap;
+use Propel\Runtime\Propel;
 
 /**
  * Base class that represents a row from the 'kk_trixionary_group' table.

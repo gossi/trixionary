@@ -64,7 +64,7 @@ class SkillUpdateJsonResponder extends AbstractPayloadResponder {
 		$params = new Parameters($request->query->all());
 		$serializer = Skill::getSerializer();
 		$resource = new Resource($payload->getModel(), $serializer);
-		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'references', 'lineages', 'pictures', 'videos', 'kstrukturs', 'function-phases', 'sport.skills']));
+		$resource = $resource->with($params->getInclude(['sport', 'variations', 'variation-of', 'multiples', 'multiple-of', 'object', 'start-position', 'end-position', 'featured-picture', 'featured-video', 'featured-tutorial', 'kstruktur-root', 'function-phase-root', 'children', 'parents', 'parts', 'composites', 'groups', 'references', 'lineages', 'pictures', 'videos', 'kstrukturs', 'function-phases', 'sport.skills']));
 		$resource = $resource->fields($params->getFields([
 			'skill' => Skill::getSerializer()->getFields(),
 			'sport' => Sport::getSerializer()->getFields(),
@@ -76,6 +76,8 @@ class SkillUpdateJsonResponder extends AbstractPayloadResponder {
 			'start-position' => Position::getSerializer()->getFields(),
 			'end-position' => Position::getSerializer()->getFields(),
 			'featured-picture' => Picture::getSerializer()->getFields(),
+			'featured-video' => Video::getSerializer()->getFields(),
+			'featured-tutorial' => Video::getSerializer()->getFields(),
 			'kstruktur-root' => Kstruktur::getSerializer()->getFields(),
 			'function-phase-root' => FunctionPhase::getSerializer()->getFields(),
 			'child' => Skill::getSerializer()->getFields(),

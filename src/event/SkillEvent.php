@@ -38,6 +38,14 @@ class SkillEvent extends Event {
 
 	/**
 	 */
+	const POST_FEATURED_TUTORIAL_UPDATE = 'gossi.trixionary.skill.post_featured_tutorial_update';
+
+	/**
+	 */
+	const POST_FEATURED_VIDEO_UPDATE = 'gossi.trixionary.skill.post_featured_video_update';
+
+	/**
+	 */
 	const POST_FUNCTION_PHASE_ROOT_UPDATE = 'gossi.trixionary.skill.post_function_phase_root_update';
 
 	/**
@@ -219,6 +227,14 @@ class SkillEvent extends Event {
 	/**
 	 */
 	const PRE_FEATURED_PICTURE_UPDATE = 'gossi.trixionary.skill.pre_featured_picture_update';
+
+	/**
+	 */
+	const PRE_FEATURED_TUTORIAL_UPDATE = 'gossi.trixionary.skill.pre_featured_tutorial_update';
+
+	/**
+	 */
+	const PRE_FEATURED_VIDEO_UPDATE = 'gossi.trixionary.skill.pre_featured_video_update';
 
 	/**
 	 */

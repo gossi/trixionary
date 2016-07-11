@@ -2,6 +2,7 @@
 namespace gossi\trixionary\domain\base;
 
 use gossi\trixionary\event\VideoEvent;
+use gossi\trixionary\model\SkillQuery;
 use gossi\trixionary\model\VideoQuery;
 use gossi\trixionary\model\Video;
 use keeko\framework\domain\payload\Created;
@@ -13,6 +14,7 @@ use keeko\framework\domain\payload\NotUpdated;
 use keeko\framework\domain\payload\NotValid;
 use keeko\framework\domain\payload\PayloadInterface;
 use keeko\framework\domain\payload\Updated;
+use keeko\framework\exceptions\ErrorsException;
 use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
@@ -25,6 +27,78 @@ trait VideoDomainTrait {
 	/**
 	 */
 	protected $pool;
+
+	/**
+	 * Adds FeaturedSkills to Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function addFeaturedSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass add to internal logic
+		try {
+			$this->doAddFeaturedSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_SKILLS_ADD, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_SKILLS_ADD, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
+	 * Adds FeaturedTutorialSkills to Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function addFeaturedTutorialSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass add to internal logic
+		try {
+			$this->doAddFeaturedTutorialSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_TUTORIAL_SKILLS_ADD, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_TUTORIAL_SKILLS_ADD, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
 
 	/**
 	 * Creates a new Video with the provided data
@@ -112,7 +186,11 @@ trait VideoDomainTrait {
 		}
 
 		// paginate
-		$model = $query->paginate($page, $size);
+		if ($size == -1) {
+			$model = $query->findAll();
+		} else {
+			$model = $query->paginate($page, $size);
+		}
 
 		// run response
 		return new Found(['model' => $model]);
@@ -134,6 +212,78 @@ trait VideoDomainTrait {
 		}
 
 		return new Found(['model' => $model]);
+	}
+
+	/**
+	 * Removes FeaturedSkills from Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function removeFeaturedSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass remove to internal logic
+		try {
+			$this->doRemoveFeaturedSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
+	 * Removes FeaturedTutorialSkills from Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function removeFeaturedTutorialSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass remove to internal logic
+		try {
+			$this->doRemoveFeaturedTutorialSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_TUTORIAL_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_TUTORIAL_SKILLS_REMOVE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
 	}
 
 	/**
@@ -241,6 +391,78 @@ trait VideoDomainTrait {
 	}
 
 	/**
+	 * Updates FeaturedSkills on Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function updateFeaturedSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass update to internal logic
+		try {
+			$this->doUpdateFeaturedSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
+	 * Updates FeaturedTutorialSkills on Video
+	 * 
+	 * @param mixed $id
+	 * @param mixed $data
+	 * @return PayloadInterface
+	 */
+	public function updateFeaturedTutorialSkills($id, $data) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Video not found.']);
+		}
+
+		// pass update to internal logic
+		try {
+			$this->doUpdateFeaturedTutorialSkills($model, $data);
+		} catch (ErrorsException $e) {
+			return new NotValid(['errors' => $e->getErrors()]);
+		}
+
+		// save and dispatch events
+		$this->dispatch(VideoEvent::PRE_FEATURED_TUTORIAL_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::PRE_SAVE, $model, $data);
+		$rows = $model->save();
+		$this->dispatch(VideoEvent::POST_FEATURED_TUTORIAL_SKILLS_UPDATE, $model, $data);
+		$this->dispatch(VideoEvent::POST_SAVE, $model, $data);
+
+		if ($rows > 0) {
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
 	 * @param mixed $query
 	 * @param mixed $filter
 	 * @return void
@@ -295,6 +517,94 @@ trait VideoDomainTrait {
 	}
 
 	/**
+	 * Interal mechanism to add FeaturedSkills to Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doAddFeaturedSkills(Video $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addFeaturedSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to add FeaturedTutorialSkills to Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doAddFeaturedTutorialSkills(Video $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addFeaturedTutorialSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove FeaturedSkills from Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveFeaturedSkills(Video $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeFeaturedSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Interal mechanism to remove FeaturedTutorialSkills from Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doRemoveFeaturedTutorialSkills(Video $model, $data) {
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->removeFeaturedTutorialSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			return new ErrorsException($errors);
+		}
+	}
+
+	/**
 	 * Internal mechanism to set the Reference id
 	 * 
 	 * @param Video $model
@@ -324,6 +634,58 @@ trait VideoDomainTrait {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Internal update mechanism of FeaturedSkills on Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateFeaturedSkills(Video $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterByFeaturedVideo($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addFeaturedSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
+	}
+
+	/**
+	 * Internal update mechanism of FeaturedTutorialSkills on Video
+	 * 
+	 * @param Video $model
+	 * @param mixed $data
+	 */
+	protected function doUpdateFeaturedTutorialSkills(Video $model, $data) {
+		// remove all relationships before
+		SkillQuery::create()->filterByFeaturedTutorial($model)->delete();
+
+		// add them
+		$errors = [];
+		foreach ($data as $entry) {
+			if (!isset($entry['id'])) {
+				$errors[] = 'Missing id for Skill';
+			} else {
+				$related = SkillQuery::create()->findOneById($entry['id']);
+				$model->addFeaturedTutorialSkill($related);
+			}
+		}
+
+		if (count($errors) > 0) {
+			throw new ErrorsException($errors);
+		}
 	}
 
 	/**

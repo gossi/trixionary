@@ -46,6 +46,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery orderByGeneration($order = Criteria::ASC) Order by the generation column
  * @method     ChildSkillVersionQuery orderByImportance($order = Criteria::ASC) Order by the importance column
  * @method     ChildSkillVersionQuery orderByPictureId($order = Criteria::ASC) Order by the picture_id column
+ * @method     ChildSkillVersionQuery orderByVideoId($order = Criteria::ASC) Order by the video_id column
+ * @method     ChildSkillVersionQuery orderByTutorialId($order = Criteria::ASC) Order by the tutorial_id column
  * @method     ChildSkillVersionQuery orderByKstrukturId($order = Criteria::ASC) Order by the kstruktur_id column
  * @method     ChildSkillVersionQuery orderByFunctionPhaseId($order = Criteria::ASC) Order by the function_phase_id column
  * @method     ChildSkillVersionQuery orderByObjectId($order = Criteria::ASC) Order by the object_id column
@@ -83,6 +85,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersionQuery groupByGeneration() Group by the generation column
  * @method     ChildSkillVersionQuery groupByImportance() Group by the importance column
  * @method     ChildSkillVersionQuery groupByPictureId() Group by the picture_id column
+ * @method     ChildSkillVersionQuery groupByVideoId() Group by the video_id column
+ * @method     ChildSkillVersionQuery groupByTutorialId() Group by the tutorial_id column
  * @method     ChildSkillVersionQuery groupByKstrukturId() Group by the kstruktur_id column
  * @method     ChildSkillVersionQuery groupByFunctionPhaseId() Group by the function_phase_id column
  * @method     ChildSkillVersionQuery groupByObjectId() Group by the object_id column
@@ -133,6 +137,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion findOneByGeneration(int $generation) Return the first ChildSkillVersion filtered by the generation column
  * @method     ChildSkillVersion findOneByImportance(int $importance) Return the first ChildSkillVersion filtered by the importance column
  * @method     ChildSkillVersion findOneByPictureId(int $picture_id) Return the first ChildSkillVersion filtered by the picture_id column
+ * @method     ChildSkillVersion findOneByVideoId(int $video_id) Return the first ChildSkillVersion filtered by the video_id column
+ * @method     ChildSkillVersion findOneByTutorialId(int $tutorial_id) Return the first ChildSkillVersion filtered by the tutorial_id column
  * @method     ChildSkillVersion findOneByKstrukturId(int $kstruktur_id) Return the first ChildSkillVersion filtered by the kstruktur_id column
  * @method     ChildSkillVersion findOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkillVersion filtered by the function_phase_id column
  * @method     ChildSkillVersion findOneByObjectId(int $object_id) Return the first ChildSkillVersion filtered by the object_id column
@@ -173,6 +179,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion requireOneByGeneration(int $generation) Return the first ChildSkillVersion filtered by the generation column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByImportance(int $importance) Return the first ChildSkillVersion filtered by the importance column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByPictureId(int $picture_id) Return the first ChildSkillVersion filtered by the picture_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByVideoId(int $video_id) Return the first ChildSkillVersion filtered by the video_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSkillVersion requireOneByTutorialId(int $tutorial_id) Return the first ChildSkillVersion filtered by the tutorial_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByKstrukturId(int $kstruktur_id) Return the first ChildSkillVersion filtered by the kstruktur_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByFunctionPhaseId(int $function_phase_id) Return the first ChildSkillVersion filtered by the function_phase_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSkillVersion requireOneByObjectId(int $object_id) Return the first ChildSkillVersion filtered by the object_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -211,6 +219,8 @@ use gossi\trixionary\model\Map\SkillVersionTableMap;
  * @method     ChildSkillVersion[]|ObjectCollection findByGeneration(int $generation) Return ChildSkillVersion objects filtered by the generation column
  * @method     ChildSkillVersion[]|ObjectCollection findByImportance(int $importance) Return ChildSkillVersion objects filtered by the importance column
  * @method     ChildSkillVersion[]|ObjectCollection findByPictureId(int $picture_id) Return ChildSkillVersion objects filtered by the picture_id column
+ * @method     ChildSkillVersion[]|ObjectCollection findByVideoId(int $video_id) Return ChildSkillVersion objects filtered by the video_id column
+ * @method     ChildSkillVersion[]|ObjectCollection findByTutorialId(int $tutorial_id) Return ChildSkillVersion objects filtered by the tutorial_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByKstrukturId(int $kstruktur_id) Return ChildSkillVersion objects filtered by the kstruktur_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByFunctionPhaseId(int $function_phase_id) Return ChildSkillVersion objects filtered by the function_phase_id column
  * @method     ChildSkillVersion[]|ObjectCollection findByObjectId(int $object_id) Return ChildSkillVersion objects filtered by the object_id column
@@ -313,7 +323,7 @@ abstract class SkillVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
+        $sql = 'SELECT `id`, `sport_id`, `name`, `alternative_name`, `slug`, `description`, `history`, `is_translation`, `is_rotation`, `is_acyclic`, `is_cyclic`, `longitudinal_flags`, `latitudinal_flags`, `transversal_flags`, `movement_description`, `sequence_picture_url`, `variation_of_id`, `start_position_id`, `end_position_id`, `is_composite`, `is_multiple`, `multiple_of_id`, `multiplier`, `generation`, `importance`, `picture_id`, `video_id`, `tutorial_id`, `kstruktur_id`, `function_phase_id`, `object_id`, `version`, `version_created_at`, `version_comment`, `variation_of_id_version`, `multiple_of_id_version`, `kk_trixionary_skill_ids`, `kk_trixionary_skill_versions` FROM `kk_trixionary_skill_version` WHERE `id` = :p0 AND `version` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -1313,6 +1323,88 @@ abstract class SkillVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SkillVersionTableMap::COL_PICTURE_ID, $pictureId, $comparison);
+    }
+
+    /**
+     * Filter the query on the video_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVideoId(1234); // WHERE video_id = 1234
+     * $query->filterByVideoId(array(12, 34)); // WHERE video_id IN (12, 34)
+     * $query->filterByVideoId(array('min' => 12)); // WHERE video_id > 12
+     * </code>
+     *
+     * @param     mixed $videoId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByVideoId($videoId = null, $comparison = null)
+    {
+        if (is_array($videoId)) {
+            $useMinMax = false;
+            if (isset($videoId['min'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_VIDEO_ID, $videoId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($videoId['max'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_VIDEO_ID, $videoId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_VIDEO_ID, $videoId, $comparison);
+    }
+
+    /**
+     * Filter the query on the tutorial_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTutorialId(1234); // WHERE tutorial_id = 1234
+     * $query->filterByTutorialId(array(12, 34)); // WHERE tutorial_id IN (12, 34)
+     * $query->filterByTutorialId(array('min' => 12)); // WHERE tutorial_id > 12
+     * </code>
+     *
+     * @param     mixed $tutorialId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSkillVersionQuery The current query, for fluid interface
+     */
+    public function filterByTutorialId($tutorialId = null, $comparison = null)
+    {
+        if (is_array($tutorialId)) {
+            $useMinMax = false;
+            if (isset($tutorialId['min'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_TUTORIAL_ID, $tutorialId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($tutorialId['max'])) {
+                $this->addUsingAlias(SkillVersionTableMap::COL_TUTORIAL_ID, $tutorialId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SkillVersionTableMap::COL_TUTORIAL_ID, $tutorialId, $comparison);
     }
 
     /**

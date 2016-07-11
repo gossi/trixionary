@@ -5,6 +5,7 @@ use gossi\trixionary\model\Reference;
 use gossi\trixionary\model\Skill;
 use gossi\trixionary\serializer\TypeInferencer;
 use keeko\framework\utils\HydrateUtils;
+use Tobscure\JsonApi\Collection;
 use Tobscure\JsonApi\Relationship;
 use Tobscure\JsonApi\Resource;
 
@@ -15,14 +16,36 @@ trait VideoSerializerTrait {
 	/**
 	 */
 	private $methodNames = [
-
+		'featured-skills' => 'FeaturedSkill',
+		'featured-tutorial-skills' => 'FeaturedTutorialSkill'
 	];
 
 	/**
 	 */
 	private $methodPluralNames = [
-
+		'featured-skills' => 'FeaturedSkills',
+		'featured-tutorial-skills' => 'FeaturedTutorialSkills'
 	];
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
+	public function featuredSkills($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('featured-skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'featured-skill');
+	}
+
+	/**
+	 * @param mixed $model
+	 * @return Relationship
+	 */
+	public function featuredTutorialSkills($model) {
+		$method = 'get' . $this->getCollectionMethodPluralName('featured-tutorial-skills');
+		$relationship = new Relationship(new Collection($model->$method(), Skill::getSerializer()));
+		return $this->addRelationshipSelfLink($relationship, $model, 'featured-tutorial-skill');
+	}
 
 	/**
 	 * @param mixed $model
@@ -68,6 +91,8 @@ trait VideoSerializerTrait {
 	 */
 	public function getRelationships() {
 		return [
+			'featured-skills' => Skill::getSerializer()->getType(null),
+			'featured-tutorial-skills' => Skill::getSerializer()->getType(null),
 			'skill' => Skill::getSerializer()->getType(null),
 			'reference' => Reference::getSerializer()->getType(null)
 		];

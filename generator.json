@@ -88,6 +88,45 @@
 					}
 				}
 			},
+			"/statistics/{id}": {
+			    "get": {
+			    	"description": "Statistics for a sport",
+			    	"operationId": "statistics",
+			    	"parameters": [
+			    	    {
+			    	        "name": "id",
+			    	        "in": "path",
+			    	        "required": true,
+			    	        "description": "sport id",
+			    	        "type": "string"
+			    	    }
+			    	],
+			    	"responses": {
+			    	    "200": {
+			    	        "schema": {
+			    	            "type": "object",
+			    	            "properties": {
+			    	                "skills": {
+			    	                    "type": "number"
+			    	                },
+			    	                "groups": {
+			    	                    "type": "number"
+			    	                },
+			    	                "pictures": {
+			    	                    "type": "number"
+			    	                },
+			    	                "videos": {
+			    	                    "type": "number"
+			    	                },
+			    	                "references": {
+			    	                    "type": "number"
+			    	                }
+			    	            }
+			    	        }
+			    	    }
+			    	}
+			    }
+			},
 			"/oembed-fetch": {
 				"get": {
 					"description": "Fetch oEmbed from url",
@@ -95,7 +134,7 @@
 					"parameters": [
 						{
 							"name": "url",
-							"in": "path",
+							"in": "query",
 							"required": true,
 							"description": "The url to fetch",
 							"type": "string"

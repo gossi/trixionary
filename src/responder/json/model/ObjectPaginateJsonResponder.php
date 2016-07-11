@@ -6,11 +6,11 @@ use gossi\trixionary\model\Skill;
 use gossi\trixionary\model\Sport;
 use keeko\framework\domain\payload\Found;
 use keeko\framework\foundation\AbstractPayloadResponder;
+use keeko\framework\utils\Parameters;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tobscure\JsonApi\Collection;
 use Tobscure\JsonApi\Document;
-use Tobscure\JsonApi\Parameters;
 
 /**
  * Automatically generated JsonResponder for Paginates objects
@@ -39,7 +39,7 @@ class ObjectPaginateJsonResponder extends AbstractPayloadResponder {
 		// meta
 		$document->setMeta([
 			'total' => $data->getNbResults(),
-			'first' => $data->getFirstPage(),
+			'first' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getFirstPage()]]),
 			'next' => $data->getNextPage(),
 			'previous' => $data->getPreviousPage(),
 			'last' => $data->getLastPage()

@@ -114,6 +114,8 @@ CREATE TABLE `kk_trixionary_skill`
     `generation` INTEGER,
     `importance` INTEGER DEFAULT 0,
     `picture_id` INTEGER,
+    `video_id` INTEGER,
+    `tutorial_id` INTEGER,
     `kstruktur_id` INTEGER,
     `function_phase_id` INTEGER,
     `object_id` INTEGER,
@@ -128,6 +130,8 @@ CREATE TABLE `kk_trixionary_skill`
     INDEX `skill_fi_start_position` (`start_position_id`),
     INDEX `skill_fi_end_position` (`end_position_id`),
     INDEX `skill_fi_featured_picture` (`picture_id`),
+    INDEX `skill_fi_featured_video` (`video_id`),
+    INDEX `skill_fi_featured_tutorial` (`tutorial_id`),
     INDEX `skill_fi_kstruktur` (`kstruktur_id`),
     INDEX `skill_fi_function_phase` (`function_phase_id`),
     CONSTRAINT `skill_fk_sport`
@@ -152,6 +156,12 @@ CREATE TABLE `kk_trixionary_skill`
     CONSTRAINT `skill_fk_featured_picture`
         FOREIGN KEY (`picture_id`)
         REFERENCES `kk_trixionary_picture` (`id`),
+    CONSTRAINT `skill_fk_featured_video`
+        FOREIGN KEY (`video_id`)
+        REFERENCES `kk_trixionary_video` (`id`),
+    CONSTRAINT `skill_fk_featured_tutorial`
+        FOREIGN KEY (`tutorial_id`)
+        REFERENCES `kk_trixionary_video` (`id`),
     CONSTRAINT `skill_fk_kstruktur`
         FOREIGN KEY (`kstruktur_id`)
         REFERENCES `kk_trixionary_kstruktur` (`id`),
@@ -512,6 +522,8 @@ CREATE TABLE `kk_trixionary_skill_version`
     `generation` INTEGER,
     `importance` INTEGER DEFAULT 0,
     `picture_id` INTEGER,
+    `video_id` INTEGER,
+    `tutorial_id` INTEGER,
     `kstruktur_id` INTEGER,
     `function_phase_id` INTEGER,
     `object_id` INTEGER,

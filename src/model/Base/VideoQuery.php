@@ -66,6 +66,14 @@ use gossi\trixionary\model\Map\VideoTableMap;
  * @method     ChildVideoQuery rightJoinReference($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Reference relation
  * @method     ChildVideoQuery innerJoinReference($relationAlias = null) Adds a INNER JOIN clause to the query using the Reference relation
  *
+ * @method     ChildVideoQuery leftJoinFeaturedSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedSkill relation
+ * @method     ChildVideoQuery rightJoinFeaturedSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedSkill relation
+ * @method     ChildVideoQuery innerJoinFeaturedSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedSkill relation
+ *
+ * @method     ChildVideoQuery leftJoinFeaturedTutorialSkill($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeaturedTutorialSkill relation
+ * @method     ChildVideoQuery rightJoinFeaturedTutorialSkill($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeaturedTutorialSkill relation
+ * @method     ChildVideoQuery innerJoinFeaturedTutorialSkill($relationAlias = null) Adds a INNER JOIN clause to the query using the FeaturedTutorialSkill relation
+ *
  * @method     \gossi\trixionary\model\SkillQuery|\gossi\trixionary\model\ReferenceQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildVideo findOne(ConnectionInterface $con = null) Return the first ChildVideo matching the query
@@ -1009,6 +1017,152 @@ abstract class VideoQuery extends ModelCriteria
         return $this
             ->joinReference($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Reference', '\gossi\trixionary\model\ReferenceQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Skill object
+     *
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByFeaturedSkill($skill, $comparison = null)
+    {
+        if ($skill instanceof \gossi\trixionary\model\Skill) {
+            return $this
+                ->addUsingAlias(VideoTableMap::COL_ID, $skill->getVideoId(), $comparison);
+        } elseif ($skill instanceof ObjectCollection) {
+            return $this
+                ->useFeaturedSkillQuery()
+                ->filterByPrimaryKeys($skill->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFeaturedSkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FeaturedSkill relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function joinFeaturedSkill($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FeaturedSkill');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FeaturedSkill');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FeaturedSkill relation Skill object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
+     */
+    public function useFeaturedSkillQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFeaturedSkill($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FeaturedSkill', '\gossi\trixionary\model\SkillQuery');
+    }
+
+    /**
+     * Filter the query by a related \gossi\trixionary\model\Skill object
+     *
+     * @param \gossi\trixionary\model\Skill|ObjectCollection $skill the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildVideoQuery The current query, for fluid interface
+     */
+    public function filterByFeaturedTutorialSkill($skill, $comparison = null)
+    {
+        if ($skill instanceof \gossi\trixionary\model\Skill) {
+            return $this
+                ->addUsingAlias(VideoTableMap::COL_ID, $skill->getTutorialId(), $comparison);
+        } elseif ($skill instanceof ObjectCollection) {
+            return $this
+                ->useFeaturedTutorialSkillQuery()
+                ->filterByPrimaryKeys($skill->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFeaturedTutorialSkill() only accepts arguments of type \gossi\trixionary\model\Skill or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FeaturedTutorialSkill relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildVideoQuery The current query, for fluid interface
+     */
+    public function joinFeaturedTutorialSkill($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FeaturedTutorialSkill');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FeaturedTutorialSkill');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FeaturedTutorialSkill relation Skill object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \gossi\trixionary\model\SkillQuery A secondary query class using the current class as primary query
+     */
+    public function useFeaturedTutorialSkillQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFeaturedTutorialSkill($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FeaturedTutorialSkill', '\gossi\trixionary\model\SkillQuery');
     }
 
     /**

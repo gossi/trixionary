@@ -1877,6 +1877,136 @@
 						"responder": {
 							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
 						}
+					},
+					"skill-to-featured_video-relationship-read": {
+						"title": "Reads the relationship of skill to featured_video",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
+						}
+					},
+					"skill-to-featured_video-relationship-update": {
+						"title": "Updates the relationship of skill to featured_video",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
+						}
+					},
+					"skill-to-featured_tutorial-relationship-read": {
+						"title": "Reads the relationship of skill to featured_tutorial",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
+						}
+					},
+					"skill-to-featured_tutorial-relationship-update": {
+						"title": "Updates the relationship of skill to featured_tutorial",
+						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
+						}
+					},
+					"video-to-featured_skill-relationship-read": {
+						"title": "Reads the relationship of video to featured_skill",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						}
+					},
+					"video-to-featured_skill-relationship-update": {
+						"title": "Updates the relationship of video to featured_skill",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						}
+					},
+					"video-to-featured_skill-relationship-add": {
+						"title": "Adds featured_skill as relationship to video",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillAddAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						}
+					},
+					"video-to-featured_skill-relationship-remove": {
+						"title": "Removes featured_skill as relationship to video",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillRemoveAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						}
+					},
+					"video-to-featured_tutorial_skill-relationship-read": {
+						"title": "Reads the relationship of video to featured_tutorial_skill",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillReadAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						}
+					},
+					"video-to-featured_tutorial_skill-relationship-update": {
+						"title": "Updates the relationship of video to featured_tutorial_skill",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillUpdateAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						}
+					},
+					"video-to-featured_tutorial_skill-relationship-add": {
+						"title": "Adds featured_tutorial_skill as relationship to video",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillAddAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						}
+					},
+					"video-to-featured_tutorial_skill-relationship-remove": {
+						"title": "Removes featured_tutorial_skill as relationship to video",
+						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillRemoveAction",
+						"acl": [
+							"admin"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						}
+					},
+					"statistics": {
+						"title": "Statistics",
+						"class": "gossi\\trixionary\\action\\StatisticsAction",
+						"acl": [
+							"guest"
+						],
+						"responder": {
+							"json": "gossi\\trixionary\\responder\\json\\StatisticsJsonResponder"
+						}
 					}
 				}
 			}

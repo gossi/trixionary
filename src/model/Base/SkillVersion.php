@@ -227,6 +227,18 @@ abstract class SkillVersion implements ActiveRecordInterface
     protected $picture_id;
 
     /**
+     * The value for the video_id field.
+     * @var        int
+     */
+    protected $video_id;
+
+    /**
+     * The value for the tutorial_id field.
+     * @var        int
+     */
+    protected $tutorial_id;
+
+    /**
      * The value for the kstruktur_id field.
      * @var        int
      */
@@ -873,6 +885,26 @@ abstract class SkillVersion implements ActiveRecordInterface
     public function getPictureId()
     {
         return $this->picture_id;
+    }
+
+    /**
+     * Get the [video_id] column value.
+     *
+     * @return int
+     */
+    public function getVideoId()
+    {
+        return $this->video_id;
+    }
+
+    /**
+     * Get the [tutorial_id] column value.
+     *
+     * @return int
+     */
+    public function getTutorialId()
+    {
+        return $this->tutorial_id;
     }
 
     /**
@@ -1596,6 +1628,46 @@ abstract class SkillVersion implements ActiveRecordInterface
     } // setPictureId()
 
     /**
+     * Set the value of [video_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
+     */
+    public function setVideoId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->video_id !== $v) {
+            $this->video_id = $v;
+            $this->modifiedColumns[SkillVersionTableMap::COL_VIDEO_ID] = true;
+        }
+
+        return $this;
+    } // setVideoId()
+
+    /**
+     * Set the value of [tutorial_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\SkillVersion The current object (for fluent API support)
+     */
+    public function setTutorialId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->tutorial_id !== $v) {
+            $this->tutorial_id = $v;
+            $this->modifiedColumns[SkillVersionTableMap::COL_TUTORIAL_ID] = true;
+        }
+
+        return $this;
+    } // setTutorialId()
+
+    /**
      * Set the value of [kstruktur_id] column.
      *
      * @param int $v new value
@@ -2011,38 +2083,44 @@ abstract class SkillVersion implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillVersionTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillVersionTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillVersionTableMap::translateFieldName('VideoId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->video_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillVersionTableMap::translateFieldName('TutorialId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->tutorial_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillVersionTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kstruktur_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillVersionTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillVersionTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->function_phase_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillVersionTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillVersionTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->object_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 32 + $startcol : SkillVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillVersionTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 33 + $startcol : SkillVersionTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 32 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 34 + $startcol : SkillVersionTableMap::translateFieldName('VariationOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
             $this->variation_of_id_version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 33 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 35 + $startcol : SkillVersionTableMap::translateFieldName('MultipleOfIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
             $this->multiple_of_id_version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 34 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 36 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillIds', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kk_trixionary_skill_ids = $col;
             $this->kk_trixionary_skill_ids_unserialized = null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 35 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillVersions', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 37 + $startcol : SkillVersionTableMap::translateFieldName('KkTrixionarySkillVersions', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kk_trixionary_skill_versions = $col;
             $this->kk_trixionary_skill_versions_unserialized = null;
             $this->resetModified();
@@ -2053,7 +2131,7 @@ abstract class SkillVersion implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 36; // 36 = SkillVersionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 38; // 38 = SkillVersionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\SkillVersion'), 0, $e);
@@ -2340,6 +2418,12 @@ abstract class SkillVersion implements ActiveRecordInterface
         if ($this->isColumnModified(SkillVersionTableMap::COL_PICTURE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`picture_id`';
         }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_VIDEO_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`video_id`';
+        }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_TUTORIAL_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`tutorial_id`';
+        }
         if ($this->isColumnModified(SkillVersionTableMap::COL_KSTRUKTUR_ID)) {
             $modifiedColumns[':p' . $index++]  = '`kstruktur_id`';
         }
@@ -2458,6 +2542,12 @@ abstract class SkillVersion implements ActiveRecordInterface
                         break;
                     case '`picture_id`':
                         $stmt->bindValue($identifier, $this->picture_id, PDO::PARAM_INT);
+                        break;
+                    case '`video_id`':
+                        $stmt->bindValue($identifier, $this->video_id, PDO::PARAM_INT);
+                        break;
+                    case '`tutorial_id`':
+                        $stmt->bindValue($identifier, $this->tutorial_id, PDO::PARAM_INT);
                         break;
                     case '`kstruktur_id`':
                         $stmt->bindValue($identifier, $this->kstruktur_id, PDO::PARAM_INT);
@@ -2623,33 +2713,39 @@ abstract class SkillVersion implements ActiveRecordInterface
                 return $this->getPictureId();
                 break;
             case 26:
-                return $this->getKstrukturId();
+                return $this->getVideoId();
                 break;
             case 27:
-                return $this->getFunctionPhaseId();
+                return $this->getTutorialId();
                 break;
             case 28:
-                return $this->getObjectId();
+                return $this->getKstrukturId();
                 break;
             case 29:
-                return $this->getVersion();
+                return $this->getFunctionPhaseId();
                 break;
             case 30:
-                return $this->getVersionCreatedAt();
+                return $this->getObjectId();
                 break;
             case 31:
-                return $this->getVersionComment();
+                return $this->getVersion();
                 break;
             case 32:
-                return $this->getVariationOfIdVersion();
+                return $this->getVersionCreatedAt();
                 break;
             case 33:
-                return $this->getMultipleOfIdVersion();
+                return $this->getVersionComment();
                 break;
             case 34:
-                return $this->getKkTrixionarySkillIds();
+                return $this->getVariationOfIdVersion();
                 break;
             case 35:
+                return $this->getMultipleOfIdVersion();
+                break;
+            case 36:
+                return $this->getKkTrixionarySkillIds();
+                break;
+            case 37:
                 return $this->getKkTrixionarySkillVersions();
                 break;
             default:
@@ -2708,23 +2804,25 @@ abstract class SkillVersion implements ActiveRecordInterface
             $keys[23] => $this->getGeneration(),
             $keys[24] => $this->getImportance(),
             $keys[25] => $this->getPictureId(),
-            $keys[26] => $this->getKstrukturId(),
-            $keys[27] => $this->getFunctionPhaseId(),
-            $keys[28] => $this->getObjectId(),
-            $keys[29] => $this->getVersion(),
-            $keys[30] => $this->getVersionCreatedAt(),
-            $keys[31] => $this->getVersionComment(),
-            $keys[32] => $this->getVariationOfIdVersion(),
-            $keys[33] => $this->getMultipleOfIdVersion(),
-            $keys[34] => $this->getKkTrixionarySkillIds(),
-            $keys[35] => $this->getKkTrixionarySkillVersions(),
+            $keys[26] => $this->getVideoId(),
+            $keys[27] => $this->getTutorialId(),
+            $keys[28] => $this->getKstrukturId(),
+            $keys[29] => $this->getFunctionPhaseId(),
+            $keys[30] => $this->getObjectId(),
+            $keys[31] => $this->getVersion(),
+            $keys[32] => $this->getVersionCreatedAt(),
+            $keys[33] => $this->getVersionComment(),
+            $keys[34] => $this->getVariationOfIdVersion(),
+            $keys[35] => $this->getMultipleOfIdVersion(),
+            $keys[36] => $this->getKkTrixionarySkillIds(),
+            $keys[37] => $this->getKkTrixionarySkillVersions(),
         );
 
         $utc = new \DateTimeZone('utc');
-        if ($result[$keys[30]] instanceof \DateTime) {
+        if ($result[$keys[32]] instanceof \DateTime) {
             // When changing timezone we don't want to change existing instances
-            $dateTime = clone $result[$keys[30]];
-            $result[$keys[30]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+            $dateTime = clone $result[$keys[32]];
+            $result[$keys[32]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -2861,37 +2959,43 @@ abstract class SkillVersion implements ActiveRecordInterface
                 $this->setPictureId($value);
                 break;
             case 26:
-                $this->setKstrukturId($value);
+                $this->setVideoId($value);
                 break;
             case 27:
-                $this->setFunctionPhaseId($value);
+                $this->setTutorialId($value);
                 break;
             case 28:
-                $this->setObjectId($value);
+                $this->setKstrukturId($value);
                 break;
             case 29:
-                $this->setVersion($value);
+                $this->setFunctionPhaseId($value);
                 break;
             case 30:
-                $this->setVersionCreatedAt($value);
+                $this->setObjectId($value);
                 break;
             case 31:
-                $this->setVersionComment($value);
+                $this->setVersion($value);
                 break;
             case 32:
-                $this->setVariationOfIdVersion($value);
+                $this->setVersionCreatedAt($value);
                 break;
             case 33:
-                $this->setMultipleOfIdVersion($value);
+                $this->setVersionComment($value);
                 break;
             case 34:
+                $this->setVariationOfIdVersion($value);
+                break;
+            case 35:
+                $this->setMultipleOfIdVersion($value);
+                break;
+            case 36:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
                 }
                 $this->setKkTrixionarySkillIds($value);
                 break;
-            case 35:
+            case 37:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
@@ -3003,34 +3107,40 @@ abstract class SkillVersion implements ActiveRecordInterface
             $this->setPictureId($arr[$keys[25]]);
         }
         if (array_key_exists($keys[26], $arr)) {
-            $this->setKstrukturId($arr[$keys[26]]);
+            $this->setVideoId($arr[$keys[26]]);
         }
         if (array_key_exists($keys[27], $arr)) {
-            $this->setFunctionPhaseId($arr[$keys[27]]);
+            $this->setTutorialId($arr[$keys[27]]);
         }
         if (array_key_exists($keys[28], $arr)) {
-            $this->setObjectId($arr[$keys[28]]);
+            $this->setKstrukturId($arr[$keys[28]]);
         }
         if (array_key_exists($keys[29], $arr)) {
-            $this->setVersion($arr[$keys[29]]);
+            $this->setFunctionPhaseId($arr[$keys[29]]);
         }
         if (array_key_exists($keys[30], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[30]]);
+            $this->setObjectId($arr[$keys[30]]);
         }
         if (array_key_exists($keys[31], $arr)) {
-            $this->setVersionComment($arr[$keys[31]]);
+            $this->setVersion($arr[$keys[31]]);
         }
         if (array_key_exists($keys[32], $arr)) {
-            $this->setVariationOfIdVersion($arr[$keys[32]]);
+            $this->setVersionCreatedAt($arr[$keys[32]]);
         }
         if (array_key_exists($keys[33], $arr)) {
-            $this->setMultipleOfIdVersion($arr[$keys[33]]);
+            $this->setVersionComment($arr[$keys[33]]);
         }
         if (array_key_exists($keys[34], $arr)) {
-            $this->setKkTrixionarySkillIds($arr[$keys[34]]);
+            $this->setVariationOfIdVersion($arr[$keys[34]]);
         }
         if (array_key_exists($keys[35], $arr)) {
-            $this->setKkTrixionarySkillVersions($arr[$keys[35]]);
+            $this->setMultipleOfIdVersion($arr[$keys[35]]);
+        }
+        if (array_key_exists($keys[36], $arr)) {
+            $this->setKkTrixionarySkillIds($arr[$keys[36]]);
+        }
+        if (array_key_exists($keys[37], $arr)) {
+            $this->setKkTrixionarySkillVersions($arr[$keys[37]]);
         }
     }
 
@@ -3150,6 +3260,12 @@ abstract class SkillVersion implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillVersionTableMap::COL_PICTURE_ID)) {
             $criteria->add(SkillVersionTableMap::COL_PICTURE_ID, $this->picture_id);
+        }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_VIDEO_ID)) {
+            $criteria->add(SkillVersionTableMap::COL_VIDEO_ID, $this->video_id);
+        }
+        if ($this->isColumnModified(SkillVersionTableMap::COL_TUTORIAL_ID)) {
+            $criteria->add(SkillVersionTableMap::COL_TUTORIAL_ID, $this->tutorial_id);
         }
         if ($this->isColumnModified(SkillVersionTableMap::COL_KSTRUKTUR_ID)) {
             $criteria->add(SkillVersionTableMap::COL_KSTRUKTUR_ID, $this->kstruktur_id);
@@ -3308,6 +3424,8 @@ abstract class SkillVersion implements ActiveRecordInterface
         $copyObj->setGeneration($this->getGeneration());
         $copyObj->setImportance($this->getImportance());
         $copyObj->setPictureId($this->getPictureId());
+        $copyObj->setVideoId($this->getVideoId());
+        $copyObj->setTutorialId($this->getTutorialId());
         $copyObj->setKstrukturId($this->getKstrukturId());
         $copyObj->setFunctionPhaseId($this->getFunctionPhaseId());
         $copyObj->setObjectId($this->getObjectId());
@@ -3432,6 +3550,8 @@ abstract class SkillVersion implements ActiveRecordInterface
         $this->generation = null;
         $this->importance = null;
         $this->picture_id = null;
+        $this->video_id = null;
+        $this->tutorial_id = null;
         $this->kstruktur_id = null;
         $this->function_phase_id = null;
         $this->object_id = null;

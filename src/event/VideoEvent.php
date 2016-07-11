@@ -18,6 +18,30 @@ class VideoEvent extends Event {
 
 	/**
 	 */
+	const POST_FEATURED_SKILLS_ADD = 'gossi.trixionary.video.post_featured_skills_add';
+
+	/**
+	 */
+	const POST_FEATURED_SKILLS_REMOVE = 'gossi.trixionary.video.post_featured_skills_add';
+
+	/**
+	 */
+	const POST_FEATURED_SKILLS_UPDATE = 'gossi.trixionary.video.post_featured_skills_update';
+
+	/**
+	 */
+	const POST_FEATURED_TUTORIAL_SKILLS_ADD = 'gossi.trixionary.video.post_featured_tutorial_skills_add';
+
+	/**
+	 */
+	const POST_FEATURED_TUTORIAL_SKILLS_REMOVE = 'gossi.trixionary.video.post_featured_tutorial_skills_add';
+
+	/**
+	 */
+	const POST_FEATURED_TUTORIAL_SKILLS_UPDATE = 'gossi.trixionary.video.post_featured_tutorial_skills_update';
+
+	/**
+	 */
 	const POST_REFERENCE_UPDATE = 'gossi.trixionary.video.post_reference_update';
 
 	/**
@@ -39,6 +63,30 @@ class VideoEvent extends Event {
 	/**
 	 */
 	const PRE_DELETE = 'gossi.trixionary.video.pre_delete';
+
+	/**
+	 */
+	const PRE_FEATURED_SKILLS_ADD = 'gossi.trixionary.video.pre_featured_skills_add';
+
+	/**
+	 */
+	const PRE_FEATURED_SKILLS_REMOVE = 'gossi.trixionary.video.pre_featured_skills_add';
+
+	/**
+	 */
+	const PRE_FEATURED_SKILLS_UPDATE = 'gossi.trixionary.video.pre_featured_skills_update';
+
+	/**
+	 */
+	const PRE_FEATURED_TUTORIAL_SKILLS_ADD = 'gossi.trixionary.video.pre_featured_tutorial_skills_add';
+
+	/**
+	 */
+	const PRE_FEATURED_TUTORIAL_SKILLS_REMOVE = 'gossi.trixionary.video.pre_featured_tutorial_skills_add';
+
+	/**
+	 */
+	const PRE_FEATURED_TUTORIAL_SKILLS_UPDATE = 'gossi.trixionary.video.pre_featured_tutorial_skills_update';
 
 	/**
 	 */

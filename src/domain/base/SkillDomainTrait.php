@@ -592,7 +592,11 @@ trait SkillDomainTrait {
 		}
 
 		// paginate
-		$model = $query->paginate($page, $size);
+		if ($size == -1) {
+			$model = $query->findAll();
+		} else {
+			$model = $query->paginate($page, $size);
+		}
 
 		// run response
 		return new Found(['model' => $model]);
@@ -1134,6 +1138,64 @@ trait SkillDomainTrait {
 			$this->dispatch(SkillEvent::PRE_SAVE, $model);
 			$model->save();
 			$this->dispatch(SkillEvent::POST_FEATURED_PICTURE_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
+
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
+	 * Sets the FeaturedTutorial id
+	 * 
+	 * @param mixed $id
+	 * @param mixed $relatedId
+	 * @return PayloadInterface
+	 */
+	public function setFeaturedTutorialId($id, $relatedId) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Skill not found.']);
+		}
+
+		// update
+		if ($this->doSetFeaturedTutorialId($model, $relatedId)) {
+			$this->dispatch(SkillEvent::PRE_FEATURED_TUTORIAL_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
+			$model->save();
+			$this->dispatch(SkillEvent::POST_FEATURED_TUTORIAL_UPDATE, $model);
+			$this->dispatch(SkillEvent::POST_SAVE, $model);
+
+			return Updated(['model' => $model]);
+		}
+
+		return NotUpdated(['model' => $model]);
+	}
+
+	/**
+	 * Sets the FeaturedVideo id
+	 * 
+	 * @param mixed $id
+	 * @param mixed $relatedId
+	 * @return PayloadInterface
+	 */
+	public function setFeaturedVideoId($id, $relatedId) {
+		// find
+		$model = $this->get($id);
+
+		if ($model === null) {
+			return new NotFound(['message' => 'Skill not found.']);
+		}
+
+		// update
+		if ($this->doSetFeaturedVideoId($model, $relatedId)) {
+			$this->dispatch(SkillEvent::PRE_FEATURED_VIDEO_UPDATE, $model);
+			$this->dispatch(SkillEvent::PRE_SAVE, $model);
+			$model->save();
+			$this->dispatch(SkillEvent::POST_FEATURED_VIDEO_UPDATE, $model);
 			$this->dispatch(SkillEvent::POST_SAVE, $model);
 
 			return Updated(['model' => $model]);
@@ -2510,6 +2572,38 @@ trait SkillDomainTrait {
 	protected function doSetFeaturedPictureId(Skill $model, $relatedId) {
 		if ($model->getPictureId() !== $relatedId) {
 			$model->setPictureId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal mechanism to set the FeaturedTutorial id
+	 * 
+	 * @param Skill $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetFeaturedTutorialId(Skill $model, $relatedId) {
+		if ($model->getTutorialId() !== $relatedId) {
+			$model->setTutorialId($relatedId);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Internal mechanism to set the FeaturedVideo id
+	 * 
+	 * @param Skill $model
+	 * @param mixed $relatedId
+	 */
+	protected function doSetFeaturedVideoId(Skill $model, $relatedId) {
+		if ($model->getVideoId() !== $relatedId) {
+			$model->setVideoId($relatedId);
 
 			return true;
 		}

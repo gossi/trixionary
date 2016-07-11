@@ -9,6 +9,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -19,6 +20,7 @@ use gossi\trixionary\model\Reference as ChildReference;
 use gossi\trixionary\model\ReferenceQuery as ChildReferenceQuery;
 use gossi\trixionary\model\Skill as ChildSkill;
 use gossi\trixionary\model\SkillQuery as ChildSkillQuery;
+use gossi\trixionary\model\Video as ChildVideo;
 use gossi\trixionary\model\VideoQuery as ChildVideoQuery;
 use gossi\trixionary\model\Map\VideoTableMap;
 
@@ -170,12 +172,36 @@ abstract class Video implements ActiveRecordInterface
     protected $aReference;
 
     /**
+     * @var        ObjectCollection|ChildSkill[] Collection to store aggregation of ChildSkill objects.
+     */
+    protected $collFeaturedSkills;
+    protected $collFeaturedSkillsPartial;
+
+    /**
+     * @var        ObjectCollection|ChildSkill[] Collection to store aggregation of ChildSkill objects.
+     */
+    protected $collFeaturedTutorialSkills;
+    protected $collFeaturedTutorialSkillsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSkill[]
+     */
+    protected $featuredSkillsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSkill[]
+     */
+    protected $featuredTutorialSkillsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of gossi\trixionary\model\Base\Video object.
@@ -1060,6 +1086,10 @@ abstract class Video implements ActiveRecordInterface
 
             $this->aSkill = null;
             $this->aReference = null;
+            $this->collFeaturedSkills = null;
+
+            $this->collFeaturedTutorialSkills = null;
+
         } // if (deep)
     }
 
@@ -1187,6 +1217,42 @@ abstract class Video implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->featuredSkillsScheduledForDeletion !== null) {
+                if (!$this->featuredSkillsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->featuredSkillsScheduledForDeletion as $featuredSkill) {
+                        // need to save related object because we set the relation to null
+                        $featuredSkill->save($con);
+                    }
+                    $this->featuredSkillsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collFeaturedSkills !== null) {
+                foreach ($this->collFeaturedSkills as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->featuredTutorialSkillsScheduledForDeletion !== null) {
+                if (!$this->featuredTutorialSkillsScheduledForDeletion->isEmpty()) {
+                    foreach ($this->featuredTutorialSkillsScheduledForDeletion as $featuredTutorialSkill) {
+                        // need to save related object because we set the relation to null
+                        $featuredTutorialSkill->save($con);
+                    }
+                    $this->featuredTutorialSkillsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collFeaturedTutorialSkills !== null) {
+                foreach ($this->collFeaturedTutorialSkills as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -1514,6 +1580,36 @@ abstract class Video implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aReference->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collFeaturedSkills) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'skills';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_skills';
+                        break;
+                    default:
+                        $key = 'Skills';
+                }
+
+                $result[$key] = $this->collFeaturedSkills->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collFeaturedTutorialSkills) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'skills';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_skills';
+                        break;
+                    default:
+                        $key = 'Skills';
+                }
+
+                $result[$key] = $this->collFeaturedTutorialSkills->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1861,6 +1957,26 @@ abstract class Video implements ActiveRecordInterface
         $copyObj->setPlayerUrl($this->getPlayerUrl());
         $copyObj->setWidth($this->getWidth());
         $copyObj->setHeight($this->getHeight());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getFeaturedSkills() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFeaturedSkill($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getFeaturedTutorialSkills() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFeaturedTutorialSkill($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1991,6 +2107,911 @@ abstract class Video implements ActiveRecordInterface
         return $this->aReference;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('FeaturedSkill' == $relationName) {
+            return $this->initFeaturedSkills();
+        }
+        if ('FeaturedTutorialSkill' == $relationName) {
+            return $this->initFeaturedTutorialSkills();
+        }
+    }
+
+    /**
+     * Clears out the collFeaturedSkills collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFeaturedSkills()
+     */
+    public function clearFeaturedSkills()
+    {
+        $this->collFeaturedSkills = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFeaturedSkills collection loaded partially.
+     */
+    public function resetPartialFeaturedSkills($v = true)
+    {
+        $this->collFeaturedSkillsPartial = $v;
+    }
+
+    /**
+     * Initializes the collFeaturedSkills collection.
+     *
+     * By default this just sets the collFeaturedSkills collection to an empty array (like clearcollFeaturedSkills());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFeaturedSkills($overrideExisting = true)
+    {
+        if (null !== $this->collFeaturedSkills && !$overrideExisting) {
+            return;
+        }
+        $this->collFeaturedSkills = new ObjectCollection();
+        $this->collFeaturedSkills->setModel('\gossi\trixionary\model\Skill');
+    }
+
+    /**
+     * Gets an array of ChildSkill objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildVideo is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     * @throws PropelException
+     */
+    public function getFeaturedSkills(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFeaturedSkillsPartial && !$this->isNew();
+        if (null === $this->collFeaturedSkills || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFeaturedSkills) {
+                // return empty collection
+                $this->initFeaturedSkills();
+            } else {
+                $collFeaturedSkills = ChildSkillQuery::create(null, $criteria)
+                    ->filterByFeaturedVideo($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFeaturedSkillsPartial && count($collFeaturedSkills)) {
+                        $this->initFeaturedSkills(false);
+
+                        foreach ($collFeaturedSkills as $obj) {
+                            if (false == $this->collFeaturedSkills->contains($obj)) {
+                                $this->collFeaturedSkills->append($obj);
+                            }
+                        }
+
+                        $this->collFeaturedSkillsPartial = true;
+                    }
+
+                    return $collFeaturedSkills;
+                }
+
+                if ($partial && $this->collFeaturedSkills) {
+                    foreach ($this->collFeaturedSkills as $obj) {
+                        if ($obj->isNew()) {
+                            $collFeaturedSkills[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFeaturedSkills = $collFeaturedSkills;
+                $this->collFeaturedSkillsPartial = false;
+            }
+        }
+
+        return $this->collFeaturedSkills;
+    }
+
+    /**
+     * Sets a collection of ChildSkill objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $featuredSkills A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildVideo The current object (for fluent API support)
+     */
+    public function setFeaturedSkills(Collection $featuredSkills, ConnectionInterface $con = null)
+    {
+        /** @var ChildSkill[] $featuredSkillsToDelete */
+        $featuredSkillsToDelete = $this->getFeaturedSkills(new Criteria(), $con)->diff($featuredSkills);
+
+
+        $this->featuredSkillsScheduledForDeletion = $featuredSkillsToDelete;
+
+        foreach ($featuredSkillsToDelete as $featuredSkillRemoved) {
+            $featuredSkillRemoved->setFeaturedVideo(null);
+        }
+
+        $this->collFeaturedSkills = null;
+        foreach ($featuredSkills as $featuredSkill) {
+            $this->addFeaturedSkill($featuredSkill);
+        }
+
+        $this->collFeaturedSkills = $featuredSkills;
+        $this->collFeaturedSkillsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Skill objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Skill objects.
+     * @throws PropelException
+     */
+    public function countFeaturedSkills(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFeaturedSkillsPartial && !$this->isNew();
+        if (null === $this->collFeaturedSkills || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFeaturedSkills) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFeaturedSkills());
+            }
+
+            $query = ChildSkillQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFeaturedVideo($this)
+                ->count($con);
+        }
+
+        return count($this->collFeaturedSkills);
+    }
+
+    /**
+     * Method called to associate a ChildSkill object to this object
+     * through the ChildSkill foreign key attribute.
+     *
+     * @param  ChildSkill $l ChildSkill
+     * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
+     */
+    public function addFeaturedSkill(ChildSkill $l)
+    {
+        if ($this->collFeaturedSkills === null) {
+            $this->initFeaturedSkills();
+            $this->collFeaturedSkillsPartial = true;
+        }
+
+        if (!$this->collFeaturedSkills->contains($l)) {
+            $this->doAddFeaturedSkill($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildSkill $featuredSkill The ChildSkill object to add.
+     */
+    protected function doAddFeaturedSkill(ChildSkill $featuredSkill)
+    {
+        $this->collFeaturedSkills[]= $featuredSkill;
+        $featuredSkill->setFeaturedVideo($this);
+    }
+
+    /**
+     * @param  ChildSkill $featuredSkill The ChildSkill object to remove.
+     * @return $this|ChildVideo The current object (for fluent API support)
+     */
+    public function removeFeaturedSkill(ChildSkill $featuredSkill)
+    {
+        if ($this->getFeaturedSkills()->contains($featuredSkill)) {
+            $pos = $this->collFeaturedSkills->search($featuredSkill);
+            $this->collFeaturedSkills->remove($pos);
+            if (null === $this->featuredSkillsScheduledForDeletion) {
+                $this->featuredSkillsScheduledForDeletion = clone $this->collFeaturedSkills;
+                $this->featuredSkillsScheduledForDeletion->clear();
+            }
+            $this->featuredSkillsScheduledForDeletion[]= $featuredSkill;
+            $featuredSkill->setFeaturedVideo(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinSport(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Sport', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinVariationOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('VariationOf', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinMultipleOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('MultipleOf', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinStartPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('StartPosition', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinEndPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('EndPosition', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinFeaturedPicture(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedPicture', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinKstrukturRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('KstrukturRoot', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedSkillsJoinFunctionPhaseRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FunctionPhaseRoot', $joinBehavior);
+
+        return $this->getFeaturedSkills($query, $con);
+    }
+
+    /**
+     * Clears out the collFeaturedTutorialSkills collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFeaturedTutorialSkills()
+     */
+    public function clearFeaturedTutorialSkills()
+    {
+        $this->collFeaturedTutorialSkills = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFeaturedTutorialSkills collection loaded partially.
+     */
+    public function resetPartialFeaturedTutorialSkills($v = true)
+    {
+        $this->collFeaturedTutorialSkillsPartial = $v;
+    }
+
+    /**
+     * Initializes the collFeaturedTutorialSkills collection.
+     *
+     * By default this just sets the collFeaturedTutorialSkills collection to an empty array (like clearcollFeaturedTutorialSkills());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFeaturedTutorialSkills($overrideExisting = true)
+    {
+        if (null !== $this->collFeaturedTutorialSkills && !$overrideExisting) {
+            return;
+        }
+        $this->collFeaturedTutorialSkills = new ObjectCollection();
+        $this->collFeaturedTutorialSkills->setModel('\gossi\trixionary\model\Skill');
+    }
+
+    /**
+     * Gets an array of ChildSkill objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildVideo is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     * @throws PropelException
+     */
+    public function getFeaturedTutorialSkills(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFeaturedTutorialSkillsPartial && !$this->isNew();
+        if (null === $this->collFeaturedTutorialSkills || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFeaturedTutorialSkills) {
+                // return empty collection
+                $this->initFeaturedTutorialSkills();
+            } else {
+                $collFeaturedTutorialSkills = ChildSkillQuery::create(null, $criteria)
+                    ->filterByFeaturedTutorial($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFeaturedTutorialSkillsPartial && count($collFeaturedTutorialSkills)) {
+                        $this->initFeaturedTutorialSkills(false);
+
+                        foreach ($collFeaturedTutorialSkills as $obj) {
+                            if (false == $this->collFeaturedTutorialSkills->contains($obj)) {
+                                $this->collFeaturedTutorialSkills->append($obj);
+                            }
+                        }
+
+                        $this->collFeaturedTutorialSkillsPartial = true;
+                    }
+
+                    return $collFeaturedTutorialSkills;
+                }
+
+                if ($partial && $this->collFeaturedTutorialSkills) {
+                    foreach ($this->collFeaturedTutorialSkills as $obj) {
+                        if ($obj->isNew()) {
+                            $collFeaturedTutorialSkills[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFeaturedTutorialSkills = $collFeaturedTutorialSkills;
+                $this->collFeaturedTutorialSkillsPartial = false;
+            }
+        }
+
+        return $this->collFeaturedTutorialSkills;
+    }
+
+    /**
+     * Sets a collection of ChildSkill objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $featuredTutorialSkills A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildVideo The current object (for fluent API support)
+     */
+    public function setFeaturedTutorialSkills(Collection $featuredTutorialSkills, ConnectionInterface $con = null)
+    {
+        /** @var ChildSkill[] $featuredTutorialSkillsToDelete */
+        $featuredTutorialSkillsToDelete = $this->getFeaturedTutorialSkills(new Criteria(), $con)->diff($featuredTutorialSkills);
+
+
+        $this->featuredTutorialSkillsScheduledForDeletion = $featuredTutorialSkillsToDelete;
+
+        foreach ($featuredTutorialSkillsToDelete as $featuredTutorialSkillRemoved) {
+            $featuredTutorialSkillRemoved->setFeaturedTutorial(null);
+        }
+
+        $this->collFeaturedTutorialSkills = null;
+        foreach ($featuredTutorialSkills as $featuredTutorialSkill) {
+            $this->addFeaturedTutorialSkill($featuredTutorialSkill);
+        }
+
+        $this->collFeaturedTutorialSkills = $featuredTutorialSkills;
+        $this->collFeaturedTutorialSkillsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Skill objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Skill objects.
+     * @throws PropelException
+     */
+    public function countFeaturedTutorialSkills(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFeaturedTutorialSkillsPartial && !$this->isNew();
+        if (null === $this->collFeaturedTutorialSkills || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFeaturedTutorialSkills) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFeaturedTutorialSkills());
+            }
+
+            $query = ChildSkillQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFeaturedTutorial($this)
+                ->count($con);
+        }
+
+        return count($this->collFeaturedTutorialSkills);
+    }
+
+    /**
+     * Method called to associate a ChildSkill object to this object
+     * through the ChildSkill foreign key attribute.
+     *
+     * @param  ChildSkill $l ChildSkill
+     * @return $this|\gossi\trixionary\model\Video The current object (for fluent API support)
+     */
+    public function addFeaturedTutorialSkill(ChildSkill $l)
+    {
+        if ($this->collFeaturedTutorialSkills === null) {
+            $this->initFeaturedTutorialSkills();
+            $this->collFeaturedTutorialSkillsPartial = true;
+        }
+
+        if (!$this->collFeaturedTutorialSkills->contains($l)) {
+            $this->doAddFeaturedTutorialSkill($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildSkill $featuredTutorialSkill The ChildSkill object to add.
+     */
+    protected function doAddFeaturedTutorialSkill(ChildSkill $featuredTutorialSkill)
+    {
+        $this->collFeaturedTutorialSkills[]= $featuredTutorialSkill;
+        $featuredTutorialSkill->setFeaturedTutorial($this);
+    }
+
+    /**
+     * @param  ChildSkill $featuredTutorialSkill The ChildSkill object to remove.
+     * @return $this|ChildVideo The current object (for fluent API support)
+     */
+    public function removeFeaturedTutorialSkill(ChildSkill $featuredTutorialSkill)
+    {
+        if ($this->getFeaturedTutorialSkills()->contains($featuredTutorialSkill)) {
+            $pos = $this->collFeaturedTutorialSkills->search($featuredTutorialSkill);
+            $this->collFeaturedTutorialSkills->remove($pos);
+            if (null === $this->featuredTutorialSkillsScheduledForDeletion) {
+                $this->featuredTutorialSkillsScheduledForDeletion = clone $this->collFeaturedTutorialSkills;
+                $this->featuredTutorialSkillsScheduledForDeletion->clear();
+            }
+            $this->featuredTutorialSkillsScheduledForDeletion[]= $featuredTutorialSkill;
+            $featuredTutorialSkill->setFeaturedTutorial(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinSport(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Sport', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinVariationOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('VariationOf', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinMultipleOf(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('MultipleOf', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinObject(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('Object', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinStartPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('StartPosition', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinEndPosition(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('EndPosition', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinFeaturedPicture(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedPicture', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinKstrukturRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('KstrukturRoot', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Video is new, it will return
+     * an empty collection; or if this Video has previously
+     * been saved, it will retrieve related FeaturedTutorialSkills from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Video.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getFeaturedTutorialSkillsJoinFunctionPhaseRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FunctionPhaseRoot', $joinBehavior);
+
+        return $this->getFeaturedTutorialSkills($query, $con);
+    }
+
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -2038,8 +3059,20 @@ abstract class Video implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collFeaturedSkills) {
+                foreach ($this->collFeaturedSkills as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collFeaturedTutorialSkills) {
+                foreach ($this->collFeaturedTutorialSkills as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collFeaturedSkills = null;
+        $this->collFeaturedTutorialSkills = null;
         $this->aSkill = null;
         $this->aReference = null;
     }

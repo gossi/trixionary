@@ -260,6 +260,18 @@ abstract class Skill implements ActiveRecordInterface
     protected $picture_id;
 
     /**
+     * The value for the video_id field.
+     * @var        int
+     */
+    protected $video_id;
+
+    /**
+     * The value for the tutorial_id field.
+     * @var        int
+     */
+    protected $tutorial_id;
+
+    /**
      * The value for the kstruktur_id field.
      * @var        int
      */
@@ -330,6 +342,16 @@ abstract class Skill implements ActiveRecordInterface
      * @var        ChildPicture
      */
     protected $aFeaturedPicture;
+
+    /**
+     * @var        ChildVideo
+     */
+    protected $aFeaturedVideo;
+
+    /**
+     * @var        ChildVideo
+     */
+    protected $aFeaturedTutorial;
 
     /**
      * @var        ChildKstruktur
@@ -1209,6 +1231,26 @@ abstract class Skill implements ActiveRecordInterface
     }
 
     /**
+     * Get the [video_id] column value.
+     *
+     * @return int
+     */
+    public function getVideoId()
+    {
+        return $this->video_id;
+    }
+
+    /**
+     * Get the [tutorial_id] column value.
+     *
+     * @return int
+     */
+    public function getTutorialId()
+    {
+        return $this->tutorial_id;
+    }
+
+    /**
      * Get the [kstruktur_id] column value.
      *
      * @return int
@@ -1871,6 +1913,54 @@ abstract class Skill implements ActiveRecordInterface
     } // setPictureId()
 
     /**
+     * Set the value of [video_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setVideoId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->video_id !== $v) {
+            $this->video_id = $v;
+            $this->modifiedColumns[SkillTableMap::COL_VIDEO_ID] = true;
+        }
+
+        if ($this->aFeaturedVideo !== null && $this->aFeaturedVideo->getId() !== $v) {
+            $this->aFeaturedVideo = null;
+        }
+
+        return $this;
+    } // setVideoId()
+
+    /**
+     * Set the value of [tutorial_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     */
+    public function setTutorialId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->tutorial_id !== $v) {
+            $this->tutorial_id = $v;
+            $this->modifiedColumns[SkillTableMap::COL_TUTORIAL_ID] = true;
+        }
+
+        if ($this->aFeaturedTutorial !== null && $this->aFeaturedTutorial->getId() !== $v) {
+            $this->aFeaturedTutorial = null;
+        }
+
+        return $this;
+    } // setTutorialId()
+
+    /**
      * Set the value of [kstruktur_id] column.
      *
      * @param int $v new value
@@ -2148,25 +2238,31 @@ abstract class Skill implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : SkillTableMap::translateFieldName('PictureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->picture_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : SkillTableMap::translateFieldName('VideoId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->video_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('TutorialId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->tutorial_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('KstrukturId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->kstruktur_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 27 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('FunctionPhaseId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->function_phase_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 28 + $startcol : SkillTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillTableMap::translateFieldName('ObjectId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->object_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 29 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 30 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 32 + $startcol : SkillTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 31 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 33 + $startcol : SkillTableMap::translateFieldName('VersionComment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -2176,7 +2272,7 @@ abstract class Skill implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 32; // 32 = SkillTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 34; // 34 = SkillTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\gossi\\trixionary\\model\\Skill'), 0, $e);
@@ -2215,6 +2311,12 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->aFeaturedPicture !== null && $this->picture_id !== $this->aFeaturedPicture->getId()) {
             $this->aFeaturedPicture = null;
+        }
+        if ($this->aFeaturedVideo !== null && $this->video_id !== $this->aFeaturedVideo->getId()) {
+            $this->aFeaturedVideo = null;
+        }
+        if ($this->aFeaturedTutorial !== null && $this->tutorial_id !== $this->aFeaturedTutorial->getId()) {
+            $this->aFeaturedTutorial = null;
         }
         if ($this->aKstrukturRoot !== null && $this->kstruktur_id !== $this->aKstrukturRoot->getId()) {
             $this->aKstrukturRoot = null;
@@ -2271,6 +2373,8 @@ abstract class Skill implements ActiveRecordInterface
             $this->aStartPosition = null;
             $this->aEndPosition = null;
             $this->aFeaturedPicture = null;
+            $this->aFeaturedVideo = null;
+            $this->aFeaturedTutorial = null;
             $this->aKstrukturRoot = null;
             $this->aFunctionPhaseRoot = null;
             $this->collVariations = null;
@@ -2476,6 +2580,20 @@ abstract class Skill implements ActiveRecordInterface
                     $affectedRows += $this->aFeaturedPicture->save($con);
                 }
                 $this->setFeaturedPicture($this->aFeaturedPicture);
+            }
+
+            if ($this->aFeaturedVideo !== null) {
+                if ($this->aFeaturedVideo->isModified() || $this->aFeaturedVideo->isNew()) {
+                    $affectedRows += $this->aFeaturedVideo->save($con);
+                }
+                $this->setFeaturedVideo($this->aFeaturedVideo);
+            }
+
+            if ($this->aFeaturedTutorial !== null) {
+                if ($this->aFeaturedTutorial->isModified() || $this->aFeaturedTutorial->isNew()) {
+                    $affectedRows += $this->aFeaturedTutorial->save($con);
+                }
+                $this->setFeaturedTutorial($this->aFeaturedTutorial);
             }
 
             if ($this->aKstrukturRoot !== null) {
@@ -3055,6 +3173,12 @@ abstract class Skill implements ActiveRecordInterface
         if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`picture_id`';
         }
+        if ($this->isColumnModified(SkillTableMap::COL_VIDEO_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`video_id`';
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_TUTORIAL_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`tutorial_id`';
+        }
         if ($this->isColumnModified(SkillTableMap::COL_KSTRUKTUR_ID)) {
             $modifiedColumns[':p' . $index++]  = '`kstruktur_id`';
         }
@@ -3161,6 +3285,12 @@ abstract class Skill implements ActiveRecordInterface
                         break;
                     case '`picture_id`':
                         $stmt->bindValue($identifier, $this->picture_id, PDO::PARAM_INT);
+                        break;
+                    case '`video_id`':
+                        $stmt->bindValue($identifier, $this->video_id, PDO::PARAM_INT);
+                        break;
+                    case '`tutorial_id`':
+                        $stmt->bindValue($identifier, $this->tutorial_id, PDO::PARAM_INT);
                         break;
                     case '`kstruktur_id`':
                         $stmt->bindValue($identifier, $this->kstruktur_id, PDO::PARAM_INT);
@@ -3321,21 +3451,27 @@ abstract class Skill implements ActiveRecordInterface
                 return $this->getPictureId();
                 break;
             case 26:
-                return $this->getKstrukturId();
+                return $this->getVideoId();
                 break;
             case 27:
-                return $this->getFunctionPhaseId();
+                return $this->getTutorialId();
                 break;
             case 28:
-                return $this->getObjectId();
+                return $this->getKstrukturId();
                 break;
             case 29:
-                return $this->getVersion();
+                return $this->getFunctionPhaseId();
                 break;
             case 30:
-                return $this->getVersionCreatedAt();
+                return $this->getObjectId();
                 break;
             case 31:
+                return $this->getVersion();
+                break;
+            case 32:
+                return $this->getVersionCreatedAt();
+                break;
+            case 33:
                 return $this->getVersionComment();
                 break;
             default:
@@ -3394,19 +3530,21 @@ abstract class Skill implements ActiveRecordInterface
             $keys[23] => $this->getGeneration(),
             $keys[24] => $this->getImportance(),
             $keys[25] => $this->getPictureId(),
-            $keys[26] => $this->getKstrukturId(),
-            $keys[27] => $this->getFunctionPhaseId(),
-            $keys[28] => $this->getObjectId(),
-            $keys[29] => $this->getVersion(),
-            $keys[30] => $this->getVersionCreatedAt(),
-            $keys[31] => $this->getVersionComment(),
+            $keys[26] => $this->getVideoId(),
+            $keys[27] => $this->getTutorialId(),
+            $keys[28] => $this->getKstrukturId(),
+            $keys[29] => $this->getFunctionPhaseId(),
+            $keys[30] => $this->getObjectId(),
+            $keys[31] => $this->getVersion(),
+            $keys[32] => $this->getVersionCreatedAt(),
+            $keys[33] => $this->getVersionComment(),
         );
 
         $utc = new \DateTimeZone('utc');
-        if ($result[$keys[30]] instanceof \DateTime) {
+        if ($result[$keys[32]] instanceof \DateTime) {
             // When changing timezone we don't want to change existing instances
-            $dateTime = clone $result[$keys[30]];
-            $result[$keys[30]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
+            $dateTime = clone $result[$keys[32]];
+            $result[$keys[32]] = $dateTime->setTimezone($utc)->format('Y-m-d\TH:i:s\Z');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -3519,6 +3657,36 @@ abstract class Skill implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aFeaturedPicture->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aFeaturedVideo) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'video';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_video';
+                        break;
+                    default:
+                        $key = 'Video';
+                }
+
+                $result[$key] = $this->aFeaturedVideo->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aFeaturedTutorial) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'video';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'kk_trixionary_video';
+                        break;
+                    default:
+                        $key = 'Video';
+                }
+
+                $result[$key] = $this->aFeaturedTutorial->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aKstrukturRoot) {
 
@@ -3903,21 +4071,27 @@ abstract class Skill implements ActiveRecordInterface
                 $this->setPictureId($value);
                 break;
             case 26:
-                $this->setKstrukturId($value);
+                $this->setVideoId($value);
                 break;
             case 27:
-                $this->setFunctionPhaseId($value);
+                $this->setTutorialId($value);
                 break;
             case 28:
-                $this->setObjectId($value);
+                $this->setKstrukturId($value);
                 break;
             case 29:
-                $this->setVersion($value);
+                $this->setFunctionPhaseId($value);
                 break;
             case 30:
-                $this->setVersionCreatedAt($value);
+                $this->setObjectId($value);
                 break;
             case 31:
+                $this->setVersion($value);
+                break;
+            case 32:
+                $this->setVersionCreatedAt($value);
+                break;
+            case 33:
                 $this->setVersionComment($value);
                 break;
         } // switch()
@@ -4025,22 +4199,28 @@ abstract class Skill implements ActiveRecordInterface
             $this->setPictureId($arr[$keys[25]]);
         }
         if (array_key_exists($keys[26], $arr)) {
-            $this->setKstrukturId($arr[$keys[26]]);
+            $this->setVideoId($arr[$keys[26]]);
         }
         if (array_key_exists($keys[27], $arr)) {
-            $this->setFunctionPhaseId($arr[$keys[27]]);
+            $this->setTutorialId($arr[$keys[27]]);
         }
         if (array_key_exists($keys[28], $arr)) {
-            $this->setObjectId($arr[$keys[28]]);
+            $this->setKstrukturId($arr[$keys[28]]);
         }
         if (array_key_exists($keys[29], $arr)) {
-            $this->setVersion($arr[$keys[29]]);
+            $this->setFunctionPhaseId($arr[$keys[29]]);
         }
         if (array_key_exists($keys[30], $arr)) {
-            $this->setVersionCreatedAt($arr[$keys[30]]);
+            $this->setObjectId($arr[$keys[30]]);
         }
         if (array_key_exists($keys[31], $arr)) {
-            $this->setVersionComment($arr[$keys[31]]);
+            $this->setVersion($arr[$keys[31]]);
+        }
+        if (array_key_exists($keys[32], $arr)) {
+            $this->setVersionCreatedAt($arr[$keys[32]]);
+        }
+        if (array_key_exists($keys[33], $arr)) {
+            $this->setVersionComment($arr[$keys[33]]);
         }
     }
 
@@ -4160,6 +4340,12 @@ abstract class Skill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(SkillTableMap::COL_PICTURE_ID)) {
             $criteria->add(SkillTableMap::COL_PICTURE_ID, $this->picture_id);
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_VIDEO_ID)) {
+            $criteria->add(SkillTableMap::COL_VIDEO_ID, $this->video_id);
+        }
+        if ($this->isColumnModified(SkillTableMap::COL_TUTORIAL_ID)) {
+            $criteria->add(SkillTableMap::COL_TUTORIAL_ID, $this->tutorial_id);
         }
         if ($this->isColumnModified(SkillTableMap::COL_KSTRUKTUR_ID)) {
             $criteria->add(SkillTableMap::COL_KSTRUKTUR_ID, $this->kstruktur_id);
@@ -4290,6 +4476,8 @@ abstract class Skill implements ActiveRecordInterface
         $copyObj->setGeneration($this->getGeneration());
         $copyObj->setImportance($this->getImportance());
         $copyObj->setPictureId($this->getPictureId());
+        $copyObj->setVideoId($this->getVideoId());
+        $copyObj->setTutorialId($this->getTutorialId());
         $copyObj->setKstrukturId($this->getKstrukturId());
         $copyObj->setFunctionPhaseId($this->getFunctionPhaseId());
         $copyObj->setObjectId($this->getObjectId());
@@ -4787,6 +4975,108 @@ abstract class Skill implements ActiveRecordInterface
         }
 
         return $this->aFeaturedPicture;
+    }
+
+    /**
+     * Declares an association between this object and a ChildVideo object.
+     *
+     * @param  ChildVideo $v
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setFeaturedVideo(ChildVideo $v = null)
+    {
+        if ($v === null) {
+            $this->setVideoId(NULL);
+        } else {
+            $this->setVideoId($v->getId());
+        }
+
+        $this->aFeaturedVideo = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildVideo object, it will not be re-added.
+        if ($v !== null) {
+            $v->addFeaturedSkill($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildVideo object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildVideo The associated ChildVideo object.
+     * @throws PropelException
+     */
+    public function getFeaturedVideo(ConnectionInterface $con = null)
+    {
+        if ($this->aFeaturedVideo === null && ($this->video_id !== null)) {
+            $this->aFeaturedVideo = ChildVideoQuery::create()->findPk($this->video_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aFeaturedVideo->addFeaturedSkills($this);
+             */
+        }
+
+        return $this->aFeaturedVideo;
+    }
+
+    /**
+     * Declares an association between this object and a ChildVideo object.
+     *
+     * @param  ChildVideo $v
+     * @return $this|\gossi\trixionary\model\Skill The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setFeaturedTutorial(ChildVideo $v = null)
+    {
+        if ($v === null) {
+            $this->setTutorialId(NULL);
+        } else {
+            $this->setTutorialId($v->getId());
+        }
+
+        $this->aFeaturedTutorial = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildVideo object, it will not be re-added.
+        if ($v !== null) {
+            $v->addFeaturedTutorialSkill($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildVideo object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildVideo The associated ChildVideo object.
+     * @throws PropelException
+     */
+    public function getFeaturedTutorial(ConnectionInterface $con = null)
+    {
+        if ($this->aFeaturedTutorial === null && ($this->tutorial_id !== null)) {
+            $this->aFeaturedTutorial = ChildVideoQuery::create()->findPk($this->tutorial_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aFeaturedTutorial->addFeaturedTutorialSkills($this);
+             */
+        }
+
+        return $this->aFeaturedTutorial;
     }
 
     /**
@@ -5312,6 +5602,56 @@ abstract class Skill implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
      */
+    public function getVariationsJoinFeaturedVideo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedVideo', $joinBehavior);
+
+        return $this->getVariations($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Variations from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getVariationsJoinFeaturedTutorial(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedTutorial', $joinBehavior);
+
+        return $this->getVariations($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Variations from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
     public function getVariationsJoinKstrukturRoot(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildSkillQuery::create(null, $criteria);
@@ -5684,6 +6024,56 @@ abstract class Skill implements ActiveRecordInterface
     {
         $query = ChildSkillQuery::create(null, $criteria);
         $query->joinWith('FeaturedPicture', $joinBehavior);
+
+        return $this->getMultiples($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Multiples from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getMultiplesJoinFeaturedVideo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedVideo', $joinBehavior);
+
+        return $this->getMultiples($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Skill is new, it will return
+     * an empty collection; or if this Skill has previously
+     * been saved, it will retrieve related Multiples from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Skill.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSkill[] List of ChildSkill objects
+     */
+    public function getMultiplesJoinFeaturedTutorial(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSkillQuery::create(null, $criteria);
+        $query->joinWith('FeaturedTutorial', $joinBehavior);
 
         return $this->getMultiples($query, $con);
     }
@@ -10416,6 +10806,12 @@ abstract class Skill implements ActiveRecordInterface
         if (null !== $this->aFeaturedPicture) {
             $this->aFeaturedPicture->removeFeaturedSkill($this);
         }
+        if (null !== $this->aFeaturedVideo) {
+            $this->aFeaturedVideo->removeFeaturedSkill($this);
+        }
+        if (null !== $this->aFeaturedTutorial) {
+            $this->aFeaturedTutorial->removeFeaturedTutorialSkill($this);
+        }
         if (null !== $this->aKstrukturRoot) {
             $this->aKstrukturRoot->removeRootSkill($this);
         }
@@ -10448,6 +10844,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->generation = null;
         $this->importance = null;
         $this->picture_id = null;
+        $this->video_id = null;
+        $this->tutorial_id = null;
         $this->kstruktur_id = null;
         $this->function_phase_id = null;
         $this->object_id = null;
@@ -10614,6 +11012,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->aStartPosition = null;
         $this->aEndPosition = null;
         $this->aFeaturedPicture = null;
+        $this->aFeaturedVideo = null;
+        $this->aFeaturedTutorial = null;
         $this->aKstrukturRoot = null;
         $this->aFunctionPhaseRoot = null;
     }
@@ -10732,6 +11132,8 @@ abstract class Skill implements ActiveRecordInterface
         $version->setGeneration($this->getGeneration());
         $version->setImportance($this->getImportance());
         $version->setPictureId($this->getPictureId());
+        $version->setVideoId($this->getVideoId());
+        $version->setTutorialId($this->getTutorialId());
         $version->setKstrukturId($this->getKstrukturId());
         $version->setFunctionPhaseId($this->getFunctionPhaseId());
         $version->setObjectId($this->getObjectId());
@@ -10815,6 +11217,8 @@ abstract class Skill implements ActiveRecordInterface
         $this->setGeneration($version->getGeneration());
         $this->setImportance($version->getImportance());
         $this->setPictureId($version->getPictureId());
+        $this->setVideoId($version->getVideoId());
+        $this->setTutorialId($version->getTutorialId());
         $this->setKstrukturId($version->getKstrukturId());
         $this->setFunctionPhaseId($version->getFunctionPhaseId());
         $this->setObjectId($version->getObjectId());
