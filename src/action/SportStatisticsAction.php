@@ -18,7 +18,7 @@ use gossi\trixionary\model\ReferenceQuery;
  *
  * @author Thomas Gossmann
  */
-class StatisticsAction extends AbstractAction {
+class SportStatisticsAction extends AbstractAction {
 
 	/**
 	 * @param OptionsResolver $resolver

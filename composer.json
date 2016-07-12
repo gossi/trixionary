@@ -1998,14 +1998,14 @@
 							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
 						}
 					},
-					"statistics": {
-						"title": "Statistics",
-						"class": "gossi\\trixionary\\action\\StatisticsAction",
+					"sport-statistics": {
+						"title": "Statistics for a Sport",
+						"class": "gossi\\trixionary\\action\\SportStatisticsAction",
 						"acl": [
 							"guest"
 						],
 						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\StatisticsJsonResponder"
+							"json": "gossi\\trixionary\\responder\\json\\SportStatisticsJsonResponder"
 						}
 					}
 				}

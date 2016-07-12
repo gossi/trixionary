@@ -88,10 +88,10 @@
 					}
 				}
 			},
-			"/statistics/{id}": {
+			"/sports/{id}/statistics": {
 			    "get": {
 			    	"description": "Statistics for a sport",
-			    	"operationId": "statistics",
+			    	"operationId": "sport-statistics",
 			    	"parameters": [
 			    	    {
 			    	        "name": "id",

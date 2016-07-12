@@ -2,8 +2,8 @@
 namespace gossi\trixionary\domain\base;
 
 use gossi\trixionary\event\PictureEvent;
-use gossi\trixionary\model\PictureQuery;
 use gossi\trixionary\model\Picture;
+use gossi\trixionary\model\PictureQuery;
 use keeko\framework\domain\payload\Created;
 use keeko\framework\domain\payload\Deleted;
 use keeko\framework\domain\payload\Found;
@@ -17,6 +17,7 @@ use keeko\framework\service\ServiceContainer;
 use keeko\framework\utils\NameUtils;
 use keeko\framework\utils\Parameters;
 use phootwork\collection\Map;
+use phootwork\lang\Text;
 
 /**
  */
@@ -250,23 +251,41 @@ trait PictureDomainTrait {
 	 * @return void
 	 */
 	protected function applyFilter($query, $filter) {
-		foreach ($filter as $column => $value) {
-			$pos = strpos($column, '.');
-			if ($pos !== false) {
-				$rel = NameUtils::toStudlyCase(substr($column, 0, $pos));
-				$col = substr($column, $pos + 1);
-				$method = 'use' . $rel . 'Query';
-				if (method_exists($query, $method)) {
-					$sub = $query->$method();
-					$this->applyFilter($sub, [$col => $value]);
-					$sub->endUse();
-				}
-			} else {
-				$method = 'filterBy' . NameUtils::toStudlyCase($column);
-				if (method_exists($query, $method)) {
-					$query->$method($value);
-				}
-			}
+		if (is_array($filter)) {
+
+			// filter by fields
+			if (isset($filter['fields'])) {
+		    	foreach ($filter['fields'] as $column => $value) {
+		        	$pos = strpos($column, '.');
+		        	if ($pos !== false) {
+		        		$rel = NameUtils::toStudlyCase(substr($column, 0, $pos));
+		        		$col = substr($column, $pos + 1);
+		        		$method = 'use' . $rel . 'Query';
+		        		if (method_exists($query, $method)) {
+		        			$sub = $query->$method();
+		        			$this->applyFilter($sub, ['fields' => [$col => $value]]);
+		        			$sub->endUse();
+		        		}
+		        	} else {
+		        		$method = 'filterBy' . NameUtils::toStudlyCase($column);
+		        		if (method_exists($query, $method)) {
+		        			$query->$method($value);
+		        		}
+		        	}
+		        }
+		    }
+		    
+		    // filter by features
+		    if (isset($filter['features'])) {
+		    	$features = new Text($filter['features']);
+		    	if ($features->contains('random')) {
+		    		$query->addAscendingOrderByColumn('RAND()');
+		    	}
+		    }
+		}
+
+		if (method_exists($this, 'filter')) {
+			$this->filter($query, $filter);
 		}
 	}
 

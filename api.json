@@ -9502,10 +9502,10 @@
 				}
 			}
 		},
-		"/statistics/{id}": {
+		"/sports/{id}/statistics": {
 			"get": {
 				"description": "Statistics for a sport",
-				"operationId": "statistics",
+				"operationId": "sport-statistics",
 				"parameters": [
 					{
 						"name": "id",
@@ -9524,6 +9524,15 @@
 									"type": "number"
 								},
 								"groups": {
+									"type": "number"
+								},
+								"pictures": {
+									"type": "number"
+								},
+								"videos": {
+									"type": "number"
+								},
+								"references": {
 									"type": "number"
 								}
 							}

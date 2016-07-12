@@ -36,13 +36,15 @@ class KstrukturPaginateJsonResponder extends AbstractPayloadResponder {
 		$document = new Document($resource);
 
 		// meta
-		$document->setMeta([
-			'total' => $data->getNbResults(),
-			'first' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getFirstPage()]]),
-			'next' => $data->getNextPage(),
-			'previous' => $data->getPreviousPage(),
-			'last' => $data->getLastPage()
-		]);
+		if ($params->getPage('size') != -1) {
+		    $document->setMeta([
+		    	'total' => $data->getNbResults(),
+		    	'first' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getFirstPage()]]),
+		    	'next' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getNextPage()]]),
+		    	'previous' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getPreviousPage()]]),
+		    	'last' => '%apiurl%/' . $serializer->getType(null) . '?' . $params->toQueryString(['page' => ['number' => $data->getLastPage()]])
+		    ]);
+		}
 
 		// return response
 		return new JsonResponse($document->toArray());

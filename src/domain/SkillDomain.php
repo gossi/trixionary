@@ -4,14 +4,14 @@ namespace gossi\trixionary\domain;
 use gossi\trixionary\calculation\Calculator;
 use gossi\trixionary\domain\base\SkillDomainTrait;
 use gossi\trixionary\model\LineageQuery;
-use gossi\trixionary\model\SkillQuery;
 use gossi\trixionary\model\Skill;
+use gossi\trixionary\model\SkillQuery;
 use keeko\core\model\Activity;
 use keeko\framework\foundation\AbstractDomain;
+use phootwork\file\Directory;
 use phootwork\file\File;
 use phootwork\lang\Text;
 use Cocur\Slugify\Slugify;
-use phootwork\file\Directory;
 
 /**
  */
@@ -22,6 +22,16 @@ class SkillDomain extends AbstractDomain {
 	/**
 	 */
 	private $isNew;
+
+	/**
+	 * @param Skill $skill
+	 */
+	protected function postDelete(Skill $skill) {
+		// delete folder
+		$module = $this->getServiceContainer()->getModuleManager()->load('gossi/trixionary');
+		$dir = new Directory($module->getSkillPath($skill));
+		$dir->delete();
+	}
 
 	/**
 	 * @param Skill $skill
@@ -76,12 +86,5 @@ class SkillDomain extends AbstractDomain {
 		    $skill->setSlug($slugifier->slugify($name));
 		}
 		$this->isNew = $skill->isNew();
-	}
-
-	protected function postDelete(Skill $skill) {
-		// delete folder
-		$module = $this->getServiceContainer()->getModuleManager()->load('gossi/trixionary');
-		$dir = new Directory($module->getSkillPath($skill));
-		$dir->delete();
 	}
 }

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Thomas Gossmann
  */
-class StatisticsJsonResponder extends AbstractPayloadResponder {
+class SportStatisticsJsonResponder extends AbstractPayloadResponder {
 
 	/**
 	 */
