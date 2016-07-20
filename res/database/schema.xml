@@ -27,9 +27,9 @@
 		<column name="transitions_slug" type="VARCHAR" size="255"/>
 		<column name="position_slug" type="VARCHAR" size="255"/>
 		<column name="position_label" type="VARCHAR" size="255"/>
-		<column name="feature_composition" type="BOOLEAN"/>
-		<column name="feature_tester" type="BOOLEAN"/>
-		<column name="is_default" type="BOOLEAN"/>
+		<column name="feature_composition" type="BOOLEAN" default="false"/>
+		<column name="feature_tester" type="BOOLEAN" default="false"/>
+		<column name="is_default" type="BOOLEAN" default="false"/>
 		
 		<!-- <behavior name="aggregate_column">
 			<parameter name="name" value="skill_count"/>
@@ -54,7 +54,7 @@
 		<column name="id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true" />
 		<column name="title" type="VARCHAR" size="255"/>
 		<column name="slug" type="VARCHAR" size="255"/>
-		<column name="fixed" type="BOOLEAN"/>
+		<column name="fixed" type="BOOLEAN" default="true"/>
 		<column name="description" type="LONGVARCHAR"/>
 		<column name="sport_id" type="INTEGER" required="true" />
 

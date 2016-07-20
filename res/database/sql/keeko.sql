@@ -30,9 +30,9 @@ CREATE TABLE `kk_trixionary_sport`
     `transitions_slug` VARCHAR(255),
     `position_slug` VARCHAR(255),
     `position_label` VARCHAR(255),
-    `feature_composition` TINYINT(1),
-    `feature_tester` TINYINT(1),
-    `is_default` TINYINT(1),
+    `feature_composition` TINYINT(1) DEFAULT 0,
+    `feature_tester` TINYINT(1) DEFAULT 0,
+    `is_default` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -47,7 +47,7 @@ CREATE TABLE `kk_trixionary_object`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255),
     `slug` VARCHAR(255),
-    `fixed` TINYINT(1),
+    `fixed` TINYINT(1) DEFAULT 1,
     `description` TEXT,
     `sport_id` INTEGER NOT NULL,
     `skill_count` INTEGER,
@@ -155,13 +155,16 @@ CREATE TABLE `kk_trixionary_skill`
         REFERENCES `kk_trixionary_position` (`id`),
     CONSTRAINT `skill_fk_featured_picture`
         FOREIGN KEY (`picture_id`)
-        REFERENCES `kk_trixionary_picture` (`id`),
+        REFERENCES `kk_trixionary_picture` (`id`)
+        ON DELETE SET NULL,
     CONSTRAINT `skill_fk_featured_video`
         FOREIGN KEY (`video_id`)
-        REFERENCES `kk_trixionary_video` (`id`),
+        REFERENCES `kk_trixionary_video` (`id`)
+        ON DELETE SET NULL,
     CONSTRAINT `skill_fk_featured_tutorial`
         FOREIGN KEY (`tutorial_id`)
-        REFERENCES `kk_trixionary_video` (`id`),
+        REFERENCES `kk_trixionary_video` (`id`)
+        ON DELETE SET NULL,
     CONSTRAINT `skill_fk_kstruktur`
         FOREIGN KEY (`kstruktur_id`)
         REFERENCES `kk_trixionary_kstruktur` (`id`),

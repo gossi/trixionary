@@ -22,7 +22,7 @@ class TrixionaryModule extends AbstractModule {
 		// install sql
 		$files = [
 			'sql/keeko.sql',
-			'data/dummy-data.sql'
+			'data/unicycling.sql'
 		];
 
 		try {

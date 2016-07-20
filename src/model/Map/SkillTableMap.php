@@ -380,21 +380,21 @@ class SkillTableMap extends TableMap
     0 => ':picture_id',
     1 => ':id',
   ),
-), null, null, null, false);
+), 'SET NULL', null, null, false);
         $this->addRelation('FeaturedVideo', '\\gossi\\trixionary\\model\\Video', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':video_id',
     1 => ':id',
   ),
-), null, null, null, false);
+), 'SET NULL', null, null, false);
         $this->addRelation('FeaturedTutorial', '\\gossi\\trixionary\\model\\Video', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':tutorial_id',
     1 => ':id',
   ),
-), null, null, null, false);
+), 'SET NULL', null, null, false);
         $this->addRelation('KstrukturRoot', '\\gossi\\trixionary\\model\\Kstruktur', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (

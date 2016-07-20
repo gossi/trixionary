@@ -159,7 +159,7 @@ class ObjectTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
         $this->addColumn('slug', 'Slug', 'VARCHAR', false, 255, null);
-        $this->addColumn('fixed', 'Fixed', 'BOOLEAN', false, 1, null);
+        $this->addColumn('fixed', 'Fixed', 'BOOLEAN', false, 1, true);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addForeignKey('sport_id', 'SportId', 'INTEGER', 'kk_trixionary_sport', 'id', true, null, null);
         $this->addColumn('skill_count', 'SkillCount', 'INTEGER', false, null, null);

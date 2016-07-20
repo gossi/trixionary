@@ -30,7 +30,7 @@ class SportPaginateJsonResponder extends AbstractPayloadResponder {
 		$data = $payload->getModel();
 		$serializer = Sport::getSerializer();
 		$resource = new Collection($data, $serializer);
-		$resource = $resource->with($params->getInclude(['objects', 'positions', 'skills', 'groups', 'skills.variationOf', 'skills.parents', 'skills.lineages', 'skills.lineages.ancestor', 'skills.lineages.skill', 'skills.featured-picture']));
+		$resource = $resource->with($params->getInclude(['objects', 'positions', 'skills', 'groups', 'skills.groups', 'skills.objects', 'skills.start-position', 'skills.end-position', 'skills.variationOf', 'skills.parents', 'skills.lineages', 'skills.lineages.ancestor', 'skills.lineages.skill', 'skills.featured-picture']));
 		$resource = $resource->fields($params->getFields([
 			'sport' => Sport::getSerializer()->getFields(),
 			'object' => Object::getSerializer()->getFields(),

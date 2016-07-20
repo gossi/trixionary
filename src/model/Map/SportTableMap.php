@@ -250,9 +250,9 @@ class SportTableMap extends TableMap
         $this->addColumn('transitions_slug', 'TransitionsSlug', 'VARCHAR', false, 255, null);
         $this->addColumn('position_slug', 'PositionSlug', 'VARCHAR', false, 255, null);
         $this->addColumn('position_label', 'PositionLabel', 'VARCHAR', false, 255, null);
-        $this->addColumn('feature_composition', 'FeatureComposition', 'BOOLEAN', false, 1, null);
-        $this->addColumn('feature_tester', 'FeatureTester', 'BOOLEAN', false, 1, null);
-        $this->addColumn('is_default', 'IsDefault', 'BOOLEAN', false, 1, null);
+        $this->addColumn('feature_composition', 'FeatureComposition', 'BOOLEAN', false, 1, false);
+        $this->addColumn('feature_tester', 'FeatureTester', 'BOOLEAN', false, 1, false);
+        $this->addColumn('is_default', 'IsDefault', 'BOOLEAN', false, 1, false);
     } // initialize()
 
     /**

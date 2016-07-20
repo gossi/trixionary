@@ -207,8 +207,17 @@ class PictureTableMap extends TableMap
     0 => ':picture_id',
     1 => ':id',
   ),
-), null, null, 'FeaturedSkills', false);
+), 'SET NULL', null, 'FeaturedSkills', false);
     } // buildRelations()
+    /**
+     * Method to invalidate the instance pool of all tables related to kk_trixionary_picture     * by a foreign key with ON DELETE CASCADE
+     */
+    public static function clearRelatedInstancePool()
+    {
+        // Invalidate objects in related instance pools,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        SkillTableMap::clearInstancePool();
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.

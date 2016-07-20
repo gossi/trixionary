@@ -2,6 +2,10 @@
 	"models": {
 	    "sport": {
 	        "includes": [
+	            "skills.groups",
+	            "skills.objects",
+	            "skills.start-position",
+	            "skills.end-position",
 				"skills.variationOf", 
 				"skills.parents", 
 				"skills.lineages", 

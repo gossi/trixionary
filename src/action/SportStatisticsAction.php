@@ -36,8 +36,8 @@ class SportStatisticsAction extends AbstractAction {
 	public function run(Request $request) {
 		$id = $this->getParam('id');
 		$sport = SportQuery::create()
-			->joinGroup()
-			->joinSkill()
+			->leftJoinGroup()
+			->leftJoinSkill()
 			->findOneById($id);
 
 		$pictures = PictureQuery::create()
