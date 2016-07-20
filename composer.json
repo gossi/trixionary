@@ -1,2020 +1,2019 @@
 {
-	"name": "gossi/trixionary",
-	"description": "Trixionary",
-	"type": "keeko-module",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Thomas Gossmann",
-			"homepage": "http://gos.si"
+	"name" : "gossi/trixionary",
+	"description" : "Trixionary",
+	"type" : "keeko-module",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Thomas Gossmann",
+			"homepage" : "http://gos.si"
 		}
 	],
-	"autoload": {
-		"psr-4": {
-			"gossi\\trixionary\\": "src"
+	"autoload" : {
+		"psr-4" : {
+			"gossi\\trixionary\\" : "src"
 		}
 	},
-	"require": {
-		"php": ">=5.4",
-		"keeko/composer-installer": "*",
-		"cocur/slugify": "~0",
-		"imagine/imagine": "~0",
-		"embed/embed": "^2.7"
+	"require" : {
+		"php" : ">=5.4",
+		"keeko/composer-installer" : "*",
+		"cocur/slugify" : "~0",
+		"imagine/imagine" : "~0",
+		"embed/embed" : "^2.7"
 	},
-	"require-dev": {
-		"keeko/framework": "dev-master",
-		"keeko/core": "dev-master",
-		"propel/propel": "@dev",
-		"puli/repository": "@beta",
-		"puli/composer-plugin": "@beta",
-		"puli/twig-extension": "@beta",
-		"puli/url-generator": "@beta",
-		"puli/discovery": "@beta",
-		"phpunit/phpunit": "~4|~5"
+	"require-dev" : {
+		"keeko/framework" : "dev-master",
+		"keeko/core" : "dev-master",
+		"propel/propel" : "@dev",
+		"puli/repository" : "@beta",
+		"puli/composer-plugin" : "@beta",
+		"puli/twig-extension" : "@beta",
+		"puli/url-generator" : "@beta",
+		"puli/discovery" : "@beta",
+		"phpunit/phpunit" : "~4|~5"
 	},
-	"extra": {
-		"keeko": {
-			"module": {
-				"title": "Trixionary",
-				"class": "gossi\\trixionary\\TrixionaryModule",
-				"actions": {
-					"upload": {
-						"title": "Upload media",
-						"class": "gossi\\trixionary\\action\\UploadAction",
-						"acl": [
+	"extra" : {
+		"keeko" : {
+			"module" : {
+				"title" : "Trixionary",
+				"class" : "gossi\\trixionary\\TrixionaryModule",
+				"actions" : {
+					"upload" : {
+						"title" : "Upload media",
+						"class" : "gossi\\trixionary\\action\\UploadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\UploadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\UploadJsonResponder"
 						}
 					},
-					"upload-delete": {
-						"title": "Delete Uploaded media",
-						"class": "gossi\\trixionary\\action\\UploadDeleteAction",
-						"acl": [
+					"upload-delete" : {
+						"title" : "Delete Uploaded media",
+						"class" : "gossi\\trixionary\\action\\UploadDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\UploadDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\UploadDeleteJsonResponder"
 						}
 					},
-					"oembed-fetch": {
-						"title": "oEmbed Fetcher",
-						"class": "gossi\\trixionary\\action\\OembedFetchAction",
-						"acl": [
+					"oembed-fetch" : {
+						"title" : "oEmbed Fetcher",
+						"class" : "gossi\\trixionary\\action\\OembedFetchAction",
+						"acl" : [
 							"guest"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\OembedFetchJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\OembedFetchJsonResponder"
 						}
 					},
-					"sport-paginate": {
-						"title": "Paginates sports",
-						"class": "gossi\\trixionary\\action\\model\\SportPaginateAction",
-						"acl": [
+					"sport-paginate" : {
+						"title" : "Paginates sports",
+						"class" : "gossi\\trixionary\\action\\model\\SportPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SportPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportPaginateJsonResponder"
 						}
 					},
-					"sport-create": {
-						"title": "Creates a sport",
-						"class": "gossi\\trixionary\\action\\model\\SportCreateAction",
-						"acl": [
+					"sport-create" : {
+						"title" : "Creates a sport",
+						"class" : "gossi\\trixionary\\action\\model\\SportCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SportCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportCreateJsonResponder"
 						}
 					},
-					"sport-read": {
-						"title": "Reads a sport",
-						"class": "gossi\\trixionary\\action\\model\\SportReadAction",
-						"acl": [
+					"sport-read" : {
+						"title" : "Reads a sport",
+						"class" : "gossi\\trixionary\\action\\model\\SportReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SportReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportReadJsonResponder"
 						}
 					},
-					"sport-update": {
-						"title": "Updates a sport",
-						"class": "gossi\\trixionary\\action\\model\\SportUpdateAction",
-						"acl": [
+					"sport-update" : {
+						"title" : "Updates a sport",
+						"class" : "gossi\\trixionary\\action\\model\\SportUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SportUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportUpdateJsonResponder"
 						}
 					},
-					"sport-delete": {
-						"title": "Deletes a sport",
-						"class": "gossi\\trixionary\\action\\model\\SportDeleteAction",
-						"acl": [
+					"sport-delete" : {
+						"title" : "Deletes a sport",
+						"class" : "gossi\\trixionary\\action\\model\\SportDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SportDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SportDeleteJsonResponder"
 						}
 					},
-					"sport-to-object-relationship-read": {
-						"title": "Reads the relationship of sport to object",
-						"class": "gossi\\trixionary\\action\\relationship\\SportObjectReadAction",
-						"acl": [
+					"sport-to-object-relationship-read" : {
+						"title" : "Reads the relationship of sport to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
 						}
 					},
-					"sport-to-object-relationship-update": {
-						"title": "Updates the relationship of sport to object",
-						"class": "gossi\\trixionary\\action\\relationship\\SportObjectUpdateAction",
-						"acl": [
+					"sport-to-object-relationship-update" : {
+						"title" : "Updates the relationship of sport to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
 						}
 					},
-					"sport-to-object-relationship-add": {
-						"title": "Adds object as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportObjectAddAction",
-						"acl": [
+					"sport-to-object-relationship-add" : {
+						"title" : "Adds object as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
 						}
 					},
-					"sport-to-object-relationship-remove": {
-						"title": "Removes object as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportObjectRemoveAction",
-						"acl": [
+					"sport-to-object-relationship-remove" : {
+						"title" : "Removes object as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
 						}
 					},
-					"sport-to-position-relationship-read": {
-						"title": "Reads the relationship of sport to position",
-						"class": "gossi\\trixionary\\action\\relationship\\SportPositionReadAction",
-						"acl": [
+					"sport-to-position-relationship-read" : {
+						"title" : "Reads the relationship of sport to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
 						}
 					},
-					"sport-to-position-relationship-update": {
-						"title": "Updates the relationship of sport to position",
-						"class": "gossi\\trixionary\\action\\relationship\\SportPositionUpdateAction",
-						"acl": [
+					"sport-to-position-relationship-update" : {
+						"title" : "Updates the relationship of sport to position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
 						}
 					},
-					"sport-to-position-relationship-add": {
-						"title": "Adds position as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportPositionAddAction",
-						"acl": [
+					"sport-to-position-relationship-add" : {
+						"title" : "Adds position as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
 						}
 					},
-					"sport-to-position-relationship-remove": {
-						"title": "Removes position as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportPositionRemoveAction",
-						"acl": [
+					"sport-to-position-relationship-remove" : {
+						"title" : "Removes position as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
 						}
 					},
-					"sport-to-skill-relationship-read": {
-						"title": "Reads the relationship of sport to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SportSkillReadAction",
-						"acl": [
+					"sport-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of sport to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
 						}
 					},
-					"sport-to-skill-relationship-update": {
-						"title": "Updates the relationship of sport to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SportSkillUpdateAction",
-						"acl": [
+					"sport-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of sport to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
 						}
 					},
-					"sport-to-skill-relationship-add": {
-						"title": "Adds skill as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportSkillAddAction",
-						"acl": [
+					"sport-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
 						}
 					},
-					"sport-to-skill-relationship-remove": {
-						"title": "Removes skill as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportSkillRemoveAction",
-						"acl": [
+					"sport-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
 						}
 					},
-					"sport-to-group-relationship-read": {
-						"title": "Reads the relationship of sport to group",
-						"class": "gossi\\trixionary\\action\\relationship\\SportGroupReadAction",
-						"acl": [
+					"sport-to-group-relationship-read" : {
+						"title" : "Reads the relationship of sport to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
 						}
 					},
-					"sport-to-group-relationship-update": {
-						"title": "Updates the relationship of sport to group",
-						"class": "gossi\\trixionary\\action\\relationship\\SportGroupUpdateAction",
-						"acl": [
+					"sport-to-group-relationship-update" : {
+						"title" : "Updates the relationship of sport to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
 						}
 					},
-					"sport-to-group-relationship-add": {
-						"title": "Adds group as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportGroupAddAction",
-						"acl": [
+					"sport-to-group-relationship-add" : {
+						"title" : "Adds group as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
 						}
 					},
-					"sport-to-group-relationship-remove": {
-						"title": "Removes group as relationship to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SportGroupRemoveAction",
-						"acl": [
+					"sport-to-group-relationship-remove" : {
+						"title" : "Removes group as relationship to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
 						}
 					},
-					"object-paginate": {
-						"title": "Paginates objects",
-						"class": "gossi\\trixionary\\action\\model\\ObjectPaginateAction",
-						"acl": [
+					"object-paginate" : {
+						"title" : "Paginates objects",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ObjectPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectPaginateJsonResponder"
 						}
 					},
-					"object-create": {
-						"title": "Creates an object",
-						"class": "gossi\\trixionary\\action\\model\\ObjectCreateAction",
-						"acl": [
+					"object-create" : {
+						"title" : "Creates an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ObjectCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectCreateJsonResponder"
 						}
 					},
-					"object-read": {
-						"title": "Reads an object",
-						"class": "gossi\\trixionary\\action\\model\\ObjectReadAction",
-						"acl": [
+					"object-read" : {
+						"title" : "Reads an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ObjectReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectReadJsonResponder"
 						}
 					},
-					"object-update": {
-						"title": "Updates an object",
-						"class": "gossi\\trixionary\\action\\model\\ObjectUpdateAction",
-						"acl": [
+					"object-update" : {
+						"title" : "Updates an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ObjectUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectUpdateJsonResponder"
 						}
 					},
-					"object-delete": {
-						"title": "Deletes an object",
-						"class": "gossi\\trixionary\\action\\model\\ObjectDeleteAction",
-						"acl": [
+					"object-delete" : {
+						"title" : "Deletes an object",
+						"class" : "gossi\\trixionary\\action\\model\\ObjectDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ObjectDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectDeleteJsonResponder"
 						}
 					},
-					"object-to-sport-relationship-read": {
-						"title": "Reads the relationship of object to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSportReadAction",
-						"acl": [
+					"object-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of object to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
 						}
 					},
-					"object-to-sport-relationship-update": {
-						"title": "Updates the relationship of object to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSportUpdateAction",
-						"acl": [
+					"object-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of object to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
 						}
 					},
-					"object-to-skill-relationship-read": {
-						"title": "Reads the relationship of object to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSkillReadAction",
-						"acl": [
+					"object-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of object to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
 						}
 					},
-					"object-to-skill-relationship-update": {
-						"title": "Updates the relationship of object to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSkillUpdateAction",
-						"acl": [
+					"object-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of object to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
 						}
 					},
-					"object-to-skill-relationship-add": {
-						"title": "Adds skill as relationship to object",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSkillAddAction",
-						"acl": [
+					"object-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
 						}
 					},
-					"object-to-skill-relationship-remove": {
-						"title": "Removes skill as relationship to object",
-						"class": "gossi\\trixionary\\action\\relationship\\ObjectSkillRemoveAction",
-						"acl": [
+					"object-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
 						}
 					},
-					"position-paginate": {
-						"title": "Paginates positions",
-						"class": "gossi\\trixionary\\action\\model\\PositionPaginateAction",
-						"acl": [
+					"position-paginate" : {
+						"title" : "Paginates positions",
+						"class" : "gossi\\trixionary\\action\\model\\PositionPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PositionPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionPaginateJsonResponder"
 						}
 					},
-					"position-create": {
-						"title": "Creates a position",
-						"class": "gossi\\trixionary\\action\\model\\PositionCreateAction",
-						"acl": [
+					"position-create" : {
+						"title" : "Creates a position",
+						"class" : "gossi\\trixionary\\action\\model\\PositionCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PositionCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionCreateJsonResponder"
 						}
 					},
-					"position-read": {
-						"title": "Reads a position",
-						"class": "gossi\\trixionary\\action\\model\\PositionReadAction",
-						"acl": [
+					"position-read" : {
+						"title" : "Reads a position",
+						"class" : "gossi\\trixionary\\action\\model\\PositionReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PositionReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionReadJsonResponder"
 						}
 					},
-					"position-update": {
-						"title": "Updates a position",
-						"class": "gossi\\trixionary\\action\\model\\PositionUpdateAction",
-						"acl": [
+					"position-update" : {
+						"title" : "Updates a position",
+						"class" : "gossi\\trixionary\\action\\model\\PositionUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PositionUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionUpdateJsonResponder"
 						}
 					},
-					"position-delete": {
-						"title": "Deletes a position",
-						"class": "gossi\\trixionary\\action\\model\\PositionDeleteAction",
-						"acl": [
+					"position-delete" : {
+						"title" : "Deletes a position",
+						"class" : "gossi\\trixionary\\action\\model\\PositionDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PositionDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionDeleteJsonResponder"
 						}
 					},
-					"position-to-sport-relationship-read": {
-						"title": "Reads the relationship of position to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\PositionSportReadAction",
-						"acl": [
+					"position-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of position to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
 						}
 					},
-					"position-to-sport-relationship-update": {
-						"title": "Updates the relationship of position to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\PositionSportUpdateAction",
-						"acl": [
+					"position-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of position to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
 						}
 					},
-					"position-to-skill-relationship-read": {
-						"title": "Reads the relationship of position to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PositionSkillReadAction",
-						"acl": [
+					"position-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of position to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
 						}
 					},
-					"position-to-skill-relationship-update": {
-						"title": "Updates the relationship of position to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PositionSkillUpdateAction",
-						"acl": [
+					"position-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of position to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
 						}
 					},
-					"skill-paginate": {
-						"title": "Paginates skills",
-						"class": "gossi\\trixionary\\action\\model\\SkillPaginateAction",
-						"acl": [
+					"skill-paginate" : {
+						"title" : "Paginates skills",
+						"class" : "gossi\\trixionary\\action\\model\\SkillPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SkillPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillPaginateJsonResponder"
 						}
 					},
-					"skill-create": {
-						"title": "Creates a skill",
-						"class": "gossi\\trixionary\\action\\model\\SkillCreateAction",
-						"acl": [
+					"skill-create" : {
+						"title" : "Creates a skill",
+						"class" : "gossi\\trixionary\\action\\model\\SkillCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SkillCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillCreateJsonResponder"
 						}
 					},
-					"skill-read": {
-						"title": "Reads a skill",
-						"class": "gossi\\trixionary\\action\\model\\SkillReadAction",
-						"acl": [
+					"skill-read" : {
+						"title" : "Reads a skill",
+						"class" : "gossi\\trixionary\\action\\model\\SkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SkillReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillReadJsonResponder"
 						}
 					},
-					"skill-update": {
-						"title": "Updates a skill",
-						"class": "gossi\\trixionary\\action\\model\\SkillUpdateAction",
-						"acl": [
+					"skill-update" : {
+						"title" : "Updates a skill",
+						"class" : "gossi\\trixionary\\action\\model\\SkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SkillUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillUpdateJsonResponder"
 						}
 					},
-					"skill-delete": {
-						"title": "Deletes a skill",
-						"class": "gossi\\trixionary\\action\\model\\SkillDeleteAction",
-						"acl": [
+					"skill-delete" : {
+						"title" : "Deletes a skill",
+						"class" : "gossi\\trixionary\\action\\model\\SkillDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\SkillDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillDeleteJsonResponder"
 						}
 					},
-					"skill-to-sport-relationship-read": {
-						"title": "Reads the relationship of skill to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillSportReadAction",
-						"acl": [
+					"skill-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of skill to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
 						}
 					},
-					"skill-to-sport-relationship-update": {
-						"title": "Updates the relationship of skill to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillSportUpdateAction",
-						"acl": [
+					"skill-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of skill to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
 						}
 					},
-					"skill-to-variation-relationship-read": {
-						"title": "Reads the relationship of skill to variation",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationReadAction",
-						"acl": [
+					"skill-to-variation-relationship-read" : {
+						"title" : "Reads the relationship of skill to variation",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
 						}
 					},
-					"skill-to-variation-relationship-update": {
-						"title": "Updates the relationship of skill to variation",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationUpdateAction",
-						"acl": [
+					"skill-to-variation-relationship-update" : {
+						"title" : "Updates the relationship of skill to variation",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
 						}
 					},
-					"skill-to-variation-relationship-add": {
-						"title": "Adds variation as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationAddAction",
-						"acl": [
+					"skill-to-variation-relationship-add" : {
+						"title" : "Adds variation as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
 						}
 					},
-					"skill-to-variation-relationship-remove": {
-						"title": "Removes variation as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationRemoveAction",
-						"acl": [
+					"skill-to-variation-relationship-remove" : {
+						"title" : "Removes variation as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
 						}
 					},
-					"skill-to-variation_of-relationship-read": {
-						"title": "Reads the relationship of skill to variation_of",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationOfReadAction",
-						"acl": [
+					"skill-to-variation_of-relationship-read" : {
+						"title" : "Reads the relationship of skill to variation_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
 						}
 					},
-					"skill-to-variation_of-relationship-update": {
-						"title": "Updates the relationship of skill to variation_of",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVariationOfUpdateAction",
-						"acl": [
+					"skill-to-variation_of-relationship-update" : {
+						"title" : "Updates the relationship of skill to variation_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
 						}
 					},
-					"skill-to-multiple-relationship-read": {
-						"title": "Reads the relationship of skill to multiple",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleReadAction",
-						"acl": [
+					"skill-to-multiple-relationship-read" : {
+						"title" : "Reads the relationship of skill to multiple",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
 						}
 					},
-					"skill-to-multiple-relationship-update": {
-						"title": "Updates the relationship of skill to multiple",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleUpdateAction",
-						"acl": [
+					"skill-to-multiple-relationship-update" : {
+						"title" : "Updates the relationship of skill to multiple",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
 						}
 					},
-					"skill-to-multiple-relationship-add": {
-						"title": "Adds multiple as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleAddAction",
-						"acl": [
+					"skill-to-multiple-relationship-add" : {
+						"title" : "Adds multiple as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
 						}
 					},
-					"skill-to-multiple-relationship-remove": {
-						"title": "Removes multiple as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleRemoveAction",
-						"acl": [
+					"skill-to-multiple-relationship-remove" : {
+						"title" : "Removes multiple as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
 						}
 					},
-					"skill-to-multiple_of-relationship-read": {
-						"title": "Reads the relationship of skill to multiple_of",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleOfReadAction",
-						"acl": [
+					"skill-to-multiple_of-relationship-read" : {
+						"title" : "Reads the relationship of skill to multiple_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
 						}
 					},
-					"skill-to-multiple_of-relationship-update": {
-						"title": "Updates the relationship of skill to multiple_of",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillMultipleOfUpdateAction",
-						"acl": [
+					"skill-to-multiple_of-relationship-update" : {
+						"title" : "Updates the relationship of skill to multiple_of",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
 						}
 					},
-					"skill-to-object-relationship-read": {
-						"title": "Reads the relationship of skill to object",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillObjectReadAction",
-						"acl": [
+					"skill-to-object-relationship-read" : {
+						"title" : "Reads the relationship of skill to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
 						}
 					},
-					"skill-to-object-relationship-update": {
-						"title": "Updates the relationship of skill to object",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillObjectUpdateAction",
-						"acl": [
+					"skill-to-object-relationship-update" : {
+						"title" : "Updates the relationship of skill to object",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
 						}
 					},
-					"skill-to-start_position-relationship-read": {
-						"title": "Reads the relationship of skill to start_position",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillStartPositionReadAction",
-						"acl": [
+					"skill-to-start_position-relationship-read" : {
+						"title" : "Reads the relationship of skill to start_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
 						}
 					},
-					"skill-to-start_position-relationship-update": {
-						"title": "Updates the relationship of skill to start_position",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillStartPositionUpdateAction",
-						"acl": [
+					"skill-to-start_position-relationship-update" : {
+						"title" : "Updates the relationship of skill to start_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
 						}
 					},
-					"skill-to-end_position-relationship-read": {
-						"title": "Reads the relationship of skill to end_position",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillEndPositionReadAction",
-						"acl": [
+					"skill-to-end_position-relationship-read" : {
+						"title" : "Reads the relationship of skill to end_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
 						}
 					},
-					"skill-to-end_position-relationship-update": {
-						"title": "Updates the relationship of skill to end_position",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillEndPositionUpdateAction",
-						"acl": [
+					"skill-to-end_position-relationship-update" : {
+						"title" : "Updates the relationship of skill to end_position",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
 						}
 					},
-					"skill-to-featured_picture-relationship-read": {
-						"title": "Reads the relationship of skill to featured_picture",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureReadAction",
-						"acl": [
+					"skill-to-featured_picture-relationship-read" : {
+						"title" : "Reads the relationship of skill to featured_picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
 						}
 					},
-					"skill-to-featured_picture-relationship-update": {
-						"title": "Updates the relationship of skill to featured_picture",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureUpdateAction",
-						"acl": [
+					"skill-to-featured_picture-relationship-update" : {
+						"title" : "Updates the relationship of skill to featured_picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
 						}
 					},
-					"skill-to-kstruktur_root-relationship-read": {
-						"title": "Reads the relationship of skill to kstruktur_root",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootReadAction",
-						"acl": [
+					"skill-to-kstruktur_root-relationship-read" : {
+						"title" : "Reads the relationship of skill to kstruktur_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
 						}
 					},
-					"skill-to-kstruktur_root-relationship-update": {
-						"title": "Updates the relationship of skill to kstruktur_root",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootUpdateAction",
-						"acl": [
+					"skill-to-kstruktur_root-relationship-update" : {
+						"title" : "Updates the relationship of skill to kstruktur_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRootUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturRootJsonResponder"
 						}
 					},
-					"skill-to-function_phase_root-relationship-read": {
-						"title": "Reads the relationship of skill to function_phase_root",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootReadAction",
-						"acl": [
+					"skill-to-function_phase_root-relationship-read" : {
+						"title" : "Reads the relationship of skill to function_phase_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
 						}
 					},
-					"skill-to-function_phase_root-relationship-update": {
-						"title": "Updates the relationship of skill to function_phase_root",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootUpdateAction",
-						"acl": [
+					"skill-to-function_phase_root-relationship-update" : {
+						"title" : "Updates the relationship of skill to function_phase_root",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRootUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseRootJsonResponder"
 						}
 					},
-					"skill-to-child-relationship-read": {
-						"title": "Reads the relationship of skill to child",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillChildReadAction",
-						"acl": [
+					"skill-to-child-relationship-read" : {
+						"title" : "Reads the relationship of skill to child",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
 						}
 					},
-					"skill-to-child-relationship-update": {
-						"title": "Updates the relationship of skill to child",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillChildUpdateAction",
-						"acl": [
+					"skill-to-child-relationship-update" : {
+						"title" : "Updates the relationship of skill to child",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
 						}
 					},
-					"skill-to-child-relationship-add": {
-						"title": "Adds child as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillChildAddAction",
-						"acl": [
+					"skill-to-child-relationship-add" : {
+						"title" : "Adds child as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
 						}
 					},
-					"skill-to-child-relationship-remove": {
-						"title": "Removes child as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillChildRemoveAction",
-						"acl": [
+					"skill-to-child-relationship-remove" : {
+						"title" : "Removes child as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
 						}
 					},
-					"skill-to-part-relationship-read": {
-						"title": "Reads the relationship of skill to part",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPartReadAction",
-						"acl": [
+					"skill-to-part-relationship-read" : {
+						"title" : "Reads the relationship of skill to part",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
 						}
 					},
-					"skill-to-part-relationship-update": {
-						"title": "Updates the relationship of skill to part",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPartUpdateAction",
-						"acl": [
+					"skill-to-part-relationship-update" : {
+						"title" : "Updates the relationship of skill to part",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
 						}
 					},
-					"skill-to-part-relationship-add": {
-						"title": "Adds part as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPartAddAction",
-						"acl": [
+					"skill-to-part-relationship-add" : {
+						"title" : "Adds part as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
 						}
 					},
-					"skill-to-part-relationship-remove": {
-						"title": "Removes part as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPartRemoveAction",
-						"acl": [
+					"skill-to-part-relationship-remove" : {
+						"title" : "Removes part as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
 						}
 					},
-					"skill-to-group-relationship-read": {
-						"title": "Reads the relationship of skill to group",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillGroupReadAction",
-						"acl": [
+					"skill-to-group-relationship-read" : {
+						"title" : "Reads the relationship of skill to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
 						}
 					},
-					"skill-to-group-relationship-update": {
-						"title": "Updates the relationship of skill to group",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillGroupUpdateAction",
-						"acl": [
+					"skill-to-group-relationship-update" : {
+						"title" : "Updates the relationship of skill to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
 						}
 					},
-					"skill-to-group-relationship-add": {
-						"title": "Adds group as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillGroupAddAction",
-						"acl": [
+					"skill-to-group-relationship-add" : {
+						"title" : "Adds group as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
 						}
 					},
-					"skill-to-group-relationship-remove": {
-						"title": "Removes group as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillGroupRemoveAction",
-						"acl": [
+					"skill-to-group-relationship-remove" : {
+						"title" : "Removes group as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
 						}
 					},
-					"skill-to-reference-relationship-read": {
-						"title": "Reads the relationship of skill to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillReferenceReadAction",
-						"acl": [
+					"skill-to-reference-relationship-read" : {
+						"title" : "Reads the relationship of skill to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
 						}
 					},
-					"skill-to-reference-relationship-update": {
-						"title": "Updates the relationship of skill to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillReferenceUpdateAction",
-						"acl": [
+					"skill-to-reference-relationship-update" : {
+						"title" : "Updates the relationship of skill to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
 						}
 					},
-					"skill-to-reference-relationship-add": {
-						"title": "Adds reference as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillReferenceAddAction",
-						"acl": [
+					"skill-to-reference-relationship-add" : {
+						"title" : "Adds reference as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
 						}
 					},
-					"skill-to-reference-relationship-remove": {
-						"title": "Removes reference as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillReferenceRemoveAction",
-						"acl": [
+					"skill-to-reference-relationship-remove" : {
+						"title" : "Removes reference as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
 						}
 					},
-					"skill-to-lineage-relationship-read": {
-						"title": "Reads the relationship of skill to lineage",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageReadAction",
-						"acl": [
+					"skill-to-lineage-relationship-read" : {
+						"title" : "Reads the relationship of skill to lineage",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
 						}
 					},
-					"skill-to-lineage-relationship-update": {
-						"title": "Updates the relationship of skill to lineage",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageUpdateAction",
-						"acl": [
+					"skill-to-lineage-relationship-update" : {
+						"title" : "Updates the relationship of skill to lineage",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
 						}
 					},
-					"skill-to-lineage-relationship-add": {
-						"title": "Adds lineage as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageAddAction",
-						"acl": [
+					"skill-to-lineage-relationship-add" : {
+						"title" : "Adds lineage as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
 						}
 					},
-					"skill-to-lineage-relationship-remove": {
-						"title": "Removes lineage as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillLineageRemoveAction",
-						"acl": [
+					"skill-to-lineage-relationship-remove" : {
+						"title" : "Removes lineage as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
 						}
 					},
-					"skill-to-picture-relationship-read": {
-						"title": "Reads the relationship of skill to picture",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPictureReadAction",
-						"acl": [
+					"skill-to-picture-relationship-read" : {
+						"title" : "Reads the relationship of skill to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
 						}
 					},
-					"skill-to-picture-relationship-update": {
-						"title": "Updates the relationship of skill to picture",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPictureUpdateAction",
-						"acl": [
+					"skill-to-picture-relationship-update" : {
+						"title" : "Updates the relationship of skill to picture",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
 						}
 					},
-					"skill-to-picture-relationship-add": {
-						"title": "Adds picture as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPictureAddAction",
-						"acl": [
+					"skill-to-picture-relationship-add" : {
+						"title" : "Adds picture as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
 						}
 					},
-					"skill-to-picture-relationship-remove": {
-						"title": "Removes picture as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillPictureRemoveAction",
-						"acl": [
+					"skill-to-picture-relationship-remove" : {
+						"title" : "Removes picture as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
 						}
 					},
-					"skill-to-video-relationship-read": {
-						"title": "Reads the relationship of skill to video",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVideoReadAction",
-						"acl": [
+					"skill-to-video-relationship-read" : {
+						"title" : "Reads the relationship of skill to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
 						}
 					},
-					"skill-to-video-relationship-update": {
-						"title": "Updates the relationship of skill to video",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVideoUpdateAction",
-						"acl": [
+					"skill-to-video-relationship-update" : {
+						"title" : "Updates the relationship of skill to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
 						}
 					},
-					"skill-to-video-relationship-add": {
-						"title": "Adds video as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVideoAddAction",
-						"acl": [
+					"skill-to-video-relationship-add" : {
+						"title" : "Adds video as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
 						}
 					},
-					"skill-to-video-relationship-remove": {
-						"title": "Removes video as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillVideoRemoveAction",
-						"acl": [
+					"skill-to-video-relationship-remove" : {
+						"title" : "Removes video as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
 						}
 					},
-					"skill-to-kstruktur-relationship-read": {
-						"title": "Reads the relationship of skill to kstruktur",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturReadAction",
-						"acl": [
+					"skill-to-kstruktur-relationship-read" : {
+						"title" : "Reads the relationship of skill to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
 						}
 					},
-					"skill-to-kstruktur-relationship-update": {
-						"title": "Updates the relationship of skill to kstruktur",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturUpdateAction",
-						"acl": [
+					"skill-to-kstruktur-relationship-update" : {
+						"title" : "Updates the relationship of skill to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
 						}
 					},
-					"skill-to-kstruktur-relationship-add": {
-						"title": "Adds kstruktur as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturAddAction",
-						"acl": [
+					"skill-to-kstruktur-relationship-add" : {
+						"title" : "Adds kstruktur as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
 						}
 					},
-					"skill-to-kstruktur-relationship-remove": {
-						"title": "Removes kstruktur as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillKstrukturRemoveAction",
-						"acl": [
+					"skill-to-kstruktur-relationship-remove" : {
+						"title" : "Removes kstruktur as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillKstrukturRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillKstrukturJsonResponder"
 						}
 					},
-					"skill-to-function_phase-relationship-read": {
-						"title": "Reads the relationship of skill to function_phase",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseReadAction",
-						"acl": [
+					"skill-to-function_phase-relationship-read" : {
+						"title" : "Reads the relationship of skill to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
 						}
 					},
-					"skill-to-function_phase-relationship-update": {
-						"title": "Updates the relationship of skill to function_phase",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseUpdateAction",
-						"acl": [
+					"skill-to-function_phase-relationship-update" : {
+						"title" : "Updates the relationship of skill to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
 						}
 					},
-					"skill-to-function_phase-relationship-add": {
-						"title": "Adds function_phase as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseAddAction",
-						"acl": [
+					"skill-to-function_phase-relationship-add" : {
+						"title" : "Adds function_phase as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
 						}
 					},
-					"skill-to-function_phase-relationship-remove": {
-						"title": "Removes function_phase as relationship to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRemoveAction",
-						"acl": [
+					"skill-to-function_phase-relationship-remove" : {
+						"title" : "Removes function_phase as relationship to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFunctionPhaseRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFunctionPhaseJsonResponder"
 						}
 					},
-					"lineage-paginate": {
-						"title": "Paginates lineages",
-						"class": "gossi\\trixionary\\action\\model\\LineagePaginateAction",
-						"acl": [
+					"lineage-paginate" : {
+						"title" : "Paginates lineages",
+						"class" : "gossi\\trixionary\\action\\model\\LineagePaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\LineagePaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\LineagePaginateJsonResponder"
 						}
 					},
-					"lineage-create": {
-						"title": "Creates a lineage",
-						"class": "gossi\\trixionary\\action\\model\\LineageCreateAction",
-						"acl": [
+					"lineage-create" : {
+						"title" : "Creates a lineage",
+						"class" : "gossi\\trixionary\\action\\model\\LineageCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\LineageCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\LineageCreateJsonResponder"
 						}
 					},
-					"lineage-read": {
-						"title": "Reads a lineage",
-						"class": "gossi\\trixionary\\action\\model\\LineageReadAction",
-						"acl": [
+					"lineage-read" : {
+						"title" : "Reads a lineage",
+						"class" : "gossi\\trixionary\\action\\model\\LineageReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\LineageReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\LineageReadJsonResponder"
 						}
 					},
-					"lineage-update": {
-						"title": "Updates a lineage",
-						"class": "gossi\\trixionary\\action\\model\\LineageUpdateAction",
-						"acl": [
+					"lineage-update" : {
+						"title" : "Updates a lineage",
+						"class" : "gossi\\trixionary\\action\\model\\LineageUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\LineageUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\LineageUpdateJsonResponder"
 						}
 					},
-					"lineage-delete": {
-						"title": "Deletes a lineage",
-						"class": "gossi\\trixionary\\action\\model\\LineageDeleteAction",
-						"acl": [
+					"lineage-delete" : {
+						"title" : "Deletes a lineage",
+						"class" : "gossi\\trixionary\\action\\model\\LineageDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\LineageDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\LineageDeleteJsonResponder"
 						}
 					},
-					"lineage-to-skill-relationship-read": {
-						"title": "Reads the relationship of lineage to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\LineageSkillReadAction",
-						"acl": [
+					"lineage-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of lineage to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\LineageSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
 						}
 					},
-					"lineage-to-skill-relationship-update": {
-						"title": "Updates the relationship of lineage to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\LineageSkillUpdateAction",
-						"acl": [
+					"lineage-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of lineage to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\LineageSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\LineageSkillJsonResponder"
 						}
 					},
-					"lineage-to-ancestor-relationship-read": {
-						"title": "Reads the relationship of lineage to ancestor",
-						"class": "gossi\\trixionary\\action\\relationship\\LineageAncestorReadAction",
-						"acl": [
+					"lineage-to-ancestor-relationship-read" : {
+						"title" : "Reads the relationship of lineage to ancestor",
+						"class" : "gossi\\trixionary\\action\\relationship\\LineageAncestorReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
 						}
 					},
-					"lineage-to-ancestor-relationship-update": {
-						"title": "Updates the relationship of lineage to ancestor",
-						"class": "gossi\\trixionary\\action\\relationship\\LineageAncestorUpdateAction",
-						"acl": [
+					"lineage-to-ancestor-relationship-update" : {
+						"title" : "Updates the relationship of lineage to ancestor",
+						"class" : "gossi\\trixionary\\action\\relationship\\LineageAncestorUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\LineageAncestorJsonResponder"
 						}
 					},
-					"group-paginate": {
-						"title": "Paginates groups",
-						"class": "gossi\\trixionary\\action\\model\\GroupPaginateAction",
-						"acl": [
+					"group-paginate" : {
+						"title" : "Paginates groups",
+						"class" : "gossi\\trixionary\\action\\model\\GroupPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\GroupPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupPaginateJsonResponder"
 						}
 					},
-					"group-create": {
-						"title": "Creates a group",
-						"class": "gossi\\trixionary\\action\\model\\GroupCreateAction",
-						"acl": [
+					"group-create" : {
+						"title" : "Creates a group",
+						"class" : "gossi\\trixionary\\action\\model\\GroupCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\GroupCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupCreateJsonResponder"
 						}
 					},
-					"group-read": {
-						"title": "Reads a group",
-						"class": "gossi\\trixionary\\action\\model\\GroupReadAction",
-						"acl": [
+					"group-read" : {
+						"title" : "Reads a group",
+						"class" : "gossi\\trixionary\\action\\model\\GroupReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\GroupReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupReadJsonResponder"
 						}
 					},
-					"group-update": {
-						"title": "Updates a group",
-						"class": "gossi\\trixionary\\action\\model\\GroupUpdateAction",
-						"acl": [
+					"group-update" : {
+						"title" : "Updates a group",
+						"class" : "gossi\\trixionary\\action\\model\\GroupUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\GroupUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupUpdateJsonResponder"
 						}
 					},
-					"group-delete": {
-						"title": "Deletes a group",
-						"class": "gossi\\trixionary\\action\\model\\GroupDeleteAction",
-						"acl": [
+					"group-delete" : {
+						"title" : "Deletes a group",
+						"class" : "gossi\\trixionary\\action\\model\\GroupDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\GroupDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupDeleteJsonResponder"
 						}
 					},
-					"group-to-sport-relationship-read": {
-						"title": "Reads the relationship of group to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSportReadAction",
-						"acl": [
+					"group-to-sport-relationship-read" : {
+						"title" : "Reads the relationship of group to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
 						}
 					},
-					"group-to-sport-relationship-update": {
-						"title": "Updates the relationship of group to sport",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSportUpdateAction",
-						"acl": [
+					"group-to-sport-relationship-update" : {
+						"title" : "Updates the relationship of group to sport",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
 						}
 					},
-					"group-to-skill-relationship-read": {
-						"title": "Reads the relationship of group to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSkillReadAction",
-						"acl": [
+					"group-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of group to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
 						}
 					},
-					"group-to-skill-relationship-update": {
-						"title": "Updates the relationship of group to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSkillUpdateAction",
-						"acl": [
+					"group-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of group to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
 						}
 					},
-					"group-to-skill-relationship-add": {
-						"title": "Adds skill as relationship to group",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSkillAddAction",
-						"acl": [
+					"group-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
 						}
 					},
-					"group-to-skill-relationship-remove": {
-						"title": "Removes skill as relationship to group",
-						"class": "gossi\\trixionary\\action\\relationship\\GroupSkillRemoveAction",
-						"acl": [
+					"group-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to group",
+						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
 						}
 					},
-					"picture-paginate": {
-						"title": "Paginates pictures",
-						"class": "gossi\\trixionary\\action\\model\\PicturePaginateAction",
-						"acl": [
+					"picture-paginate" : {
+						"title" : "Paginates pictures",
+						"class" : "gossi\\trixionary\\action\\model\\PicturePaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PicturePaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PicturePaginateJsonResponder"
 						}
 					},
-					"picture-create": {
-						"title": "Creates a picture",
-						"class": "gossi\\trixionary\\action\\model\\PictureCreateAction",
-						"acl": [
+					"picture-create" : {
+						"title" : "Creates a picture",
+						"class" : "gossi\\trixionary\\action\\model\\PictureCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PictureCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureCreateJsonResponder"
 						}
 					},
-					"picture-read": {
-						"title": "Reads a picture",
-						"class": "gossi\\trixionary\\action\\model\\PictureReadAction",
-						"acl": [
+					"picture-read" : {
+						"title" : "Reads a picture",
+						"class" : "gossi\\trixionary\\action\\model\\PictureReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PictureReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureReadJsonResponder"
 						}
 					},
-					"picture-update": {
-						"title": "Updates a picture",
-						"class": "gossi\\trixionary\\action\\model\\PictureUpdateAction",
-						"acl": [
+					"picture-update" : {
+						"title" : "Updates a picture",
+						"class" : "gossi\\trixionary\\action\\model\\PictureUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PictureUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureUpdateJsonResponder"
 						}
 					},
-					"picture-delete": {
-						"title": "Deletes a picture",
-						"class": "gossi\\trixionary\\action\\model\\PictureDeleteAction",
-						"acl": [
+					"picture-delete" : {
+						"title" : "Deletes a picture",
+						"class" : "gossi\\trixionary\\action\\model\\PictureDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\PictureDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureDeleteJsonResponder"
 						}
 					},
-					"picture-to-featured_skill-relationship-read": {
-						"title": "Reads the relationship of picture to featured_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillReadAction",
-						"acl": [
+					"picture-to-featured_skill-relationship-read" : {
+						"title" : "Reads the relationship of picture to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
 						}
 					},
-					"picture-to-featured_skill-relationship-update": {
-						"title": "Updates the relationship of picture to featured_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillUpdateAction",
-						"acl": [
+					"picture-to-featured_skill-relationship-update" : {
+						"title" : "Updates the relationship of picture to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
 						}
 					},
-					"picture-to-skill-relationship-read": {
-						"title": "Reads the relationship of picture to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PictureSkillReadAction",
-						"acl": [
+					"picture-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of picture to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
 						}
 					},
-					"picture-to-skill-relationship-update": {
-						"title": "Updates the relationship of picture to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\PictureSkillUpdateAction",
-						"acl": [
+					"picture-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of picture to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
 						}
 					},
-					"video-paginate": {
-						"title": "Paginates videos",
-						"class": "gossi\\trixionary\\action\\model\\VideoPaginateAction",
-						"acl": [
+					"video-paginate" : {
+						"title" : "Paginates videos",
+						"class" : "gossi\\trixionary\\action\\model\\VideoPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\VideoPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoPaginateJsonResponder"
 						}
 					},
-					"video-create": {
-						"title": "Creates a video",
-						"class": "gossi\\trixionary\\action\\model\\VideoCreateAction",
-						"acl": [
+					"video-create" : {
+						"title" : "Creates a video",
+						"class" : "gossi\\trixionary\\action\\model\\VideoCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\VideoCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoCreateJsonResponder"
 						}
 					},
-					"video-read": {
-						"title": "Reads a video",
-						"class": "gossi\\trixionary\\action\\model\\VideoReadAction",
-						"acl": [
+					"video-read" : {
+						"title" : "Reads a video",
+						"class" : "gossi\\trixionary\\action\\model\\VideoReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\VideoReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoReadJsonResponder"
 						}
 					},
-					"video-update": {
-						"title": "Updates a video",
-						"class": "gossi\\trixionary\\action\\model\\VideoUpdateAction",
-						"acl": [
+					"video-update" : {
+						"title" : "Updates a video",
+						"class" : "gossi\\trixionary\\action\\model\\VideoUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\VideoUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoUpdateJsonResponder"
 						}
 					},
-					"video-delete": {
-						"title": "Deletes a video",
-						"class": "gossi\\trixionary\\action\\model\\VideoDeleteAction",
-						"acl": [
+					"video-delete" : {
+						"title" : "Deletes a video",
+						"class" : "gossi\\trixionary\\action\\model\\VideoDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\VideoDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoDeleteJsonResponder"
 						}
 					},
-					"video-to-skill-relationship-read": {
-						"title": "Reads the relationship of video to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoSkillReadAction",
-						"acl": [
+					"video-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of video to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
 						}
 					},
-					"video-to-skill-relationship-update": {
-						"title": "Updates the relationship of video to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoSkillUpdateAction",
-						"acl": [
+					"video-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of video to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
 						}
 					},
-					"video-to-reference-relationship-read": {
-						"title": "Reads the relationship of video to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoReferenceReadAction",
-						"acl": [
+					"video-to-reference-relationship-read" : {
+						"title" : "Reads the relationship of video to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
 						}
 					},
-					"video-to-reference-relationship-update": {
-						"title": "Updates the relationship of video to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoReferenceUpdateAction",
-						"acl": [
+					"video-to-reference-relationship-update" : {
+						"title" : "Updates the relationship of video to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
 						}
 					},
-					"reference-paginate": {
-						"title": "Paginates references",
-						"class": "gossi\\trixionary\\action\\model\\ReferencePaginateAction",
-						"acl": [
+					"reference-paginate" : {
+						"title" : "Paginates references",
+						"class" : "gossi\\trixionary\\action\\model\\ReferencePaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ReferencePaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferencePaginateJsonResponder"
 						}
 					},
-					"reference-create": {
-						"title": "Creates a reference",
-						"class": "gossi\\trixionary\\action\\model\\ReferenceCreateAction",
-						"acl": [
+					"reference-create" : {
+						"title" : "Creates a reference",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ReferenceCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceCreateJsonResponder"
 						}
 					},
-					"reference-read": {
-						"title": "Reads a reference",
-						"class": "gossi\\trixionary\\action\\model\\ReferenceReadAction",
-						"acl": [
+					"reference-read" : {
+						"title" : "Reads a reference",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ReferenceReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceReadJsonResponder"
 						}
 					},
-					"reference-update": {
-						"title": "Updates a reference",
-						"class": "gossi\\trixionary\\action\\model\\ReferenceUpdateAction",
-						"acl": [
+					"reference-update" : {
+						"title" : "Updates a reference",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ReferenceUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceUpdateJsonResponder"
 						}
 					},
-					"reference-delete": {
-						"title": "Deletes a reference",
-						"class": "gossi\\trixionary\\action\\model\\ReferenceDeleteAction",
-						"acl": [
+					"reference-delete" : {
+						"title" : "Deletes a reference",
+						"class" : "gossi\\trixionary\\action\\model\\ReferenceDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\ReferenceDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceDeleteJsonResponder"
 						}
 					},
-					"reference-to-video-relationship-read": {
-						"title": "Reads the relationship of reference to video",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceVideoReadAction",
-						"acl": [
+					"reference-to-video-relationship-read" : {
+						"title" : "Reads the relationship of reference to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
 						}
 					},
-					"reference-to-video-relationship-update": {
-						"title": "Updates the relationship of reference to video",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceVideoUpdateAction",
-						"acl": [
+					"reference-to-video-relationship-update" : {
+						"title" : "Updates the relationship of reference to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
 						}
 					},
-					"reference-to-video-relationship-add": {
-						"title": "Adds video as relationship to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceVideoAddAction",
-						"acl": [
+					"reference-to-video-relationship-add" : {
+						"title" : "Adds video as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
 						}
 					},
-					"reference-to-video-relationship-remove": {
-						"title": "Removes video as relationship to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceVideoRemoveAction",
-						"acl": [
+					"reference-to-video-relationship-remove" : {
+						"title" : "Removes video as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
 						}
 					},
-					"reference-to-skill-relationship-read": {
-						"title": "Reads the relationship of reference to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceSkillReadAction",
-						"acl": [
+					"reference-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of reference to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
 						}
 					},
-					"reference-to-skill-relationship-update": {
-						"title": "Updates the relationship of reference to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceSkillUpdateAction",
-						"acl": [
+					"reference-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of reference to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
 						}
 					},
-					"reference-to-skill-relationship-add": {
-						"title": "Adds skill as relationship to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceSkillAddAction",
-						"acl": [
+					"reference-to-skill-relationship-add" : {
+						"title" : "Adds skill as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
 						}
 					},
-					"reference-to-skill-relationship-remove": {
-						"title": "Removes skill as relationship to reference",
-						"class": "gossi\\trixionary\\action\\relationship\\ReferenceSkillRemoveAction",
-						"acl": [
+					"reference-to-skill-relationship-remove" : {
+						"title" : "Removes skill as relationship to reference",
+						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
 						}
 					},
-					"kstruktur-paginate": {
-						"title": "Paginates kstrukturs",
-						"class": "gossi\\trixionary\\action\\model\\KstrukturPaginateAction",
-						"acl": [
+					"kstruktur-paginate" : {
+						"title" : "Paginates kstrukturs",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturPaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\KstrukturPaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturPaginateJsonResponder"
 						}
 					},
-					"kstruktur-create": {
-						"title": "Creates a kstruktur",
-						"class": "gossi\\trixionary\\action\\model\\KstrukturCreateAction",
-						"acl": [
+					"kstruktur-create" : {
+						"title" : "Creates a kstruktur",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\KstrukturCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturCreateJsonResponder"
 						}
 					},
-					"kstruktur-read": {
-						"title": "Reads a kstruktur",
-						"class": "gossi\\trixionary\\action\\model\\KstrukturReadAction",
-						"acl": [
+					"kstruktur-read" : {
+						"title" : "Reads a kstruktur",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\KstrukturReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturReadJsonResponder"
 						}
 					},
-					"kstruktur-update": {
-						"title": "Updates a kstruktur",
-						"class": "gossi\\trixionary\\action\\model\\KstrukturUpdateAction",
-						"acl": [
+					"kstruktur-update" : {
+						"title" : "Updates a kstruktur",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\KstrukturUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturUpdateJsonResponder"
 						}
 					},
-					"kstruktur-delete": {
-						"title": "Deletes a kstruktur",
-						"class": "gossi\\trixionary\\action\\model\\KstrukturDeleteAction",
-						"acl": [
+					"kstruktur-delete" : {
+						"title" : "Deletes a kstruktur",
+						"class" : "gossi\\trixionary\\action\\model\\KstrukturDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\KstrukturDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\KstrukturDeleteJsonResponder"
 						}
 					},
-					"kstruktur-to-root_skill-relationship-read": {
-						"title": "Reads the relationship of kstruktur to root_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillReadAction",
-						"acl": [
+					"kstruktur-to-root_skill-relationship-read" : {
+						"title" : "Reads the relationship of kstruktur to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
 						}
 					},
-					"kstruktur-to-root_skill-relationship-update": {
-						"title": "Updates the relationship of kstruktur to root_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillUpdateAction",
-						"acl": [
+					"kstruktur-to-root_skill-relationship-update" : {
+						"title" : "Updates the relationship of kstruktur to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
 						}
 					},
-					"kstruktur-to-root_skill-relationship-add": {
-						"title": "Adds root_skill as relationship to kstruktur",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillAddAction",
-						"acl": [
+					"kstruktur-to-root_skill-relationship-add" : {
+						"title" : "Adds root_skill as relationship to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
 						}
 					},
-					"kstruktur-to-root_skill-relationship-remove": {
-						"title": "Removes root_skill as relationship to kstruktur",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillRemoveAction",
-						"acl": [
+					"kstruktur-to-root_skill-relationship-remove" : {
+						"title" : "Removes root_skill as relationship to kstruktur",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturRootSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturRootSkillJsonResponder"
 						}
 					},
-					"kstruktur-to-skill-relationship-read": {
-						"title": "Reads the relationship of kstruktur to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturSkillReadAction",
-						"acl": [
+					"kstruktur-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of kstruktur to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
 						}
 					},
-					"kstruktur-to-skill-relationship-update": {
-						"title": "Updates the relationship of kstruktur to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\KstrukturSkillUpdateAction",
-						"acl": [
+					"kstruktur-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of kstruktur to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\KstrukturSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\KstrukturSkillJsonResponder"
 						}
 					},
-					"function_phase-paginate": {
-						"title": "Paginates function_phases",
-						"class": "gossi\\trixionary\\action\\model\\FunctionPhasePaginateAction",
-						"acl": [
+					"function_phase-paginate" : {
+						"title" : "Paginates function_phases",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhasePaginateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\FunctionPhasePaginateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhasePaginateJsonResponder"
 						}
 					},
-					"function_phase-create": {
-						"title": "Creates a function_phase",
-						"class": "gossi\\trixionary\\action\\model\\FunctionPhaseCreateAction",
-						"acl": [
+					"function_phase-create" : {
+						"title" : "Creates a function_phase",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseCreateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseCreateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseCreateJsonResponder"
 						}
 					},
-					"function_phase-read": {
-						"title": "Reads a function_phase",
-						"class": "gossi\\trixionary\\action\\model\\FunctionPhaseReadAction",
-						"acl": [
+					"function_phase-read" : {
+						"title" : "Reads a function_phase",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseReadJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseReadJsonResponder"
 						}
 					},
-					"function_phase-update": {
-						"title": "Updates a function_phase",
-						"class": "gossi\\trixionary\\action\\model\\FunctionPhaseUpdateAction",
-						"acl": [
+					"function_phase-update" : {
+						"title" : "Updates a function_phase",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseUpdateJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseUpdateJsonResponder"
 						}
 					},
-					"function_phase-delete": {
-						"title": "Deletes a function_phase",
-						"class": "gossi\\trixionary\\action\\model\\FunctionPhaseDeleteAction",
-						"acl": [
+					"function_phase-delete" : {
+						"title" : "Deletes a function_phase",
+						"class" : "gossi\\trixionary\\action\\model\\FunctionPhaseDeleteAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseDeleteJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\model\\FunctionPhaseDeleteJsonResponder"
 						}
 					},
-					"function_phase-to-root_skill-relationship-read": {
-						"title": "Reads the relationship of function_phase to root_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillReadAction",
-						"acl": [
+					"function_phase-to-root_skill-relationship-read" : {
+						"title" : "Reads the relationship of function_phase to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"function_phase-to-root_skill-relationship-update": {
-						"title": "Updates the relationship of function_phase to root_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillUpdateAction",
-						"acl": [
+					"function_phase-to-root_skill-relationship-update" : {
+						"title" : "Updates the relationship of function_phase to root_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"function_phase-to-root_skill-relationship-add": {
-						"title": "Adds root_skill as relationship to function_phase",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillAddAction",
-						"acl": [
+					"function_phase-to-root_skill-relationship-add" : {
+						"title" : "Adds root_skill as relationship to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"function_phase-to-root_skill-relationship-remove": {
-						"title": "Removes root_skill as relationship to function_phase",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillRemoveAction",
-						"acl": [
+					"function_phase-to-root_skill-relationship-remove" : {
+						"title" : "Removes root_skill as relationship to function_phase",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseRootSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseRootSkillJsonResponder"
 						}
 					},
-					"function_phase-to-skill-relationship-read": {
-						"title": "Reads the relationship of function_phase to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillReadAction",
-						"acl": [
+					"function_phase-to-skill-relationship-read" : {
+						"title" : "Reads the relationship of function_phase to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
 						}
 					},
-					"function_phase-to-skill-relationship-update": {
-						"title": "Updates the relationship of function_phase to skill",
-						"class": "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillUpdateAction",
-						"acl": [
+					"function_phase-to-skill-relationship-update" : {
+						"title" : "Updates the relationship of function_phase to skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\FunctionPhaseSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\FunctionPhaseSkillJsonResponder"
 						}
 					},
-					"skill-to-featured_video-relationship-read": {
-						"title": "Reads the relationship of skill to featured_video",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoReadAction",
-						"acl": [
+					"skill-to-featured_video-relationship-read" : {
+						"title" : "Reads the relationship of skill to featured_video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
 						}
 					},
-					"skill-to-featured_video-relationship-update": {
-						"title": "Updates the relationship of skill to featured_video",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoUpdateAction",
-						"acl": [
+					"skill-to-featured_video-relationship-update" : {
+						"title" : "Updates the relationship of skill to featured_video",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
 						}
 					},
-					"skill-to-featured_tutorial-relationship-read": {
-						"title": "Reads the relationship of skill to featured_tutorial",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialReadAction",
-						"acl": [
+					"skill-to-featured_tutorial-relationship-read" : {
+						"title" : "Reads the relationship of skill to featured_tutorial",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
 						}
 					},
-					"skill-to-featured_tutorial-relationship-update": {
-						"title": "Updates the relationship of skill to featured_tutorial",
-						"class": "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialUpdateAction",
-						"acl": [
+					"skill-to-featured_tutorial-relationship-update" : {
+						"title" : "Updates the relationship of skill to featured_tutorial",
+						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
 						}
 					},
-					"video-to-featured_skill-relationship-read": {
-						"title": "Reads the relationship of video to featured_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillReadAction",
-						"acl": [
+					"video-to-featured_skill-relationship-read" : {
+						"title" : "Reads the relationship of video to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
 						}
 					},
-					"video-to-featured_skill-relationship-update": {
-						"title": "Updates the relationship of video to featured_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillUpdateAction",
-						"acl": [
+					"video-to-featured_skill-relationship-update" : {
+						"title" : "Updates the relationship of video to featured_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
 						}
 					},
-					"video-to-featured_skill-relationship-add": {
-						"title": "Adds featured_skill as relationship to video",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillAddAction",
-						"acl": [
+					"video-to-featured_skill-relationship-add" : {
+						"title" : "Adds featured_skill as relationship to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
 						}
 					},
-					"video-to-featured_skill-relationship-remove": {
-						"title": "Removes featured_skill as relationship to video",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillRemoveAction",
-						"acl": [
+					"video-to-featured_skill-relationship-remove" : {
+						"title" : "Removes featured_skill as relationship to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
 						}
 					},
-					"video-to-featured_tutorial_skill-relationship-read": {
-						"title": "Reads the relationship of video to featured_tutorial_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillReadAction",
-						"acl": [
+					"video-to-featured_tutorial_skill-relationship-read" : {
+						"title" : "Reads the relationship of video to featured_tutorial_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillReadAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
 						}
 					},
-					"video-to-featured_tutorial_skill-relationship-update": {
-						"title": "Updates the relationship of video to featured_tutorial_skill",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillUpdateAction",
-						"acl": [
+					"video-to-featured_tutorial_skill-relationship-update" : {
+						"title" : "Updates the relationship of video to featured_tutorial_skill",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillUpdateAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
 						}
 					},
-					"video-to-featured_tutorial_skill-relationship-add": {
-						"title": "Adds featured_tutorial_skill as relationship to video",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillAddAction",
-						"acl": [
+					"video-to-featured_tutorial_skill-relationship-add" : {
+						"title" : "Adds featured_tutorial_skill as relationship to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillAddAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
 						}
 					},
-					"video-to-featured_tutorial_skill-relationship-remove": {
-						"title": "Removes featured_tutorial_skill as relationship to video",
-						"class": "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillRemoveAction",
-						"acl": [
+					"video-to-featured_tutorial_skill-relationship-remove" : {
+						"title" : "Removes featured_tutorial_skill as relationship to video",
+						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillRemoveAction",
+						"acl" : [
 							"admin"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
 						}
 					},
-					"sport-statistics": {
-						"title": "Statistics for a Sport",
-						"class": "gossi\\trixionary\\action\\SportStatisticsAction",
-						"acl": [
+					"sport-statistics" : {
+						"title" : "Statistics for a Sport",
+						"class" : "gossi\\trixionary\\action\\SportStatisticsAction",
+						"acl" : [
 							"guest"
 						],
-						"responder": {
-							"json": "gossi\\trixionary\\responder\\json\\SportStatisticsJsonResponder"
+						"responder" : {
+							"json" : "gossi\\trixionary\\responder\\json\\SportStatisticsJsonResponder"
 						}
 					}
 				}
 			}
 		}
 	},
-	"autoload-dev": {
-		"psr-4": {
-			"gossi\\trixionary\\tests\\": "tests"
+	"autoload-dev" : {
+		"psr-4" : {
+			"gossi\\trixionary\\tests\\" : "tests"
 		}
 	}
 }

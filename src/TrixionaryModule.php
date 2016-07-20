@@ -20,10 +20,11 @@ class TrixionaryModule extends AbstractModule {
 	 */
 	public function install() {
 		// install sql
-		$files = [
-			'sql/keeko.sql',
-			'data/unicycling.sql'
-		];
+		$files = ['sql/keeko.sql'];
+
+		if (KEEKO_ENVIRONMENT == KEEKO_DEVELOPMENT) {
+			$files[] = 'data/unicycling.sql';
+		}
 
 		try {
 			$repo = $this->getServiceContainer()->getResourceRepository();
