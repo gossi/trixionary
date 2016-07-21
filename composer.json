@@ -41,7 +41,7 @@
 						"title" : "Upload media",
 						"class" : "gossi\\trixionary\\action\\UploadAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\UploadJsonResponder"
@@ -51,7 +51,7 @@
 						"title" : "Delete Uploaded media",
 						"class" : "gossi\\trixionary\\action\\UploadDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\UploadDeleteJsonResponder"
@@ -71,7 +71,7 @@
 						"title" : "Paginates sports",
 						"class" : "gossi\\trixionary\\action\\model\\SportPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SportPaginateJsonResponder"
@@ -81,7 +81,7 @@
 						"title" : "Creates a sport",
 						"class" : "gossi\\trixionary\\action\\model\\SportCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SportCreateJsonResponder"
@@ -91,7 +91,7 @@
 						"title" : "Reads a sport",
 						"class" : "gossi\\trixionary\\action\\model\\SportReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SportReadJsonResponder"
@@ -101,7 +101,7 @@
 						"title" : "Updates a sport",
 						"class" : "gossi\\trixionary\\action\\model\\SportUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SportUpdateJsonResponder"
@@ -121,7 +121,7 @@
 						"title" : "Reads the relationship of sport to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
@@ -131,7 +131,7 @@
 						"title" : "Updates the relationship of sport to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
@@ -141,7 +141,7 @@
 						"title" : "Adds object as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
@@ -151,7 +151,7 @@
 						"title" : "Removes object as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportObjectRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportObjectJsonResponder"
@@ -161,7 +161,7 @@
 						"title" : "Reads the relationship of sport to position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
@@ -171,7 +171,7 @@
 						"title" : "Updates the relationship of sport to position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
@@ -181,7 +181,7 @@
 						"title" : "Adds position as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
@@ -191,7 +191,7 @@
 						"title" : "Removes position as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportPositionRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportPositionJsonResponder"
@@ -201,7 +201,7 @@
 						"title" : "Reads the relationship of sport to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
@@ -211,7 +211,7 @@
 						"title" : "Updates the relationship of sport to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
@@ -221,7 +221,7 @@
 						"title" : "Adds skill as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
@@ -231,7 +231,7 @@
 						"title" : "Removes skill as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportSkillJsonResponder"
@@ -241,7 +241,7 @@
 						"title" : "Reads the relationship of sport to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
@@ -251,7 +251,7 @@
 						"title" : "Updates the relationship of sport to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
@@ -261,7 +261,7 @@
 						"title" : "Adds group as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
@@ -271,7 +271,7 @@
 						"title" : "Removes group as relationship to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SportGroupRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SportGroupJsonResponder"
@@ -281,7 +281,7 @@
 						"title" : "Paginates objects",
 						"class" : "gossi\\trixionary\\action\\model\\ObjectPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectPaginateJsonResponder"
@@ -291,7 +291,7 @@
 						"title" : "Creates an object",
 						"class" : "gossi\\trixionary\\action\\model\\ObjectCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectCreateJsonResponder"
@@ -301,7 +301,7 @@
 						"title" : "Reads an object",
 						"class" : "gossi\\trixionary\\action\\model\\ObjectReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectReadJsonResponder"
@@ -311,7 +311,7 @@
 						"title" : "Updates an object",
 						"class" : "gossi\\trixionary\\action\\model\\ObjectUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectUpdateJsonResponder"
@@ -321,7 +321,7 @@
 						"title" : "Deletes an object",
 						"class" : "gossi\\trixionary\\action\\model\\ObjectDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ObjectDeleteJsonResponder"
@@ -331,7 +331,7 @@
 						"title" : "Reads the relationship of object to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
@@ -341,7 +341,7 @@
 						"title" : "Updates the relationship of object to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSportUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSportJsonResponder"
@@ -351,7 +351,7 @@
 						"title" : "Reads the relationship of object to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
@@ -361,7 +361,7 @@
 						"title" : "Updates the relationship of object to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
@@ -371,7 +371,7 @@
 						"title" : "Adds skill as relationship to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
@@ -381,7 +381,7 @@
 						"title" : "Removes skill as relationship to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\ObjectSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ObjectSkillJsonResponder"
@@ -391,7 +391,7 @@
 						"title" : "Paginates positions",
 						"class" : "gossi\\trixionary\\action\\model\\PositionPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionPaginateJsonResponder"
@@ -401,7 +401,7 @@
 						"title" : "Creates a position",
 						"class" : "gossi\\trixionary\\action\\model\\PositionCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionCreateJsonResponder"
@@ -411,7 +411,7 @@
 						"title" : "Reads a position",
 						"class" : "gossi\\trixionary\\action\\model\\PositionReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionReadJsonResponder"
@@ -421,7 +421,7 @@
 						"title" : "Updates a position",
 						"class" : "gossi\\trixionary\\action\\model\\PositionUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionUpdateJsonResponder"
@@ -431,7 +431,7 @@
 						"title" : "Deletes a position",
 						"class" : "gossi\\trixionary\\action\\model\\PositionDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PositionDeleteJsonResponder"
@@ -441,7 +441,7 @@
 						"title" : "Reads the relationship of position to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
@@ -451,7 +451,7 @@
 						"title" : "Updates the relationship of position to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\PositionSportUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSportJsonResponder"
@@ -461,7 +461,7 @@
 						"title" : "Reads the relationship of position to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
@@ -471,7 +471,7 @@
 						"title" : "Updates the relationship of position to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PositionSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PositionSkillJsonResponder"
@@ -481,7 +481,7 @@
 						"title" : "Paginates skills",
 						"class" : "gossi\\trixionary\\action\\model\\SkillPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillPaginateJsonResponder"
@@ -491,7 +491,7 @@
 						"title" : "Creates a skill",
 						"class" : "gossi\\trixionary\\action\\model\\SkillCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillCreateJsonResponder"
@@ -501,7 +501,7 @@
 						"title" : "Reads a skill",
 						"class" : "gossi\\trixionary\\action\\model\\SkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillReadJsonResponder"
@@ -511,7 +511,7 @@
 						"title" : "Updates a skill",
 						"class" : "gossi\\trixionary\\action\\model\\SkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillUpdateJsonResponder"
@@ -521,7 +521,7 @@
 						"title" : "Deletes a skill",
 						"class" : "gossi\\trixionary\\action\\model\\SkillDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\SkillDeleteJsonResponder"
@@ -531,7 +531,7 @@
 						"title" : "Reads the relationship of skill to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
@@ -541,7 +541,7 @@
 						"title" : "Updates the relationship of skill to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillSportUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillSportJsonResponder"
@@ -551,7 +551,7 @@
 						"title" : "Reads the relationship of skill to variation",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
@@ -561,7 +561,7 @@
 						"title" : "Updates the relationship of skill to variation",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
@@ -571,7 +571,7 @@
 						"title" : "Adds variation as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
@@ -581,7 +581,7 @@
 						"title" : "Removes variation as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationJsonResponder"
@@ -591,7 +591,7 @@
 						"title" : "Reads the relationship of skill to variation_of",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
@@ -601,7 +601,7 @@
 						"title" : "Updates the relationship of skill to variation_of",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVariationOfUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVariationOfJsonResponder"
@@ -611,7 +611,7 @@
 						"title" : "Reads the relationship of skill to multiple",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
@@ -621,7 +621,7 @@
 						"title" : "Updates the relationship of skill to multiple",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
@@ -631,7 +631,7 @@
 						"title" : "Adds multiple as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
@@ -641,7 +641,7 @@
 						"title" : "Removes multiple as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleJsonResponder"
@@ -651,7 +651,7 @@
 						"title" : "Reads the relationship of skill to multiple_of",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
@@ -661,7 +661,7 @@
 						"title" : "Updates the relationship of skill to multiple_of",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillMultipleOfUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillMultipleOfJsonResponder"
@@ -671,7 +671,7 @@
 						"title" : "Reads the relationship of skill to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
@@ -681,7 +681,7 @@
 						"title" : "Updates the relationship of skill to object",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillObjectUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillObjectJsonResponder"
@@ -691,7 +691,7 @@
 						"title" : "Reads the relationship of skill to start_position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
@@ -701,7 +701,7 @@
 						"title" : "Updates the relationship of skill to start_position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillStartPositionUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillStartPositionJsonResponder"
@@ -711,7 +711,7 @@
 						"title" : "Reads the relationship of skill to end_position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
@@ -721,7 +721,7 @@
 						"title" : "Updates the relationship of skill to end_position",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillEndPositionUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillEndPositionJsonResponder"
@@ -731,7 +731,7 @@
 						"title" : "Reads the relationship of skill to featured_picture",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
@@ -741,7 +741,7 @@
 						"title" : "Updates the relationship of skill to featured_picture",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedPictureUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedPictureJsonResponder"
@@ -791,7 +791,7 @@
 						"title" : "Reads the relationship of skill to child",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
@@ -801,7 +801,7 @@
 						"title" : "Updates the relationship of skill to child",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
@@ -811,7 +811,7 @@
 						"title" : "Adds child as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
@@ -821,7 +821,7 @@
 						"title" : "Removes child as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillChildRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillChildJsonResponder"
@@ -831,7 +831,7 @@
 						"title" : "Reads the relationship of skill to part",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
@@ -841,7 +841,7 @@
 						"title" : "Updates the relationship of skill to part",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
@@ -851,7 +851,7 @@
 						"title" : "Adds part as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
@@ -861,7 +861,7 @@
 						"title" : "Removes part as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPartRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPartJsonResponder"
@@ -871,7 +871,7 @@
 						"title" : "Reads the relationship of skill to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
@@ -881,7 +881,7 @@
 						"title" : "Updates the relationship of skill to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
@@ -891,7 +891,7 @@
 						"title" : "Adds group as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
@@ -901,7 +901,7 @@
 						"title" : "Removes group as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillGroupRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillGroupJsonResponder"
@@ -911,7 +911,7 @@
 						"title" : "Reads the relationship of skill to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
@@ -921,7 +921,7 @@
 						"title" : "Updates the relationship of skill to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
@@ -931,7 +931,7 @@
 						"title" : "Adds reference as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
@@ -941,7 +941,7 @@
 						"title" : "Removes reference as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillReferenceRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillReferenceJsonResponder"
@@ -951,7 +951,7 @@
 						"title" : "Reads the relationship of skill to lineage",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
@@ -961,7 +961,7 @@
 						"title" : "Updates the relationship of skill to lineage",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
@@ -971,7 +971,7 @@
 						"title" : "Adds lineage as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
@@ -981,7 +981,7 @@
 						"title" : "Removes lineage as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillLineageRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillLineageJsonResponder"
@@ -991,7 +991,7 @@
 						"title" : "Reads the relationship of skill to picture",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
@@ -1001,7 +1001,7 @@
 						"title" : "Updates the relationship of skill to picture",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
@@ -1011,7 +1011,7 @@
 						"title" : "Adds picture as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
@@ -1021,7 +1021,7 @@
 						"title" : "Removes picture as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillPictureRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillPictureJsonResponder"
@@ -1031,7 +1031,7 @@
 						"title" : "Reads the relationship of skill to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
@@ -1041,7 +1041,7 @@
 						"title" : "Updates the relationship of skill to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
@@ -1051,7 +1051,7 @@
 						"title" : "Adds video as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
@@ -1061,7 +1061,7 @@
 						"title" : "Removes video as relationship to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillVideoRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillVideoJsonResponder"
@@ -1241,7 +1241,7 @@
 						"title" : "Paginates groups",
 						"class" : "gossi\\trixionary\\action\\model\\GroupPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupPaginateJsonResponder"
@@ -1251,7 +1251,7 @@
 						"title" : "Creates a group",
 						"class" : "gossi\\trixionary\\action\\model\\GroupCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupCreateJsonResponder"
@@ -1261,7 +1261,7 @@
 						"title" : "Reads a group",
 						"class" : "gossi\\trixionary\\action\\model\\GroupReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupReadJsonResponder"
@@ -1271,7 +1271,7 @@
 						"title" : "Updates a group",
 						"class" : "gossi\\trixionary\\action\\model\\GroupUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupUpdateJsonResponder"
@@ -1281,7 +1281,7 @@
 						"title" : "Deletes a group",
 						"class" : "gossi\\trixionary\\action\\model\\GroupDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\GroupDeleteJsonResponder"
@@ -1291,7 +1291,7 @@
 						"title" : "Reads the relationship of group to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
@@ -1301,7 +1301,7 @@
 						"title" : "Updates the relationship of group to sport",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSportUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSportJsonResponder"
@@ -1311,7 +1311,7 @@
 						"title" : "Reads the relationship of group to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
@@ -1321,7 +1321,7 @@
 						"title" : "Updates the relationship of group to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
@@ -1331,7 +1331,7 @@
 						"title" : "Adds skill as relationship to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
@@ -1341,7 +1341,7 @@
 						"title" : "Removes skill as relationship to group",
 						"class" : "gossi\\trixionary\\action\\relationship\\GroupSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\GroupSkillJsonResponder"
@@ -1351,7 +1351,7 @@
 						"title" : "Paginates pictures",
 						"class" : "gossi\\trixionary\\action\\model\\PicturePaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PicturePaginateJsonResponder"
@@ -1361,7 +1361,7 @@
 						"title" : "Creates a picture",
 						"class" : "gossi\\trixionary\\action\\model\\PictureCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureCreateJsonResponder"
@@ -1371,7 +1371,7 @@
 						"title" : "Reads a picture",
 						"class" : "gossi\\trixionary\\action\\model\\PictureReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureReadJsonResponder"
@@ -1381,7 +1381,7 @@
 						"title" : "Updates a picture",
 						"class" : "gossi\\trixionary\\action\\model\\PictureUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureUpdateJsonResponder"
@@ -1391,7 +1391,7 @@
 						"title" : "Deletes a picture",
 						"class" : "gossi\\trixionary\\action\\model\\PictureDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\PictureDeleteJsonResponder"
@@ -1401,7 +1401,7 @@
 						"title" : "Reads the relationship of picture to featured_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
@@ -1411,7 +1411,7 @@
 						"title" : "Updates the relationship of picture to featured_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PictureFeaturedSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureFeaturedSkillJsonResponder"
@@ -1421,7 +1421,7 @@
 						"title" : "Reads the relationship of picture to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
@@ -1431,7 +1431,7 @@
 						"title" : "Updates the relationship of picture to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\PictureSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\PictureSkillJsonResponder"
@@ -1441,7 +1441,7 @@
 						"title" : "Paginates videos",
 						"class" : "gossi\\trixionary\\action\\model\\VideoPaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoPaginateJsonResponder"
@@ -1451,7 +1451,7 @@
 						"title" : "Creates a video",
 						"class" : "gossi\\trixionary\\action\\model\\VideoCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoCreateJsonResponder"
@@ -1461,7 +1461,7 @@
 						"title" : "Reads a video",
 						"class" : "gossi\\trixionary\\action\\model\\VideoReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoReadJsonResponder"
@@ -1471,7 +1471,7 @@
 						"title" : "Updates a video",
 						"class" : "gossi\\trixionary\\action\\model\\VideoUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoUpdateJsonResponder"
@@ -1481,7 +1481,7 @@
 						"title" : "Deletes a video",
 						"class" : "gossi\\trixionary\\action\\model\\VideoDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\VideoDeleteJsonResponder"
@@ -1491,7 +1491,7 @@
 						"title" : "Reads the relationship of video to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
@@ -1501,7 +1501,7 @@
 						"title" : "Updates the relationship of video to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoSkillJsonResponder"
@@ -1511,7 +1511,7 @@
 						"title" : "Reads the relationship of video to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
@@ -1521,7 +1521,7 @@
 						"title" : "Updates the relationship of video to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoReferenceUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoReferenceJsonResponder"
@@ -1531,7 +1531,7 @@
 						"title" : "Paginates references",
 						"class" : "gossi\\trixionary\\action\\model\\ReferencePaginateAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferencePaginateJsonResponder"
@@ -1541,7 +1541,7 @@
 						"title" : "Creates a reference",
 						"class" : "gossi\\trixionary\\action\\model\\ReferenceCreateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceCreateJsonResponder"
@@ -1551,7 +1551,7 @@
 						"title" : "Reads a reference",
 						"class" : "gossi\\trixionary\\action\\model\\ReferenceReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceReadJsonResponder"
@@ -1561,7 +1561,7 @@
 						"title" : "Updates a reference",
 						"class" : "gossi\\trixionary\\action\\model\\ReferenceUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceUpdateJsonResponder"
@@ -1571,7 +1571,7 @@
 						"title" : "Deletes a reference",
 						"class" : "gossi\\trixionary\\action\\model\\ReferenceDeleteAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\model\\ReferenceDeleteJsonResponder"
@@ -1581,7 +1581,7 @@
 						"title" : "Reads the relationship of reference to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
@@ -1591,7 +1591,7 @@
 						"title" : "Updates the relationship of reference to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
@@ -1601,7 +1601,7 @@
 						"title" : "Adds video as relationship to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
@@ -1611,7 +1611,7 @@
 						"title" : "Removes video as relationship to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceVideoRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceVideoJsonResponder"
@@ -1621,7 +1621,7 @@
 						"title" : "Reads the relationship of reference to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
@@ -1631,7 +1631,7 @@
 						"title" : "Updates the relationship of reference to skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
@@ -1641,7 +1641,7 @@
 						"title" : "Adds skill as relationship to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
@@ -1651,7 +1651,7 @@
 						"title" : "Removes skill as relationship to reference",
 						"class" : "gossi\\trixionary\\action\\relationship\\ReferenceSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\ReferenceSkillJsonResponder"
@@ -1881,7 +1881,7 @@
 						"title" : "Reads the relationship of skill to featured_video",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
@@ -1891,7 +1891,7 @@
 						"title" : "Updates the relationship of skill to featured_video",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedVideoUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedVideoJsonResponder"
@@ -1901,7 +1901,7 @@
 						"title" : "Reads the relationship of skill to featured_tutorial",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
@@ -1911,7 +1911,7 @@
 						"title" : "Updates the relationship of skill to featured_tutorial",
 						"class" : "gossi\\trixionary\\action\\relationship\\SkillFeaturedTutorialUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\SkillFeaturedTutorialJsonResponder"
@@ -1921,7 +1921,7 @@
 						"title" : "Reads the relationship of video to featured_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
@@ -1931,7 +1931,7 @@
 						"title" : "Updates the relationship of video to featured_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
@@ -1941,7 +1941,7 @@
 						"title" : "Adds featured_skill as relationship to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
@@ -1951,7 +1951,7 @@
 						"title" : "Removes featured_skill as relationship to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedSkillJsonResponder"
@@ -1961,7 +1961,7 @@
 						"title" : "Reads the relationship of video to featured_tutorial_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillReadAction",
 						"acl" : [
-							"admin"
+							"guest"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
@@ -1971,7 +1971,7 @@
 						"title" : "Updates the relationship of video to featured_tutorial_skill",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillUpdateAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
@@ -1981,7 +1981,7 @@
 						"title" : "Adds featured_tutorial_skill as relationship to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillAddAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
@@ -1991,7 +1991,7 @@
 						"title" : "Removes featured_tutorial_skill as relationship to video",
 						"class" : "gossi\\trixionary\\action\\relationship\\VideoFeaturedTutorialSkillRemoveAction",
 						"acl" : [
-							"admin"
+							"user"
 						],
 						"responder" : {
 							"json" : "gossi\\trixionary\\responder\\json\\relationship\\VideoFeaturedTutorialSkillJsonResponder"
